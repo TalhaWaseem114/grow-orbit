@@ -1,0 +1,361 @@
+"use client";
+
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { ChevronDown, LayoutDashboard, LogOut, Menu, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { app } from "../../firebase/firebaseConfig";
+import MegaMenu from "./MegaMenu";
+import "./Navbar.css";
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+export default function Navbar() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [isSticky, setIsSticky] = useState(false);
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState("user");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [megaMenuOpen, setMegaMenuOpen] = useState(false);
+  const [mobileServiceExpanded, setMobileServiceExpanded] = useState(false);
+  const headerRef = useRef(null);
+
+  const lightPages = ["service", "contact", "case-study"];
+  const darkThemedPages = [
+    "/service", // Added the main services index because it has a dark header
+    "/service/full/amazon-management",
+    "/service/amazon-services",
+    "/service/design-creative",
+    "/case-study/li-01",
+    "/case-study/li-02",
+    "/case-study/li-03",
+    "portfolio"
+  ];
+
+  const isAboutPage = pathname.includes("about");
+  const isLightPage = lightPages.some((path) => pathname.includes(path));
+  // Removed the blanket startsWith("/service") check which was forcing white text on light service pages
+  const isForcedDarkPage = darkThemedPages.some((path) => {
+    // Exact match for the index or partial match for specific subpages
+    if (path === "/service") return pathname === "/service" || pathname === "/service/";
+    return pathname.includes(path);
+  });
+  const isDarkTextNeeded = (isSticky && !isAboutPage) || (isLightPage && !isForcedDarkPage);
+
+  useEffect(() => {
+    const handleScroll = () => setIsSticky(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    setMegaMenuOpen(false);
+    setMobileMenuOpen(false);
+  }, [pathname]);
+
+  useEffect(() => {
+    const unsub = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+        if (userDoc.exists()) setRole(userDoc.data().role?.trim() || "user");
+      } else {
+        setRole("user");
+      }
+    });
+    return () => unsub();
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (headerRef.current && !headerRef.current.contains(event.target)) {
+        setMegaMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      router.push("/");
+    } catch (e) {
+      console.error("Logout error", e);
+    }
+  };
+
+  const getUserInitial = () => {
+    if (user?.displayName) return user.displayName[0].toUpperCase();
+    if (user?.email) return user.email[0].toUpperCase();
+    return "U";
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setMobileServiceExpanded(false);
+  };
+
+
+  const textColorClass = isDarkTextNeeded ? "text-gray-800" : "text-white";
+  const hoverColorClass = isDarkTextNeeded ? "hover:text-orange-500" : "hover:text-white";
+  const logoTextClass = isDarkTextNeeded ? "text-black" : "text-white";
+
+  const navItems = ["Home", "Service", "About", "Portfolio", "Case Studies", "FAQ", "Contact"];
+
+  return (
+    <header
+      ref={headerRef}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
+        pathname.includes("get-started") ? "lg:hidden" : ""
+      } ${
+        isSticky
+          ? `${
+              isAboutPage ? "bg-zinc-950/90" : "bg-white/90"
+            } backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.06)] py-3`
+          : "bg-transparent py-5"
+      }`}
+    >
+      <div className="container mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between">
+
+        {/* ── Logo ── */}
+        <Link href="/" prefetch={false} className="flex items-center gap-2.5 group no-underline shrink-0" aria-label="Grow Orbit Home">
+          <div className="relative flex items-center justify-center w-10 h-10">
+            <Image
+              src="/logo.png"
+              alt="Grow Orbit Logo"
+              width={40}
+              height={40}
+              className="object-contain group-hover:scale-110 transition-transform duration-300"
+            />
+          </div>
+          <span className="text-xl font-black tracking-tight uppercase flex gap-1.5 transition-colors">
+            <span className={isDarkTextNeeded ? "text-[#2B3036]" : "text-white"}>GROW</span>
+            <span className="text-[#F1A52B]">ORBIT</span>
+          </span>
+        </Link>
+
+        {/* ── Mobile Toggle ── */}
+        <button
+          className={`md:hidden p-2 rounded-lg transition-colors ${textColorClass} focus-visible:ring-2 focus-visible:ring-orange-500`}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={mobileMenuOpen}
+        >
+          {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+        </button>
+
+        {/* ════════════════════════════════════════
+            DESKTOP NAV
+        ════════════════════════════════════════ */}
+        <nav className="hidden md:flex md:items-center md:gap-10">
+          {navItems.map((item) => {
+            const path = item === "Home" ? "/" : item === "Case Studies" ? "/case-study" : `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+            const isActive = pathname === path;
+            const isService = item === "Service";
+
+            if (isService) {
+              return (
+                <div key={item}>
+                  <button
+                    onClick={() => setMegaMenuOpen(!megaMenuOpen)}
+                    aria-expanded={megaMenuOpen}
+                    aria-haspopup="true"
+                    className={`nav-link flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest transition-colors cursor-pointer outline-none bg-transparent border-none p-0 focus-visible:text-orange-500
+                      ${isActive || megaMenuOpen ? "text-orange-500 nav-link-active" : textColorClass}
+                      ${!(isActive || megaMenuOpen) && hoverColorClass}`}
+                  >
+                    {item}
+                    <ChevronDown
+                      size={14}
+                      className={`service-chevron ${megaMenuOpen ? "service-chevron-open" : ""}`}
+                    />
+                  </button>
+                </div>
+              );
+            }
+
+            return (
+              <Link
+                key={item}
+                href={path}
+                prefetch={false}
+                className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline
+                  ${isActive ? "text-orange-500 nav-link-active" : textColorClass}
+                  ${!isActive && hoverColorClass}`}
+              >
+                {item}
+              </Link>
+            );
+          })}
+
+          {/* Auth section — desktop */}
+          <div className="flex items-center gap-5 ml-6">
+            {!user ? (
+              <>
+                <Link href="/login" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline ${textColorClass} ${hoverColorClass}`}>
+                  Sign In
+                </Link>
+                <Link
+                  href="/register"
+                  prefetch={false}
+                  className={`relative overflow-hidden px-6 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all no-underline
+                    ${isDarkTextNeeded
+                      ? "bg-black text-white hover:bg-orange-600 shadow-lg hover:shadow-orange-500/25"
+                      : "bg-white text-black hover:bg-orange-500 hover:text-white shadow-lg hover:shadow-orange-500/25"
+                    }`}
+                >
+                  Get Started
+                </Link>
+              </>
+            ) : (
+              <div className={`flex items-center gap-4 pl-5 border-l ${isDarkTextNeeded ? "border-gray-200" : "border-white/20"}`}>
+                
+                {role === "admin" && (
+                  <Link
+                    href="/admin-dashboard"
+                    prefetch={false}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all no-underline border ${isDarkTextNeeded ? "border-orange-500 text-orange-600 hover:bg-orange-50" : "border-orange-500/50 text-orange-400 hover:bg-orange-500/10"}`}
+                  >
+                    <LayoutDashboard size={12} />
+                    Admin Panel
+                  </Link>
+                )}
+
+                <div className="flex items-center gap-3">
+                  <div className="h-9 w-9 rounded-full overflow-hidden border border-white/20 relative">
+                    {user.photoURL ? (
+                      <Image src={user.photoURL} alt="User" fill sizes="36px" className="object-cover" referrerPolicy="no-referrer" />
+                    ) : (
+                      <div className="h-full w-full bg-orange-500 flex items-center justify-center text-white font-bold text-sm">
+                        {getUserInitial()}
+                      </div>
+                    )}
+                  </div>
+                  <div className="hidden lg:block text-xs">
+                    <p className={`font-semibold leading-none ${textColorClass}`}>
+                      {user.displayName || "User"}
+                    </p>
+                    <p className="text-gray-400 font-medium scale-90 origin-left mt-0.5">
+                      {role === "admin" ? "Admin" : "Online"}
+                    </p>
+                  </div>
+                </div>
+                <button onClick={handleLogout} className={`p-2 transition-colors ${isDarkTextNeeded ? "text-gray-400 hover:text-red-500" : "text-gray-300 hover:text-white"}`} title="Sign Out">
+                  <LogOut size={18} />
+                </button>
+              </div>
+            )}
+          </div>
+        </nav>
+      </div>
+
+      {/* ════════════════════════════════════════
+          MEGA MENU — click to open, header level
+      ════════════════════════════════════════ */}
+      {megaMenuOpen && (
+        <div className="hidden md:block absolute top-full left-0 w-full">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-10 flex justify-center">
+            <MegaMenu onClose={() => setMegaMenuOpen(false)} />
+          </div>
+        </div>
+      )}
+
+      {/* ════════════════════════════════════════
+          MOBILE NAV — slides down
+      ════════════════════════════════════════ */}
+      {mobileMenuOpen && (
+        <nav className="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-y-auto max-h-[85vh] animate-in slide-in-from-top duration-200">
+          <div className="px-4 py-5 space-y-1">
+            {navItems.map((item) => {
+              const path = item === "Home" ? "/" : item === "Case Studies" ? "/case-study" : `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+              const isActive = pathname === path;
+              const isService = item === "Service";
+
+              if (isService) {
+                return (
+                  <div key={item}>
+                    <button
+                      onClick={() => setMobileServiceExpanded(!mobileServiceExpanded)}
+                      aria-expanded={mobileServiceExpanded}
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest transition-colors focus-visible:bg-orange-50
+                        ${isActive ? "text-orange-500 bg-orange-50" : "text-gray-700 hover:bg-gray-50"}`}
+                    >
+                      {item}
+                      <ChevronDown
+                        size={16}
+                        className={`transition-transform duration-300 ${
+                          mobileServiceExpanded ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                    {mobileServiceExpanded && (
+                      <div className="mt-1 ml-2 pl-3 border-l-2 border-orange-500/20">
+                        <MegaMenu isMobile onClose={closeMobileMenu} />
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <Link
+                  key={item}
+                  href={path}
+                  prefetch={false}
+                  className={`block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest no-underline transition-colors
+                    ${isActive ? "text-orange-500 bg-orange-50" : "text-gray-700 hover:bg-gray-50"}`}
+                  onClick={closeMobileMenu}
+                >
+                  {item}
+                </Link>
+              );
+            })}
+
+            {/* Auth — mobile */}
+            <div className="pt-3 mt-3 border-t border-gray-100 space-y-2">
+              {!user ? (
+                <>
+                  <Link href="/login" prefetch={false} className="block px-4 py-3 rounded-xl text-[15px] font-medium text-gray-700 hover:bg-gray-50 no-underline" onClick={closeMobileMenu}>
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/register"
+                    prefetch={false}
+                  className="block text-center px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest bg-black text-white hover:bg-orange-600 no-underline transition-colors"
+                    onClick={closeMobileMenu}
+                  >
+                    Get Started
+                  </Link>
+                </>
+              ) : (
+                <>
+                  {role === "admin" && (
+                    <Link
+                      href="/admin-dashboard"
+                      prefetch={false}
+                      onClick={closeMobileMenu}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[15px] font-bold transition-colors no-underline"
+                    >
+                      <LayoutDashboard size={18} />
+                      Admin Dashboard
+                    </Link>
+                  )}
+                  <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-[15px] font-medium transition-colors">
+                    <LogOut size={18} />
+                    Sign Out
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </nav>
+      )}
+    </header>
+  );
+}

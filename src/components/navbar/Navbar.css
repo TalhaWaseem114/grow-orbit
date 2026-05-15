@@ -1,0 +1,56 @@
+/* ===== NAV LINK ANIMATED UNDERLINE (pseudo-element — CSS only) ===== */
+.nav-link {
+  position: relative;
+  padding: 6px 0;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #f97316, #fb923c);
+  border-radius: 2px;
+  transition: width 0.35s cubic-bezier(0.25, 0.8, 0.25, 1),
+              left 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.nav-link:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.nav-link-active::after {
+  width: 100%;
+  left: 0;
+  background: #f97316;
+}
+
+/* ===== MEGA MENU ENTRY ANIMATION (keyframe — CSS only) ===== */
+.mega-menu-enter {
+  animation: megaMenuFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes megaMenuFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== SERVICE LINK CHEVRON ===== */
+.service-chevron {
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  opacity: 0.5;
+}
+
+.service-chevron-open {
+  transform: rotate(180deg);
+  opacity: 1;
+}

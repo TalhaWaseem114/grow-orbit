@@ -1,0 +1,22 @@
+{
+  "name": "Grow Orbit Admin",
+  "short_name": "Orbit Admin",
+  "description": "Manage leads and agency data for Grow Orbit",
+  "start_url": "/admin-dashboard",
+  "scope": "/admin-dashboard",
+  "display": "standalone",
+  "background_color": "#060606",
+  "theme_color": "#f97316",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

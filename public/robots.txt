@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Directories
+Disallow: /admin
+Disallow: /admin-dashboard
+Disallow: /login
+Disallow: /register
+Disallow: /api/

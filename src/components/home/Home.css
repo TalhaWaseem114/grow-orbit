@@ -1,0 +1,12 @@
+
+
+h1,
+h2,
+.italic-font {
+  font-family: Montserrat, sans-serif;
+}
+
+/* Custom easing for GSAP and hover effects */
+.elite-transition {
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}

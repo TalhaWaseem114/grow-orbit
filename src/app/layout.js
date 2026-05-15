@@ -29,7 +29,6 @@ const playfair = Playfair_Display({
   display: "swap",
 });
 
-export const runtime = "edge";
 export const metadata = {
   metadataBase: new URL("https://groworbit.com"),
   title: "Grow Orbit",

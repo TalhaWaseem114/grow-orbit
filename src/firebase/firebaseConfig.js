@@ -1,7 +1,7 @@
-import { getAnalytics, isSupported } from "firebase/analytics";
-import { initializeApp } from "firebase/app";
+import { initializeApp, getApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -13,11 +13,18 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-export const app = initializeApp(firebaseConfig);
+// Initialize Firebase only once
+const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
+// Lazy-load sub-services to prevent blocking main thread
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 
-isSupported().then((yes) => {
-  if (yes) getAnalytics(app);
-});
+// Initialize analytics only on client-side and when supported
+if (typeof window !== "undefined") {
+  isSupported().then((yes) => {
+    if (yes) getAnalytics(app);
+  });
+}
+
+export { app };

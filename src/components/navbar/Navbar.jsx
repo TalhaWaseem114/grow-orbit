@@ -1,18 +1,15 @@
 "use client";
 
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDoc, getFirestore } from "firebase/firestore";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { ChevronDown, LayoutDashboard, LogOut, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { app } from "../../firebase/firebaseConfig";
+import { auth, db } from "../../firebase/firebaseConfig";
 import MegaMenu from "./MegaMenu";
 import "./Navbar.css";
-
-const auth = getAuth(app);
-const db = getFirestore(app);
 
 export default function Navbar() {
   const router = useRouter();

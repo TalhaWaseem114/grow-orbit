@@ -14,17 +14,18 @@ export default function Hero() {
   const engineRef = useRef(null);
 
   useEffect(() => {
+    const isMobile = window.innerWidth < 768;
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power4.out", duration: 1.2 } });
+      const tl = gsap.timeline({ defaults: { ease: "power4.out", duration: isMobile ? 0.8 : 1.2 } });
 
       // 1. Initial State
       gsap.set(".progress-bar-fill", { width: 0 });
       gsap.set(".target-bar-fill", { width: 0 });
       gsap.set(".target-node-fill", { left: "0%" });
 
-      // 2. Left side staggered entrance (SAFE: no clearing of font styles)
+      // 2. Left side staggered entrance
       tl.from(".animate-content > *", {
-        y: 40,
+        y: isMobile ? 20 : 40,
         opacity: 0,
         stagger: 0.1,
         clearProps: "transform,opacity"
@@ -33,46 +34,51 @@ export default function Hero() {
       // 3. Right side - Pure Fade In
       tl.from(engineRef.current, {
         opacity: 0,
-        duration: 1.5,
+        duration: isMobile ? 1.0 : 1.5,
         ease: "power2.inOut"
-      }, "-=1.0");
+      }, "-=0.8");
 
       // 4. Target Line Animation (Bar & Node in Sync)
       tl.to(".target-bar-fill", {
         width: "85%",
-        duration: 2,
+        duration: isMobile ? 1.5 : 2,
         ease: "expo.out"
       }, "-=0.8");
       tl.to(".target-node-fill", {
         left: "85%",
-        duration: 2,
+        duration: isMobile ? 1.5 : 2,
         ease: "expo.out"
       }, "<");
 
-      // 5. Service Bars filling animation
-      tl.to(".progress-bar-fill", {
-        width: (i, target) => target.dataset.width || "0%",
-        duration: 1.8,
-        stagger: 0.15,
-        ease: "expo.out"
-      }, "-=1.5");
+      if (!isMobile) {
+        // 5. Service Bars filling animation
+        tl.to(".progress-bar-fill", {
+          width: (i, target) => target.dataset.width || "0%",
+          duration: 1.8,
+          stagger: 0.15,
+          ease: "expo.out"
+        }, "-=1.5");
 
-      // 6. Mini Stats (Bottom)
-      tl.from(".animate-stats > *", {
-        y: 30,
-        opacity: 0,
-        stagger: 0.1,
-        clearProps: "transform,opacity"
-      }, "-=1.8");
+        // 6. Mini Stats (Bottom)
+        tl.from(".animate-stats > *", {
+          y: 30,
+          opacity: 0,
+          stagger: 0.1,
+          clearProps: "transform,opacity"
+        }, "-=1.8");
 
-      // 7. Continuous Floating Motion
-      gsap.to(engineRef.current, {
-        y: -15,
-        duration: 4,
-        repeat: -1,
-        yoyo: true,
-        ease: "power1.inOut"
-      });
+        // 7. Continuous Floating Motion
+        gsap.to(engineRef.current, {
+          y: -15,
+          duration: 4,
+          repeat: -1,
+          yoyo: true,
+          ease: "power1.inOut"
+        });
+      } else {
+         // Simpler mobile animations
+         gsap.set(".progress-bar-fill", { width: (i, target) => target.dataset.width || "0%" });
+      }
 
     }, containerRef);
 

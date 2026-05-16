@@ -93,10 +93,6 @@ export default function Footer() {
       className="bg-[#0A0A0B] text-white pt-24 pb-12 px-6 md:px-12 rounded-t-[60px] relative overflow-hidden"
       style={{ fontFamily: "'Montserrat', sans-serif" }}
     >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:ital,wght@1,300;1,400&display=swap');
-      `}</style>
-
       {/* ── Orbit ring bg decoration ── */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-20">
         <svg

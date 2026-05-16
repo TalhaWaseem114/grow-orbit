@@ -1,5 +1,5 @@
 import { Inter, Montserrat, Zen_Dots, Playfair_Display } from "next/font/google";
-import MouseTrailer from "@/utils/MouseTrailer";
+import ClientSideFeatures from "@/components/ClientSideFeatures";
 import "./globals.css";
 
 const inter = Inter({
@@ -59,7 +59,7 @@ export default function RootLayout({ children }) {
         {children}
         <Analytics />
         <SpeedInsights />
-        <MouseTrailer />
+        <ClientSideFeatures />
       </body>
     </html>
   );

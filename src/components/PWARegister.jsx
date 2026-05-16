@@ -14,7 +14,7 @@ export default function PWARegister() {
       // Clean up manifest link if navigating away (handled by Next.js now, but good fallback)
       const existing = document.querySelector('link[rel="manifest"]');
       if (existing) existing.remove();
-      
+
       // UNREGISTER service worker if on main site to remove install icon
       if ("serviceWorker" in navigator) {
         navigator.serviceWorker.getRegistrations().then(registrations => {

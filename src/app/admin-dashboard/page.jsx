@@ -215,7 +215,7 @@ export default function AdminDashboard() {
     const lQ = query(collection(db, "leads"), orderBy("createdAt", "desc"));
     const unsub = onSnapshot(lQ, (snapshot) => {
       const newLeads = snapshot.docs.map(d => ({ id: d.id, status: "new", ...d.data() }));
-      
+
       // Check if a NEW lead was added (not first load)
       if (prevLeadCount.current !== null && newLeads.length > prevLeadCount.current) {
         const latest = newLeads[0];
@@ -533,18 +533,18 @@ export default function AdminDashboard() {
       `}</style>
 
       {/* ═══════════════ SIDEBAR ═══════════════ */}
-      <aside className="admin-sidebar" style={{ 
-        width: isSidebarCollapsed ? 80 : 280, 
-        background: "#090909", 
-        borderRight: "1px solid rgba(255,255,255,0.04)", 
-        display: "flex", 
-        flexDirection: "column", 
+      <aside className="admin-sidebar" style={{
+        width: isSidebarCollapsed ? 80 : 280,
+        background: "#090909",
+        borderRight: "1px solid rgba(255,255,255,0.04)",
+        display: "flex",
+        flexDirection: "column",
         flexShrink: 0,
         position: "relative",
         transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
       }}>
         {/* Toggle Button */}
-        <button 
+        <button
           onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
           style={{
             position: "absolute",
@@ -641,22 +641,22 @@ export default function AdminDashboard() {
           {showInstallBtn && (
             <button
               onClick={handleInstallApp}
-              style={{ 
-                width: "100%", 
-                display: "flex", 
-                alignItems: "center", 
-                gap: 10, 
-                padding: "12px", 
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                padding: "12px",
                 marginTop: 12,
-                borderRadius: 14, 
-                background: "linear-gradient(135deg, rgba(249,115,22,0.2), rgba(249,115,22,0.1))", 
-                border: "1px solid rgba(249,115,22,0.3)", 
-                cursor: "pointer", 
-                color: "#f97316", 
-                fontSize: 10, 
-                fontWeight: 900, 
-                textTransform: "uppercase", 
-                letterSpacing: "0.15em", 
+                borderRadius: 14,
+                background: "linear-gradient(135deg, rgba(249,115,22,0.2), rgba(249,115,22,0.1))",
+                border: "1px solid rgba(249,115,22,0.3)",
+                cursor: "pointer",
+                color: "#f97316",
+                fontSize: 10,
+                fontWeight: 900,
+                textTransform: "uppercase",
+                letterSpacing: "0.15em",
                 justifyContent: isSidebarCollapsed ? "center" : "flex-start",
                 boxShadow: "0 4px 15px rgba(249,115,22,0.1)"
               }}
@@ -870,7 +870,7 @@ export default function AdminDashboard() {
                 <div className="leads-priority-filter" style={{ display: "flex", gap: 4, background: "rgba(255,255,255,0.02)", padding: "4px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.04)" }}>
                   {["all", "low", "medium", "high"].map(p => (
                     <button key={p} onClick={() => setPriorityFilter(p)}
-                      style={{ 
+                      style={{
                         padding: "6px 12px", borderRadius: 10, border: "none", cursor: "pointer", fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", transition: "all 0.15s",
                         background: priorityFilter === p ? (p === "all" ? "rgba(255,255,255,0.15)" : PRIORITY_CONFIG[p].bg) : "transparent",
                         color: priorityFilter === p ? (p === "all" ? "#fff" : PRIORITY_CONFIG[p].color) : "#525252",
@@ -1344,10 +1344,10 @@ export default function AdminDashboard() {
                     setThemeSaving(true);
                     console.log("[Admin] Publishing live theme:", activeTheme, activeSections);
                     const ok = await saveActiveTheme(activeTheme, activeSections);
-                    if (ok) { 
-                      setLiveTheme(activeTheme); 
+                    if (ok) {
+                      setLiveTheme(activeTheme);
                       setLiveSections(activeSections);
-                      setThemeSaved(true); 
+                      setThemeSaved(true);
                       setTimeout(() => {
                         setThemeSaved(false);
                         setThemeSaving(false);
@@ -1386,10 +1386,10 @@ export default function AdminDashboard() {
                   return (
                     <div
                       key={key}
-                      onClick={() => { 
-                        setActiveTheme(key); 
+                      onClick={() => {
+                        setActiveTheme(key);
                         setActiveSections(isLive ? liveSections : theme.defaultSections);
-                        setThemeSaved(false); 
+                        setThemeSaved(false);
                       }}
                       style={{
                         textAlign: "left", padding: isMobile ? 24 : 32, borderRadius: isMobile ? 20 : 28, border: `2px solid ${isSelected ? "rgba(249,115,22,0.5)" : "rgba(255,255,255,0.05)"}`,
@@ -1410,11 +1410,11 @@ export default function AdminDashboard() {
                         </div>
                         <span style={{ fontSize: isMobile ? 16 : 18, fontWeight: 900, color: isSelected ? "#fff" : "#a3a3a3", textTransform: "uppercase", letterSpacing: "-0.01em", lineHeight: 1.2 }}>{theme.name}</span>
                       </div>
-                      
+
                       <p style={{ fontSize: 13, color: isSelected ? "#d4d4d4" : "#525252", lineHeight: 1.6, fontWeight: 400, marginBottom: 24 }}>
                         {theme.description}
                       </p>
- 
+
                       <div style={{ marginBottom: 16 }}>
                          <button
                            onClick={(e) => {
@@ -1432,7 +1432,7 @@ export default function AdminDashboard() {
                            {configExpandedTheme === key ? "Hide Section Controls" : "Configure Section Layout"}
                          </button>
                       </div>
- 
+
                       {configExpandedTheme === key && (
                         <div style={{ marginBottom: 24, padding: "20px", background: "rgba(255,255,255,0.02)", borderRadius: 16, border: "1px solid rgba(255,255,255,0.03)", animation: "fadeIn 0.3s ease-out" }}>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
@@ -1464,7 +1464,7 @@ export default function AdminDashboard() {
                           {ALL_SECTIONS.map((section) => {
                             const sectionValue = activeSections[section.id];
                             const isSectionActive = sectionValue !== false;
-                            
+
                             return (
                               <div key={section.id} style={{ opacity: isSelected ? 1 : 0.4, transition: "opacity 0.3s" }}>
                                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: section.variants && isSectionActive ? 6 : 0 }}>
@@ -1488,14 +1488,14 @@ export default function AdminDashboard() {
                                     }}
                                     style={{ display: "flex", alignItems: "center", gap: 8, background: "none", border: "none", cursor: "pointer", padding: 0 }}
                                   >
-                                    <div style={{ 
+                                    <div style={{
                                       width: 24, height: 12, borderRadius: 100, position: "relative",
                                       background: isSectionActive ? "#f97316" : "#222",
                                       transition: "all 0.3s"
                                     }}>
-                                      <div style={{ 
+                                      <div style={{
                                         width: 8, height: 8, borderRadius: "50%", background: "#fff",
-                                        position: "absolute", top: 2, 
+                                        position: "absolute", top: 2,
                                         left: isSectionActive ? 14 : 2,
                                         transition: "all 0.3s"
                                       }} />
@@ -1503,7 +1503,7 @@ export default function AdminDashboard() {
                                     <span style={{ fontSize: 10, fontWeight: 600, color: isSectionActive ? "#a3a3a3" : "#333" }}>{section.label}</span>
                                   </button>
                                 </div>
- 
+
                                 {section.variants && isSectionActive && (
                                   <select
                                     onClick={(e) => e.stopPropagation()}
@@ -1531,7 +1531,7 @@ export default function AdminDashboard() {
                         </div>
                       </div>
                       )}
- 
+
                       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: 16 }}>
                         <p style={{ fontSize: 9, color: "#262626", fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "0.15em" }}>Target File: {theme.file}</p>
                         <div style={{ fontSize: 8, fontWeight: 800, color: isSelected ? "#f97316" : "#333", background: isSelected ? "rgba(249,115,22,0.1)" : "rgba(255,255,255,0.02)", padding: "4px 8px", borderRadius: 4, textTransform: "uppercase" }}>

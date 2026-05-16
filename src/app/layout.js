@@ -43,6 +43,8 @@ export const metadata = {
 };
 
 import PWARegister from "@/components/PWARegister";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function RootLayout({ children }) {
   return (
@@ -55,6 +57,8 @@ export default function RootLayout({ children }) {
       <body className="antialiased font-sans" suppressHydrationWarning>
         <PWARegister />
         {children}
+        <Analytics />
+        <SpeedInsights />
         <MouseTrailer />
       </body>
     </html>

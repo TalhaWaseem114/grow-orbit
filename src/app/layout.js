@@ -1,4 +1,5 @@
 import { Inter, Montserrat, Zen_Dots, Playfair_Display } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import MouseTrailer from "@/utils/MouseTrailer";
 import "./globals.css";
 
@@ -56,6 +57,7 @@ export default function RootLayout({ children }) {
         <PWARegister />
         {children}
         <MouseTrailer />
+        <SpeedInsights />
       </body>
     </html>
   );

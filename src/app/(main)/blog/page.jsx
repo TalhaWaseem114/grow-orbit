@@ -4,6 +4,31 @@ import BlogClient from "./BlogClient";
 
 export const revalidate = 60; // ISR revalidation every 60 seconds
 
+export const metadata = {
+  title: "E-Commerce & Amazon Growth Insights | Grow Orbit Blog",
+  description: "Scale your e-commerce brand to 7+ figures. Expert strategies on Amazon listing optimization, PPC automation, brand storytelling, and operation scaling from Grow Orbit.",
+  openGraph: {
+    title: "E-Commerce & Amazon Growth Insights | Grow Orbit Blog",
+    description: "Scale your e-commerce brand to 7+ figures. Expert insights on Amazon listing optimization, PPC, and operation scaling from Grow Orbit.",
+    url: "https://groworbit.co/blog",
+    type: "website",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop",
+        width: 1200,
+        height: 630,
+        alt: "Grow Orbit Blog Insights",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "E-Commerce & Amazon Growth Insights | Grow Orbit Blog",
+    description: "Scale your e-commerce brand to 7+ figures with expert strategies from Grow Orbit.",
+    images: ["https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop"],
+  },
+};
+
 export default async function Page() {
   let posts = [];
   try {

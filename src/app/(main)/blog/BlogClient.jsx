@@ -12,6 +12,27 @@ import { BLOG_CATEGORIES } from "@/data/blogData";
 const montserrat = { fontFamily: "'Montserrat', sans-serif" };
 const serif = { fontFamily: "'Playfair Display', serif" };
 
+// Helper to dynamically calculate reading time based on content word count
+function getReadTime(post) {
+  if (!post) return "5 min read";
+  if (post.readTime && post.readTime.trim() !== "") return post.readTime;
+  if (!post.content || !Array.isArray(post.content)) return "5 min read";
+
+  let allText = "";
+  post.content.forEach((block) => {
+    if (block?.text) {
+      allText += " " + block.text;
+    }
+  });
+
+  const wordsCount = allText.trim().split(/\s+/).filter(Boolean).length;
+  if (wordsCount === 0) return "5 min read";
+
+  const readingSpeed = 200; // average words per minute
+  const minutes = Math.max(1, Math.ceil(wordsCount / readingSpeed));
+  return `${minutes} min read`;
+}
+
 export default function BlogClient({ initialPosts }) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
@@ -112,7 +133,7 @@ export default function BlogClient({ initialPosts }) {
                   href={`/blog/${post.slug}`}
                   className="group block no-underline"
                 >
-                  <div className="relative rounded-[32px] overflow-hidden shadow-[0_20px_50px_-10px_rgba(0,0,0,0.06)] border border-zinc-100 bg-white transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 aspect-[16/9]">
+                  <div className="relative rounded-[32px] overflow-hidden shadow-[0_20px_50px_-10px_rgba(0,0,0,0.06)] border border-zinc-100 bg-white transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 min-h-[320px] sm:min-h-[auto] sm:aspect-[16/9] flex flex-col justify-end">
                     <Image
                       src={post.coverImage || "https://images.unsplash.com/photo-1460925895917-afdab827c52f"}
                       alt={post.title}
@@ -120,10 +141,10 @@ export default function BlogClient({ initialPosts }) {
                       className="object-cover transition-transform duration-1000 group-hover:scale-105"
                       sizes="(max-width: 768px) 100vw, 50vw"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
 
                     {/* Category badge */}
-                    <div className="absolute top-5 left-5">
+                    <div className="absolute top-5 left-5 z-10">
                       <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
                         <TrendingUp size={10} className="text-orange-500" />
                         <span className="text-[9px] font-bold uppercase tracking-widest text-white/80">
@@ -132,7 +153,7 @@ export default function BlogClient({ initialPosts }) {
                       </div>
                     </div>
 
-                    <div className="absolute bottom-8 left-8 right-8 text-white">
+                    <div className="relative z-10 p-6 sm:p-8 text-white mt-auto w-full">
                       <h2 className="text-lg sm:text-xl font-black leading-tight mb-4 tracking-tight">
                         {post.title}
                       </h2>
@@ -142,7 +163,7 @@ export default function BlogClient({ initialPosts }) {
                             {post.author?.name || "Grow Orbit"}
                           </span>
                           <span className="flex items-center gap-1.5 text-[10px] font-bold text-white/40">
-                            <Clock size={10} /> {post.readTime}
+                            <Clock size={10} /> {getReadTime(post)}
                           </span>
                         </div>
                         <div className="w-9 h-9 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 group-hover:bg-orange-500 transition-all border border-white/10">
@@ -264,7 +285,7 @@ export default function BlogClient({ initialPosts }) {
                           </div>
                         </div>
                         <span className="flex items-center gap-1 text-[9px] font-bold text-zinc-400">
-                          <Clock size={10} /> {post.readTime}
+                          <Clock size={10} /> {getReadTime(post)}
                         </span>
                       </div>
                     </div>

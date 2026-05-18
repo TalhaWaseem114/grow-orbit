@@ -1,6 +1,6 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { initializeFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -16,8 +16,10 @@ const firebaseConfig = {
 // Initialize Firebase only once
 const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-// Lazy-load sub-services to prevent blocking main thread
-export const db = getFirestore(app);
+// Initialize Firestore with long polling to prevent Lighthouse timeout errors
+export const db = initializeFirestore(app, {
+  experimentalForceLongPolling: true,
+});
 export const auth = getAuth(app);
 
 // Initialize analytics only on client-side and when supported

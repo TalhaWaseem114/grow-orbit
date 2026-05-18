@@ -253,11 +253,12 @@ export default function BlogClient({ initialPosts }) {
                             <p className="text-[10px] font-bold text-zinc-700 leading-none">
                               {post.author?.name || "Grow Orbit"}
                             </p>
-                            <p className="text-[9px] text-zinc-400 mt-0.5">
+                            <p className="text-[9px] text-zinc-400 mt-0.5" suppressHydrationWarning>
                               {new Date(post.date).toLocaleDateString("en-US", {
                                 month: "short",
                                 day: "numeric",
                                 year: "numeric",
+                                timeZone: "UTC"
                               })}
                             </p>
                           </div>

@@ -177,7 +177,7 @@ export default function Footer() {
                     {item.icon}
                   </div>
                   <div>
-                    <h4 className="font-black text-white text-[13px] uppercase tracking-tight mb-1">{item.title}</h4>
+                    <h3 className="font-black text-white text-[13px] uppercase tracking-tight mb-1">{item.title}</h3>
                     <p className="text-zinc-500 text-[12px] font-light leading-snug">{item.desc}</p>
                   </div>
                 </div>

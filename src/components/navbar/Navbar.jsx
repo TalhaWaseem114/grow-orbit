@@ -22,7 +22,7 @@ export default function Navbar() {
   const [mobileServiceExpanded, setMobileServiceExpanded] = useState(false);
   const headerRef = useRef(null);
 
-  const lightPages = ["service", "contact", "case-study"];
+  const lightPages = ["service", "contact", "case-study", "blog"];
   const darkThemedPages = [
     "/service", // Added the main services index because it has a dark header
     "/service/full/amazon-management",
@@ -103,7 +103,7 @@ export default function Navbar() {
   const hoverColorClass = isDarkTextNeeded ? "hover:text-orange-500" : "hover:text-white";
   const logoTextClass = isDarkTextNeeded ? "text-black" : "text-white";
 
-  const navItems = ["Home", "Service", "About", "Portfolio", "Case Studies", "FAQ", "Contact"];
+  const navItems = ["Home", "Service", "About", "Portfolio", "Case Studies", "Blog", "FAQ", "Contact"];
 
   return (
     <header
@@ -150,7 +150,7 @@ export default function Navbar() {
         {/* ════════════════════════════════════════
             DESKTOP NAV
         ════════════════════════════════════════ */}
-        <nav className="hidden md:flex md:items-center md:gap-10">
+        <nav className="hidden md:flex md:items-center md:gap-6">
           {navItems.map((item) => {
             const path = item === "Home" ? "/" : item === "Case Studies" ? "/case-study" : `/${item.toLowerCase().replace(/\s+/g, "-")}`;
             const isActive = pathname === path;

@@ -13,7 +13,7 @@ import {
   CheckCircle, Circle, AlertCircle, Star,
   ExternalLink, MoreHorizontal, Activity, Calendar, Home, Download,
   LayoutGrid, List, MessageSquare, UserPlus, Flag, History,
-  Eye, EyeOff, Save, Loader2, ToggleRight,
+  Eye, EyeOff, Save, Loader2, ToggleRight, FileText, Plus, Edit3, Image,
 } from "lucide-react";
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -21,6 +21,7 @@ import Link from "next/link";
 import { app, db, auth } from "../../firebase/firebaseConfig";
 import { THEMES, DEFAULT_THEME, ALL_SECTIONS } from "@/lib/experimentConfig";
 import { fetchExperimentConfig, saveActiveTheme } from "@/lib/experimentService";
+import BlogManagerTab from "./BlogManagerTab";
 
 /* ─────────────────────────────────────────
    HELPERS
@@ -607,6 +608,8 @@ export default function AdminDashboard() {
             <SidebarItem id="leads" label="Lead Pipeline" icon={Briefcase} activeTab={activeTab} setActiveTab={setActiveTab} badge={newLeadsCount} isCollapsed={isSidebarCollapsed} />
             <SidebarItem id="users" label="User Directory" icon={Users}    activeTab={activeTab} setActiveTab={setActiveTab} badge={users.length} isCollapsed={isSidebarCollapsed} />
             <SidebarItem id="team"  label="Agency Team"   icon={Shield}   activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+            {!isSidebarCollapsed && <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>Content</div>}
+            <SidebarItem id="blog"  label="Blog Manager" icon={FileText}  activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
             {!isSidebarCollapsed && <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>System</div>}
             <SidebarItem id="cms"      label="Site Layout" icon={Layout}   activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
             <SidebarItem id="settings" label="Settings"    icon={Settings} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
@@ -1559,6 +1562,9 @@ export default function AdminDashboard() {
             </div>
           )}
 
+          {/* ── BLOG MANAGER ── */}
+          {activeTab === "blog" && <BlogManagerTab isMobile={isMobile} />}
+
           {/* ── SETTINGS PLACEHOLDER ── */}
           {activeTab === "settings" && (
             <div className="tab-content" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "60vh", gap: 16, color: "#2a2a2a" }}>
@@ -1617,6 +1623,10 @@ export default function AdminDashboard() {
             <button className={`mobile-menu-item ${activeTab === "team" ? "active" : ""}`}
               onClick={() => { setActiveTab("team"); setMobileMenuOpen(false); }}>
               <Shield size={18} /> Agency Team
+            </button>
+            <button className={`mobile-menu-item ${activeTab === "blog" ? "active" : ""}`}
+              onClick={() => { setActiveTab("blog"); setMobileMenuOpen(false); }}>
+              <FileText size={18} /> Blog Manager
             </button>
             <button className={`mobile-menu-item ${activeTab === "settings" ? "active" : ""}`}
               onClick={() => { setActiveTab("settings"); setMobileMenuOpen(false); }}>

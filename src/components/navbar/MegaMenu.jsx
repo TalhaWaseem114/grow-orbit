@@ -76,7 +76,8 @@ const headingLinks = {
 
 /* ── Reusable menu item ── */
 function MenuItem({ item, onClose, pathname }) {
-  const isActive = pathname === item.href;
+  // Normalize paths by removing trailing slashes to fix active state matching
+  const isActive = pathname.replace(/\/$/, "") === item.href.replace(/\/$/, "");
 
   return (
     <Link

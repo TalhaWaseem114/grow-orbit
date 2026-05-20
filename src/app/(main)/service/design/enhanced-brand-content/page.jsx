@@ -126,7 +126,7 @@ function EnhancedContentCTA() {
                           {step.icon}
                         </div>
                         <div className="pt-1">
-                          <h5 className={`text-[13px] font-bold mb-1.5 uppercase tracking-wide ${step.active ? 'text-orange-400' : 'textwhite'}`}>{step.title}</h5>
+                          <h5 className={`text-[13px] font-bold mb-1.5 uppercase tracking-wide ${step.active ? 'text-orange-400' : 'text-white'}`}>{step.title}</h5>
                           <p className="text-[11px] text-zinc-400 font-light leading-relaxed">{step.desc}</p>
                         </div>
                       </div>

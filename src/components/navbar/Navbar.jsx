@@ -121,14 +121,14 @@ export default function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between">
 
         {/* ── Logo ── */}
-        <Link href="/" prefetch={false} className="flex items-center gap-2.5 group no-underline shrink-0" aria-label="Grow Orbit Home">
+        <Link href="/" prefetch={false} className="flex items-center gap-2.5 no-underline shrink-0" aria-label="Grow Orbit Home">
           <div className="relative flex items-center justify-center w-10 h-10">
             <Image
               src="/logo.png"
               alt="Grow Orbit Logo"
               width={40}
               height={40}
-              className="object-contain group-hover:scale-110 transition-transform duration-300"
+              className="object-contain"
             />
           </div>
           <span className="text-xl font-black tracking-tight uppercase flex gap-1.5 transition-colors">
@@ -153,7 +153,7 @@ export default function Navbar() {
         <nav className="hidden md:flex md:items-center md:gap-6">
           {navItems.map((item) => {
             const path = item === "Home" ? "/" : item === "Case Studies" ? "/case-study" : `/${item.toLowerCase().replace(/\s+/g, "-")}`;
-            const isActive = pathname === path;
+            const isActive = pathname.replace(/\/$/, "") === path.replace(/\/$/, "") || (path === "/" && pathname === "/");
             const isService = item === "Service";
 
             if (isService) {
@@ -271,7 +271,7 @@ export default function Navbar() {
           <div className="px-4 py-5 space-y-1">
             {navItems.map((item) => {
               const path = item === "Home" ? "/" : item === "Case Studies" ? "/case-study" : `/${item.toLowerCase().replace(/\s+/g, "-")}`;
-              const isActive = pathname === path;
+              const isActive = pathname.replace(/\/$/, "") === path.replace(/\/$/, "") || (path === "/" && pathname === "/");
               const isService = item === "Service";
 
               if (isService) {

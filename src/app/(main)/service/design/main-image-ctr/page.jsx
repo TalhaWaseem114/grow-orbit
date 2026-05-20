@@ -374,7 +374,7 @@ function MainImageHero() {
                 {searchGrid.slice(0, 6).map((item, i) => (
                   <div
                     key={i}
-                    className={`aspect-square rounded-md overflow-hidden ${
+                    className={`relative aspect-square rounded-md overflow-hidden ${
                       item.yours
                         ? "ring-2 ring-orange-500 shadow-[0_4px_12px_rgba(249,115,22,0.3)]"
                         : "opacity-25 grayscale"

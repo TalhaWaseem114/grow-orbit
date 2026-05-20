@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import BlogClient from "./BlogClient";
@@ -43,5 +44,16 @@ export default async function Page() {
     console.error("Error fetching blog posts:", error);
   }
 
-  return <BlogClient initialPosts={posts} />;
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
+        <div className="animate-pulse flex flex-col items-center">
+          <div className="w-12 h-12 rounded-full border-4 border-orange-500 border-t-transparent animate-spin mb-4"></div>
+          <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">Loading Journal...</p>
+        </div>
+      </div>
+    }>
+      <BlogClient initialPosts={posts} />
+    </Suspense>
+  );
 }

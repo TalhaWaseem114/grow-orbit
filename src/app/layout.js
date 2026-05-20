@@ -52,7 +52,6 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="preload" href="/logo.png" as="image" />
       </head>
       <body className="antialiased font-sans" suppressHydrationWarning>
         <PWARegister />

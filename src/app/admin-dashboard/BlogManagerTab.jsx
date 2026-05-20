@@ -979,9 +979,9 @@ export default function BlogManagerTab({ isMobile }) {
           overflow: "hidden", color: "#18181b", alignSelf: "start",
           overflowY: "auto", flexShrink: 0, transition: "all 300ms ease-in-out",
         }}>
-          <div style={{ padding: "12px 20px", background: "#f4f4f5", borderBottom: "1px solid rgba(0,0,0,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0 }}>
-            <span style={{ fontSize: 9, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: "#71717a" }}>✨ Real-time Website Preview</span>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <div style={{ padding: "12px 20px", background: "#f4f4f5", borderBottom: "1px solid rgba(0,0,0,0.06)", display: "flex", justifyContent: "space-between", alignItems: "center", flexShrink: 0, flexWrap: "wrap", gap: 8 }}>
+            <span style={{ fontSize: 9, fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.2em", color: "#71717a", display: isMobile ? "none" : "inline" }}>✨ Real-time Website Preview</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap", flex: isMobile ? 1 : "none", justifyContent: isMobile ? "flex-end" : "flex-start" }}>
               <button
                 onClick={() => setShowSeoModal(true)}
                 title="SEO Analysis Engine"

@@ -30,6 +30,42 @@ export const metadata = {
   },
 };
 
+function BlogSkeleton() {
+  return (
+    <div className="bg-[#fafafa] min-h-screen">
+      <div className="relative pt-[90px] sm:pt-[70px] pb-16 sm:pb-24 px-6 overflow-hidden">
+         <div className="max-w-[1200px] mx-auto text-center relative z-10 animate-pulse flex flex-col items-center">
+            <div className="w-32 h-8 bg-zinc-200 rounded-full mb-12"></div>
+            <div className="w-3/4 h-24 bg-zinc-200 rounded-2xl mb-10"></div>
+            <div className="w-1/2 h-6 bg-zinc-200 rounded-full mb-12"></div>
+            <div className="w-full max-w-xl h-14 bg-zinc-200 rounded-2xl"></div>
+         </div>
+      </div>
+      <div className="max-w-[1400px] mx-auto px-6 pb-28">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="bg-white rounded-[28px] overflow-hidden border border-zinc-100 shadow-sm animate-pulse h-full flex flex-col">
+              <div className="w-full aspect-[16/10] bg-zinc-100" /> 
+              <div className="p-7 flex flex-col flex-1 space-y-4">
+                <div className="h-6 bg-zinc-100 rounded-md w-5/6" /> 
+                <div className="h-4 bg-zinc-100 rounded-md w-full" /> 
+                <div className="h-4 bg-zinc-100 rounded-md w-2/3" /> 
+                <div className="mt-auto pt-5 border-t border-zinc-100 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 bg-zinc-100 rounded-full" />
+                    <div className="w-20 h-3 bg-zinc-100 rounded-sm" />
+                  </div>
+                  <div className="w-16 h-3 bg-zinc-100 rounded-sm" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default async function Page() {
   let posts = [];
   try {
@@ -45,14 +81,7 @@ export default async function Page() {
   }
 
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
-        <div className="animate-pulse flex flex-col items-center">
-          <div className="w-12 h-12 rounded-full border-4 border-orange-500 border-t-transparent animate-spin mb-4"></div>
-          <p className="text-zinc-500 font-bold uppercase tracking-widest text-xs">Loading Journal...</p>
-        </div>
-      </div>
-    }>
+    <Suspense fallback={<BlogSkeleton />}>
       <BlogClient initialPosts={posts} />
     </Suspense>
   );

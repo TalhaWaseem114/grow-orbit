@@ -231,8 +231,27 @@ export default function FAQDedicatedPage() {
 
   const changeGroup = (id) => { setActiveGroup(id); setOpenIndex(0); };
 
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqGroups.flatMap((group) =>
+      group.items.map((item) => ({
+        "@type": "Question",
+        name: item.q,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: item.bullets.join(". ") + ". " + item.close,
+        },
+      }))
+    ),
+  };
+
   return (
     <main className="min-h-screen bg-[#fafafa]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
       <style>{`
         @keyframes fade-up { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
         .fade-up { animation: fade-up .35s ease both; }

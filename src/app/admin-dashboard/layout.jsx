@@ -1,5 +1,9 @@
 export const metadata = {
   manifest: "/manifest.json",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 export const viewport = {

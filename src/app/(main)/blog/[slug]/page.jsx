@@ -286,15 +286,23 @@ export default async function Page({ params }) {
               if (block.type === "cta") {
                 const parts = block.text.split("|");
                 if (parts.length < 2) return null;
+                const url = parts[0];
+                const btnText = parts[1];
+                const hookText = parts[2] || "";
                 return (
-                  <div key={i} className="flex justify-center my-14">
+                  <div key={i} className="flex flex-col items-center justify-center my-16 text-center">
+                    {hookText && (
+                      <p className="text-2xl sm:text-3xl font-medium text-zinc-800 mb-8 max-w-2xl leading-relaxed italic" style={serif}>
+                        {hookText}
+                      </p>
+                    )}
                     <a 
-                      href={parts[0]} 
+                      href={url} 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="inline-flex items-center justify-center bg-gradient-to-br from-orange-500 to-orange-600 text-white font-black text-sm sm:text-base uppercase tracking-widest px-8 sm:px-12 py-4 sm:py-5 rounded-full shadow-xl shadow-orange-500/20 hover:scale-105 hover:shadow-orange-500/40 transition-all duration-300"
                     >
-                      {parts[1]}
+                      {btnText}
                     </a>
                   </div>
                 );
@@ -458,30 +466,7 @@ export default async function Page({ params }) {
         </section>
       )}
 
-      {/* ── CTA ── */}
-      <section className="pb-24 text-center px-6">
-        <div className="max-w-3xl mx-auto">
-          <p className="text-orange-500 font-mono text-[9px] font-bold uppercase tracking-[0.4em] mb-6">
-            Want results like these?
-          </p>
-          <h2 className="text-[34px] sm:text-5xl font-black mb-10 tracking-tighter uppercase leading-[0.88]">
-            Let&apos;s scale your{" "}
-            <span className="italic font-light text-zinc-300" style={serif}>
-              Amazon brand.
-            </span>
-          </h2>
-          <Link
-            href="/get-started"
-            className="w-full sm:w-auto bg-zinc-900 text-white px-10 sm:px-12 py-4 sm:py-5 rounded-full font-black text-[10px] sm:text-[11px] uppercase tracking-[0.3em] hover:bg-orange-500 transition-all inline-flex items-center justify-center gap-4 shadow-2xl no-underline group"
-          >
-            Book Free Strategy Call
-            <ArrowRight
-              size={18}
-              className="group-hover:translate-x-2 transition-transform"
-            />
-          </Link>
-        </div>
-      </section>
+
     </main>
   );
 }

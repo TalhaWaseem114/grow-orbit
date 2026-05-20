@@ -7,6 +7,7 @@ import {
   TrendingUp, Zap, BookOpen,
 } from "lucide-react";
 import { useState, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { BLOG_CATEGORIES } from "@/data/blogData";
 
 const montserrat = { fontFamily: "'Montserrat', sans-serif" };
@@ -34,12 +35,13 @@ function getReadTime(post) {
 }
 
 export default function BlogClient({ initialPosts }) {
-  const [activeCategory, setActiveCategory] = useState("All");
+  const searchParams = useSearchParams();
+  const activeCategory = searchParams.get("category") || "All";
   const [searchQuery, setSearchQuery] = useState("");
 
   const filteredPosts = useMemo(() => {
     let posts = initialPosts;
-    if (activeCategory !== "All") {
+    if (activeCategory && activeCategory !== "All") {
       posts = posts.filter((p) => p.category === activeCategory);
     }
     if (searchQuery) {
@@ -184,17 +186,17 @@ export default function BlogClient({ initialPosts }) {
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-wrap gap-3">
             {BLOG_CATEGORIES.map((cat) => (
-              <button
+              <Link
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className={`px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 border cursor-pointer ${
+                href={cat === "All" ? "/blog" : `/blog?category=${encodeURIComponent(cat)}`}
+                className={`px-5 py-2.5 rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 border inline-block no-underline ${
                   activeCategory === cat
                     ? "bg-zinc-900 text-white border-zinc-900 shadow-lg"
                     : "bg-white text-zinc-500 border-zinc-200 hover:border-zinc-400 hover:text-zinc-700"
                 }`}
               >
                 {cat}
-              </button>
+              </Link>
             ))}
           </div>
         </div>

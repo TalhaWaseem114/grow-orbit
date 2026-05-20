@@ -4,7 +4,7 @@ export const metadata = {
   openGraph: {
     title: "The Minds Behind the Orbit | About Grow Orbit",
     description: "We are a full-stack Amazon growth partner engineering the visuals and managing the daily operations of 7-figure brands.",
-    url: "https://groworbit.com/about",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/about`,
     images: [
       {
         url: "/og-image.png",

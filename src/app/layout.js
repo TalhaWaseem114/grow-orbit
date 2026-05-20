@@ -30,7 +30,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://groworbit.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: "Grow Orbit",
   description: "Brand Launch. Listing Optimization. Rebrands.",
   alternates: {

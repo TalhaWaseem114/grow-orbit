@@ -13,8 +13,8 @@ export default function MainLayout({ children }) {
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "Grow Orbit",
-            "url": "https://groworbit.com",
-            "logo": "https://groworbit.com/logo.png",
+            "url": process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+            "logo": `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/logo.png`,
             "description": "Amazon Growth Agency specializing in account management, PPC efficiency, and visual engineering.",
             "sameAs": [
               "https://www.linkedin.com/company/groworbit"

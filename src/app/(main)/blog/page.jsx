@@ -10,7 +10,7 @@ export const metadata = {
   openGraph: {
     title: "E-Commerce & Amazon Growth Insights | Grow Orbit Blog",
     description: "Scale your e-commerce brand to 7+ figures. Expert insights on Amazon listing optimization, PPC, and operation scaling from Grow Orbit.",
-    url: "https://groworbit.co/blog",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/blog`,
     type: "website",
     images: [
       {

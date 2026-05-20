@@ -4,7 +4,7 @@ export const metadata = {
   openGraph: {
     title: "Amazon Growth Services | Grow Orbit",
     description: "Scale your brand with 18+ specialized Amazon services. Audit, PPC, SEO, Design, and Management.",
-    url: "https://groworbit.com/service",
+    url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/service`,
     images: [
       {
         url: "/og-image.png",
@@ -29,7 +29,7 @@ export default function ServicesLayout({ children }) {
             "provider": {
               "@type": "Organization",
               "name": "Grow Orbit",
-              "url": "https://groworbit.com"
+              "url": process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"
             },
             "areaServed": "Worldwide",
             "hasOfferCatalog": {

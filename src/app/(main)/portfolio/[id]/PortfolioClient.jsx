@@ -56,9 +56,8 @@ function Lightbox({ image, onClose }) {
    SERVICE-SPECIFIC AMAZON-STYLE LAYOUTS
    ══════════════════════════════════════════════ */
 
-/* 1 — LISTING IMAGES: vertical thumb + large main, exactly like Amazon */
+/* 1 — LISTING IMAGES: 2 images in a row */
 function ListingImagesDisplay({ details, onImageOpen }) {
-  const [active, setActive] = useState(0);
   const imgs = details.images;
   return (
     <div>
@@ -66,39 +65,18 @@ function ListingImagesDisplay({ details, onImageOpen }) {
         <div className="bg-orange-500 text-white text-[8px] font-black uppercase tracking-widest px-3 py-1 rounded-full">Listing Image Deliverables</div>
         <span className="text-zinc-400 text-[10px] font-mono">{imgs.length} images produced</span>
       </div>
-      <div className="flex gap-4">
-        {/* Vertical thumbs — left, like Amazon */}
-        <div className="hidden sm:flex flex-col gap-2.5 shrink-0">
-          {imgs.map((img, i) => (
-            <button key={i} onClick={() => setActive(i)}
-              className={`w-14 h-14 rounded-[10px] overflow-hidden border-2 transition-all shrink-0 ${active === i ? "border-orange-500 shadow-[0_0_0_2px_rgba(249,115,22,0.2)]" : "border-zinc-200 hover:border-zinc-400"}`}>
-              <img src={img.src} alt={img.label} className="w-full h-full object-cover" />
-            </button>
-          ))}
-        </div>
-        {/* Main image */}
-        <div className="flex-1 relative rounded-[20px] overflow-hidden border border-zinc-100 cursor-pointer group bg-zinc-50 aspect-square" style={{ aspectRatio: "1/1", maxHeight: "500px" }} onClick={() => onImageOpen(imgs[active])}>
-          <img src={imgs[active].src} alt={imgs[active].label} className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700" />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-          <div className="absolute top-3 right-3 bg-black/30 backdrop-blur-sm text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-            <ExternalLink size={10} /> Expand
-          </div>
-          <div className="absolute bottom-3 left-3 bg-orange-500 text-white text-[8px] font-black uppercase tracking-widest px-2.5 py-1 rounded-lg">{imgs[active].label}</div>
-        </div>
-      </div>
-      {/* Mobile horizontal strip */}
-      <div className="flex sm:hidden gap-2 mt-3 overflow-x-auto no-scrollbar pb-1">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {imgs.map((img, i) => (
-          <button key={i} onClick={() => setActive(i)} className={`shrink-0 w-12 h-12 rounded-[8px] overflow-hidden border-2 transition-all ${active === i ? "border-orange-500" : "border-zinc-200"}`}>
-            <img src={img.src} alt={img.label} className="w-full h-full object-cover" />
-          </button>
+          <div key={i} className="group relative cursor-pointer rounded-[16px] overflow-hidden border border-zinc-100 bg-zinc-50" onClick={() => onImageOpen(img)}>
+            <img src={img.src} alt={img.label} className="w-full object-cover group-hover:scale-105 transition-transform duration-500" style={{ aspectRatio: "1/1" }} />
+          </div>
         ))}
       </div>
     </div>
   );
 }
 
-/* 2 — A+ CONTENT: full-width stacked modules (hero banner + split + grid) */
+/* 2 — A+ CONTENT: full-width stacked modules */
 function APlusDisplay({ details, onImageOpen }) {
   const imgs = details.images;
   return (
@@ -112,87 +90,15 @@ function APlusDisplay({ details, onImageOpen }) {
         </div>
         <span className="text-[8px] font-black text-violet-500 uppercase tracking-widest bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">A+ Preview</span>
       </div>
-      <div className="divide-y divide-zinc-100">
-        {/* Module 1: Full-width hero banner — the most impactful A+ module */}
-        <div className="cursor-pointer group relative overflow-hidden" onClick={() => imgs[0] && onImageOpen(imgs[0])}>
-          {imgs[0]
-            ? <img src={imgs[0].src} alt={imgs[0].label} className="w-full object-cover group-hover:scale-[1.02] transition-transform duration-700" style={{ height: "260px" }} />
-            : <div className="w-full bg-gradient-to-r from-zinc-100 to-zinc-200 flex items-center justify-center" style={{ height: "260px" }}><Layers size={28} className="text-zinc-300" /></div>
-          }
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-          <div className="absolute inset-0 flex items-end p-7">
-            <div className="text-white max-w-2xl">
-              <p className="text-[8px] font-mono text-violet-300 uppercase tracking-[0.3em] mb-2">Module 01 · Full-Width Hero Banner</p>
-              <h3 className="text-xl font-black uppercase tracking-tight mb-2 leading-tight">{details.description?.split("–")[0]?.trim() || "Premium Brand Experience"}</h3>
-              <p className="text-zinc-300 text-xs font-light leading-relaxed">{details.description?.slice(0, 100)}</p>
-            </div>
-            <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-              <ExternalLink size={9} /> View full
+      <div className="flex flex-col w-full">
+        {imgs.map((img, i) => (
+          <div key={i} className="w-full cursor-pointer group relative overflow-hidden" onClick={() => onImageOpen(img)}>
+            <img src={img.src} alt={img.label} className="w-full h-auto block" />
+            <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-sm text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
+              <ExternalLink size={9} /> Expand
             </div>
           </div>
-        </div>
-
-        {/* Module 2: Image left, copy right — uses imgs[0] */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 cursor-pointer group" onClick={() => imgs[0] && onImageOpen(imgs[0])}>
-          <div className="relative overflow-hidden bg-zinc-50" style={{ minHeight: "200px" }}>
-            {imgs[0]
-              ? <img src={imgs[0].src} alt={imgs[0].label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style={{ height: "200px" }} />
-              : <div className="w-full h-44 bg-zinc-100 flex items-center justify-center"><Camera size={24} className="text-zinc-300" /></div>
-            }
-            <div className="absolute bottom-3 left-3 bg-black/40 backdrop-blur-sm text-white text-[8px] font-bold uppercase tracking-widest px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-              {imgs[0]?.label}
-            </div>
-          </div>
-          <div className="p-7 flex flex-col justify-center bg-white">
-            <p className="text-[8px] font-mono text-violet-500 uppercase tracking-widest mb-2">Module 02 · Image Left, Text Right</p>
-            <h4 className="text-base font-black uppercase tracking-tight text-zinc-900 mb-3">Key Feature Highlight</h4>
-            <p className="text-zinc-500 text-sm font-light leading-relaxed">{details.description?.slice(0, 130)}</p>
-            <div className="flex flex-wrap gap-2 mt-4">
-              {["Premium Quality", "Lab Tested", "Satisfaction Guaranteed"].map((t, i) => (
-                <span key={i} className="text-[8px] font-bold uppercase tracking-wider border border-zinc-200 text-zinc-500 px-2.5 py-1 rounded-lg">{t}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Module 3: Copy left, image right — uses imgs[1] if available, else imgs[0] */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 cursor-pointer group" onClick={() => onImageOpen(imgs[1] || imgs[0])}>
-          <div className="p-7 flex flex-col justify-center order-2 sm:order-1 bg-zinc-50">
-            <p className="text-[8px] font-mono text-violet-500 uppercase tracking-widest mb-2">Module 03 · Text Left, Image Right</p>
-            <h4 className="text-base font-black uppercase tracking-tight text-zinc-900 mb-3">Why Customers Choose Us</h4>
-            <ul className="space-y-3">
-              {["Premium materials & craftsmanship", "Scientifically validated formula", "100% satisfaction guaranteed"].map((txt, i) => (
-                <li key={i} className="flex items-center gap-3 text-zinc-600 text-sm font-light">
-                  <div className="w-5 h-5 rounded-full bg-orange-500/10 flex items-center justify-center shrink-0"><CheckCircle2 size={10} className="text-orange-500" /></div>
-                  {txt}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="relative overflow-hidden order-1 sm:order-2 bg-zinc-100" style={{ minHeight: "200px" }}>
-            {(imgs[1] || imgs[0])
-              ? <img src={(imgs[1] || imgs[0]).src} alt={(imgs[1] || imgs[0]).label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" style={{ height: "200px" }} />
-              : <div className="w-full h-44 flex items-center justify-center"><Camera size={24} className="text-zinc-300" /></div>
-            }
-            <div className="absolute bottom-3 right-3 bg-black/40 backdrop-blur-sm text-white text-[8px] font-bold uppercase tracking-widest px-2 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity">
-              {(imgs[1] || imgs[0])?.label}
-            </div>
-          </div>
-        </div>
-
-        {/* Module 4: Comparison grid */}
-        <div className="p-6">
-          <p className="text-[8px] font-mono text-violet-500 uppercase tracking-widest mb-4">Module 04 · Feature Comparison Grid</p>
-          <div className="grid grid-cols-3 gap-3">
-            {[{ icon: "★", title: "Premium Quality", val: "Certified" }, { icon: "⚡", title: "Fast Results", val: "30 Days" }, { icon: "🛡", title: "Satisfaction", val: "100%" }].map((f, i) => (
-              <div key={i} className="text-center p-4 rounded-xl bg-zinc-50 border border-zinc-100">
-                <div className="text-2xl mb-2">{f.icon}</div>
-                <p className="text-[9px] font-black uppercase tracking-tight text-zinc-900 mb-1">{f.title}</p>
-                <p className="text-orange-500 text-[12px] font-black">{f.val}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
       <div className="bg-violet-50 border-t border-violet-100 px-5 py-3 flex items-center gap-3">
         <Layers size={14} className="text-violet-500 shrink-0" />
@@ -516,8 +422,24 @@ export default function PortfolioDetailPage() {
   const heroRef    = useRef(null);
   const contentRef = useRef(null);
 
+  if (!item) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-white text-zinc-900 pt-20">
+        <div className="text-center">
+          <h1 className="text-4xl font-black uppercase mb-4">Project Not Found</h1>
+          <p className="text-zinc-500 mb-8">The portfolio project you are looking for does not exist or has been removed.</p>
+          <Link href="/portfolio" className="inline-flex items-center justify-center h-12 px-8 rounded-full bg-orange-500 text-white font-bold uppercase tracking-widest hover:bg-orange-600 transition-colors">
+            Return to Portfolio
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   // NORMALIZE SERVICE DATA: If serviceDetails is missing, synthesize from gallery
-  const normalizedServices = (item.services || []).map(svc => {
+  const normalizedServices = (item.services || [])
+    .filter(svc => svc !== "Brand Story" && svc !== "Brand Store")
+    .map(svc => {
     const details = item.serviceDetails?.[svc] || {
       description: svc === "Listing Images" ? item.solution : item.challenge,
       images: item.gallery || []
@@ -758,34 +680,6 @@ export default function PortfolioDetailPage() {
           );
         })}
 
-        {/* FULL GALLERY */}
-        <section className="py-16 bg-white border-t border-zinc-100 pdp-scroll">
-          <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-            <div className="flex items-center gap-3 mb-4"><div className="w-6 h-[2px] bg-orange-500" /><span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">Complete Deliverables</span></div>
-            <h2 className="text-2xl sm:text-3xl font-black tracking-tighter uppercase text-zinc-900 mb-8 sm:mb-10">
-              The full work <span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-300 lowercase tracking-normal">produced.</span>
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4" style={{ gridAutoRows: "200px" }}>
-              {item.gallery.map((img, i) => (
-                <div key={i}
-                  className={`group relative cursor-pointer overflow-hidden rounded-[18px] border border-zinc-100 bg-zinc-50 ${i === 0 ? "md:row-span-2" : ""}`}
-                  onClick={() => setLightboxImage(img)}
-                >
-                  <img src={img.src} alt={img.label} loading="lazy"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                    <div className="flex items-center justify-between">
-                      <span className="text-white text-[8px] font-bold uppercase tracking-widest bg-black/50 backdrop-blur-sm px-2 py-1 rounded-lg">{img.label}</span>
-                      <div className="w-7 h-7 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white"><ExternalLink size={12} /></div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* RESULTS: MISSION CONTROL */}
         <section className="bg-zinc-950 py-14 sm:py-24 relative overflow-hidden pdp-scroll">

@@ -22,7 +22,7 @@ export default function Navbar() {
   const [mobileServiceExpanded, setMobileServiceExpanded] = useState(false);
   const headerRef = useRef(null);
 
-  const lightPages = ["service", "contact", "case-study", "blog"];
+  const lightPages = ["service", "contact", "case-study", "blog", "portfolio"];
   const darkThemedPages = [
     "/service", // Added the main services index because it has a dark header
     "/service/full/amazon-management",
@@ -31,7 +31,7 @@ export default function Navbar() {
     "/case-study/li-01",
     "/case-study/li-02",
     "/case-study/li-03",
-    "portfolio"
+    "/portfolio"
   ];
 
   const isAboutPage = pathname.includes("about");
@@ -39,7 +39,7 @@ export default function Navbar() {
   // Removed the blanket startsWith("/service") check which was forcing white text on light service pages
   const isForcedDarkPage = darkThemedPages.some((path) => {
     // Exact match for the index or partial match for specific subpages
-    if (path === "/service") return pathname === "/service" || pathname === "/service/";
+    if (path === "/service" || path === "/portfolio") return pathname === path || pathname === `${path}/`;
     return pathname.includes(path);
   });
   const isDarkTextNeeded = (isSticky && !isAboutPage) || (isLightPage && !isForcedDarkPage);

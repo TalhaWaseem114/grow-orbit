@@ -220,10 +220,10 @@ function ListingImagesHero() {
                   {/* Thumbnail strip */}
                   <div className="col-span-1 flex flex-col gap-1.5">
                     {[
-                      { src: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800&auto=format&fit=crop", active: true  },
-                      { src: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=800&auto=format&fit=crop", active: false },
-                      { src: "https://images.unsplash.com/photo-1512374382149-233c42b6a83b?q=80&w=800&auto=format&fit=crop", active: false },
-                      { src: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800&auto=format&fit=crop", active: false },
+                      { src: "/assets/portfolio/lumina bites 1/main image.png", active: true  },
+                      { src: "/assets/portfolio/lumina bites 1/2.png", active: false },
+                      { src: "/assets/portfolio/lumina bites 1/3.png", active: false },
+                      { src: "/assets/portfolio/lumina bites 1/4.png", active: false },
                     ].map((thumb, i) => (
                       <div key={i} className={`aspect-square rounded-lg border-2 ${thumb.active ? "border-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.3)]" : "border-transparent"} overflow-hidden bg-white transition-all duration-300`}>
                         <img src={thumb.src} alt="Amazon Product Thumbnail Detail View" className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all" />
@@ -233,7 +233,7 @@ function ListingImagesHero() {
                   {/* Main image */}
                   <div className="col-span-4 aspect-square rounded-xl bg-white relative overflow-hidden border border-zinc-50 group/hero">
                     <img
-                      src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000&auto=format&fit=crop"
+                      src="/assets/portfolio/lumina bites 1/main image.png"
                       alt="High-Impact Amazon Listing Main Image Optimization Showcase"
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover/hero:scale-110"
                     />
@@ -403,13 +403,13 @@ function BasicToShowcase() {
   };
 
   const imageTypes = [
-    { label: "01 Hero / Main Image",       tag: "HERO",        desc: "White background, product dominant, thumbnail-tested. The first impression that determines CTR from search.", img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600&auto=format&fit=crop" },
-    { label: "02 Lifestyle Image",         tag: "LIFESTYLE",   desc: "Product in real-life context. Builds desire and emotional connection before the click.", img: "https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?q=80&w=600&auto=format&fit=crop" },
-    { label: "03 Feature Infographic",     tag: "INFOGRAPHIC", desc: "Text + visual callouts that communicate benefits without requiring shoppers to read bullet points.", img: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=600&auto=format&fit=crop" },
-    { label: "04 Comparison Shot",         tag: "COMPARISON",  desc: "Positions your product above alternatives. Answers 'why this one?' without a single word of copy.", img: "https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=600&auto=format&fit=crop" },
-    { label: "05 Dimension / Scale Image", tag: "SCALE",       desc: "Removes size anxiety. Critical for home, kitchen, apparel, and any product where size affects purchase decisions.", img: "https://images.unsplash.com/photo-1512374382149-233c42b6a83b?q=80&w=600&auto=format&fit=crop" },
-    { label: "06 How-to / Usage Image",    tag: "USAGE",       desc: "Reduces returns and increases satisfaction. Shows shoppers exactly what they're getting and how to use it.", img: "https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=600&auto=format&fit=crop" },
-    { label: "07 Social Proof / UGC-Style",tag: "TRUST",       desc: "Rating callouts, review highlights, and authentic-feeling imagery that builds confidence at the final moment.", img: "https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=600&auto=format&fit=crop" },
+    { label: "01 Hero / Main Image",       tag: "HERO",        desc: "White background, product dominant, thumbnail-tested. The first impression that determines CTR from search.", img: "/assets/portfolio/lumina bites 1/main image.png" },
+    { label: "02 Lifestyle Image",         tag: "LIFESTYLE",   desc: "Product in real-life context. Builds desire and emotional connection before the click.", img: "/assets/portfolio/lumina bites 1/6.png" },
+    { label: "03 Feature Infographic",     tag: "INFOGRAPHIC", desc: "Text + visual callouts that communicate benefits without requiring shoppers to read bullet points.", img: "/assets/portfolio/lumina bites 1/3.png" },
+    { label: "04 Comparison Shot",         tag: "COMPARISON",  desc: "Positions your product above alternatives. Answers 'why this one?' without a single word of copy.", img: "/assets/portfolio/lumina bites 1/8.png" },
+    { label: "05 Dimension / Scale Image", tag: "SCALE",       desc: "Removes size anxiety. Critical for home, kitchen, apparel, and any product where size affects purchase decisions.", img: "/assets/portfolio/lumina bites 1/4.png" },
+    { label: "06 How-to / Usage Image",    tag: "USAGE",       desc: "Reduces returns and increases satisfaction. Shows shoppers exactly what they're getting and how to use it.", img: "/assets/portfolio/lumina bites 1/5.png" },
+    { label: "07 Social Proof / UGC-Style",tag: "TRUST",       desc: "Rating callouts, review highlights, and authentic-feeling imagery that builds confidence at the final moment.", img: "/assets/portfolio/lumina bites 1/7.png" },
   ];
 
   return (
@@ -676,16 +676,16 @@ function Packages() {
 function Portfolio() {
   const examples = [
     {
-      niche: "Kitchen & Home",
-      rating: 4.8,
-      reviews: "1,204",
-      metric: { val: "+22%", label: "ATC RATE" },
-      heroImg: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=800&auto=format&fit=crop",
+      niche: "Snacks",
+      rating: 4.9,
+      reviews: "8,342",
+      metric: { val: "+80%", label: "SALES LIFT" },
+      heroImg: "/assets/portfolio/lumina bites 1/main image.png",
       thumbs: [
-        "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1556912173-3bb406ef7e77?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=200&auto=format&fit=crop"
+        "/assets/portfolio/lumina bites 1/main image.png",
+        "/assets/portfolio/lumina bites 1/2.png",
+        "/assets/portfolio/lumina bites 1/3.png",
+        "/assets/portfolio/lumina bites 1/4.png"
       ]
     },
     {

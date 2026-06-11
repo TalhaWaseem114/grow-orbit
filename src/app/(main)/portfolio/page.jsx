@@ -35,29 +35,21 @@ function PortfolioCard({ item }) {
   return (
     <Link href={`/portfolio/${item.id}`} prefetch={false} className="portfolio-card group relative will-change-[transform,opacity,filter] no-underline block">
       <div className={`relative rounded-[24px] sm:rounded-[28px] overflow-hidden flex flex-col transition-all duration-500
-        shadow-[0_10px_30px_-15px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] hover:-translate-y-1
+        shadow-[0_15px_40px_-10px_rgba(0,0,0,0.06)] hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.12)] hover:-translate-y-1
         ${item.isDark
           ? "bg-zinc-950 border border-white/[0.07]"
           : "bg-white border border-zinc-100"
         }`}
       >
         {/* Image */}
-        <div className="relative overflow-hidden aspect-video sm:aspect-[4/3]">
+        <div className={`relative overflow-hidden flex items-center justify-center ${item.category === "Listing Images" ? "aspect-square" : "aspect-video sm:aspect-[4/3]"}`}>
           <img
             src={item.src}
             alt={item.niche}
             loading="lazy"
-            className="w-full h-full block group-hover:scale-105 transition-transform duration-700 ease-out object-cover"
+            className={`w-full h-full block group-hover:scale-105 transition-transform duration-700 ease-out ${item.category === "Listing Images" ? "object-contain" : "object-cover"}`}
           />
-          {/* Badge TL */}
-          <div className="absolute top-3 left-3 bg-orange-500 text-white rounded-xl px-2.5 py-1.5 shadow-[0_10px_20px_-5px_rgba(249,115,22,0.3)] z-10 flex flex-col items-center justify-center min-w-[56px]">
-            <span className="font-black text-[11px] sm:text-[13px] leading-none block tracking-tighter">
-              {item.badge.value}
-            </span>
-            <span className="font-bold text-[6px] uppercase tracking-wider block mt-[2px] opacity-90">
-              {item.badge.label}
-            </span>
-          </div>
+
           {/* Materials tag TR */}
           <div className="absolute top-3 right-3 z-10 flex flex-col items-end gap-1.5">
             {item.materials?.map((mat, i) => (
@@ -71,7 +63,7 @@ function PortfolioCard({ item }) {
         </div>
 
         {/* Content */}
-        <div className={`p-4 sm:p-5 flex flex-col gap-2 ${item.isDark ? "" : ""}`}>
+        <div className={`p-4 sm:p-4 flex flex-col gap-1.5 ${item.isDark ? "" : ""}`}>
           {/* Outcome — the hero number */}
           <h4
             className="text-orange-500 font-black text-xl sm:text-[22px] uppercase tracking-tighter leading-none"
@@ -82,17 +74,17 @@ function PortfolioCard({ item }) {
 
           {/* Niche Subtitle */}
           <div className="flex flex-col gap-0.5">
-            <p className={`text-[10px] sm:text-[11px] font-bold uppercase tracking-widest ${item.isDark ? "text-zinc-500" : "text-zinc-400"}`}>
+            <p className={`text-[10px] sm:text-[10px] font-bold uppercase tracking-widest ${item.isDark ? "text-zinc-500" : "text-zinc-400"}`}>
               {item.niche}
             </p>
           </div>
 
           {/* Service Badges (Moved to bottom) */}
-          <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
+          <div className="flex flex-wrap gap-1 mt-auto pt-1">
             {item.services?.map((svc, i) => (
               <span
                 key={i}
-                className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.12em] px-2.5 py-1.5 rounded-lg border whitespace-nowrap
+                className={`text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.12em] px-2 py-1 rounded-lg border whitespace-nowrap
                   ${item.isDark
                     ? "border-white/[0.08] text-zinc-500 hover:text-zinc-300 hover:border-white/20"
                     : "border-zinc-200 text-zinc-400 hover:text-zinc-600 hover:border-zinc-400"

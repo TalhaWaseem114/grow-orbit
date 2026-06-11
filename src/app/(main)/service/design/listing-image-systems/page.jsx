@@ -689,31 +689,70 @@ function Portfolio() {
       ]
     },
     {
-      niche: "Pet Products",
-      rating: 4.9,
-      reviews: "3,412",
-      metric: { val: "+31%", label: "CONVERSION" },
-      heroImg: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=800&auto=format&fit=crop",
+      niche: "EDC Gear",
+      rating: 4.8,
+      reviews: "1,245",
+      metric: { val: "+65%", label: "CVR LIFT" },
+      heroImg: "/assets/portfolio/nexa pouches/main image.png",
       thumbs: [
-        "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=200&auto=format&fit=crop"
+        "/assets/portfolio/nexa pouches/main image.png",
+        "/assets/portfolio/nexa pouches/2.png",
+        "/assets/portfolio/nexa pouches/3.png",
+        "/assets/portfolio/nexa pouches/4.png"
       ]
     },
     {
-      niche: "Beauty & Skincare",
-      rating: 4.7,
-      reviews: "2,847",
-      metric: { val: "+2.5x", label: "TIME ON PAGE" },
-      heroImg: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=800&auto=format&fit=crop",
+      niche: "Home & Auto",
+      rating: 4.9,
+      reviews: "4,102",
+      metric: { val: "+90%", label: "SALES LIFT" },
+      heroImg: "/assets/portfolio/kazvo vacume cleaner/main image.png",
       thumbs: [
-        "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=200&auto=format&fit=crop"
+        "/assets/portfolio/kazvo vacume cleaner/main image.png",
+        "/assets/portfolio/kazvo vacume cleaner/2.png",
+        "/assets/portfolio/kazvo vacume cleaner/3.png",
+        "/assets/portfolio/kazvo vacume cleaner/4.png"
       ]
     },
+    {
+      niche: "Automotive",
+      rating: 4.8,
+      reviews: "1,523",
+      metric: { val: "+105%", label: "SALES LIFT" },
+      heroImg: "/assets/portfolio/kazvo tire inflator/main image.png",
+      thumbs: [
+        "/assets/portfolio/kazvo tire inflator/main image.png",
+        "/assets/portfolio/kazvo tire inflator/2.png",
+        "/assets/portfolio/kazvo tire inflator/3.png",
+        "/assets/portfolio/kazvo tire inflator/4.png"
+      ]
+    },
+    {
+      niche: "DIY & Tools",
+      rating: 4.9,
+      reviews: "842",
+      metric: { val: "+75%", label: "SALES LIFT" },
+      heroImg: "/assets/portfolio/kazvo screw set 78/main image.png",
+      thumbs: [
+        "/assets/portfolio/kazvo screw set 78/main image.png",
+        "/assets/portfolio/kazvo screw set 78/2.png",
+        "/assets/portfolio/kazvo screw set 78/3.png",
+        "/assets/portfolio/kazvo screw set 78/4.png"
+      ]
+    },
+    {
+      niche: "Health & Supplements",
+      rating: 4.8,
+      reviews: "2,104",
+      metric: { val: "+130%", label: "SALES LIFT" },
+      heroImg: "/assets/portfolio/core vitality suppliments/main image.png",
+      thumbs: [
+        "/assets/portfolio/core vitality suppliments/main image.png",
+        "/assets/portfolio/core vitality suppliments/2.png",
+        "/assets/portfolio/core vitality suppliments/3.png",
+        "/assets/portfolio/core vitality suppliments/4.png"
+      ]
+    }
   ];
 
   return (
@@ -751,18 +790,18 @@ function Portfolio() {
                  {/* Left Thumbs Column */}
                  <div className="w-[20%] flex flex-col gap-2 shrink-0">
                    {ex.thumbs.map((t, idx) => (
-                     <div key={idx} className={`aspect-square rounded-2xl overflow-hidden border-[3px] transition-colors duration-300 ${idx === 0 ? "border-orange-500" : "border-transparent"}`}>
-                       <img src={t} alt="Portfolio Thumbnail Showcase" className={`w-full h-full object-cover rounded-xl ${idx !== 0 && "group-hover:grayscale-0 grayscale-[20%]"}`} />
+                     <div key={idx} className={`bg-white aspect-square rounded-2xl overflow-hidden border-[3px] transition-colors duration-300 ${idx === 0 ? "border-orange-500" : "border-transparent"}`}>
+                       <img src={t} alt="Portfolio Thumbnail Showcase" className={`w-full h-full object-contain p-1 rounded-xl ${idx !== 0 && "group-hover:grayscale-0 grayscale-[20%]"}`} />
                      </div>
                    ))}
                  </div>
 
                  {/* Main Listing Viewport (approx 1:1) */}
-                 <div className="flex-1 aspect-square rounded-2xl overflow-hidden relative bg-zinc-50 border border-zinc-100/50">
+                 <div className="flex-1 aspect-square rounded-2xl overflow-hidden relative bg-white border border-zinc-100/50 flex items-center justify-center">
                     <img
                       src={ex.heroImg}
                       alt={ex.niche}
-                      className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105"
+                      className="w-full h-full object-contain p-4 transition-transform duration-[3s] group-hover:scale-105"
                     />
 
                     {/* Enhanced Hover Overlay (Centered Premium Indicator) */}

@@ -344,10 +344,10 @@ function EBCHero() {
 
               {/* ── CARD 1: Content Module Architect (Dark) ── */}
               <div className="relative z-10 bg-[#0a0a0a] rounded-[28px] border border-white/[0.08] shadow-[0_40px_80px_rgba(0,0,0,0.3)] overflow-hidden">
-                
+
                 {/* Subtle grid overlay */}
                 <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, rgba(249,115,22,0.4) 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-                
+
                 {/* App Header Bar */}
                 <div className="relative z-10 px-5 py-3.5 border-b border-white/5 flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -459,7 +459,7 @@ function EBCHero() {
 
               {/* ── CARD 2: Live Impact Dashboard (Light, Overlapping) ── */}
               <div className="relative z-20 -mt-10 ml-6 mr-2 bg-white/95 rounded-[24px] shadow-[0_30px_60px_-10px_rgba(0,0,0,0.12)] border border-zinc-100 overflow-hidden" style={{ backdropFilter: "blur(20px)" }}>
-                
+
                 {/* Dashboard Header */}
                 <div className="px-5 py-3 border-b border-zinc-100 bg-zinc-50/50 flex items-center justify-between">
                   <div className="flex items-center gap-2.5">
@@ -1021,42 +1021,54 @@ function Portfolio() {
   const examples = [
     {
       id: "EB-01",
-      niche: "Health & Supplements",
+      niche: "EDC Gear",
       images: [
-        "https://images.unsplash.com/photo-1579722820308-d74e571900a9?q=80&w=600&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1550572017-edd951b55104?q=80&w=400&auto=format&fit=crop"
+        "/assets/portfolio/nexa pouches/aplus-1.png",
+        "/assets/portfolio/nexa pouches/aplus-2.png",
+        "/assets/portfolio/nexa pouches/aplus-3.png"
       ],
-      stats: ["+38% CTR", "+114% Lift"],
-      tags: ["Ingredient Breakdown", "Comparison"],
-      accent: "bg-emerald-600",
-      metric: { val: "+114%", label: "SALES LIFT", icon: <TrendingUp size={10} /> }
+      stats: ["+65% CVR", "3.2x ROAS"],
+      tags: ["Lifestyle Imagery", "Feature Breakdown"],
+      accent: "bg-orange-600",
+      metric: { val: "3.2X", label: "ROAS LIFT", icon: <TrendingUp size={10} /> }
     },
     {
       id: "EB-02",
-      niche: "Home & Kitchen",
+      niche: "Home & Auto",
       images: [
-        "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=600&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=400&auto=format&fit=crop"
+        "/assets/portfolio/kazvo vacume cleaner/aplus-1.png",
+        "/assets/portfolio/kazvo vacume cleaner/aplus-2.png",
+        "/assets/portfolio/kazvo vacume cleaner/aplus-3.png",
+        "/assets/portfolio/kazvo vacume cleaner/aplus-4.png",
+        "/assets/portfolio/kazvo vacume cleaner/aplus-5.png",
+        "/assets/portfolio/kazvo vacume cleaner/aplus-6.png",
+        "/assets/portfolio/kazvo vacume cleaner/aplus-7.png",
+        "/assets/portfolio/kazvo vacume cleaner/aplus-8.png"
       ],
-      stats: ["+52% CTR", "Rank #1"],
-      tags: ["Feature Grid", "Scale Shot"],
-      accent: "bg-orange-500",
-      metric: { val: "+52%", label: "CTR GROWTH", icon: <TrendingUp size={10} /> }
+      stats: ["+90% Sales", "4.5x ROAS"],
+      tags: ["High-Tech Infographics", "Cinematic Dark"],
+      accent: "bg-orange-600",
+      metric: { val: "4.5X", label: "ROAS LIFT", icon: <TrendingUp size={10} /> }
     },
     {
       id: "EB-03",
-      niche: "Beauty & Skincare",
+      niche: "Automotive",
       images: [
-        "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=600&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1590439472302-39ed2c7974da?q=80&w=400&auto=format&fit=crop"
+        "/assets/portfolio/kazvo tire inflator/aplus-1.png",
+        "/assets/portfolio/kazvo tire inflator/aplus-2.png",
+        "/assets/portfolio/kazvo tire inflator/aplus-3.png",
+        "/assets/portfolio/kazvo tire inflator/aplus-4.png",
+        "/assets/portfolio/kazvo tire inflator/aplus-5.png",
+        "/assets/portfolio/kazvo tire inflator/aplus-6.png",
+        "/assets/portfolio/kazvo tire inflator/aplus-7.png",
+        "/assets/portfolio/kazvo tire inflator/aplus-8.png",
+        "/assets/portfolio/kazvo tire inflator/aplus-9.png",
+        "/assets/portfolio/kazvo tire inflator/aplus-10.png"
       ],
-      stats: ["+25% CVR", "Top 100"],
-      tags: ["Before/After", "Ingredients"],
-      accent: "bg-rose-500",
-      metric: { val: "+25%", label: "CVR LIFT", icon: <Activity size={10} /> }
+      stats: ["+105% Sales", "3.8x ROAS"],
+      tags: ["Cinematic Dark", "Feature Callouts"],
+      accent: "bg-orange-500",
+      metric: { val: "3.8X", label: "ROAS LIFT", icon: <TrendingUp size={10} /> }
     },
   ];
 
@@ -1084,57 +1096,32 @@ function Portfolio() {
               href="/portfolio?filter=ebc"
               className="group relative rounded-[32px] overflow-hidden border border-zinc-100 bg-zinc-950 hover:border-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/5 transition-all duration-700 no-underline block"
             >
-              {/* Image stack layout - Mimicking A+ Content stacked vertical modules with 3D depth */}
-              <div className="aspect-[16/10] relative overflow-hidden flex flex-col gap-1 p-3 bg-[#0a0a0a] group-hover:bg-[#050505] transition-colors duration-700" style={{ perspective: "1500px" }}>
-                {/* 01: Hero Module */}
-                <div className="flex-[1.5] relative rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 transform group-hover:translate-z-10 transition-all duration-700">
-                  <img src={ex.images[0]} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
-
-                  {/* Internal Branding */}
-                  <div className="absolute inset-x-0 bottom-0 p-3 flex justify-between items-end">
-                    <div className="px-2 py-1 rounded-lg bg-white/5 backdrop-blur-md border border-white/10">
-                      <span className="text-[6px] font-mono text-zinc-500 uppercase tracking-[0.2em] leading-none block mb-1">REFERENCE</span>
-                      <span className="text-[8px] font-black text-white/90 uppercase tracking-widest leading-none">{ex.id}</span>
-                    </div>
+              {/* Header with Badges */}
+              <div className="px-4 py-3 border-b border-white/5 bg-zinc-950 flex justify-between items-center">
+                <div className="flex flex-wrap items-center gap-2">
+                  <div className="px-2 py-1 rounded bg-orange-500/5 border border-orange-500/10">
+                    <span className="text-[8px] font-semibold text-orange-500/80 uppercase tracking-widest leading-none block">A+ Content</span>
+                  </div>
+                  <div className="px-2 py-1 rounded bg-white/[0.02] border border-white/5 hidden sm:block">
+                    <span className="text-[8px] font-medium text-zinc-500 uppercase tracking-widest leading-none block">Ref: {ex.id}</span>
                   </div>
                 </div>
-
-                {/* 02: Feature Icons Module */}
-                <div className="flex-1 relative rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.4)] border border-white/5 transform group-hover:translate-z-5 transition-all duration-700 delay-75">
-                  <div className="absolute inset-0 grid grid-cols-3 gap-1 bg-[#111]">
-                    {[0, 1, 2].map((j) => (
-                      <div key={j} className="relative overflow-hidden group/thumb">
-                        <img src={ex.images[1]} alt="" className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" />
-                        <div className="absolute inset-0 bg-orange-500/10 opacity-40" />
-                      </div>
-                    ))}
+                <div className="flex items-center gap-2.5">
+                  <div className={`w-6 h-6 rounded-md flex items-center justify-center text-white/90 ${ex.accent} shrink-0`}>
+                    {ex.metric.icon}
+                  </div>
+                  <div className="text-right">
+                    <span className="text-white/90 font-bold text-xs tracking-tight leading-none block">{ex.metric.val}</span>
+                    <span className="text-zinc-500 text-[7px] font-semibold uppercase tracking-widest leading-none block mt-0.5">{ex.metric.label}</span>
                   </div>
                 </div>
+              </div>
 
-                {/* 03: Comparison Module */}
-                <div className="flex-1 relative rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.4)] border border-white/5 transform group-hover:translate-z-2 transition-all duration-700 delay-150">
-                   <img src={ex.images[2]} alt="" className="w-full h-full object-cover opacity-80" />
-                   <div className="absolute bottom-2 right-2 flex gap-1">
-                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                      <div className="w-1.5 h-1.5 rounded-full bg-zinc-800" />
-                      <div className="w-1.5 h-1.5 rounded-full bg-zinc-800" />
-                   </div>
-                </div>
-
-                {/* Performance Pill Badge */}
-                <div className="absolute top-5 right-5 z-40">
-                  <div className="bg-[#111111]/90 backdrop-blur-xl border border-white/10 rounded-2xl px-3 py-2.5 shadow-[0_15px_30px_rgba(0,0,0,0.3)] flex items-center gap-3 transform group-hover:scale-105 group-hover:border-orange-500/50 transition-all duration-500">
-                    <div className={`w-8 h-8 rounded-lg ${ex.accent} flex items-center justify-center text-white shadow-inner`}>
-                      {ex.metric.icon}
-                    </div>
-                    <div>
-                      <span className="text-white font-black text-sm tracking-tighter leading-none block mb-0.5">{ex.metric.val}</span>
-                      <span className="text-zinc-500 text-[8px] font-bold uppercase tracking-widest leading-none block">{ex.metric.label}</span>
-                    </div>
-                  </div>
-                </div>
-
+              {/* Image stack layout - Full uncropped view */}
+              <div className="relative overflow-hidden flex flex-col gap-0 bg-[#0a0a0a] group-hover:bg-[#050505] transition-colors duration-700 h-[400px] overflow-y-auto no-scrollbar">
+                <img src={ex.images[0]} alt="" className="w-full h-auto block" />
+                <img src={ex.images[1]} alt="" className="w-full h-auto block" />
+                <img src={ex.images[2]} alt="" className="w-full h-auto block" />
               </div>
 
               {/* Card info */}

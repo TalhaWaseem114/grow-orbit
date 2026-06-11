@@ -67,8 +67,8 @@ function ListingImagesDisplay({ details, onImageOpen }) {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {imgs.map((img, i) => (
-          <div key={i} className="group relative cursor-pointer rounded-[16px] overflow-hidden border border-zinc-100 bg-zinc-50" onClick={() => onImageOpen(img)}>
-            <img src={img.src} alt={img.label} className="w-full object-cover group-hover:scale-105 transition-transform duration-500" style={{ aspectRatio: "1/1" }} />
+          <div key={i} className="group relative cursor-pointer rounded-[16px] overflow-hidden border border-zinc-100 bg-white" onClick={() => onImageOpen(img)}>
+            <img src={img.src} alt={img.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" style={{ aspectRatio: "1/1" }} />
           </div>
         ))}
       </div>
@@ -289,9 +289,11 @@ function BrandStoreDisplay({ details, onImageOpen }) {
             </div>
             <div className="p-5 grid grid-cols-2 sm:grid-cols-3 gap-3">
                {imgs.slice(0, 3).map((img, i) => (
-                 <div key={i} className="group cursor-pointer bg-white rounded-xl border border-zinc-200 overflow-hidden hover:shadow-md transition-all" onClick={() => onImageOpen(img)}>
-                   <img src={img.src} alt={img.label} className="w-full object-cover group-hover:scale-105 transition-transform duration-500" style={{ aspectRatio: "1/1" }} />
-                   <div className="p-2.5"><p className="text-[9px] font-bold uppercase tracking-wide text-zinc-700 truncate">{img.label}</p><p className="text-orange-500 text-[8px] font-black mt-0.5">View Product →</p></div>
+                 <div key={i} className="group cursor-pointer bg-white rounded-xl border border-zinc-200 overflow-hidden hover:shadow-md transition-all flex flex-col" onClick={() => onImageOpen(img)}>
+                   <div className="w-full bg-white relative" style={{ aspectRatio: "1/1" }}>
+                     <img src={img.src} alt={img.label} className="absolute inset-0 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                   </div>
+                   <div className="p-2.5 bg-white border-t border-zinc-100"><p className="text-[9px] font-bold uppercase tracking-wide text-zinc-700 truncate">{img.label}</p><p className="text-orange-500 text-[8px] font-black mt-0.5">View Product →</p></div>
                  </div>
                ))}
             </div>
@@ -335,11 +337,11 @@ function MainImageCTRDisplay({ details, onImageOpen }) {
           {/* BEFORE */}
           <div className="p-5">
             <div className="flex items-center gap-2 mb-3"><div className="w-2 h-2 rounded-full bg-red-400" /><span className="text-[9px] font-black uppercase tracking-widest text-red-500">Before · Original</span></div>
-            <div className="relative bg-zinc-100 rounded-xl overflow-hidden cursor-pointer group border-2 border-red-200 mb-3 aspect-square" style={{ aspectRatio: "1/1" }} onClick={() => before && onImageOpen(before)}>
+            <div className="relative bg-white rounded-xl overflow-hidden cursor-pointer group border-2 border-red-200 mb-3 aspect-square" style={{ aspectRatio: "1/1" }} onClick={() => before && onImageOpen(before)}>
               {before
-                ? <img src={before.src} alt="Original" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                ? <img src={before.src} alt="Original" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                 : <div className="flex items-center justify-center w-full h-full bg-zinc-200"><Camera size={24} className="text-zinc-400" /></div>}
-              <div className="absolute inset-0 bg-red-500/10" />
+              <div className="absolute inset-0 bg-red-500/10 pointer-events-none" />
             </div>
             <div className="bg-red-50 rounded-xl p-3 border border-red-100">
               <p className="text-[8px] font-mono text-red-400 uppercase tracking-widest mb-1">Search CTR</p>
@@ -350,11 +352,11 @@ function MainImageCTRDisplay({ details, onImageOpen }) {
           {/* AFTER */}
           <div className="p-5">
             <div className="flex items-center gap-2 mb-3"><div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /><span className="text-[9px] font-black uppercase tracking-widest text-emerald-600">After · Optimised</span></div>
-            <div className="relative bg-zinc-100 rounded-xl overflow-hidden cursor-pointer group border-2 border-orange-400 mb-3 aspect-square" style={{ aspectRatio: "1/1" }} onClick={() => after && onImageOpen(after)}>
+            <div className="relative bg-white rounded-xl overflow-hidden cursor-pointer group border-2 border-orange-400 mb-3 aspect-square" style={{ aspectRatio: "1/1" }} onClick={() => after && onImageOpen(after)}>
               {after
-                ? <img src={after.src} alt="Optimised" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                ? <img src={after.src} alt="Optimised" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                 : <div className="flex items-center justify-center w-full h-full bg-zinc-200"><Camera size={24} className="text-zinc-400" /></div>}
-              <div className="absolute top-2 right-2 bg-orange-500 text-white text-[7px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full">Winner</div>
+              <div className="absolute top-2 right-2 bg-orange-500 text-white text-[7px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full pointer-events-none">Winner</div>
             </div>
             <div className="bg-emerald-50 rounded-xl p-3 border border-emerald-100">
               <p className="text-[8px] font-mono text-emerald-500 uppercase tracking-widest mb-1">Search CTR</p>
@@ -371,8 +373,8 @@ function MainImageCTRDisplay({ details, onImageOpen }) {
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
             {imgs.map((img, i) => (
               <div key={i} className="shrink-0 group cursor-pointer" onClick={() => onImageOpen(img)}>
-                <div className={`w-20 h-20 rounded-xl overflow-hidden border-2 mb-1.5 ${i === 0 ? "border-orange-500" : "border-zinc-200"}`}>
-                  <img src={img.src} alt={img.label} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                <div className={`w-20 h-20 bg-white rounded-xl overflow-hidden border-2 mb-1.5 ${i === 0 ? "border-orange-500" : "border-zinc-200"}`}>
+                  <img src={img.src} alt={img.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform" />
                 </div>
                 <p className="text-[7px] font-mono text-center text-zinc-400 uppercase w-20 truncate">{i === 0 ? "Winner" : `V${i + 1}`}</p>
               </div>
@@ -400,8 +402,8 @@ function ServiceDisplay({ svc, details, onImageOpen }) {
       return (
         <div className="grid grid-cols-2 gap-4">
           {details.images.map((img, i) => (
-            <div key={i} className="group relative cursor-pointer rounded-[16px] overflow-hidden border border-zinc-100 bg-zinc-50" onClick={() => onImageOpen(img)}>
-              <img src={img.src} alt={img.label} className="w-full object-cover group-hover:scale-105 transition-transform duration-500" style={{ aspectRatio: "1/1" }} />
+            <div key={i} className="group relative cursor-pointer rounded-[16px] overflow-hidden border border-zinc-100 bg-white" onClick={() => onImageOpen(img)}>
+              <img src={img.src} alt={img.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" style={{ aspectRatio: "1/1" }} />
             </div>
           ))}
         </div>
@@ -520,14 +522,14 @@ export default function PortfolioDetailPage() {
             <div className="lg:col-span-6 pdp-in relative">
               <div className="sticky top-[100px]">
               <div
-                className="relative rounded-[24px] overflow-hidden bg-zinc-100 border border-zinc-100 mb-4 cursor-pointer group aspect-square"
+                className="relative rounded-[24px] overflow-hidden bg-white border border-zinc-100 mb-4 cursor-pointer group aspect-square flex items-center justify-center"
                 style={{ aspectRatio: "1/1", maxHeight: "600px" }}
                 onClick={() => setLightboxImage(activeGalleryImg || heroGallery[0])}
               >
                 <img
                   src={activeGalleryImg?.src || item.src}
                   alt={activeGalleryImg?.label || item.brandName}
-                  className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700"
+                  className="w-full h-full object-contain group-hover:scale-[1.02] transition-transform duration-700"
                 />
                 <div className="absolute top-4 right-4 bg-black/30 backdrop-blur-sm text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity"><ExternalLink size={10} /> Expand</div>
                 <div className="absolute top-4 left-4 flex items-center gap-2">
@@ -541,10 +543,10 @@ export default function PortfolioDetailPage() {
               <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2">
                 {heroGallery.map((img, i) => (
                   <button key={i} onClick={() => setActiveGalleryImg(img)}
-                    className={`shrink-0 relative rounded-[12px] overflow-hidden border-2 transition-all duration-300
+                    className={`shrink-0 relative rounded-[12px] overflow-hidden border-2 transition-all duration-300 bg-white
                       ${(activeGalleryImg?.src || heroGallery[0]?.src) === img.src ? "border-orange-500 shadow-[0_0_0_2px_rgba(249,115,22,0.2)]" : "border-zinc-200 hover:border-zinc-400"}`}>
-                    <img src={img.src} alt={img.label} className="object-cover w-16 h-12 sm:w-20 sm:h-14" />
-                    {(activeGalleryImg?.src || heroGallery[0]?.src) === img.src && <div className="absolute inset-0 bg-orange-500/10" />}
+                    <img src={img.src} alt={img.label} className="object-contain w-16 h-12 sm:w-20 sm:h-14" />
+                    {(activeGalleryImg?.src || heroGallery[0]?.src) === img.src && <div className="absolute inset-0 bg-orange-500/10 pointer-events-none" />}
                   </button>
                 ))}
               </div>
@@ -819,15 +821,12 @@ export default function PortfolioDetailPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {related.map(rel => (
                 <Link key={rel.id} href={`/portfolio/${rel.id}`} className="group no-underline block">
-                  <div className={`rounded-[24px] overflow-hidden border transition-all duration-500 shadow-[0_15px_45px_-15px_rgba(0,0,0,0.09)] hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] hover:-translate-y-1 ${rel.isDark ? "bg-zinc-950 border-white/[0.07]" : "bg-white border-zinc-100"}`}>
-                    <div className="relative overflow-hidden" style={{ height: "200px" }}>
-                      <img src={rel.src} alt={rel.brandName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                      <div className="absolute top-3 left-3 bg-orange-500 text-white rounded-xl px-2.5 py-1.5 shadow-lg z-10 flex flex-col items-center min-w-[50px]">
-                        <span className="font-black text-[11px] leading-none">{rel.badge.value}</span>
-                        <span className="font-bold text-[6px] uppercase tracking-wider mt-[2px] opacity-90">{rel.badge.label}</span>
-                      </div>
+                  <div className={`rounded-[24px] overflow-hidden border transition-all duration-500 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] hover:-translate-y-1 ${rel.isDark ? "bg-zinc-950 border-white/[0.07]" : "bg-white border-zinc-100"}`}>
+                    <div className={`relative overflow-hidden flex items-center justify-center ${rel.category === "Listing Images" ? "aspect-square" : "aspect-video sm:aspect-[4/3]"}`}>
+                      <img src={rel.src} alt={rel.brandName} className={`w-full h-full block group-hover:scale-105 transition-transform duration-700 ease-out ${rel.category === "Listing Images" ? "object-contain" : "object-cover"}`} />
+
                     </div>
-                    <div className="p-5"><h4 className="text-orange-500 font-black text-xl uppercase tracking-tighter leading-none mb-1">{rel.outcome}</h4><p className={`text-[11px] font-black uppercase tracking-widest mb-0.5 ${rel.isDark ? "text-zinc-400" : "text-zinc-600"}`}>{rel.brandName}</p><p className={`text-[10px] font-bold uppercase tracking-widest ${rel.isDark ? "text-zinc-600" : "text-zinc-400"}`}>{rel.niche}</p></div>
+                    <div className="p-4"><h4 className="text-orange-500 font-black text-xl uppercase tracking-tighter leading-none mb-1">{rel.outcome}</h4><p className={`text-[10px] font-black uppercase tracking-widest mb-0.5 ${rel.isDark ? "text-zinc-400" : "text-zinc-600"}`}>{rel.brandName}</p><p className={`text-[9px] font-bold uppercase tracking-widest ${rel.isDark ? "text-zinc-600" : "text-zinc-400"}`}>{rel.niche}</p></div>
                   </div>
                 </Link>
               ))}

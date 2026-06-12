@@ -89,10 +89,11 @@ export default function Footer() {
   if (pathname === "/thank-you") return null;
 
   return (
-    <footer
-      className="bg-[#0A0A0B] text-white pt-24 pb-12 px-6 md:px-12 rounded-t-[60px] relative overflow-hidden"
-      style={{ fontFamily: "'Montserrat', sans-serif" }}
-    >
+    <div className="px-3 pb-3 md:px-6 md:pb-6 mt-10 md:mt-20">
+      <footer
+        className="bg-[#0A0A0B] text-white pt-24 pb-12 px-6 md:px-12 rounded-[40px] md:rounded-[60px] relative overflow-hidden shadow-[0_40px_100px_-10px_rgba(0,0,0,0.5)]"
+        style={{ fontFamily: "'Montserrat', sans-serif" }}
+      >
       {/* ── Orbit ring bg decoration ── */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden opacity-20">
         <svg
@@ -121,12 +122,27 @@ export default function Footer() {
       <div className="absolute -bottom-24 -right-24 w-[600px] h-[600px] bg-orange-500/8 rounded-full blur-[160px] pointer-events-none z-0" />
       <div className="absolute top-1/3 -left-20 w-[400px] h-[400px] bg-indigo-500/4 rounded-full blur-[120px] pointer-events-none z-0" />
 
+      {/* ── Gradient Collision Cuts (Bottom Center Bloom) ── */}
+      <div className="absolute inset-0 pointer-events-none z-0 hidden lg:block">
+        {/* Top Left Quadrant */}
+        <div className="absolute top-0 left-0 w-[55%] bg-[#0A0A0B] bg-gradient-to-br from-white/[0.05] to-transparent" style={{ bottom: '700px' }} />
+        
+        {/* Top Right Quadrant */}
+        <div className="absolute top-0 right-0 w-[45%] bg-[#040404] bg-gradient-to-bl from-white/[0.02] to-transparent" style={{ bottom: '700px' }} />
+        
+        {/* Bottom Left Quadrant (Gradient from bottom-right towards top-left) */}
+        <div className="absolute bottom-0 left-0 w-[55%] h-[700px] bg-[#050505] bg-gradient-to-tl from-white/[0.04] to-transparent" />
+        
+        {/* Bottom Right Quadrant (Gradient from bottom-left towards top-right) */}
+        <div className="absolute bottom-0 right-0 w-[45%] h-[700px] bg-[#000000] bg-gradient-to-tr from-white/[0.02] to-transparent" />
+      </div>
+
       <div className="max-w-[1400px] mx-auto relative z-10">
 
         {/* ══════════════════════════════════════
             TOP SECTION: Headline + Form
         ══════════════════════════════════════ */}
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-16 lg:gap-20 pb-20 border-b border-white/8">
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-16 lg:gap-20 pb-20">
 
           {/* Left — headline + info */}
           <div className="lg:w-1/2 pt-6">
@@ -339,7 +355,7 @@ export default function Footer() {
         {/* ══════════════════════════════════════
             MIDDLE: Services quick-links
         ══════════════════════════════════════ */}
-        <div className="py-14 border-b border-white/8">
+        <div className="py-14">
           <div className="flex flex-col md:flex-row gap-10">
             {/* Label */}
             <div className="md:w-48 shrink-0">
@@ -368,9 +384,21 @@ export default function Footer() {
         </div>
 
         {/* ══════════════════════════════════════
+            GIANT WATERMARK TEXT
+        ══════════════════════════════════════ */}
+        <div className="w-full flex justify-center items-center py-12 md:py-16 border-t border-b border-white/5 my-8 select-none overflow-hidden relative z-10">
+          <h2 
+            className="font-black uppercase text-white/[0.08] leading-none whitespace-nowrap tracking-tighter" 
+            style={{ fontSize: "clamp(3rem, 13vw, 15rem)", fontFamily: "'Montserrat', sans-serif" }}
+          >
+            GROW ORBIT
+          </h2>
+        </div>
+
+        {/* ══════════════════════════════════════
             BOTTOM BAR
         ══════════════════════════════════════ */}
-        <div className="pt-10 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="relative z-10 pt-4 flex flex-col md:flex-row justify-between items-center gap-8">
 
           {/* Logo */}
           <Link href="/" aria-label="Grow Orbit Home" className="flex items-center gap-3 group no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl">
@@ -414,6 +442,7 @@ export default function Footer() {
         </div>
 
       </div>
-    </footer>
+      </footer>
+    </div>
   );
 }

@@ -42,12 +42,12 @@ function PortfolioCard({ item }) {
         }`}
       >
         {/* Image */}
-        <div className={`relative overflow-hidden flex items-center justify-center ${item.category === "Listing Images" ? "aspect-square" : "aspect-video sm:aspect-[4/3]"}`}>
+        <div className="relative w-full overflow-hidden bg-zinc-100/50 flex items-center justify-center aspect-square">
           <img
             src={item.src}
             alt={item.niche}
             loading="lazy"
-            className={`w-full h-full block group-hover:scale-105 transition-transform duration-700 ease-out ${item.category === "Listing Images" ? "object-contain" : "object-cover"}`}
+            className="w-full h-full block group-hover:scale-105 transition-transform duration-700 ease-out object-contain"
           />
 
           {/* Materials tag TR */}

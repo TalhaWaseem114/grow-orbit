@@ -78,13 +78,13 @@ export default function OrbitPortfolioSection() {
         <div className={`group relative rounded-[20px] sm:rounded-[28px] border border-zinc-100 overflow-hidden flex flex-col shadow-[0_10px_30px_rgba(0,0,0,0.03)] hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.08)] transition-all duration-500 scale-[0.99] hover:scale-100 ${isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-950"}`}>
 
           {/* IMAGE CONTAINER */}
-          <div className="relative w-full overflow-hidden bg-zinc-100 aspect-[4/3]">
+          <div className="relative w-full overflow-hidden bg-zinc-100 aspect-square">
             <img
               src={item.src}
               alt={item.brandName}
               loading="lazy"
               decoding="async"
-              className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-700 ease-in-out"
+              className="w-full h-full object-contain transform scale-100 group-hover:scale-105 transition-transform duration-700 ease-in-out"
             />
 
             {/* Materials tag TR */}
@@ -96,11 +96,7 @@ export default function OrbitPortfolioSection() {
               ))}
             </div>
 
-            {/* Badge TL */}
-            <div className="absolute top-2.5 left-2.5 bg-orange-500 text-white rounded-lg sm:rounded-xl px-2 sm:px-2.5 py-1 sm:py-1.5 shadow-lg z-10 flex flex-col items-center justify-center min-w-[48px] sm:min-w-[56px]">
-              <span className="font-black text-[9px] sm:text-[13px] leading-none block tracking-tighter">{item.badgeValue}</span>
-              <span className="font-bold text-[5px] sm:text-[6px] uppercase tracking-wider block mt-[2px] opacity-90">{item.badgeLabel}</span>
-            </div>
+
 
             <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/20 to-transparent" />
           </div>

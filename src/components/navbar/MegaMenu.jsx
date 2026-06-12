@@ -31,6 +31,7 @@ import { usePathname } from "next/navigation";
 
 /* ── Column 1: Amazon Services ── */
 const amazonServices = [
+  { name: "Product Hunting & Sourcing", href: "/service/product-hunting-sourcing", icon: Search, desc: "Find winning products" },
   { name: "Audit & Strategy",      href: "/service/audit-strategy",       icon: ClipboardCheck, desc: "Deep-dive listing inspections" },
   { name: "Brand Launch",          href: "/service/brand-launch",         icon: Rocket,         desc: "End-to-end Amazon launch" },
   { name: "Listing Optimization",  href: "/service/listing-optimization", icon: Search,         desc: "SEO & keyword ranking" },

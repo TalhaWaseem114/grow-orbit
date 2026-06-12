@@ -31,22 +31,24 @@ export default function Hero() {
         clearProps: "transform,opacity"
       }, "+=0.2");
 
-      // 3. Right side - Pure Fade In
+      // 3. Right side - Fast & dynamic Entrance
       tl.from(engineRef.current, {
+        y: 30,
         opacity: 0,
-        duration: isMobile ? 1.0 : 1.5,
-        ease: "power2.inOut"
-      }, "-=0.8");
+        duration: isMobile ? 0.8 : 1.0,
+        ease: "power3.out",
+        clearProps: "transform,opacity"
+      }, "-=1.2");
 
       // 4. Target Line Animation (Bar & Node in Sync)
       tl.to(".target-bar-fill", {
         width: "85%",
-        duration: isMobile ? 1.5 : 2,
+        duration: isMobile ? 1.0 : 1.2,
         ease: "expo.out"
-      }, "-=0.8");
+      }, "-=1.0");
       tl.to(".target-node-fill", {
         left: "85%",
-        duration: isMobile ? 1.5 : 2,
+        duration: isMobile ? 1.0 : 1.2,
         ease: "expo.out"
       }, "<");
 
@@ -54,10 +56,10 @@ export default function Hero() {
         // 5. Service Bars filling animation
         tl.to(".progress-bar-fill", {
           width: (i, target) => target.dataset.width || "0%",
-          duration: 1.8,
-          stagger: 0.15,
+          duration: 1.2,
+          stagger: 0.1,
           ease: "expo.out"
-        }, "-=1.5");
+        }, "-=1.0");
 
         // 6. Mini Stats (Bottom)
         tl.from(".animate-stats > *", {

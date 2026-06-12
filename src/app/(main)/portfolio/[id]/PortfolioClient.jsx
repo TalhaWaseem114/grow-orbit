@@ -1,3 +1,4 @@
+// Force refresh for final A+ content sequence update
 "use client";
 
 import React, { useLayoutEffect, useRef, useState } from "react";
@@ -34,6 +35,58 @@ const SERVICE_GRADIENTS = {
   "Main Image CTR":  "from-blue-500 to-cyan-400",
 };
 
+/* ─── SMART IMAGE COMPONENT ─── */
+function SmartImage({ src, alt, className, style, onClick }) {
+  const [loaded, setLoaded] = React.useState(false);
+  const imgRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (imgRef.current && imgRef.current.complete) {
+      setLoaded(true);
+    }
+  }, [src]);
+
+  // Cloudinary Optimization & Blur-Up
+  let optimizedSrc = src;
+  let blurSrc = null;
+  if (src && src.includes('cloudinary.com/')) {
+    // 1. Force modern compression (WebP/AVIF) and dynamic quality compression
+    optimizedSrc = src.replace('/upload/', '/upload/f_auto,q_auto/');
+    // 2. Generate an instant micro-sized highly-blurred preview
+    blurSrc = src.replace('/upload/', '/upload/w_100,e_blur:1000,q_1,f_auto/');
+  }
+
+  return (
+    <>
+      {/* Blurred Placeholder Layer */}
+      <div 
+        className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ease-out ${loaded ? "opacity-0" : "opacity-100"}`} 
+        style={{ borderRadius: "inherit", zIndex: 1, overflow: "hidden" }}
+      >
+        {blurSrc ? (
+          <img src={blurSrc} alt="" className="w-full h-full object-cover scale-110" />
+        ) : (
+          <div className="w-full h-full bg-zinc-100/80 animate-pulse flex items-center justify-center border border-zinc-200/50" style={{ borderRadius: "inherit" }}>
+            <Camera size={24} className="text-zinc-300/50" />
+          </div>
+        )}
+      </div>
+      
+      {/* High-Res Image Layer */}
+      <img
+        ref={imgRef}
+        src={optimizedSrc}
+        alt={alt || ""}
+        className={`${className || ""} ${(!className || !className.includes('absolute')) ? 'relative' : ''} z-10`}
+        style={style}
+        onClick={onClick}
+        onLoad={() => setLoaded(true)}
+        onError={() => setLoaded(true)}
+      />
+    </>
+  );
+}
+
 /* ─── LIGHTBOX ─── */
 function Lightbox({ image, onClose }) {
   useLayoutEffect(() => {
@@ -46,7 +99,7 @@ function Lightbox({ image, onClose }) {
       <button onClick={onClose} className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition-colors">
         <XCircle size={18} />
       </button>
-      <img src={image.src} alt={image.label} className="max-w-full max-h-[88vh] object-contain rounded-2xl" onClick={e => e.stopPropagation()} />
+      <SmartImage src={image.src} alt={image.label} className="max-w-full max-h-[88vh] object-contain rounded-2xl" onClick={e => e.stopPropagation()} />
       <p className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/40 text-[10px] font-mono uppercase tracking-widest">{image.label}</p>
     </div>
   );
@@ -68,7 +121,7 @@ function ListingImagesDisplay({ details, onImageOpen }) {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {imgs.map((img, i) => (
           <div key={i} className="group relative cursor-pointer rounded-[16px] overflow-hidden border border-zinc-100 bg-white" onClick={() => onImageOpen(img)}>
-            <img src={img.src} alt={img.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" style={{ aspectRatio: "1/1" }} />
+            <SmartImage src={img.src} alt={img.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" style={{ aspectRatio: "1/1" }} />
           </div>
         ))}
       </div>
@@ -93,7 +146,7 @@ function APlusDisplay({ details, onImageOpen }) {
       <div className="flex flex-col w-full">
         {imgs.map((img, i) => (
           <div key={i} className="w-full cursor-pointer group relative overflow-hidden" onClick={() => onImageOpen(img)}>
-            <img src={img.src} alt={img.label} className="w-full h-auto block" />
+            <SmartImage src={img.src} alt={img.label} className="w-full h-auto block" />
             <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-sm text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
               <ExternalLink size={9} /> Expand
             </div>
@@ -134,7 +187,7 @@ function BrandStoryDisplay({ details, onImageOpen }) {
       <div className="relative bg-zinc-900 overflow-hidden" style={{ minHeight: "380px" }}>
         {imgs[0] && (
           <div className="absolute inset-0">
-            <img src={imgs[0].src} alt="" className="w-full h-full object-cover scale-110 blur-md opacity-30" />
+            <SmartImage src={imgs[0].src} alt="" className="w-full h-full object-cover scale-110 blur-md opacity-30" />
             <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/40 to-zinc-950" />
           </div>
         )}
@@ -148,7 +201,7 @@ function BrandStoryDisplay({ details, onImageOpen }) {
             {/* Card 1: Logo & About (Standard Amazon Square) */}
             <div className="shrink-0 w-[260px] sm:w-[315px] h-[260px] sm:h-[315px] bg-white rounded-xl shadow-2xl relative overflow-hidden group cursor-pointer" onClick={() => onImageOpen(imgs[0])}>
               <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
-                <img src={imgs[0]?.src} className="w-full h-full object-cover" />
+                <SmartImage src={imgs[0]?.src} className="w-full h-full object-cover" />
               </div>
               <div className="relative h-full p-8 flex flex-col justify-between">
                 <div>
@@ -168,7 +221,7 @@ function BrandStoryDisplay({ details, onImageOpen }) {
             {/* Card 2: Media Asset (Standard Amazon Tall Rectangle) */}
             {imgs[1] && (
               <div className="shrink-0 w-[280px] sm:w-[360px] h-[360px] sm:h-[450px] bg-zinc-800 rounded-xl shadow-2xl overflow-hidden relative group cursor-pointer" onClick={() => onImageOpen(imgs[1])}>
-                <img src={imgs[1].src} alt={imgs[1].label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <SmartImage src={imgs[1].src} alt={imgs[1].label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
                   <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg text-white text-[10px] font-bold uppercase tracking-widest mb-3">Our Standards</span>
@@ -180,7 +233,7 @@ function BrandStoryDisplay({ details, onImageOpen }) {
             {/* Card 3: Media Asset 2 */}
             {imgs[2] && (
               <div className="shrink-0 w-[280px] sm:w-[360px] h-[360px] sm:h-[450px] bg-zinc-800 rounded-xl shadow-2xl overflow-hidden relative group cursor-pointer" onClick={() => onImageOpen(imgs[2])}>
-                <img src={imgs[2].src} alt={imgs[2].label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+                <SmartImage src={imgs[2].src} alt={imgs[2].label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
                 <div className="absolute bottom-6 left-6 right-6">
                   <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md border border-white/20 rounded-lg text-white text-[10px] font-bold uppercase tracking-widest mb-3">Innovation</span>
@@ -192,7 +245,7 @@ function BrandStoryDisplay({ details, onImageOpen }) {
             {/* Card 4: Q&A / Mission Module (Image background + Text overlay) */}
             <div className="shrink-0 w-[280px] sm:w-[360px] h-[360px] sm:h-[450px] bg-zinc-900 rounded-xl shadow-2xl relative overflow-hidden group">
               <div className="absolute inset-0 opacity-40">
-                <img src={imgs[imgs.length - 1]?.src} className="w-full h-full object-cover" />
+                <SmartImage src={imgs[imgs.length - 1]?.src} className="w-full h-full object-cover" />
                 <div className="absolute inset-0 bg-zinc-950/60" />
               </div>
               <div className="relative p-8 h-full flex flex-col justify-between">
@@ -281,7 +334,7 @@ function BrandStoreDisplay({ details, onImageOpen }) {
           <div>
             <div className="relative cursor-pointer group overflow-hidden" onClick={() => imgs[0] && onImageOpen(imgs[0])}>
               {imgs[0]
-                ? <img src={imgs[0].src} alt="Store Hero" className="w-full object-cover group-hover:scale-[1.02] transition-transform duration-700" style={{ height: "220px" }} />
+                ? <SmartImage src={imgs[0].src} alt="Store Hero" className="w-full object-cover group-hover:scale-[1.02] transition-transform duration-700" style={{ height: "220px" }} />
                 : <div className="bg-zinc-200 flex items-center justify-center" style={{ height: "220px" }}><Store size={32} className="text-zinc-400" /></div>}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
                 <div><h3 className="text-white font-black text-2xl uppercase tracking-tight mb-1">Our Catalog</h3><p className="text-zinc-300 text-sm font-light">Discover our full range of products</p></div>
@@ -291,7 +344,7 @@ function BrandStoreDisplay({ details, onImageOpen }) {
                {imgs.slice(0, 3).map((img, i) => (
                  <div key={i} className="group cursor-pointer bg-white rounded-xl border border-zinc-200 overflow-hidden hover:shadow-md transition-all flex flex-col" onClick={() => onImageOpen(img)}>
                    <div className="w-full bg-white relative" style={{ aspectRatio: "1/1" }}>
-                     <img src={img.src} alt={img.label} className="absolute inset-0 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                     <SmartImage src={img.src} alt={img.label} className="absolute inset-0 w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                    </div>
                    <div className="p-2.5 bg-white border-t border-zinc-100"><p className="text-[9px] font-bold uppercase tracking-wide text-zinc-700 truncate">{img.label}</p><p className="text-orange-500 text-[8px] font-black mt-0.5">View Product →</p></div>
                  </div>
@@ -339,7 +392,7 @@ function MainImageCTRDisplay({ details, onImageOpen }) {
             <div className="flex items-center gap-2 mb-3"><div className="w-2 h-2 rounded-full bg-red-400" /><span className="text-[9px] font-black uppercase tracking-widest text-red-500">Before · Original</span></div>
             <div className="relative bg-white rounded-xl overflow-hidden cursor-pointer group border-2 border-red-200 mb-3 aspect-square" style={{ aspectRatio: "1/1" }} onClick={() => before && onImageOpen(before)}>
               {before
-                ? <img src={before.src} alt="Original" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                ? <SmartImage src={before.src} alt="Original" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                 : <div className="flex items-center justify-center w-full h-full bg-zinc-200"><Camera size={24} className="text-zinc-400" /></div>}
               <div className="absolute inset-0 bg-red-500/10 pointer-events-none" />
             </div>
@@ -354,7 +407,7 @@ function MainImageCTRDisplay({ details, onImageOpen }) {
             <div className="flex items-center gap-2 mb-3"><div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" /><span className="text-[9px] font-black uppercase tracking-widest text-emerald-600">After · Optimised</span></div>
             <div className="relative bg-white rounded-xl overflow-hidden cursor-pointer group border-2 border-orange-400 mb-3 aspect-square" style={{ aspectRatio: "1/1" }} onClick={() => after && onImageOpen(after)}>
               {after
-                ? <img src={after.src} alt="Optimised" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                ? <SmartImage src={after.src} alt="Optimised" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                 : <div className="flex items-center justify-center w-full h-full bg-zinc-200"><Camera size={24} className="text-zinc-400" /></div>}
               <div className="absolute top-2 right-2 bg-orange-500 text-white text-[7px] font-black uppercase tracking-widest px-2 py-0.5 rounded-full pointer-events-none">Winner</div>
             </div>
@@ -373,8 +426,8 @@ function MainImageCTRDisplay({ details, onImageOpen }) {
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-2">
             {imgs.map((img, i) => (
               <div key={i} className="shrink-0 group cursor-pointer" onClick={() => onImageOpen(img)}>
-                <div className={`w-20 h-20 bg-white rounded-xl overflow-hidden border-2 mb-1.5 ${i === 0 ? "border-orange-500" : "border-zinc-200"}`}>
-                  <img src={img.src} alt={img.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform" />
+                <div className={`relative w-20 h-20 bg-white rounded-xl overflow-hidden border-2 mb-1.5 ${i === 0 ? "border-orange-500" : "border-zinc-200"}`}>
+                  <SmartImage src={img.src} alt={img.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform" />
                 </div>
                 <p className="text-[7px] font-mono text-center text-zinc-400 uppercase w-20 truncate">{i === 0 ? "Winner" : `V${i + 1}`}</p>
               </div>
@@ -403,7 +456,7 @@ function ServiceDisplay({ svc, details, onImageOpen }) {
         <div className="grid grid-cols-2 gap-4">
           {details.images.map((img, i) => (
             <div key={i} className="group relative cursor-pointer rounded-[16px] overflow-hidden border border-zinc-100 bg-white" onClick={() => onImageOpen(img)}>
-              <img src={img.src} alt={img.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" style={{ aspectRatio: "1/1" }} />
+              <SmartImage src={img.src} alt={img.label} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" style={{ aspectRatio: "1/1" }} />
             </div>
           ))}
         </div>
@@ -526,7 +579,7 @@ export default function PortfolioDetailPage() {
                 style={{ aspectRatio: "1/1", maxHeight: "600px" }}
                 onClick={() => setLightboxImage(activeGalleryImg || heroGallery[0])}
               >
-                <img
+                <SmartImage
                   src={activeGalleryImg?.src || item.src}
                   alt={activeGalleryImg?.label || item.brandName}
                   className="w-full h-full object-contain group-hover:scale-[1.02] transition-transform duration-700"
@@ -545,7 +598,7 @@ export default function PortfolioDetailPage() {
                   <button key={i} onClick={() => setActiveGalleryImg(img)}
                     className={`shrink-0 relative rounded-[12px] overflow-hidden border-2 transition-all duration-300 bg-white
                       ${(activeGalleryImg?.src || heroGallery[0]?.src) === img.src ? "border-orange-500 shadow-[0_0_0_2px_rgba(249,115,22,0.2)]" : "border-zinc-200 hover:border-zinc-400"}`}>
-                    <img src={img.src} alt={img.label} className="object-contain w-16 h-12 sm:w-20 sm:h-14" />
+                    <SmartImage src={img.src} alt={img.label} className="object-cover w-16 h-16 sm:w-20 sm:h-20" />
                     {(activeGalleryImg?.src || heroGallery[0]?.src) === img.src && <div className="absolute inset-0 bg-orange-500/10 pointer-events-none" />}
                   </button>
                 ))}
@@ -590,9 +643,16 @@ export default function PortfolioDetailPage() {
                     const Icon = SERVICE_ICONS[svc] || Sparkles;
                     const gradient = SERVICE_GRADIENTS[svc] || "from-orange-500 to-amber-400";
                     return (
-                      <div key={i} className={`flex items-center gap-2 bg-gradient-to-r ${gradient} text-white px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest`}>
+                      <button 
+                        key={i} 
+                        onClick={() => {
+                          const el = document.getElementById(`service-${svc.replace(/\s+/g, '-').toLowerCase()}`);
+                          if (el) el.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className={`flex items-center gap-2 bg-gradient-to-r ${gradient} text-white px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest hover:opacity-90 transition-opacity`}
+                      >
                         <Icon size={11} />{svc}
-                      </div>
+                      </button>
                     );
                   })}
                 </div>
@@ -660,7 +720,7 @@ export default function PortfolioDetailPage() {
           const bgAlt    = idx % 2 === 0 ? "bg-[#fafafa]" : "bg-white";
           
           return (
-            <section key={svc} className={`py-16 ${bgAlt} border-t border-zinc-100 pdp-scroll`}>
+            <section key={svc} id={`service-${svc.replace(/\s+/g, '-').toLowerCase()}`} className={`py-16 ${bgAlt} border-t border-zinc-100 pdp-scroll`}>
               <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
                 <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
                   <div>
@@ -822,9 +882,8 @@ export default function PortfolioDetailPage() {
               {related.map(rel => (
                 <Link key={rel.id} href={`/portfolio/${rel.id}`} className="group no-underline block">
                   <div className={`rounded-[24px] overflow-hidden border transition-all duration-500 shadow-[0_15px_45px_-10px_rgba(0,0,0,0.08)] hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.15)] hover:-translate-y-1 ${rel.isDark ? "bg-zinc-950 border-white/[0.07]" : "bg-white border-zinc-100"}`}>
-                    <div className={`relative overflow-hidden flex items-center justify-center ${rel.category === "Listing Images" ? "aspect-square" : "aspect-video sm:aspect-[4/3]"}`}>
-                      <img src={rel.src} alt={rel.brandName} className={`w-full h-full block group-hover:scale-105 transition-transform duration-700 ease-out ${rel.category === "Listing Images" ? "object-contain" : "object-cover"}`} />
-
+                    <div className="relative overflow-hidden flex items-center justify-center aspect-square">
+                      <SmartImage src={rel.src} alt={rel.brandName} className="w-full h-full block group-hover:scale-105 transition-transform duration-700 ease-out object-contain" />
                     </div>
                     <div className="p-4"><h4 className="text-orange-500 font-black text-xl uppercase tracking-tighter leading-none mb-1">{rel.outcome}</h4><p className={`text-[10px] font-black uppercase tracking-widest mb-0.5 ${rel.isDark ? "text-zinc-400" : "text-zinc-600"}`}>{rel.brandName}</p><p className={`text-[9px] font-bold uppercase tracking-widest ${rel.isDark ? "text-zinc-600" : "text-zinc-400"}`}>{rel.niche}</p></div>
                   </div>

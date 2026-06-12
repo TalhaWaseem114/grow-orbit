@@ -17,6 +17,7 @@ const serviceGroups = [
     label: "Amazon Services",
     color: "orange",
     items: [
+      { icon: <Search size={16} />,        title: "Product Hunting & Sourcing",       desc: "Discover high-margin, low-competition products.", href: "/service/product-hunting-sourcing" },
       { icon: <BarChart3 size={16} />,     title: "PPC Efficiency",        desc: "Lower ACoS, higher ROAS, zero wasted spend.", href: "/service/ppc-efficiency" },
       { icon: <Search size={16} />,        title: "Listing Optimization",  desc: "A9-optimized copy that indexes and converts.",  href: "/service/listing-optimization" },
       { icon: <Target size={16} />,        title: "Audit & Strategy",      desc: "72-hour audit. 24-month growth roadmap.",       href: "/service/audit-strategy" },
@@ -127,22 +128,24 @@ export default function ServicesSection() {
                       {group.items.length} items
                     </span>
                   </div>
-                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-px bg-zinc-100">
+                  <div className="grid grid-cols-2 lg:grid-cols-6 gap-px bg-zinc-100">
                     {group.items.map((item, ii) => {
                       const isLast = ii === group.items.length - 1;
-                      // Orphan logic: if last item and it's the only one in its row
-                      // On mobile/tablet (2 cols): orphan if length is odd
-                      // On desktop (3 cols): orphan if length % 3 == 1
+                      const isLastRow2Cols = (group.items.length % 3 === 2) && (ii >= group.items.length - 2);
                       const isOrphan = isLast && (group.items.length % 2 !== 0 || group.items.length % 3 === 1);
+                      
+                      let colSpanClass = "col-span-1 lg:col-span-2";
+                      if (isOrphan) colSpanClass = "col-span-2 lg:col-span-6 flex items-center gap-4 sm:gap-6";
+                      else if (isLastRow2Cols) colSpanClass = "col-span-1 lg:col-span-3";
 
                       return (
-                        <Link key={ii} href={item.href} prefetch={false} className={`group bg-[#FAFAFA] hover:bg-white p-4 sm:p-6 transition-all duration-300 no-underline block ${isOrphan ? "col-span-2 lg:col-span-3 flex items-center gap-4 sm:gap-6" : ""}`}>
+                        <Link key={ii} href={item.href} prefetch={false} className={`group bg-[#FAFAFA] hover:bg-white p-4 sm:p-6 transition-all duration-300 no-underline block ${colSpanClass}`}>
                           <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl border flex items-center justify-center ${isOrphan ? "" : "mb-3 sm:mb-4"} transition-all duration-500 group-hover:text-white ${c.icon} border-zinc-100 group-hover:border-transparent group-hover:scale-110 shrink-0`}>
                             {item.icon}
                           </div>
                           <div>
                             <h4 className="font-montserrat font-black text-[12px] uppercase tracking-tight text-zinc-900 mb-1 group-hover:text-orange-500 transition-colors">{item.title}</h4>
-                            <p className="text-zinc-400 text-[10px] font-light leading-relaxed">{item.desc}</p>
+                            <p className="text-zinc-500 text-[11px] font-light leading-relaxed">{item.desc}</p>
                           </div>
                         </Link>
                       );

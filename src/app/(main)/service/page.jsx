@@ -14,14 +14,27 @@ import {
    SERVICE DATA
 ───────────────────────────────────────────── */
 const categories = [
-  { id: "all",     label: "All Services",      count: 18 },
-  { id: "amazon",  label: "Amazon Services",   count: 7  },
+  { id: "all",     label: "All Services",      count: 19 },
+  { id: "amazon",  label: "Amazon Services",   count: 8  },
   { id: "design",  label: "Design & Creative", count: 7  },
   { id: "full",    label: "Full Service",       count: 4  },
 ];
 
 const services = [
   /* ── AMAZON SERVICES ── */
+  {
+    id: "product-hunting-sourcing",
+    category: "amazon",
+    categoryLabel: "Amazon Services",
+    icon: <Search size={22} />,
+    title: "Product Hunting & Sourcing",
+    subtitle: "Find winning products",
+    desc: "Discover high-margin, low-competition products and connect with reliable manufacturers for scalable sourcing.",
+    href: "/service/product-hunting-sourcing",
+    tags: ["Product Research", "Sourcing", "FBA"],
+    stat: { val: "100%", label: "data driven" },
+    highlight: true,
+  },
   {
     id: "audit-strategy",
     category: "amazon",
@@ -720,7 +733,7 @@ export default function AllServicesPage() {
                 icon: <TrendingUp size={24} />,
                 label: "Amazon Services",
                 desc: "Everything you need to dominate Amazon search results and scale profitably.",
-                count: 7,
+                count: 8,
                 color: "from-orange-500 to-amber-400",
               },
               {

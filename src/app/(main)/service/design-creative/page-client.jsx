@@ -73,12 +73,26 @@ function DesignHero() {
 
           {/* Left: Branding & Action */}
           <div className="lg:col-span-7">
-            <div className="flex items-center gap-3 mb-8">
+            <div className="flex items-center gap-3 mb-6">
               <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
               <div className="w-6 h-[1px] bg-orange-500/50" />
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">
                 Design & Creative Studio
               </span>
+            </div>
+
+            <div className="mb-6 inline-flex">
+              <Link
+                href="/design-creative-landing"
+                className="group flex items-center gap-2.5 bg-orange-500/10 border border-orange-500/20 hover:border-orange-500/40 text-orange-500 px-4 py-2 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-widest no-underline transition-all duration-300 shadow-[0_4px_20px_rgba(249,115,22,0.05)]"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                </span>
+                Looking for our Specialized Design Landing Page?
+                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
 
             <h1

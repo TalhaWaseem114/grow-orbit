@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import gsap from "gsap";
 
-export default function Hero() {
+export default function Hero({ mode }) {
   const containerRef = useRef(null);
   const engineRef = useRef(null);
 
@@ -138,29 +138,55 @@ export default function Hero() {
             <div className="flex items-center justify-center lg:justify-start gap-3 mb-8">
               <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
               <div className="w-6 h-[1px] bg-orange-500/50" />
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">Full Amazon Management</span>
+              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">
+                {mode === "amazon-services" ? "Amazon Operations & PPC Management" :
+                 mode === "design-creative" ? "Amazon Visual Engineering & Design" :
+                 "Full Amazon Management"}
+              </span>
             </div>
 
             <h1
               className="text-[44px] xs:text-[54px] sm:text-[68px] md:text-[76px] lg:text-[90px] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 text-white uppercase"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
-              Scale your<br />
-              <span className="text-orange-500">Revenue.</span><br />
-              <span
-                className="italic font-light lowercase tracking-tight text-zinc-500"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                zero guesswork.
-              </span>
+              {mode === "amazon-services" ? (
+                <>
+                  Scale your<br />
+                  <span className="text-orange-500">Amazon.</span><br />
+                  <span className="italic font-light lowercase tracking-tight text-zinc-500" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    zero guesswork.
+                  </span>
+                </>
+              ) : mode === "design-creative" ? (
+                <>
+                  Scale your<br />
+                  <span className="text-orange-500">Conversion.</span><br />
+                  <span className="italic font-light lowercase tracking-tight text-zinc-500" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    engineered visuals.
+                  </span>
+                </>
+              ) : (
+                <>
+                  Scale your<br />
+                  <span className="text-orange-500">Revenue.</span><br />
+                  <span className="italic font-light lowercase tracking-tight text-zinc-500" style={{ fontFamily: "'Playfair Display', serif" }}>
+                    zero guesswork.
+                  </span>
+                </>
+              )}
             </h1>
 
             <div className="flex flex-col lg:flex-row gap-6 mb-10 items-center lg:items-start">
               <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden lg:block opacity-50 shrink-0" />
               <div>
                 <p className="text-lg sm:text-xl text-zinc-400 font-light leading-relaxed max-w-xl mb-6 mx-auto lg:mx-0">
-                  We run your entire Amazon operation — ads, SEO, listings, and core creative —
-                  so you can focus on building your brand instead of managing it.
+                  {mode === "amazon-services" ? (
+                    "We run your Amazon PPC advertising, organic ranking SEO, and product sourcing operations so you can focus on scale instead of management."
+                  ) : mode === "design-creative" ? (
+                    "We design scroll-stopping listing images, premium A+ Content modules, and custom storefronts built specifically to increase your conversion rate."
+                  ) : (
+                    "We run your entire Amazon operation — ads, SEO, listings, and core creative — so you can focus on building your brand instead of managing it."
+                  )}
                 </p>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-6 font-mono text-[9px] text-zinc-600 uppercase tracking-widest">
                    <div className="flex items-center gap-2">

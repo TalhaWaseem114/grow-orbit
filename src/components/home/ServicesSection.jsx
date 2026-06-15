@@ -63,7 +63,16 @@ const colorMap = {
 /* ─────────────────────────────────────────────
    MAIN COMPONENT
 ───────────────────────────────────────────── */
-export default function ServicesSection() {
+export default function ServicesSection({ mode }) {
+  const filteredGroups = React.useMemo(() => {
+    if (mode === "amazon-services") {
+      return serviceGroups.filter(g => g.label === "Amazon Services" || g.label === "Full Service & Tech");
+    }
+    if (mode === "design-creative") {
+      return serviceGroups.filter(g => g.label === "Design & Creative" || g.label === "Full Service & Tech");
+    }
+    return serviceGroups;
+  }, [mode]);
   return (
     <section id="services-grid" className="py-32 bg-white relative scroll-mt-24">
       {/* Background Decor */}
@@ -117,7 +126,7 @@ export default function ServicesSection() {
 
           {/* Right Column: Service Groups */}
           <div className="lg:col-span-7 space-y-5">
-            {serviceGroups.map((group, gi) => {
+            {filteredGroups.map((group, gi) => {
               const c = colorMap[group.color];
               return (
                 <div key={gi} className="bg-[#FAFAFA] rounded-[32px] border border-zinc-100 overflow-hidden hover:shadow-xl hover:shadow-zinc-200/40 transition-all duration-500">

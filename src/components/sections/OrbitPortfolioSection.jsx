@@ -1,13 +1,17 @@
 "use client";
 
-import { useState, useRef, useLayoutEffect } from "react";
+import { useState, useRef, useLayoutEffect, useEffect } from "react";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import gsap from "gsap";
 import { PORTFOLIO_ITEMS } from "@/data/portfolioData";
 
-export default function OrbitPortfolioSection() {
-  const [activeCategory, setActiveCategory] = useState("All");
+export default function OrbitPortfolioSection({ initialCategory = "All" }) {
+  const [activeCategory, setActiveCategory] = useState(initialCategory);
+
+  useEffect(() => {
+    setActiveCategory(initialCategory);
+  }, [initialCategory]);
   const [activeMaterial, setActiveMaterial] = useState("All Materials");
   const [activeNiche, setActiveNiche] = useState("All Categories");
   const [isNicheOpen, setIsNicheOpen] = useState(false);

@@ -84,6 +84,20 @@ function AmazonServicesHero() {
               </span>
             </div>
 
+            <div className="mb-6 inline-flex">
+              <Link
+                href="/amazon-services-landing"
+                className="group flex items-center gap-2.5 bg-orange-500/10 border border-orange-500/20 hover:border-orange-500/40 text-orange-500 px-4 py-2 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-widest no-underline transition-all duration-300 shadow-[0_4px_20px_rgba(249,115,22,0.05)]"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
+                </span>
+                Looking for our Specialized Amazon Landing Page?
+                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+              </Link>
+            </div>
+
             <h1
               className="text-6xl md:text-7xl lg:text-[85px] font-black tracking-tighter leading-[0.85] mb-8 text-white uppercase"
               style={{ fontFamily: "'Montserrat', sans-serif" }}

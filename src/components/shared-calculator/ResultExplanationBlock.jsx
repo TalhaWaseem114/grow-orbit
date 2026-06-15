@@ -85,21 +85,21 @@ export default function ResultExplanationBlock({ results }) {
         </p>
 
         {/* Dynamic CTA Block */}
-        <div className={`p-4 rounded-xl border ${cta.accent} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 transition-all duration-300`}>
-          <div className="space-y-0.5">
+        <div className={`p-4 rounded-xl border ${cta.accent} flex flex-col items-start gap-3.5 transition-all duration-300`}>
+          <div className="space-y-1">
             <h5 className="text-[10px] font-black uppercase tracking-wider text-zinc-900 flex items-center gap-1.5">
               <span className="text-orange-500">✦</span> {cta.title}
             </h5>
-            <p className="text-[10px] text-zinc-500 font-medium leading-relaxed max-w-[420px]">
+            <p className="text-[10px] text-zinc-500 font-medium leading-relaxed">
               {cta.description}
             </p>
           </div>
           <Link 
             href={cta.link}
-            className="shrink-0 inline-flex items-center gap-1 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white font-black text-[9px] uppercase tracking-widest rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 hover:translate-x-0.5"
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white font-black text-[9px] uppercase tracking-widest rounded-lg transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 hover:translate-x-0.5 w-full sm:w-auto justify-center"
           >
             {cta.buttonText}
-            <ArrowRight size={8} />
+            <ArrowRight size={10} />
           </Link>
         </div>
       </div>

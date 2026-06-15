@@ -148,18 +148,18 @@ export default function ProductIntelligence({ results, inputs }) {
       </div>
 
       {/* Dynamic CTA Block */}
-      <div className={`mt-8 p-5 rounded-2xl border ${cta.accent} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all duration-300`}>
+      <div className={`mt-8 p-5 rounded-2xl border ${cta.accent} flex flex-col items-start gap-3.5 transition-all duration-300`}>
         <div className="space-y-1">
           <h4 className="text-[11px] font-black uppercase tracking-wider text-white flex items-center gap-1.5">
             <span className="text-orange-500">✦</span> {cta.title}
           </h4>
-          <p className="text-[10px] text-zinc-400 font-medium leading-relaxed max-w-[480px]">
+          <p className="text-[10px] text-zinc-400 font-medium leading-relaxed">
             {cta.description}
           </p>
         </div>
         <Link 
           href={cta.link}
-          className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-black text-[9px] uppercase tracking-widest rounded-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 hover:translate-x-0.5"
+          className="inline-flex items-center gap-1.5 px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-black text-[9px] uppercase tracking-widest rounded-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 hover:translate-x-0.5 w-full sm:w-auto justify-center"
         >
           {cta.buttonText}
           <ArrowRight size={10} />

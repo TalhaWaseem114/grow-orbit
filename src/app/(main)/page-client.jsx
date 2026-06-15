@@ -30,7 +30,7 @@ export default function Home() {
   };
 
   return (
-    <div className="home-page bg-white">
+    <main className="home-page bg-white">
       <HeroSection />
       <ServicesMarquee />
       <OrbitBridgeCTA scrollToForm={scrollToForm} />
@@ -45,6 +45,6 @@ export default function Home() {
       <AboutVision />
       <FAQSection scrollToForm={scrollToForm} />
 
-    </div>
+    </main>
   );
 }

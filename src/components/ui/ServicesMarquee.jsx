@@ -45,6 +45,8 @@ const ServicesMarquee = () => {
           <Link
             href={service.href}
             prefetch={false}
+            tabIndex={isClone ? -1 : undefined}
+            aria-hidden={isClone ? "true" : undefined}
             className="text-gray-400 no-underline font-bold tracking-[0.2em] text-[9px] sm:text-[10px] uppercase transition-colors hover:text-orange-500 cursor-pointer"
           >
             {service.name}

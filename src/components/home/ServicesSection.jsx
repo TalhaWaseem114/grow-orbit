@@ -144,7 +144,7 @@ export default function ServicesSection() {
                             {item.icon}
                           </div>
                           <div>
-                            <h4 className="font-montserrat font-black text-[12px] uppercase tracking-tight text-zinc-900 mb-1 group-hover:text-orange-500 transition-colors">{item.title}</h4>
+                            <h3 className="font-montserrat font-black text-[12px] uppercase tracking-tight text-zinc-900 mb-1 group-hover:text-orange-500 transition-colors">{item.title}</h3>
                             <p className="text-zinc-500 text-[11px] font-light leading-relaxed">{item.desc}</p>
                           </div>
                         </Link>
@@ -164,7 +164,7 @@ export default function ServicesSection() {
                        <Award size={20} />
                     </div>
                     <div>
-                      <h4 className="text-white font-montserrat font-black text-[13px] uppercase tracking-widest leading-tight">Growth On Steroids</h4>
+                      <h3 className="text-white font-montserrat font-black text-[13px] uppercase tracking-widest leading-tight">Growth On Steroids</h3>
                       <p className="text-zinc-500 text-[11px] font-light mt-1">Ready for a full account takeover? Let's talk.</p>
                     </div>
                  </div>

@@ -102,9 +102,9 @@ export default function OrbitPortfolioSection() {
           </div>
 
           <div className="p-3 sm:p-6 flex flex-col gap-1.5 sm:gap-2 relative">
-            <h4 className="text-orange-500 font-black text-base sm:text-[22px] uppercase tracking-tighter leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <h3 className="text-orange-500 font-black text-base sm:text-[22px] uppercase tracking-tighter leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
               {item.outcome}
-            </h4>
+            </h3>
 
             <p className={`text-[8px] sm:text-[11px] font-bold uppercase tracking-widest ${isDark ? "text-zinc-500" : "text-zinc-400"}`}>
               {item.niche}

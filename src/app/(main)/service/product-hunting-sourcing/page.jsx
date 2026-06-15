@@ -1,21 +1,41 @@
-"use client";
+import ClientPage from "./page-client";
+import { getPageMetadata } from "@/config/seo";
 
-import React, { useEffect } from "react";
+export const metadata = getPageMetadata("/service/product-hunting-sourcing");
 
-export default function ProductHuntingPage() {
-  useEffect(() => {
-    if (typeof window !== "undefined") window.scrollTo(0, 0);
-  }, []);
+export default function Page(props) {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+  {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "https://groworbit.com"
+  },
+  {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Service",
+    "item": "https://groworbit.com/service"
+  },
+  {
+    "@type": "ListItem",
+    "position": 3,
+    "name": "Product Hunting Sourcing",
+    "item": "https://groworbit.com/service/product-hunting-sourcing"
+  }
+]
+  };
 
   return (
-    <div
-      className="min-h-screen bg-[#fafafa] selection:bg-orange-500 selection:text-white pt-32 pb-24"
-      style={{ fontFamily: "'Montserrat', sans-serif" }}
-    >
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 text-center">
-        <h1 className="text-4xl font-black uppercase text-zinc-900 mb-4">Product Hunting & Sourcing</h1>
-        <p className="text-zinc-500 text-lg">This section is currently under development. Research in progress.</p>
-      </div>
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <ClientPage {...props} />
+    </>
   );
 }

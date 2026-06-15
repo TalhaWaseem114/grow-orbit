@@ -67,6 +67,7 @@ export default function Footer() {
   ];
 
   const serviceLinks = [
+    { name: "Product Hunting & Sourcing", url: "/service/product-hunting-sourcing" },
     { name: "Audit & Strategy",      url: "/service/audit-strategy"      },
     { name: "Brand Launch Setup",    url: "/service/brand-launch"         },
     { name: "PPC Efficiency",        url: "/service/ppc-efficiency"       },

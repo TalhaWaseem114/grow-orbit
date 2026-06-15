@@ -1,31 +1,41 @@
-"use client";
+import ClientPage from "./page-client";
+import { getPageMetadata } from "@/config/seo";
 
-import React, { useEffect } from "react";
-import OpsHero from "@/components/service/account ops/components/OpsHero";
-import MetricsStrip from "@/components/service/account ops/components/MetricsStrip";
-import TheProblem from "@/components/service/account ops/components/TheProblem";
-import WhoItsFor from "@/components/service/account ops/components/WhoItsFor";
-import OpsDefenseStack from "@/components/service/account ops/components/OpsDefenseStack";
-import PriceMatrix from "@/components/service/account ops/components/PriceMatrix";
-import HowWeWork from "@/components/service/account ops/components/HowWeWork";
-import FAQ from "@/components/service/account ops/components/FAQ";
-import OpsCTA from "@/components/service/account ops/components/OpsCTA";
-import FooterNav from "@/components/service/account ops/components/FooterNav";
+export const metadata = getPageMetadata("/service/account-ops");
 
-export default function AccountOps() {
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+export default function Page(props) {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+  {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "https://groworbit.com"
+  },
+  {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Service",
+    "item": "https://groworbit.com/service"
+  },
+  {
+    "@type": "ListItem",
+    "position": 3,
+    "name": "Account Ops",
+    "item": "https://groworbit.com/service/account-ops"
+  }
+]
+  };
 
   return (
-    <div className="min-h-screen bg-[#F6F6F6] selection:bg-orange-500 selection:text-white" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-      <OpsHero />
-      <MetricsStrip />
-      <TheProblem />
-      <PriceMatrix />
-      <OpsDefenseStack />
-      <HowWeWork />
-      <FAQ />
-      <OpsCTA />
-      <FooterNav />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <ClientPage {...props} />
+    </>
   );
 }

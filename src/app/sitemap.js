@@ -1,10 +1,11 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
+import { AUTHORS } from "@/data/authorData";
 
 export const revalidate = 3600; // Revalidate sitemap every hour
 
 export default async function sitemap() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com";
   let blogUrls = [];
 
   try {
@@ -41,6 +42,7 @@ export default async function sitemap() {
 
   const serviceRoutes = [
     '/service',
+    '/service/product-hunting-sourcing',
     '/service/audit-strategy',
     '/service/amazon-services',
     '/service/brand-launch',
@@ -57,6 +59,29 @@ export default async function sitemap() {
     '/service/sop',
     '/service/full',
     '/service/design',
+    '/service/design/brand-story',
+    '/service/design/main-image-ctr',
+    '/service/design/listing-image-systems',
+    '/service/design/full-listing-optimization',
+    '/service/design/enhanced-brand-content',
+    '/service/design/brand-store',
+    '/service/design/brand-guidelines',
+    '/amazon-tools',
+    '/amazon-tools/profit-calculator',
+    '/amazon-tools/profit-calculator/us',
+    '/amazon-tools/profit-calculator/uk',
+    '/amazon-tools/storage-fee-calculator',
+    '/amazon-tools/storage-fee-calculator/us',
+    '/amazon-tools/storage-fee-calculator/uk',
+    '/amazon-tools/quick-estimator',
+    '/amazon-tools/quick-estimator/us',
+    '/amazon-tools/quick-estimator/uk',
+    '/amazon-tools/fba-fee-calculator',
+    '/amazon-tools/fba-fee-calculator/us',
+    '/amazon-tools/fba-fee-calculator/uk',
+    '/amazon-tools/fba-vs-fbm-vs-3pl',
+    '/amazon-tools/fba-vs-fbm-vs-3pl/us',
+    '/amazon-tools/fba-vs-fbm-vs-3pl/uk',
     '/about',
     '/portfolio',
     '/case-study',
@@ -65,34 +90,56 @@ export default async function sitemap() {
 
   const staticServiceUrls = serviceRoutes.map(route => ({
     url: `${baseUrl}${route}`,
-    lastModified: new Date(),
+    lastModified: new Date('2026-06-15'),
     changeFrequency: 'monthly',
     priority: 0.9,
+  }));
+
+  const caseStudies = [
+    { path: '/case-study/li-01', date: '2026-05-10' },
+    { path: '/case-study/li-02', date: '2026-05-28' },
+    { path: '/case-study/li-03', date: '2026-06-02' }
+  ];
+
+  const caseStudyUrls = caseStudies.map(cs => ({
+    url: `${baseUrl}${cs.path}`,
+    lastModified: new Date(cs.date),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }));
+
+  const authorUrls = Object.keys(AUTHORS).map((slug) => ({
+    url: `${baseUrl}/blog/author/${slug}`,
+    lastModified: new Date('2026-06-15'),
+    changeFrequency: 'monthly',
+    priority: 0.7,
   }));
 
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: new Date('2026-06-15'),
       changeFrequency: 'yearly',
       priority: 1,
     },
     {
       url: `${baseUrl}/get-started`,
-      lastModified: new Date(),
+      lastModified: new Date('2026-06-15'),
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
       url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      lastModified: new Date('2026-06-15'),
       changeFrequency: 'daily',
       priority: 0.9,
     },
     ...staticServiceUrls,
+    ...caseStudyUrls,
+    ...authorUrls,
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      lastModified: new Date('2026-06-15'),
       changeFrequency: 'yearly',
       priority: 0.5,
     },

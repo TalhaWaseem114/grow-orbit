@@ -4,11 +4,12 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Heart,
-  MessageSquare, Send
+  MessageSquare, Send, Linkedin, Twitter, Globe, Award
 } from "lucide-react";
 import { doc, getDoc, updateDoc, increment, collection, getDocs, addDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 import { db, auth } from "@/firebase/firebaseConfig";
+import { getAuthorBySlug, getAuthorSlugByName } from "@/data/authorData";
 
 const montserrat = { fontFamily: "'Montserrat', sans-serif" };
 
@@ -27,6 +28,9 @@ export default function BlogPostClient({ post }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [replyingTo, setReplyingTo] = useState(null);
   const [replyText, setReplyText] = useState("");
+
+  const authorSlug = getAuthorSlugByName(post.author?.name);
+  const authorDetails = getAuthorBySlug(authorSlug);
 
   // Auth listener
   useEffect(() => {
@@ -180,21 +184,51 @@ export default function BlogPostClient({ post }) {
 
       {/* Author card */}
       <div className="mt-16 pt-10 border-t border-zinc-200">
-        <div className="bg-white rounded-[28px] p-8 border border-zinc-100 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.04)] flex flex-col sm:flex-row items-center gap-6">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white text-2xl font-black shrink-0">
-            {post.author?.name ? post.author.name[0] : "G"}
-          </div>
-          <div className="text-center sm:text-left">
-            <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-orange-500 mb-1">
+        <div className="bg-white rounded-[28px] p-8 sm:p-10 border border-zinc-100 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.04)] flex flex-col sm:flex-row items-center sm:items-start gap-6 relative">
+          <Link href={`/blog/author/${authorSlug}`} className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white text-2xl sm:text-3xl font-black shrink-0 shadow-md overflow-hidden relative block hover:scale-105 transition-transform">
+            {authorDetails.avatar ? (
+              <img
+                src={authorDetails.avatar}
+                alt={authorDetails.name}
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              authorDetails.name[0]
+            )}
+          </Link>
+          <div className="text-center sm:text-left flex-1">
+            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-orange-500 mb-1.5 block">
               Written by
+            </span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
+              <Link href={`/blog/author/${authorSlug}`} className="text-lg font-black text-zinc-900 no-underline hover:text-orange-500 transition-colors">
+                {authorDetails.name}
+              </Link>
+              <div className="flex justify-center sm:justify-start gap-2.5">
+                {authorDetails.socialLinks?.linkedin && (
+                  <a href={authorDetails.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-orange-500 transition-colors">
+                    <Linkedin size={14} />
+                  </a>
+                )}
+                {authorDetails.socialLinks?.twitter && (
+                  <a href={authorDetails.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-orange-500 transition-colors">
+                    <Twitter size={14} />
+                  </a>
+                )}
+              </div>
+            </div>
+            <p className="text-xs font-mono uppercase text-zinc-400 mb-4">{authorDetails.role}</p>
+            <p className="text-sm text-zinc-500 font-light leading-relaxed mb-6">
+              {authorDetails.bio}
             </p>
-            <p className="text-lg font-black text-zinc-900">
-              {post.author?.name || "Grow Orbit"}
-            </p>
-            <p className="text-sm text-zinc-500 font-light">
-              {post.author?.role || "Growth Architect"} at Grow Orbit. Helping Amazon sellers build
-              conversion-first brands that scale.
-            </p>
+            <div className="flex flex-wrap justify-center sm:justify-start gap-1.5">
+              {authorDetails.credentials?.slice(0, 3).map((cred, idx) => (
+                <span key={idx} className="bg-zinc-50 border border-zinc-100 text-zinc-500 text-[9px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full flex items-center gap-1.5">
+                  <Award size={10} className="text-orange-500" />
+                  {cred}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>

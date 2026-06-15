@@ -79,7 +79,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
         </div>
 
         {/* Single unified card */}
-        <div className="bg-white rounded-[36px] border border-zinc-100 shadow-xl shadow-zinc-200/40 overflow-hidden">
+        <div className="bg-white rounded-[24px] sm:rounded-[36px] border border-zinc-100 shadow-[0_20px_50px_rgba(0,0,0,0.03)] overflow-hidden">
 
           {/* Top gradient bar */}
           <div className="h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-zinc-900" />
@@ -122,8 +122,8 @@ export default function OrbitProcessSection({ scrollToForm }) {
                         z-10
                         group-hover:-translate-y-1 transition-transform duration-500 ease-out
                         ${s.dark
-                          ? "bg-zinc-950 text-white shadow-[0_12px_32px_rgba(0,0,0,0.2)] group-hover:shadow-[0_20px_40px_rgba(0,0,0,0.3)]"
-                          : "bg-orange-500 text-white shadow-[0_12px_32px_rgba(249,115,22,0.25)] group-hover:shadow-[0_20px_40px_rgba(249,115,22,0.4)]"
+                          ? "bg-zinc-950 text-white shadow-[0_12px_24px_rgba(0,0,0,0.12)] group-hover:shadow-[0_20px_32px_rgba(0,0,0,0.2)]"
+                          : "bg-orange-500 text-white shadow-[0_12px_24px_rgba(249,115,22,0.15)] group-hover:shadow-[0_20px_32px_rgba(249,115,22,0.25)]"
                         }
                       `}>
                         <span className="text-white">
@@ -178,10 +178,10 @@ export default function OrbitProcessSection({ scrollToForm }) {
           </div>
 
           {/* ── MOBILE (< md): vertical flow ── */}
-          <div className="md:hidden px-6 py-10">
+          <div className="md:hidden px-4 sm:px-6 py-8 sm:py-10">
             <div className="relative">
               {/* Vertical dashed rail */}
-              <div className="absolute left-7 top-10 bottom-14 w-px border-l border-dashed border-zinc-100 z-0" />
+              <div className="absolute left-6 top-10 bottom-14 w-px border-l border-dashed border-zinc-100 z-0" />
 
               <div className="space-y-8">
                 {steps.map((s, i) => (
@@ -198,10 +198,10 @@ export default function OrbitProcessSection({ scrollToForm }) {
                         {/* Core Planet */}
                         <div className={`
                           relative z-10 w-12 h-12 rounded-full
-                          flex items-center justify-center shadow-md
+                          flex items-center justify-center
                           ${s.dark
-                            ? "bg-zinc-950 text-white"
-                            : "bg-orange-500 text-white"
+                            ? "bg-zinc-950 text-white shadow-[0_6px_16px_rgba(0,0,0,0.12)]"
+                            : "bg-orange-500 text-white shadow-[0_6px_16px_rgba(249,115,22,0.15)]"
                           }
                         `}>
                           <span className="scale-[0.8]">{s.icon}</span>
@@ -228,7 +228,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
 
                     {/* Compact Vertical Arrow (dots + arrow) */}
                     {i < steps.length - 1 && (
-                      <div className={`pl-[21px] py-1 flex flex-col items-center gap-1 md-v-a${i + 1}`}>
+                      <div className={`w-12 py-1 flex flex-col items-center gap-1 md-v-a${i + 1}`}>
                          <div className={`w-1 h-1 rounded-full ${i === steps.length - 2 ? "bg-zinc-600" : "bg-orange-400"}`} />
                          <div className={`w-1 h-1 rounded-full ${i === steps.length - 2 ? "bg-zinc-400" : "bg-orange-300"}`} />
                          <ArrowDown

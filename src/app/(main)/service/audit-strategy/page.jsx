@@ -1,46 +1,41 @@
-"use client";
+import ClientPage from "./page-client";
+import { getPageMetadata } from "@/config/seo";
 
-import React, { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ProcessSection from "../../../../components/service/audit strategy/ProcessSection";
+export const metadata = getPageMetadata("/service/audit-strategy");
 
-import AuditHero from "./components/AuditHero";
-import MetricsStrip from "./components/MetricsStrip";
-import Methodology from "./components/Methodology";
-import OrbitWay from "./components/OrbitWay";
-import DiagnosticProtocol from "./components/DiagnosticProtocol";
-import Deliverables from "./components/Deliverables";
-import WhoItsFor from "./components/WhoItsFor";
-import Pricing from "./components/Pricing";
-import FAQ from "./components/FAQ";
-import AuditCTA from "./components/AuditCTA";
-import FooterNav from "./components/FooterNav";
-
-gsap.registerPlugin(ScrollTrigger);
-
-export default function OrbitDiagnosticPage() {
-  useEffect(() => {
-    if (typeof window !== "undefined") window.scrollTo(0, 0);
-  }, []);
+export default function Page(props) {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+  {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "https://groworbit.com"
+  },
+  {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Service",
+    "item": "https://groworbit.com/service"
+  },
+  {
+    "@type": "ListItem",
+    "position": 3,
+    "name": "Audit Strategy",
+    "item": "https://groworbit.com/service/audit-strategy"
+  }
+]
+  };
 
   return (
-    <div
-      className="min-h-screen bg-[#fafafa] selection:bg-orange-500 selection:text-white"
-      style={{ fontFamily: "'Montserrat', sans-serif" }}
-    >
-      <AuditHero />
-      <MetricsStrip />
-      <Methodology />
-      <Pricing />
-      <OrbitWay />
-      <DiagnosticProtocol />
-      <Deliverables />
-      <WhoItsFor />
-      <ProcessSection />
-      <FAQ />
-      <AuditCTA />
-      <FooterNav />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <ClientPage {...props} />
+    </>
   );
 }

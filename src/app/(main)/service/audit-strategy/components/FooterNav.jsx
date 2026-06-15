@@ -20,10 +20,10 @@ export default function FooterNav() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row justify-between items-center gap-12">
         <div className="text-center md:text-left w-full md:w-1/3">
           <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-400 mb-4">Previous Service</p>
-          <Link href="/service/amazon-services" className="group inline-block no-underline text-zinc-900">
+          <Link href="/service/product-hunting-sourcing" className="group inline-block no-underline text-zinc-900">
             <h4 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter group-hover:text-orange-500 transition-colors flex items-center justify-center md:justify-start uppercase">
-              <ArrowRight className="mr-3 group-hover:-translate-x-3 transition-transform rotate-180 size-6 md:size-6 md:size-8 shrink-0" />
-              All Amazon Services
+              <ArrowRight className="mr-3 group-hover:-translate-x-3 transition-transform rotate-180 size-6 md:size-8 shrink-0" />
+              Product Hunting & Sourcing
             </h4>
           </Link>
         </div>

@@ -1,46 +1,36 @@
-"use client";
+import ClientPage from "./page-client";
+import { getPageMetadata } from "@/config/seo";
 
-import { useRouter } from "next/navigation";
+export const metadata = getPageMetadata("/");
 
-import AboutVision from "@/components/home/AboutVision";
-import HeroSection from "@/components/home/HeroSection";
-import OrbitBridgeCTA from "@/components/sections/OrbitBridgeCTA";
-import "@/components/home/Home.css";
-import ServicesMarquee from "@/components/ui/ServicesMarquee";
-import ServiceSection from "@/components/home/ServicesSection";
-import TeamSection from "@/components/home/TeamSection";
-import WhyChooseUs from "@/components/home/WhyChooseUs";
-
-// New Orbit global sections
-import OrbitPortfolioSection from "@/components/sections/OrbitPortfolioSection";
-import OrbitTestimonialsSection from "@/components/sections/OrbitTestimonialsSection";
-import OrbitProcessSection from "@/components/sections/OrbitProcessSection";
-import FAQSection from "@/components/home/FAQSection";
-import WhoItsFor from "@/components/home/WhoItsFor";
-
-export default function Home() {
-  const router = useRouter();
-
-  const scrollToForm = () => {
-    // Since Home page doesn't have a lead form, we redirect to the get-started page's form
-    router.push("/get-started#lead-form");
+export default function Page(props) {
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Grow Orbit",
+    "url": "https://groworbit.com",
+    "logo": "https://groworbit.com/logo.png",
+    "sameAs": [
+      "https://twitter.com/groworbit",
+      "https://www.linkedin.com/company/groworbit"
+    ],
+    "description": "We run the systems that scale Amazon brands. Expert PPC advertising, listing optimization, product sourcing, and A+ creative design.",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "bestRating": "5",
+      "ratingCount": "48",
+      "reviewCount": "48"
+    }
   };
 
   return (
-    <div className="home-page bg-white">
-      <HeroSection />
-      <ServicesMarquee />
-      <OrbitBridgeCTA scrollToForm={scrollToForm} />
-      <ServiceSection />
-      <OrbitPortfolioSection />
-      <WhyChooseUs />
-      <OrbitProcessSection scrollToForm={scrollToForm} />
-      <OrbitTestimonialsSection />
-      <TeamSection />
-      <WhoItsFor />
-      <AboutVision />
-      <FAQSection scrollToForm={scrollToForm} />
-
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <ClientPage {...props} />
+    </>
   );
 }

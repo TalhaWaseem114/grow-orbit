@@ -1,44 +1,41 @@
-"use client";
+import ClientPage from "./page-client";
+import { getPageMetadata } from "@/config/seo";
 
-import React, { useEffect } from "react";
-import SupportHero from "@/components/service/ongoing support/components/SupportHero";
-import MetricsStrip from "@/components/service/ongoing support/components/MetricsStrip";
-import TheProblem from "@/components/service/ongoing support/components/TheProblem";
-import WhoItsFor from "@/components/service/ongoing support/components/WhoItsFor";
-import SupportFramework from "@/components/service/ongoing support/components/SupportFramework";
-import SupportCycles from "@/components/service/ongoing support/components/SupportCycles";
-import MonthlyDeliverables from "@/components/service/ongoing support/components/MonthlyDeliverables";
-import SupportTechStack from "@/components/service/ongoing support/components/SupportTechStack";
-import ExpectedOutcomes from "@/components/service/ongoing support/components/ExpectedOutcomes";
-import HowWeWork from "@/components/service/ongoing support/components/HowWeWork";
-import PriceMatrix from "@/components/service/ongoing support/components/PriceMatrix";
-import SupportFAQ from "@/components/service/ongoing support/components/SupportFAQ";
-import SupportCTA from "@/components/service/ongoing support/components/SupportCTA";
-import FooterNav from "@/components/service/ongoing support/components/FooterNav";
+export const metadata = getPageMetadata("/service/ongoing-support");
 
-export default function OngoingSupport() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+export default function Page(props) {
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+  {
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Home",
+    "item": "https://groworbit.com"
+  },
+  {
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Service",
+    "item": "https://groworbit.com/service"
+  },
+  {
+    "@type": "ListItem",
+    "position": 3,
+    "name": "Ongoing Support",
+    "item": "https://groworbit.com/service/ongoing-support"
+  }
+]
+  };
 
   return (
-    <div
-      className="min-h-screen bg-[#F6F6F6] selection:bg-orange-500 selection:text-white"
-      style={{ fontFamily: "'Montserrat', sans-serif" }}
-    >
-      <SupportHero />
-      <MetricsStrip />
-      <MonthlyDeliverables />
-      <TheProblem />
-      <PriceMatrix />
-      <SupportFramework />
-      <SupportCycles />
-      <SupportTechStack />
-      <ExpectedOutcomes />
-      <HowWeWork />
-      <SupportFAQ />
-      <SupportCTA />
-      <FooterNav />
-    </div>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <ClientPage {...props} />
+    </>
   );
 }

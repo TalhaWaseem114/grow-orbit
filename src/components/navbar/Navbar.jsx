@@ -22,7 +22,7 @@ export default function Navbar() {
   const [mobileServiceExpanded, setMobileServiceExpanded] = useState(false);
   const headerRef = useRef(null);
 
-  const lightPages = ["service", "contact", "case-study", "blog", "portfolio"];
+  const lightPages = ["service", "contact", "case-study", "blog", "portfolio", "amazon-tools"];
   const darkThemedPages = [
     "/service", // Added the main services index because it has a dark header
     "/service/full/amazon-management",
@@ -103,7 +103,7 @@ export default function Navbar() {
   const hoverColorClass = isDarkTextNeeded ? "hover:text-orange-500" : "hover:text-white";
   const logoTextClass = isDarkTextNeeded ? "text-black" : "text-white";
 
-  const navItems = ["Home", "Service", "About", "Portfolio", "Case Studies", "Blog", "FAQ", "Contact"];
+  const navItems = ["Home", "Service", "About", "Portfolio", "Case Studies", "Tools", "Blog", "FAQ", "Contact"];
 
   return (
     <header
@@ -121,21 +121,23 @@ export default function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between">
 
         {/* ── Logo ── */}
-        <Link href="/" prefetch={false} className="flex items-center gap-2.5 no-underline shrink-0" aria-label="Grow Orbit Home">
-          <div className="relative flex items-center justify-center w-10 h-10">
-            <Image
-              src="/logo.png"
-              alt="Grow Orbit Logo"
-              width={40}
-              height={40}
-              className="object-contain"
-            />
-          </div>
-          <span className="text-xl font-black tracking-tight uppercase flex gap-1.5 transition-colors">
-            <span className={isDarkTextNeeded ? "text-[#2B3036]" : "text-white"}>GROW</span>
-            <span className="text-[#F1A52B]">ORBIT</span>
-          </span>
-        </Link>
+        <div className="flex-1 flex justify-start">
+          <Link href="/" prefetch={false} className="flex items-center gap-2.5 no-underline shrink-0" aria-label="Grow Orbit Home">
+            <div className="relative flex items-center justify-center w-10 h-10">
+              <Image
+                src="/logo.png"
+                alt="Grow Orbit Logo"
+                width={40}
+                height={40}
+                className="object-contain"
+              />
+            </div>
+            <span className="text-xl font-black tracking-tight uppercase flex gap-1.5 transition-colors">
+              <span className={isDarkTextNeeded ? "text-[#2B3036]" : "text-white"}>GROW</span>
+              <span className="text-[#F1A52B]">ORBIT</span>
+            </span>
+          </Link>
+        </div>
 
         {/* ── Mobile Toggle ── */}
         <button
@@ -150,9 +152,13 @@ export default function Navbar() {
         {/* ════════════════════════════════════════
             DESKTOP NAV
         ════════════════════════════════════════ */}
-        <nav className="hidden md:flex md:items-center md:gap-6">
+        <nav className="hidden md:flex md:items-center md:gap-5 lg:gap-6 justify-center">
           {navItems.map((item) => {
-            const path = item === "Home" ? "/" : item === "Case Studies" ? "/case-study" : `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+            let path = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+            if (item === "Home") path = "/";
+            if (item === "Case Studies") path = "/case-study";
+            if (item === "Tools") path = "/amazon-tools";
+            
             const isActive = pathname.replace(/\/$/, "") === path.replace(/\/$/, "") || (path === "/" && pathname === "/");
             const isService = item === "Service";
 
@@ -190,10 +196,11 @@ export default function Navbar() {
               </Link>
             );
           })}
+        </nav>
 
-          {/* Auth section — desktop */}
-          <div className="flex items-center gap-5 ml-6">
-            {!user ? (
+        {/* Auth section — desktop */}
+        <div className="hidden md:flex flex-1 items-center justify-end gap-3 lg:gap-5">
+          {!user ? (
               <>
                 <Link href="/login" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline ${textColorClass} ${hoverColorClass}`}>
                   Sign In
@@ -249,7 +256,6 @@ export default function Navbar() {
               </div>
             )}
           </div>
-        </nav>
       </div>
 
       {/* ════════════════════════════════════════
@@ -270,7 +276,11 @@ export default function Navbar() {
         <nav className="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-y-auto max-h-[85vh] animate-in slide-in-from-top duration-200">
           <div className="px-4 py-5 space-y-1">
             {navItems.map((item) => {
-              const path = item === "Home" ? "/" : item === "Case Studies" ? "/case-study" : `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+              let path = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+              if (item === "Home") path = "/";
+              if (item === "Case Studies") path = "/case-study";
+              if (item === "Tools") path = "/amazon-tools";
+
               const isActive = pathname.replace(/\/$/, "") === path.replace(/\/$/, "") || (path === "/" && pathname === "/");
               const isService = item === "Service";
 

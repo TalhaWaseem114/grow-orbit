@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Clock, Calendar, Tag, BookOpen } from "lucide-react";
 import { getReadTime, parseMarkdownText } from "@/lib/blogUtils";
+import { getAuthorBySlug, getAuthorSlugByName } from "@/data/authorData";
+import BlogShareBar from "@/components/blog/BlogShareBar";
 
 export const revalidate = 60; // ISR revalidation every 60 seconds
 
@@ -140,22 +142,24 @@ export default async function Page({ params }) {
             "@type": "BlogPosting",
             "mainEntityOfPage": {
               "@type": "WebPage",
-              "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/blog/${post.slug || post.id}`
+              "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com"}/blog/${post.slug || post.id}`
             },
             "headline": post.title,
             "image": [post.coverImage],
             "datePublished": post.date,
             "author": {
               "@type": "Person",
-              "name": post.author?.name || "Grow Orbit",
-              "jobTitle": post.author?.role || "Growth Architect"
+              "name": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).name,
+              "jobTitle": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).role,
+              "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com"}/blog/author/${getAuthorSlugByName(post.author?.name)}`,
+              "sameAs": Object.values(getAuthorBySlug(getAuthorSlugByName(post.author?.name)).socialLinks).filter(Boolean)
             },
             "publisher": {
               "@type": "Organization",
               "name": "Grow Orbit",
               "logo": {
                 "@type": "ImageObject",
-                "url": `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/logo.png`
+                "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com"}/logo.png`
               }
             },
             "description": post.excerpt
@@ -205,19 +209,27 @@ export default async function Page({ params }) {
                 {post.title}
               </h1>
               <div className="flex items-center gap-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white text-sm font-black">
-                    {post.author?.name ? post.author.name[0] : "G"}
+                <Link href={`/blog/author/${getAuthorSlugByName(post.author?.name)}`} className="flex items-center gap-3 no-underline group/auth">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white text-sm font-black overflow-hidden relative shrink-0 group-hover/auth:scale-105 transition-all">
+                    {getAuthorBySlug(getAuthorSlugByName(post.author?.name)).avatar ? (
+                      <img
+                        src={getAuthorBySlug(getAuthorSlugByName(post.author?.name)).avatar}
+                        alt={post.author?.name || "Grow Orbit"}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      post.author?.name ? post.author.name[0] : "G"
+                    )}
                   </div>
                   <div>
-                    <p className="text-sm font-bold text-white leading-none">
+                    <p className="text-sm font-bold text-white leading-none group-hover/auth:text-orange-500 transition-colors">
                       {post.author?.name || "Grow Orbit"}
                     </p>
                     <p className="text-[10px] text-white/50 mt-1">
                       {post.author?.role || "Growth Architect"}
                     </p>
                   </div>
-                </div>
+                </Link>
                 <div className="hidden sm:flex items-center gap-2 text-white/40 text-[10px] font-bold">
                   <Calendar size={10} />
                   {new Date(post.date).toLocaleDateString("en-US", {
@@ -235,7 +247,10 @@ export default async function Page({ params }) {
 
       {/* ── ARTICLE BODY (SERVER RENDERED) ── */}
       <section className="px-6 py-16 sm:py-20">
-        <div className="max-w-[780px] mx-auto">
+        <div className="max-w-[780px] mx-auto relative">
+          {/* Social Share Bar */}
+          <BlogShareBar title={post.title} slug={post.slug || post.id} />
+
           {/* Tags */}
           <div className="flex flex-wrap items-center gap-2 mb-12 pb-8 border-b border-zinc-200">
             <Tag size={12} className="text-zinc-400" />
@@ -318,6 +333,28 @@ export default async function Page({ params }) {
                   </h2>
                 );
               }
+              if (block.type === "heading-h3") {
+                return (
+                  <h3
+                    key={i}
+                    className="text-xl sm:text-2xl font-black tracking-tight mt-10 mb-3 text-zinc-900"
+                    style={montserrat}
+                  >
+                    {block.text}
+                  </h3>
+                );
+              }
+              if (block.type === "heading-h4") {
+                return (
+                  <h4
+                    key={i}
+                    className="text-lg sm:text-xl font-bold tracking-tight mt-8 mb-2 text-zinc-900"
+                    style={montserrat}
+                  >
+                    {block.text}
+                  </h4>
+                );
+              }
               if (block.type === "quote") {
                 return (
                   <blockquote
@@ -392,7 +429,7 @@ export default async function Page({ params }) {
               }
               // paragraph — support basic **bold** and [link](url) markdown
               return (
-                <div
+                <p
                   key={i}
                   className="text-[15px] sm:text-base text-zinc-600 leading-[1.9] font-light whitespace-pre-line"
                   dangerouslySetInnerHTML={{

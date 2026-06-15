@@ -32,7 +32,7 @@ const serviceGroups = [
     color: "violet",
     items: [
       { icon: <Camera size={16} />,        title: "Listing Images",        desc: "Hero shots, lifestyle, infographics — built to convert.", href: "/service/design/listing-image-systems" },
-      { icon: <Sparkles size={16} />,      title: "A+ Content (EBC)",      desc: "Below-the-fold modules that close the sale.",     href: "/service/design/a-plus-content" },
+      { icon: <Sparkles size={16} />,      title: "A+ Content (EBC)",      desc: "Below-the-fold modules that close the sale.",     href: "/service/design/enhanced-brand-content" },
       { icon: <BookOpen size={16} />,      title: "Brand Story",           desc: "Above-the-fold narrative + catalog cross-sell.",  href: "/service/design/brand-story" },
       { icon: <Layout size={16} />,        title: "Brand Store",           desc: "Custom storefront, sub-pages, vanity URL.",      href: "/service/design/brand-store" },
       { icon: <MousePointerClick size={16}/>,title: "Main Image CTR",     desc: "Engineered to win the click on the search grid.", href: "/service/design/main-image-ctr" },

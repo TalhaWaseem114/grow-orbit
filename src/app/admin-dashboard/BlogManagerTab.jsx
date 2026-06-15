@@ -181,7 +181,7 @@ export default function BlogManagerTab({ isMobile }) {
   const [editorTags, setEditorTags] = useState("");
   const [editorBody, setEditorBody] = useState("");
   const [editorCover, setEditorCover] = useState("");
-  const [editorAuthorName, setEditorAuthorName] = useState("Talha Waseem");
+  const [editorAuthorName, setEditorAuthorName] = useState("Ali");
   const [editorAuthorRole, setEditorAuthorRole] = useState("Founder & Growth Architect");
   const [isSaving, setIsSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
@@ -246,7 +246,7 @@ export default function BlogManagerTab({ isMobile }) {
     setEditorTags("");
     setEditorBody("");
     setEditorCover("");
-    setEditorAuthorName("Talha Waseem");
+    setEditorAuthorName("Ali");
     setEditorAuthorRole("Founder & Growth Architect");
     setShowEditor(true);
   };
@@ -284,6 +284,12 @@ export default function BlogManagerTab({ isMobile }) {
       if (b.type === "heading") {
         return `## ${b.text}`;
       }
+      if (b.type === "heading-h3") {
+        return `### ${b.text}`;
+      }
+      if (b.type === "heading-h4") {
+        return `#### ${b.text}`;
+      }
       if (b.type === "quote") {
         return `> ${b.text}`;
       }
@@ -293,7 +299,7 @@ export default function BlogManagerTab({ isMobile }) {
       return b.text;
     }).join("\n\n") || "");
     setEditorCover(post.coverImage || "");
-    setEditorAuthorName(post.author?.name || "Talha Waseem");
+    setEditorAuthorName(post.author?.name || "Ali");
     setEditorAuthorRole(post.author?.role || "Founder & Growth Architect");
     setShowEditor(true);
   };
@@ -317,7 +323,7 @@ export default function BlogManagerTab({ isMobile }) {
       date: editingPost?.date || new Date().toISOString().split("T")[0],
       readTime: `${Math.max(3, Math.ceil(editorBody.split(" ").length / 200))} min read`,
       author: { 
-        name: editorAuthorName || "Talha Waseem", 
+        name: editorAuthorName || "Ali", 
         role: editorAuthorRole || "Founder & Growth Architect", 
         avatar: null 
       },
@@ -340,6 +346,12 @@ export default function BlogManagerTab({ isMobile }) {
         } else if (text.startsWith("%%CTA|")) {
           type = "cta";
           cleanedText = text.replace(/^%%CTA\|/, "").replace(/%%$/, "");
+        } else if (text.startsWith("#### ")) {
+          type = "heading-h4";
+          cleanedText = text.replace(/^####\s*/, "");
+        } else if (text.startsWith("### ")) {
+          type = "heading-h3";
+          cleanedText = text.replace(/^###\s*/, "");
         } else if (text.startsWith("# ") || text.startsWith("## ")) {
           type = "heading";
           cleanedText = text.replace(/^#{1,2}\s*/, "");
@@ -498,6 +510,10 @@ export default function BlogManagerTab({ isMobile }) {
     const excerptLen = rawExcerpt.length;
     const h2Matches = rawBody.match(/(^|\n)##\s+/g);
     const h2Count = h2Matches ? h2Matches.length : 0;
+    const h3Matches = rawBody.match(/(^|\n)###\s+/g);
+    const h3Count = h3Matches ? h3Matches.length : 0;
+    const h4Matches = rawBody.match(/(^|\n)####\s+/g);
+    const h4Count = h4Matches ? h4Matches.length : 0;
     const linkMatches = rawBody.match(/\[.*?\]\(https?:\/\/.*?\)/g);
     const linkCount = linkMatches ? linkMatches.length : 0;
     
@@ -507,7 +523,8 @@ export default function BlogManagerTab({ isMobile }) {
     const linkCheck = linkCount > 0;
     
     const hasImages = /!\[.*?\]\(.*?\)/.test(rawBody);
-    const hasEmptyAlt = /!\[\s*\]\(.*?\)/.test(rawBody);
+    const hasPlaceholderAlt = rawBody.includes("Enter Your Primary SEO Keyword Here for Alt Text");
+    const hasEmptyAlt = /!\[\s*\]\(.*?\)/.test(rawBody) || hasPlaceholderAlt;
     const altTextCheck = hasImages ? !hasEmptyAlt : true;
     
     const keywordCheck = primaryKeyword ? (
@@ -568,7 +585,7 @@ export default function BlogManagerTab({ isMobile }) {
     return {
       keywords: sortedKeywords,
       titleCheck, excerptCheck, h2Check, linkCheck, altTextCheck, keywordCheck, readabilityCheck, ctaCheck,
-      titleLen, excerptLen, h2Count, linkCount, hasImages,
+      titleLen, excerptLen, h2Count, h3Count, h4Count, linkCount, hasImages,
       titleHelper, excerptHelper, ctaHelper,
       longParagraphCount: longParagraphs.length,
       score,
@@ -657,7 +674,7 @@ export default function BlogManagerTab({ isMobile }) {
                   setEditorExcerpt("A comprehensive step-by-step guide on structuring your brand operations, optimizing listings for conversion, and scaling beyond 7 figures.");
                   setEditorCategory("Amazon Strategy");
                   setEditorCover("https://images.unsplash.com/photo-1553028826-f4804a6dba3b?q=80&w=1200&auto=format&fit=crop");
-                  setEditorAuthorName("Talha Waseem");
+                  setEditorAuthorName("Ali");
                   setEditorAuthorRole("Founder & Growth Architect");
                   setEditorTags("Brand Building, Scaling, Conversion");
                   setEditorBody(`# How to Dominate the Amazon Search Engine\n\nWelcome to the Orbit Protocol Editor. You can write your standard paragraph text right here. Select any text and click **Bold Text** to highlight key points, or insert a [link to your website](https://groworbit.co) seamlessly!\n\n---\n\n## Adding Impactful Quotes & Highlights\n\nSometimes you need to emphasize a powerful insight or a customer review. That's where Quote blocks and SEO Highlights come in:\n\n> "Success on Amazon isn't just about launching products; it's about launching data-driven brands that cannot be ignored."\n\n💡 **Pro Tip:** Google loves structured highlights! Use the Highlight Box to call out key takeaways that answer user intent directly. This significantly increases your chances of capturing Featured Snippets.\n\n## Structuring Data with Lists & Tables\n\nYou can break down complex strategies into easy-to-read lists:\n\n- Strategy 1: Optimize your main image for CTR.\n- Strategy 2: Implement A+ Premium Content.\n- Strategy 3: Scale your PPC with Exact Match dominance.\n\nIf you have metrics or comparison data, use a Table block:\n\n| Metric | Industry Average | Orbit Standard |\n|---|---|---|\n| Conversion Rate | 9.5% | **22.4%** |\n| ACoS | 35% | **18%** |\n| Organic Ranking | Page 2 | **Top 3** |\n\n## Visual Storytelling & Video\n\nDon't forget to break up your text with high-quality imagery or embed a relevant YouTube video!\n\n![SEO Alt Text Example For Keywords](https://images.unsplash.com/photo-1553028826-f4804a6dba3b?q=80&w=1200&auto=format&fit=crop)\n\n@[youtube|Amazon Brand Scaling Video](https://www.youtube.com/watch?v=dQw4w9WgXcQ)\n\n---\n\n## Ready to scale your brand?\n\nAdd a Call-To-Action (CTA) Button at the end of your articles to convert readers into leads!\n\n%%CTA|https://groworbit.co|Book a Free Amazon Audit%%\n\nThis is everything you need to build stunning articles. Now, delete this template and start writing your masterpiece!`);
@@ -884,7 +901,14 @@ export default function BlogManagerTab({ isMobile }) {
                 Bullet List
               </button>
               <button
-                onClick={() => insertHelperText("\n\n![Enter Your Primary SEO Keyword Here for Alt Text](https://images.unsplash.com/photo-1553028826-f4804a6dba3b?q=80&w=1200&auto=format&fit=crop)\n\n")}
+                onClick={() => {
+                  const altText = prompt("Enter descriptive SEO Alt Text for this image (highly recommended for Googlebot):");
+                  if (altText === null) return; // User cancelled
+                  const imageUrl = prompt("Enter image URL:", "https://images.unsplash.com/photo-1553028826-f4804a6dba3b?q=80&w=1200&auto=format&fit=crop");
+                  if (imageUrl) {
+                    insertHelperText(`\n\n![${altText}](${imageUrl})\n\n`);
+                  }
+                }}
                 type="button"
                 style={{ flexShrink: 0, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#fff", padding: "6px 12px", borderRadius: 8, fontSize: 10, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 4 }}
               >
@@ -1054,11 +1078,11 @@ export default function BlogManagerTab({ isMobile }) {
                   <div className="flex items-center gap-5">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white text-sm font-black">
-                        {editorAuthorName ? editorAuthorName[0] : "T"}
+                        {editorAuthorName ? editorAuthorName[0] : "A"}
                       </div>
                       <div>
                         <p className="text-sm font-bold text-white leading-none">
-                          {editorAuthorName || "Talha Waseem"}
+                          {editorAuthorName || "Ali"}
                         </p>
                         <p className="text-[10px] text-white/50 mt-1">
                           {editorAuthorRole || "Founder & Growth Architect"}
@@ -1147,6 +1171,16 @@ export default function BlogManagerTab({ isMobile }) {
                       <h2 key={idx} className={`font-black tracking-tight mt-12 mb-4 text-zinc-900 ${isPreviewFullscreen ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"}`} style={{ fontFamily: "'Montserrat', sans-serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
                     );
                   }
+                  if (block.type === "heading-h3") {
+                    return (
+                      <h3 key={idx} className={`font-black tracking-tight mt-10 mb-3 text-zinc-900 ${isPreviewFullscreen ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"}`} style={{ fontFamily: "'Montserrat', sans-serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
+                    );
+                  }
+                  if (block.type === "heading-h4") {
+                    return (
+                      <h4 key={idx} className={`font-bold tracking-tight mt-8 mb-2 text-zinc-900 ${isPreviewFullscreen ? "text-lg sm:text-xl" : "text-base sm:text-lg"}`} style={{ fontFamily: "'Montserrat', sans-serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
+                    );
+                  }
                   if (block.type === "quote") {
                     return (
                       <blockquote key={idx} className="relative pl-8 py-6 my-10 border-l-4 border-orange-500 bg-orange-50/50 rounded-r-2xl pr-8">
@@ -1204,7 +1238,7 @@ export default function BlogManagerTab({ isMobile }) {
                     );
                   }
                   return (
-                    <div key={idx} className="text-[15px] sm:text-base text-zinc-600 leading-[1.9] font-light whitespace-pre-line" dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
+                    <p key={idx} className="text-[15px] sm:text-base text-zinc-600 leading-[1.9] font-light whitespace-pre-line" dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
                   );
                 })}
               </article>
@@ -1279,7 +1313,7 @@ export default function BlogManagerTab({ isMobile }) {
                       { label: `Title Length: ${seoInsights.titleLen} / 60 chars`, detail: seoInsights.titleHelper, pass: seoInsights.titleCheck },
                       { label: `Excerpt Length: ${seoInsights.excerptLen} / 160 chars`, detail: seoInsights.excerptHelper, pass: seoInsights.excerptCheck },
                       { label: `Primary Keyword Cross-Map`, detail: seoInsights.keywordCheck ? "Mapped" : "Missing from zones", pass: seoInsights.keywordCheck },
-                      { label: `H2 Headings Detected`, detail: `${seoInsights.h2Count} Headings`, pass: seoInsights.h2Check },
+                      { label: `Heading Hierarchy (H2/H3/H4)`, detail: `H2: ${seoInsights.h2Count} | H3: ${seoInsights.h3Count} | H4: ${seoInsights.h4Count}`, pass: seoInsights.h2Check },
                       { label: `Content Hyperlinks`, detail: `${seoInsights.linkCount} Links`, pass: seoInsights.linkCheck },
                       { label: `Image Alt Text Verification`, detail: seoInsights.altTextCheck ? "Valid" : "Empty Alt Found", pass: seoInsights.altTextCheck },
                       { label: `Readability Guardrail`, detail: seoInsights.readabilityCheck ? "Passed" : `${seoInsights.longParagraphCount} long blocks`, pass: seoInsights.readabilityCheck },

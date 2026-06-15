@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import ClientLogosMarquee from "@/components/ui/ClientLogosMarquee";
 
 const brands = [
   { name: "MYPRO", category: "Workout" },
@@ -26,20 +27,7 @@ export default function TrustedBrandsThree() {
         </div>
 
         {/* Brand names with sub-labels */}
-        <div className="flex flex-wrap justify-center items-start gap-10 md:gap-14 lg:gap-20">
-          {brands.map((b, i) => (
-            <div key={i} className="flex flex-col items-center gap-1.5 group cursor-default">
-              <span
-                className="text-xl md:text-2xl lg:text-[28px] font-extrabold tracking-tight text-white/20 group-hover:text-white/50 transition-all duration-500 uppercase"
-              >
-                {b.name}
-              </span>
-              <span className="text-[8px] font-bold text-zinc-700 uppercase tracking-[0.25em] group-hover:text-zinc-500 transition-colors">
-                {b.category}
-              </span>
-            </div>
-          ))}
-        </div>
+        <ClientLogosMarquee isDark={true} bgClass="bg-[#050505]" borderClass="border-y border-white/[0.04]" />
       </div>
     </section>
   );

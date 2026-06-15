@@ -7,3 +7,5 @@ Disallow: /admin-dashboard
 Disallow: /login
 Disallow: /register
 Disallow: /api/
+
+Sitemap: https://groworbit.com/sitemap.xml

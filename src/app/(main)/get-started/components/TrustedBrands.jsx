@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import ClientLogosMarquee from "@/components/ui/ClientLogosMarquee";
 
 const SectionLabel = ({ children }) => (
   <div className="flex items-center justify-center gap-3 mb-6">
@@ -49,53 +50,7 @@ export default function TrustedBrands() {
         </div>
 
         {/* Infinite Marquee */}
-        <div className="relative">
-          {/* Masking Gradients for smooth fade */}
-
-
-          <style>{`
-            @keyframes marquee {
-              0% { transform: translateX(0); }
-              100% { transform: translateX(-50%); }
-            }
-            .animate-marquee {
-              animation: marquee 15s linear infinite;
-            }
-            @media (min-width: 768px) {
-              .animate-marquee {
-                animation-duration: 35s;
-              }
-            }
-            .animate-marquee:hover {
-              animation-play-state: paused;
-            }
-          `}</style>
-
-          <div className="flex whitespace-nowrap animate-marquee">
-            {/* Double the array for seamless looping */}
-            {[...brands, ...brands].map((brand, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-6 mx-16 group cursor-default"
-              >
-                {/* Brand Icon - Premium Glass style */}
-                <div className="w-16 h-16 rounded-2xl bg-zinc-50 border border-zinc-100 flex items-center justify-center text-zinc-300 font-black text-xl group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 group-hover:shadow-[0_20px_40px_rgba(249,115,22,0.2)] transition-all duration-500 rotate-3 group-hover:rotate-0">
-                  {brand.name.charAt(0)}
-                </div>
-
-                {/* Brand Name */}
-                <div className="flex flex-col">
-                  <span className="text-2xl font-black text-zinc-200 group-hover:text-zinc-900 transition-colors duration-500 tracking-tighter uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                    {brand.name}
-                  </span>
-                  <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-zinc-300 group-hover:text-orange-500 transition-colors duration-500 font-bold">
-                    {brand.tagline}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+        <ClientLogosMarquee isDark={false} bgClass="bg-white" borderClass="border-y border-zinc-100" />
       </div>
     </section>
   );

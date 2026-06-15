@@ -24,5 +24,9 @@ export function parseMarkdownText(text) {
   if (!text) return "";
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-zinc-900">$1</strong>')
-    .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="text-orange-500 hover:text-orange-600 underline font-semibold transition-colors">$1</a>');
+    .replace(/\[(.*?)\]\((.*?)\)/g, (match, anchor, url) => {
+      const isInternal = url.startsWith('/') || url.includes('groworbit.com');
+      const targetAttr = isInternal ? '' : ' target="_blank" rel="noopener noreferrer"';
+      return `<a href="${url}"${targetAttr} class="text-orange-500 hover:text-orange-600 underline font-semibold transition-colors">${anchor}</a>`;
+    });
 }

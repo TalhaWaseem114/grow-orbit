@@ -15,13 +15,14 @@ const PLANET_COLORS = [
 ];
 
 const SERVICES = [
+  { name: "PRODUCT HUNTING & SOURCING", href: "/service/product-hunting-sourcing" },
   { name: "LISTING OPTIMIZATION", href: "/service/listing-optimization" },
   { name: "AMAZON SEO", href: "/service/audit-strategy" },
   { name: "PPC MANAGEMENT", href: "/service/ppc-efficiency" },
   { name: "BRAND LAUNCH", href: "/service/brand-launch" },
-  { name: "A+ CONTENT", href: "/service/design/a-plus-content" },
+  { name: "A+ CONTENT", href: "/service/design/enhanced-brand-content" },
   { name: "BRAND STORY", href: "/service/design/brand-story" },
-  { name: "STOREFRONT DESIGN", href: "/service/design/storefront-design" },
+  { name: "STOREFRONT DESIGN", href: "/service/design/brand-store" },
   { name: "TRADEMARK REGISTRATION", href: "/service/trademark-registration" }
 ];
 

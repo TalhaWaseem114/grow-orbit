@@ -21,7 +21,7 @@ export const BLOG_POSTS = [
       "Every competitor uses a white background. That's exactly why it doesn't work. We break down the visual psychology behind click-through rate engineering — and the one formatting decision that changed everything for a $28K/month launch.",
     category: "Listing Optimization",
     author: {
-      name: "Talha Waseem",
+      name: "Ali",
       role: "Founder & Growth Architect",
       avatar: null,
     },
@@ -80,7 +80,7 @@ export const BLOG_POSTS = [
       "Most sellers think high ACoS means bad keywords. It doesn't. It means bad structure. We reveal the campaign architecture that turned a bleeding ad account into a profitable growth engine — without cutting a single keyword.",
     category: "PPC & Advertising",
     author: {
-      name: "Talha Waseem",
+      name: "Ali",
       role: "Founder & Growth Architect",
       avatar: null,
     },
@@ -127,7 +127,7 @@ export const BLOG_POSTS = [
       "Everyone says you need reviews to sell on Amazon. We say you need a listing so good that reviews become irrelevant for the first 90 days. Here's how we've launched 3 brands to $25K+ months without a single review.",
     category: "Amazon Strategy",
     author: {
-      name: "Talha Waseem",
+      name: "Ali",
       role: "Founder & Growth Architect",
       avatar: null,
     },
@@ -174,7 +174,7 @@ export const BLOG_POSTS = [
       "Most A+ Content is a branding exercise. Ours is a conversion weapon. We break down the exact 7-module structure that tripled CVR from 3.4% to 10.2% for a weighted blanket launch — in 11 days.",
     category: "Listing Optimization",
     author: {
-      name: "Talha Waseem",
+      name: "Ali",
       role: "Founder & Growth Architect",
       avatar: null,
     },
@@ -213,7 +213,7 @@ export const BLOG_POSTS = [
       "98% of Amazon Brand Stores are digital brochures. No strategy, no flow, no conversion intent. We show you how to turn your Store into a traffic-qualifying funnel that increases average order value by 35%.",
     category: "Brand Building",
     author: {
-      name: "Talha Waseem",
+      name: "Ali",
       role: "Founder & Growth Architect",
       avatar: null,
     },
@@ -260,7 +260,7 @@ export const BLOG_POSTS = [
       "AI-generated listings, Rufus product search, rising CPCs, and the death of generic branding. We break down the 5 biggest shifts happening on Amazon right now and what your strategy should look like.",
     category: "E-Commerce Trends",
     author: {
-      name: "Talha Waseem",
+      name: "Ali",
       role: "Founder & Growth Architect",
       avatar: null,
     },

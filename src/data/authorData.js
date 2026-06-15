@@ -6,7 +6,7 @@ export const AUTHORS = {
     slug: "ali",
     name: "Ali",
     role: "Founder & Growth Architect",
-    avatar: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271782/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/9.png", // Using portfolio image placeholder
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop", 
     bio: "Ali is the Founder and Growth Architect at Grow Orbit. With over 8 years of hands-on experience building and scaling 7-figure and 8-figure Amazon brands, Ali specializes in click-through rate (CTR) engineering, PPC efficiency architecture, and conversion-first listing systems. He has helped scale dozens of international brands to top-of-search dominance.",
     credentials: [
       "8+ Years Amazon PPC Architecture",

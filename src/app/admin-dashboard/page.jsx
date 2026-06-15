@@ -8,7 +8,7 @@ import {
 import {
   Briefcase, ChevronRight, Globe, Layout, LogOut, Settings,
   Shield, Users, Zap, ExternalLink, MoreHorizontal, Download, 
-  Home, FileText
+  Home, FileText, Mail
 } from "lucide-react";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -29,6 +29,7 @@ import TeamTab from "./components/TeamTab";
 import CmsTab from "./components/CmsTab";
 import SettingsTab from "./components/SettingsTab";
 import BlogManagerTab from "./BlogManagerTab";
+import NewsletterTab from "./components/NewsletterTab";
 
 /* ─────────────────────────────────────────
    SIDEBAR ITEM HELPER
@@ -567,6 +568,7 @@ export default function AdminDashboard() {
             <SidebarItem id="team"  label="Agency Team"   icon={Shield}   activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
             {!isSidebarCollapsed && <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>Content</div>}
             <SidebarItem id="blog"  label="Blog Manager" icon={FileText}  activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+            <SidebarItem id="newsletter" label="Newsletter" icon={Mail} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
             {!isSidebarCollapsed && <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>System</div>}
             <SidebarItem id="cms"      label="Site Layout" icon={Layout}   activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
             <SidebarItem id="settings" label="Settings"    icon={Settings} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
@@ -754,6 +756,14 @@ export default function AdminDashboard() {
                 />
               )}
 
+              {activeTab === "newsletter" && (
+                <NewsletterTab 
+                  isMobile={isMobile}
+                  leads={leads}
+                  users={users}
+                />
+              )}
+
               {activeTab === "settings" && (
                 <SettingsTab />
               )}
@@ -769,6 +779,7 @@ export default function AdminDashboard() {
             { id: "overview", icon: Globe, label: "Home" },
             { id: "leads", icon: Briefcase, label: "Leads", badge: newLeadsCount },
             { id: "users", icon: Users, label: "Users" },
+            { id: "newsletter", icon: Mail, label: "Email" },
             { id: "cms", icon: Layout, label: "CMS" },
           ].map(item => (
             <button

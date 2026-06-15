@@ -391,7 +391,7 @@ export default function Footer() {
         <div className="w-full flex justify-center items-center py-12 md:py-16 border-t border-b border-white/5 my-8 select-none overflow-hidden relative z-10">
           <h2 
             className="font-black uppercase text-white/[0.08] leading-none whitespace-nowrap tracking-tighter" 
-            style={{ fontSize: "clamp(3rem, 13vw, 15rem)", fontFamily: "'Montserrat', sans-serif" }}
+            style={{ fontSize: "clamp(2rem, 11vw, 15rem)", fontFamily: "'Montserrat', sans-serif" }}
           >
             GROW ORBIT
           </h2>

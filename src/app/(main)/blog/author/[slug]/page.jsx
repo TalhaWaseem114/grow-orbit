@@ -53,12 +53,17 @@ export default async function AuthorPage({ params }) {
     // 1. Fetch from Firestore
     const q = query(
       collection(db, "blogs"),
-      where("status", "==", "published"),
-      where("author.name", "==", author.name)
+      where("status", "==", "published")
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      authorPosts.push({ id: doc.id, ...doc.data() });
+      let data = doc.data();
+      if (data.author && data.author.name === "Talha Waseem") {
+        data.author.name = "Ali";
+      }
+      if (data.author?.name === author.name) {
+        authorPosts.push({ id: doc.id, ...data });
+      }
     });
   } catch (error) {
     console.warn("Firestore search failed, falling back to local posts:", error);

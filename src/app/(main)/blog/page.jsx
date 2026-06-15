@@ -72,7 +72,11 @@ export default async function Page() {
     const q = query(collection(db, "blogs"), where("status", "==", "published"));
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      posts.push({ id: doc.id, ...doc.data() });
+      let data = doc.data();
+      if (data.author && data.author.name === "Talha Waseem") {
+        data.author.name = "Ali";
+      }
+      posts.push({ id: doc.id, ...data });
     });
     // Sort by date descending
     posts.sort((a, b) => new Date(b.date) - new Date(a.date));

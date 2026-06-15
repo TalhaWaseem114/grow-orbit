@@ -86,7 +86,11 @@ export default async function Page({ params }) {
     
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
-      post = { id: doc.id, ...doc.data() };
+      let data = doc.data();
+      if (data.author && data.author.name === "Talha Waseem") {
+        data.author.name = "Ali";
+      }
+      post = { id: doc.id, ...data };
 
       if (post.category) {
         const relatedQ = query(
@@ -97,7 +101,11 @@ export default async function Page({ params }) {
         const relatedSnap = await getDocs(relatedQ);
         relatedSnap.forEach((relatedDoc) => {
           if (relatedDoc.id !== post.id) {
-            relatedPosts.push({ id: relatedDoc.id, ...relatedDoc.data() });
+            let rpData = relatedDoc.data();
+            if (rpData.author && rpData.author.name === "Talha Waseem") {
+              rpData.author.name = "Ali";
+            }
+            relatedPosts.push({ id: relatedDoc.id, ...rpData });
           }
         });
         relatedPosts = relatedPosts.slice(0, 2);

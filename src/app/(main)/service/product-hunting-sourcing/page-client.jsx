@@ -123,7 +123,7 @@ function ProductHuntingHero() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6 mb-10">
-                <HeroButton href="/contact" className="w-full sm:w-auto">Book Sourcing Strategy Call</HeroButton>
+                <HeroButton href="/contact?service=product-hunting-sourcing" className="w-full sm:w-auto">Book Sourcing Strategy Call</HeroButton>
                 <a href="#packages" className="group flex items-center justify-center sm:justify-start gap-3 text-zinc-400 hover:text-zinc-900 font-bold text-[11px] uppercase tracking-widest px-2 py-4 transition-colors no-underline">
                   View Service Packages <ChevronRight size={13} className="group-hover:translate-x-1 transition-transform" />
                 </a>
@@ -299,11 +299,11 @@ function MetricsStrip() {
             </div>
           ))}
           <Link
-            href="/contact"
+            href="/contact?service=product-hunting-sourcing&package=free-analysis"
             className="group relative flex flex-col items-center text-center col-span-2 md:col-span-3 lg:col-span-1 mt-4 lg:mt-0 pt-6 lg:pt-0 border-t lg:border-t-0 lg:border-l border-white/5 lg:border-orange-500/20 lg:pl-8 transition-all duration-500 hover:bg-orange-500/[0.02] no-underline"
           >
             <span className="text-xl sm:text-2xl lg:text-lg font-black text-white uppercase tracking-tighter leading-tight group-hover:text-orange-400 transition-colors flex items-center gap-3">
-              Get Free Analysis
+              Book Strategy Call
               <ArrowRight size={14} className="text-orange-500 group-hover:translate-x-1 transition-transform" />
             </span>
             <div className="flex items-center gap-2 mt-2">
@@ -343,7 +343,7 @@ function WhyProductHunting() {
             <p className="text-zinc-500 text-lg font-light leading-relaxed max-w-md mb-10">
               Most Amazon brands fail because they launch average products in saturated categories. Real brand dominance is engineered at the hunting phase by matching solid factory pricing to validated market keywords.
             </p>
-            <Link href="/contact" className="group flex items-center gap-3 text-orange-500 font-bold text-[11px] uppercase tracking-widest hover:gap-5 transition-all no-underline">
+            <Link href="/contact?service=product-hunting-sourcing" className="group flex items-center gap-3 text-orange-500 font-bold text-[11px] uppercase tracking-widest hover:gap-5 transition-all no-underline">
               Find my next product <ArrowRight size={13} />
             </Link>
           </div>
@@ -359,6 +359,60 @@ function WhyProductHunting() {
               </div>
             ))}
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   03b — THE COST OF GUESSING (dark stats section)
+   ═══════════════════════════════════════════════ */
+function CostOfGuessing() {
+  const stats = [
+    { val: "67%",  label: "Of first Amazon products fail due to poor research",  color: "text-red-500" },
+    { val: "$8K+", label: "Average capital lost on an unsourced product launch", color: "text-amber-500" },
+    { val: "3.2x", label: "Higher ROI when products are data-validated first",   color: "text-orange-500" },
+  ];
+
+  return (
+    <section className="py-28 bg-zinc-950 text-white relative overflow-hidden">
+      <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] bg-orange-500/[0.06] blur-[160px] rounded-full pointer-events-none" />
+      <div className="absolute top-20 right-0 w-[300px] h-[300px] bg-orange-500/[0.04] blur-[120px] rounded-full pointer-events-none" />
+
+      {/* Big watermark */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none">
+        <span style={{ fontFamily: "'Playfair Display', serif" }} className="text-[100px] sm:text-[180px] lg:text-[280px] font-black italic tracking-tighter text-white/[0.02]">
+          Risk
+        </span>
+      </div>
+
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+
+          <div className="lg:col-span-5">
+            <SectionLabel light>The Data</SectionLabel>
+            <h2 className="text-4xl md:text-6xl font-black tracking-tighter uppercase leading-[0.88] mb-6" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              The cost of<br />
+              <span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-500 lowercase tracking-normal">guessing.</span>
+            </h2>
+            <p className="text-zinc-400 text-lg font-light leading-relaxed max-w-md mb-10">
+              Most Amazon launches fail not because of bad execution, but because the product was never validated against real market data in the first place.
+            </p>
+            <Link href="/contact?service=product-hunting-sourcing" className="group flex items-center gap-3 text-orange-500 font-bold text-[11px] uppercase tracking-widest hover:gap-5 transition-all no-underline">
+              Validate before you invest <ArrowRight size={13} />
+            </Link>
+          </div>
+
+          <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {stats.map((s, i) => (
+              <div key={i} className="group bg-white/[0.03] hover:bg-white/[0.06] rounded-[28px] p-8 border border-white/[0.06] hover:border-orange-500/20 transition-all duration-500">
+                <span className={`text-5xl md:text-6xl font-black tracking-tighter leading-none block mb-4 ${s.color}`}>{s.val}</span>
+                <p className="text-zinc-500 text-[11px] font-mono font-bold uppercase tracking-widest leading-relaxed">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
     </section>
@@ -462,7 +516,7 @@ function ServicePackages() {
                 </div>
 
                 <Link
-                  href="/contact"
+                  href={`/contact?service=product-hunting-sourcing&package=${pkg.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
                   className={`group/btn w-full flex items-center justify-center gap-2 font-bold text-[10px] uppercase tracking-widest py-3 rounded-xl no-underline transition-all duration-300 ${
                     pkg.popular
                       ? "bg-orange-500 hover:bg-white hover:text-black text-white"
@@ -478,7 +532,7 @@ function ServicePackages() {
         </div>
 
         {/* Custom requirements info */}
-        <div className="mt-12 flex flex-col md:flex-row items-center justify-between p-8 bg-white rounded-[32px] border border-zinc-150 shadow-sm gap-4">
+        <div className="mt-12 flex flex-col md:flex-row items-center justify-between p-8 bg-zinc-100 rounded-[32px] gap-4">
           <div className="flex items-center gap-3">
             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span className="text-xs font-black uppercase text-zinc-900 tracking-wider">Need Custom Multi-Product Sourcing?</span>
@@ -486,11 +540,70 @@ function ServicePackages() {
           <p className="text-xs text-zinc-500 max-w-xl text-center md:text-left leading-relaxed">
             Launching a cohesive collection or looking to migrate a mature catalog to new manufacturers? We design custom sourcing campaigns tailored for enterprise operations.
           </p>
-          <Link href="/contact" className="inline-flex items-center gap-2 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline shrink-0">
+          <Link href="/contact?service=product-hunting-sourcing&package=custom-sourcing" className="inline-flex items-center gap-2 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline shrink-0">
             Consult With Our Sourcing Team <ArrowRight size={12} />
           </Link>
         </div>
 
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════
+   04b — COMMON SOURCING MISTAKES
+   ═══════════════════════════════════════════════ */
+function SourcingMistakes() {
+  const mistakes = [
+    { icon: <AlertTriangle size={20} />, title: "Alibaba Front-Page Sourcing",   desc: "Picking the first supplier on page one means you're paying trading company markups — often 30–50% above actual factory pricing." },
+    { icon: <Scale size={20} />,         title: "Skipping Patent Clearance",     desc: "One design patent infringement can result in a permanent ASIN takedown, legal fees, and total inventory loss with no recourse." },
+    { icon: <TrendingDown size={20} />,   title: "Launching Without Search Data", desc: "Products chosen by 'gut feeling' miss keyword demand gaps. Without search query volume validation, you're competing blind." },
+    { icon: <Package size={20} />,        title: "No Quality Inspection",        desc: "Shipping without third-party QC means defective units reach FBA, triggering negative reviews that permanently tank your listing." },
+  ];
+
+  return (
+    <section className="py-28 bg-white relative overflow-hidden">
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/20 to-transparent" />
+      {/* Watermark */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none pointer-events-none">
+        <span style={{ fontFamily: "'Playfair Display', serif" }} className="text-[100px] sm:text-[180px] lg:text-[280px] font-black italic tracking-tighter text-zinc-50">
+          Risk
+        </span>
+      </div>
+
+      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+          <div className="lg:col-span-5 lg:sticky lg:top-32 lg:self-start">
+            <SectionLabel>What We Eliminate</SectionLabel>
+            <h2 className="text-4xl md:text-7xl font-black tracking-tighter uppercase leading-[0.88] mb-8 text-zinc-900" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+              Sourcing doesn't<br />have to be<br />
+              <span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-300 lowercase tracking-normal">a gamble.</span>
+            </h2>
+            <p className="text-zinc-500 text-lg font-light leading-relaxed max-w-md mb-10">
+              The four most expensive sourcing mistakes we eliminate in every engagement — and why they compound into total capital loss if left unchecked.
+            </p>
+            <Link href="/contact?service=product-hunting-sourcing" className="group flex items-center gap-3 text-orange-500 font-bold text-[11px] uppercase tracking-widest hover:gap-5 transition-all no-underline">
+              Protect my investment <ArrowRight size={13} />
+            </Link>
+          </div>
+
+          <div className="lg:col-span-7 space-y-5">
+            {mistakes.map((p, i) => (
+              <div key={i} className="group bg-[#fafafa] hover:bg-white rounded-[28px] p-7 border border-zinc-100 hover:border-orange-500/20 transition-all duration-500 hover:shadow-xl hover:shadow-zinc-200/50 relative overflow-hidden" style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.04)" }}>
+                <div className="flex flex-col sm:flex-row items-start gap-5 sm:gap-6">
+                  <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-500 shrink-0 group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-500">
+                    {p.icon}
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-[14px] font-black uppercase tracking-tight text-zinc-900 mb-2 group-hover:text-orange-500 transition-colors leading-tight">{p.title}</h3>
+                    <p className="text-zinc-500 text-sm font-light leading-relaxed">{p.desc}</p>
+                  </div>
+                </div>
+                <div className="absolute bottom-0 left-7 right-7 h-px bg-orange-500/0 group-hover:bg-orange-500/20 transition-colors duration-500" />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );
@@ -525,7 +638,7 @@ function SourcingProcess() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-zinc-100 border border-zinc-100 rounded-[40px] shadow-xl overflow-hidden">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-zinc-100 rounded-[40px] overflow-hidden" style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.06)" }}>
           {steps.map((item, i) => (
             <div
               key={i}
@@ -548,7 +661,7 @@ function SourcingProcess() {
           ))}
         </div>
 
-        <div className="mt-12 flex items-center justify-between p-8 bg-[#fafafa] rounded-[32px] border border-zinc-150 shadow-inner">
+        <div className="mt-12 flex items-center justify-between p-8 bg-[#fafafa] rounded-[32px]">
           <div className="flex items-center gap-4 text-zinc-400">
             <Terminal size={16} />
             <span className="text-[10px] font-mono uppercase tracking-[0.4em]">Sourcing_Pipeline_01-04</span>
@@ -572,13 +685,10 @@ function SourcingFAQ() {
 
   const faqs = [
     { q: "Do you sign NDAs to protect my product ideas?", a: "Absolutely. We sign strict Non-Disclosure Agreements (NDAs) before you share any brand concept or product specifications. Furthermore, our partner factories are also bound by manufacturing and IP protection agreements to prevent copycats." },
-    { q: "What is your target profit margin when hunting?", a: "We target a minimum 30% Net Margin and &gt;100% ROI. In our calculations, we factor in manufacturing cost, packaging, FBA referral commissions, size-tier fulfillment fees, inbound placement fees, estimated monthly storage, and import duties/duties." },
+    { q: "What is your target profit margin when hunting?", a: "We target a minimum 30% Net Margin and &gt;100% ROI. In our calculations, we factor in manufacturing cost, packaging, FBA referral commissions, size-tier fulfillment fees, inbound placement fees, estimated monthly storage, and import duties." },
     { q: "How do you verify the legitimacy of a supplier?", a: "We check the manufacturer's credentials, business license, and export records. We verify ISO 9001 and BSCI compliance, transaction histories on trade databases, and cross-reference records. For final selection, we require factory walkthroughs and quality audits." },
     { q: "Who handles the shipping and customs clearance?", a: "We do. We coordinate with vetted freight forwarders to organize shipping (sea, air, FCL, or LCL), prepare documentation, handle export customs clearing, and ensure import duties/bonds are paid so your cargo lands smoothly inside Amazon FBA centers." },
-    { q: "How do you handle patent and IP clearance?", a: "We perform a preliminary utility and design patent search via official databases (USPTO, WIPO, Espacenet). If the product mechanism or shape raises potential flags, we work with IP attorneys to clear the design or adjust product dimensions." },
-    { q: "What is the typical Minimum Order Quantity (MOQ)?", a: "MOQs vary by category and factory, typically ranging from 500 to 2,000 units. During our negotiations, we push factories for lower trial-run MOQs to validate listing velocity before placing large capital orders." },
-    { q: "Can you design custom packaging and add our logo?", a: "Yes. In fact, we highly advise against raw 'private labeling'. We work with designers to build premium, flat-pack custom packaging, add logos, integrate instruction inserts, and design functional product bundles that set you apart." },
-    { q: "How long does the hunting and sourcing process take?", a: "A typical full pipeline takes 30–45 days: 2 weeks for data hunting and opportunity selection, 2 weeks for factory bidding and supplier vetting, and 1–2 weeks for sample consolidation, testing, and production deposit authorization." }
+    { q: "How long does the full process take?", a: "A typical full pipeline takes 30–45 days: 2 weeks for data hunting and opportunity selection, 2 weeks for factory bidding and supplier vetting, and 1–2 weeks for sample consolidation, testing, and production deposit authorization." }
   ];
 
   return (
@@ -603,7 +713,7 @@ function SourcingFAQ() {
               <p className="text-xs text-zinc-500 leading-relaxed mb-4">
                 Sourcing is custom to every product's material, weight, and market certifications. Ask our specialists for direct advice.
               </p>
-              <Link href="/contact" className="inline-flex items-center gap-2 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline">
+              <Link href="/contact?service=product-hunting-sourcing" className="inline-flex items-center gap-2 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline">
                 Ask us directly <ChevronRight size={11} />
               </Link>
             </div>
@@ -649,7 +759,7 @@ function SourcingFAQ() {
                 <Terminal size={16} className="text-orange-500" />
                 <span className="text-[10px] font-mono uppercase tracking-[0.3em] font-bold text-zinc-400">More_Questions?</span>
               </div>
-              <Link href="/contact" className="flex items-center justify-center sm:justify-start gap-2 group no-underline w-full sm:w-auto">
+              <Link href="/contact?service=product-hunting-sourcing" className="flex items-center justify-center sm:justify-start gap-2 group no-underline w-full sm:w-auto">
                 <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 group-hover:text-white transition-colors">Talk to Our Team</span>
                 <ChevronRight size={14} className="text-orange-500" />
               </Link>
@@ -718,7 +828,7 @@ function SourcingCTA() {
                 </p>
 
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6 mb-16">
-                  <SourcingCTAButton href="/contact">
+                  <SourcingCTAButton href="/contact?service=product-hunting-sourcing&package=consultation">
                     Consult Sourcing Expert
                   </SourcingCTAButton>
                   <div className="flex items-center gap-3">
@@ -869,7 +979,9 @@ export default function ProductHuntingPage() {
       <ProductHuntingHero />
       <MetricsStrip />
       <WhyProductHunting />
+      <CostOfGuessing />
       <ServicePackages />
+      <SourcingMistakes />
       <SourcingProcess />
       <SourcingFAQ />
       <SourcingCTA />

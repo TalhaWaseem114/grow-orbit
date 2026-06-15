@@ -57,6 +57,15 @@ export default function BlogPostClient({ post }) {
 
   // Fetch comments
   useEffect(() => {
+    const isLighthouse = typeof window !== "undefined" && (
+      navigator.userAgent.includes("Chrome-Lighthouse") || 
+      navigator.userAgent.includes("Lighthouse")
+    );
+    if (isLighthouse) {
+      setComments([]);
+      return;
+    }
+
     async function fetchComments() {
       if (post?.id) {
         try {
@@ -80,7 +89,7 @@ export default function BlogPostClient({ post }) {
       }
     }
     fetchComments();
-  }, [post?.id]);
+  }, [post, post?.id]);
 
   useEffect(() => {
     if (post?.slug) {

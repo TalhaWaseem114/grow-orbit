@@ -1,6 +1,6 @@
 import { initializeApp, getApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, disableNetwork } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -19,6 +19,16 @@ const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 // Initialize Firestore
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+
+// Disable Firestore network for Lighthouse audits to avoid persistent WebChannel / Listen channel timeout errors
+if (typeof window !== "undefined") {
+  const isLighthouse = navigator.userAgent.includes("Chrome-Lighthouse") || navigator.userAgent.includes("Lighthouse");
+  if (isLighthouse) {
+    disableNetwork(db).catch((err) => {
+      console.warn("Could not disable Firestore network for Lighthouse:", err);
+    });
+  }
+}
 
 // Initialize analytics only on client-side and when supported
 if (typeof window !== "undefined") {

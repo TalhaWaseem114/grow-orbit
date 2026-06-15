@@ -35,34 +35,28 @@ export default function CmsTab({
           <p style={{ fontSize: 13, color: "#525252", marginTop: 8 }}>Control which theme is live on the <strong style={{ color: "#a3a3a3" }}>/get-started</strong> landing page.</p>
         </div>
         <button
-          onClick={async () => {
-            setThemeSaving(true);
-            const ok = await saveActiveTheme(activeTheme, activeSections);
-            if (ok) {
-              setLiveTheme(activeTheme);
-              setLiveSections(activeSections);
-              setThemeSaved(true);
-              setTimeout(() => {
-                setThemeSaved(false);
-                setThemeSaving(false);
-              }, 2000);
-            } else {
-              setThemeSaving(false);
-              alert("Failed to publish theme. Check console.");
-            }
-          }}
-          disabled={themeSaving || (activeTheme === liveTheme && JSON.stringify(activeSections) === JSON.stringify(liveSections))}
+          disabled={true}
           style={{
-            display: "flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 12, border: "none", cursor: (themeSaving || (activeTheme === liveTheme && JSON.stringify(activeSections) === JSON.stringify(liveSections))) ? "not-allowed" : "pointer",
+            display: "flex", alignItems: "center", gap: 8, padding: "10px 20px", borderRadius: 12, border: "none", cursor: "not-allowed",
             fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.15em", transition: "all 0.3s",
-            background: themeSaved ? "rgba(74,222,128,0.15)" : (activeTheme === liveTheme && JSON.stringify(activeSections) === JSON.stringify(liveSections)) ? "rgba(255,255,255,0.04)" : "#f97316",
-            color: themeSaved ? "#4ade80" : (activeTheme === liveTheme && JSON.stringify(activeSections) === JSON.stringify(liveSections)) ? "#525252" : "#fff",
+            background: "rgba(255,255,255,0.04)",
+            color: "#525252",
             width: isMobile ? "100%" : "auto", justifyContent: isMobile ? "center" : "flex-start"
           }}
         >
-          {themeSaving ? <Loader2 size={13} style={{ animation: "spin 1s linear infinite" }} /> : themeSaved ? <CheckCircle size={13} /> : <Save size={13} />}
-          {themeSaving ? "Publishing..." : themeSaved ? "Live!" : "Publish Live"}
+          <Save size={13} />
+          Locked
         </button>
+      </div>
+
+      <div style={{ display: "flex", alignItems: "center", gap: 12, background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.3)", borderRadius: 12, padding: "16px" }}>
+        <AlertCircle size={24} color="#f97316" flexShrink={0} />
+        <div>
+          <h3 style={{ fontSize: 14, fontWeight: 800, color: "#f97316", marginBottom: 4 }}>Layout Configuration Locked</h3>
+          <p style={{ fontSize: 12, color: "#d4d4d4", lineHeight: 1.5 }}>
+            To maximize the rendering speed of the landing page, the dynamic Firebase connection has been temporarily disabled. The landing page now loads instantly using a static high-conversion layout.
+          </p>
+        </div>
       </div>
 
       {(activeTheme !== liveTheme || JSON.stringify(activeSections) !== JSON.stringify(liveSections)) && !themeSaved && (
@@ -80,16 +74,11 @@ export default function CmsTab({
           return (
             <div
               key={key}
-              onClick={() => {
-                setActiveTheme(key);
-                setActiveSections(isLive ? liveSections : theme.defaultSections);
-                setThemeSaved(false);
-              }}
               style={{
                 textAlign: "left", padding: isMobile ? 24 : 32, borderRadius: isMobile ? 20 : 28, border: `2px solid ${isSelected ? "rgba(249,115,22,0.5)" : "rgba(255,255,255,0.05)"}`,
-                background: isSelected ? "rgba(249,115,22,0.1)" : "#0d0d0d", cursor: "pointer", position: "relative", overflow: "hidden",
+                background: isSelected ? "rgba(249,115,22,0.1)" : "#0d0d0d", cursor: "not-allowed", position: "relative", overflow: "hidden",
                 transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)", boxShadow: isSelected ? "0 20px 50px rgba(249,115,22,0.15)" : "none",
-                transform: isSelected && !isMobile ? "translateY(-4px)" : "none"
+                transform: isSelected && !isMobile ? "translateY(-4px)" : "none", opacity: 0.6
               }}
             >
               {isLive && (

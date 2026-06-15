@@ -6,11 +6,13 @@ import ThemeTwo from "./themes/ThemeTwo";
 import ThemeThree from "./themes/ThemeThree";
 import { subscribeToExperimentConfig } from "@/lib/experimentService";
 
+import { ACTIVE_THEME, ACTIVE_SECTIONS } from "@/lib/activeLandingConfig";
+
 export default function CampaignPage() {
   const [scrolled, setScrolled] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [activeTheme, setActiveTheme] = useState("theme-1"); // default to full page
-  const [activeSections, setActiveSections] = useState({});
+  const [loading, setLoading] = useState(false); // Instantly loaded
+  const [activeTheme, setActiveTheme] = useState(ACTIVE_THEME);
+  const [activeSections, setActiveSections] = useState(ACTIVE_SECTIONS);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,21 +26,15 @@ export default function CampaignPage() {
     if (typeof window !== "undefined") window.scrollTo(0, 0);
   }, []);
 
-  // Fetch active theme from Firestore in real-time
-  useEffect(() => {
-    console.log("[CampaignPage] Subscribing to experiment config...");
-    const unsubscribe = subscribeToExperimentConfig((config) => {
-      console.log("[CampaignPage] Received theme update:", config.layoutId, config.activeSections);
-      setActiveTheme(config.layoutId);
-      setActiveSections(config.activeSections || {});
-      setLoading(false);
-    });
-    
-    return () => {
-      console.log("[CampaignPage] Unsubscribing from experiment config...");
-      unsubscribe();
-    };
-  }, []);
+  // Firebase subscription temporarily disabled for page speed optimization
+  // useEffect(() => {
+  //   const unsubscribe = subscribeToExperimentConfig((config) => {
+  //     setActiveTheme(config.layoutId);
+  //     setActiveSections(config.activeSections || {});
+  //     setLoading(false);
+  //   });
+  //   return () => unsubscribe();
+  // }, []);
 
   if (loading) {
     return (

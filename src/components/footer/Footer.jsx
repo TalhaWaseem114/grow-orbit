@@ -239,13 +239,13 @@ export default function Footer() {
               >
                 Have a project{" "}
                 <span
-                  className="normal-case italic font-light text-zinc-400 tracking-normal"
+                  className="normal-case italic font-light text-zinc-600 tracking-normal"
                   style={{ fontFamily: "'Playfair Display', serif" }}
                 >
                   in mind?
                 </span>
               </h3>
-              <p className="text-zinc-400 text-[12px] font-light mb-8">
+              <p className="text-zinc-600 text-[12px] font-light mb-8">
                 Fill in the form and we'll be in touch within 24 hours.
               </p>
 
@@ -301,7 +301,7 @@ export default function Footer() {
                       onFocus={handleFocus}
                       onBlur={handleBlur}
                       className={`w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-[14px] outline-none transition-all cursor-pointer appearance-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
-                        !form.service ? "text-zinc-400" : "text-zinc-900"
+                        !form.service ? "text-zinc-600" : "text-zinc-900"
                       }`}
                     >
                       <option value="" disabled>Choose a service...</option>

@@ -301,9 +301,9 @@ export default function BlogPostClient({ post }) {
                 {/* Admin Reply Display */}
                 {comment.adminReply && (
                   <div className="mt-4 bg-orange-50/50 rounded-2xl p-5 border border-orange-100/50 relative">
-                    <div className="absolute top-0 left-6 -translate-y-1/2 w-4 h-4 bg-orange-500 rounded-full border-4 border-white flex items-center justify-center"></div>
+                    <div className="absolute top-0 left-6 -translate-y-1/2 w-4 h-4 bg-orange-800 rounded-full border-4 border-white flex items-center justify-center"></div>
                     <div className="flex items-center gap-2 mb-2">
-                       <div className="w-6 h-6 rounded-full bg-orange-500 flex items-center justify-center text-[9px] font-black text-white">
+                       <div className="w-6 h-6 rounded-full bg-orange-800 flex items-center justify-center text-[9px] font-black text-white">
                          GO
                        </div>
                        <span className="text-xs font-bold text-zinc-900">Grow Orbit Team</span>

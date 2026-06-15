@@ -12,8 +12,8 @@ import { ArrowLeft, Share2, Globe, Box, Target, Percent } from 'lucide-react';
 // Lazy-load below-fold resource hub
 const CalculatorResourceHub = dynamic(() => import('@/components/shared-calculator/CalculatorResourceHub'), { ssr: false });
 
-export default function FbaFeeCalculatorPage({ market }) {
-  const { inputs, errors, results, handleInputChange, syncUrlParams } = useAmazonEconomics(market);
+export default function FbaFeeCalculatorPage({ market, initialCategory }) {
+  const { inputs, errors, results, handleInputChange, syncUrlParams } = useAmazonEconomics(market, initialCategory);
   const [isCopied, setIsCopied] = React.useState(false);
 
   const formatCurrency = (val) => `${results.currencySymbol}${val.toFixed(2)}`;

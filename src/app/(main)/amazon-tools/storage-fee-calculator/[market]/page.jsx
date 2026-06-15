@@ -3,7 +3,8 @@ import ClientPage from "../page-client";
 export async function generateStaticParams() {
   return [
     { market: "us" },
-    { market: "uk" }
+    { market: "uk" },
+    { market: "de" }
   ];
 }
 

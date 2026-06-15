@@ -1,6 +1,7 @@
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { AUTHORS } from "@/data/authorData";
+import { GLOSSARY_TERMS } from "@/data/glossaryData";
 
 export const revalidate = 3600; // Revalidate sitemap every hour
 
@@ -70,18 +71,26 @@ export default async function sitemap() {
     '/amazon-tools/profit-calculator',
     '/amazon-tools/profit-calculator/us',
     '/amazon-tools/profit-calculator/uk',
+    '/amazon-tools/profit-calculator/de',
     '/amazon-tools/storage-fee-calculator',
     '/amazon-tools/storage-fee-calculator/us',
     '/amazon-tools/storage-fee-calculator/uk',
+    '/amazon-tools/storage-fee-calculator/de',
     '/amazon-tools/quick-estimator',
     '/amazon-tools/quick-estimator/us',
     '/amazon-tools/quick-estimator/uk',
+    '/amazon-tools/quick-estimator/de',
     '/amazon-tools/fba-fee-calculator',
     '/amazon-tools/fba-fee-calculator/us',
     '/amazon-tools/fba-fee-calculator/uk',
+    '/amazon-tools/fba-fee-calculator/de',
+    '/amazon-tools/fba-fee-calculator/electronics',
+    '/amazon-tools/fba-fee-calculator/apparel',
+    '/amazon-tools/fba-fee-calculator/home-goods',
     '/amazon-tools/fba-vs-fbm-vs-3pl',
     '/amazon-tools/fba-vs-fbm-vs-3pl/us',
     '/amazon-tools/fba-vs-fbm-vs-3pl/uk',
+    '/amazon-tools/fba-vs-fbm-vs-3pl/de',
     '/about',
     '/portfolio',
     '/case-study',
@@ -143,6 +152,18 @@ export default async function sitemap() {
       changeFrequency: 'yearly',
       priority: 0.5,
     },
+    {
+      url: `${baseUrl}/glossary`,
+      lastModified: new Date('2026-06-15'),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    ...Object.keys(GLOSSARY_TERMS).map(slug => ({
+      url: `${baseUrl}/glossary/${slug}`,
+      lastModified: new Date('2026-06-15'),
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    })),
     // Spread dynamic blog URLs
     ...blogUrls,
   ];

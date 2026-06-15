@@ -24,10 +24,11 @@ const DEFAULT_INPUTS = {
   tplStorage: '0.50'
 };
 
-export function useAmazonEconomics(initialMarketplace) {
+export function useAmazonEconomics(initialMarketplace, initialCategory) {
   const [inputs, setInputs] = useState(() => ({
     ...DEFAULT_INPUTS,
-    ...(initialMarketplace ? { marketplace: initialMarketplace.toUpperCase() } : {})
+    ...(initialMarketplace ? { marketplace: initialMarketplace.toUpperCase() } : {}),
+    ...(initialCategory ? { category: initialCategory } : {})
   }));
   const [errors, setErrors] = useState({});
 

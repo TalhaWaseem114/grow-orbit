@@ -35,7 +35,7 @@ export default function BlogShareBar({ title, slug }) {
       {/* ── DESKTOP STICKY SIDEBAR (xl and up) ── */}
       <div className="hidden xl:block absolute -left-20 2xl:-left-28 top-0 bottom-[300px] w-10 select-none">
         <div className="sticky top-[180px] flex flex-col items-center gap-4">
-          <span className="text-[10px] font-mono font-black uppercase tracking-[0.35em] text-zinc-400 [writing-mode:vertical-lr] rotate-180 mb-2">
+          <span className="text-[10px] font-mono font-black uppercase tracking-[0.35em] text-zinc-600 [writing-mode:vertical-lr] rotate-180 mb-2">
             Share
           </span>
 
@@ -98,7 +98,7 @@ export default function BlogShareBar({ title, slug }) {
 
       {/* ── MOBILE INLINE SHARE ROW (under cover image/meta) ── */}
       <div className="flex xl:hidden items-center justify-center gap-3 py-4 my-8 border-y border-zinc-200/60 w-full select-none">
-        <span className="text-[10px] font-mono font-black uppercase tracking-[0.25em] text-zinc-400 mr-2">
+        <span className="text-[10px] font-mono font-black uppercase tracking-[0.25em] text-zinc-600 mr-2">
           Share
         </span>
 

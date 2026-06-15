@@ -50,8 +50,8 @@ export default function EditorialGuidelines({ updatedDate, authorName }) {
       </div>
       
       <div className="mt-6 pt-5 border-t border-zinc-200/60">
-        <p className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">
-          Our Commitment: <span className="font-medium normal-case tracking-normal text-zinc-600 ml-1">We do not accept compensation for favorable reviews. All opinions are our own based on managing 8-figure Amazon accounts.</span>
+        <p className="text-[10px] text-zinc-700 uppercase tracking-widest font-bold">
+          Our Commitment: <span className="font-medium normal-case tracking-normal text-zinc-800 ml-1">We do not accept compensation for favorable reviews. All opinions are our own based on managing 8-figure Amazon accounts.</span>
         </p>
       </div>
     </div>

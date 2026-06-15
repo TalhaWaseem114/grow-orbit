@@ -159,8 +159,8 @@ export default function Footer() {
             >
               Let's start<br />
               <span
-                className="italic font-light normal-case tracking-normal"
-                style={{ color: "#52525b", fontFamily: "'Playfair Display', serif" }}
+                className="italic font-light normal-case tracking-normal text-zinc-300"
+                style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 the orbit.
               </span>
@@ -196,7 +196,7 @@ export default function Footer() {
                   </div>
                   <div>
                     <h3 className="font-black text-white text-[13px] uppercase tracking-tight mb-1">{item.title}</h3>
-                    <p className="text-zinc-500 text-[12px] font-light leading-snug">{item.desc}</p>
+                    <p className="text-zinc-400 text-[12px] font-light leading-snug">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -205,7 +205,7 @@ export default function Footer() {
             {/* Social + tagline row */}
             <div className="flex items-start justify-between border-t border-white/8 pt-10">
               <div>
-                <p className="text-zinc-600 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-4">Follow Us</p>
+                <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-4">Follow Us</p>
                 <div className="flex flex-col gap-2">
                   {socialLinks.map((s) => (
                     <Link
@@ -221,10 +221,10 @@ export default function Footer() {
               </div>
 
               <div className="text-right">
-                <p className="text-zinc-600 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-4">Response Time</p>
+                <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-4">Response Time</p>
                 <p className="text-zinc-300 text-sm font-light leading-relaxed">
                   Within 24 hours<br />
-                  <span className="text-zinc-500 text-xs">Mon–Sat · No automated replies</span>
+                  <span className="text-zinc-400 text-xs">Mon–Sat · No automated replies</span>
                 </p>
               </div>
             </div>
@@ -252,7 +252,7 @@ export default function Footer() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 {/* Name */}
                 <div className="space-y-1.5">
-                  <label htmlFor="footer-name" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 pl-1">
+                  <label htmlFor="footer-name" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
                     Your Name *
                   </label>
                   <input
@@ -270,7 +270,7 @@ export default function Footer() {
 
                 {/* Email */}
                 <div className="space-y-1.5">
-                  <label htmlFor="footer-email" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 pl-1">
+                  <label htmlFor="footer-email" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
                     Email *
                   </label>
                   <input
@@ -288,7 +288,7 @@ export default function Footer() {
 
                 {/* Service */}
                 <div className="space-y-1.5">
-                  <label htmlFor="footer-service" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 pl-1">
+                  <label htmlFor="footer-service" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
                     Service Required *
                   </label>
                   <div className="relative">
@@ -320,7 +320,7 @@ export default function Footer() {
 
                 {/* Message */}
                 <div className="space-y-1.5">
-                  <label htmlFor="footer-message" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 pl-1">
+                  <label htmlFor="footer-message" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
                     Message
                   </label>
                   <textarea
@@ -361,7 +361,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row gap-10">
             {/* Label */}
             <div className="md:w-48 shrink-0">
-              <p className="text-zinc-600 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-2">All Services</p>
+              <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-2">All Services</p>
               <Link
                 href="/service"
                 className="inline-flex items-center gap-1.5 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline"
@@ -376,7 +376,7 @@ export default function Footer() {
                 <Link
                   key={i}
                   href={s.url}
-                  className="text-zinc-500 text-[12px] font-medium hover:text-white transition-colors no-underline leading-snug focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
+                  className="text-zinc-400 text-[12px] font-medium hover:text-white transition-colors no-underline leading-snug focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
                 >
                   {s.name}
                 </Link>
@@ -430,7 +430,7 @@ export default function Footer() {
               <Link
                 key={link.name}
                 href={link.url}
-                className="text-zinc-600 text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
+                className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
               >
                 {link.name}
               </Link>
@@ -438,7 +438,7 @@ export default function Footer() {
           </nav>
 
           {/* Copyright */}
-          <div className="text-zinc-700 text-[10px] uppercase tracking-widest font-black font-mono shrink-0">
+          <div className="text-zinc-400 text-[10px] uppercase tracking-widest font-black font-mono shrink-0">
             © 2010–2026 Grow Orbit.
           </div>
         </div>

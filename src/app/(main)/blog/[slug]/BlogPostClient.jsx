@@ -197,7 +197,7 @@ export default function BlogPostClient({ post }) {
             )}
           </Link>
           <div className="text-center sm:text-left flex-1">
-            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-orange-500 mb-1.5 block">
+            <span className="text-[9px] font-black uppercase tracking-[0.25em] text-orange-700 mb-1.5 block">
               Written by
             </span>
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
@@ -217,7 +217,7 @@ export default function BlogPostClient({ post }) {
                 )}
               </div>
             </div>
-            <p className="text-xs font-mono uppercase text-zinc-400 mb-4">{authorDetails.role}</p>
+            <p className="text-xs font-mono uppercase text-zinc-600 mb-4">{authorDetails.role}</p>
             <p className="text-sm text-zinc-500 font-light leading-relaxed mb-6">
               {authorDetails.bio}
             </p>
@@ -290,7 +290,7 @@ export default function BlogPostClient({ post }) {
                   <p className="text-sm font-bold text-zinc-900">
                     {comment.authorName || "User"}
                   </p>
-                  <p className="text-[10px] text-zinc-400">
+                  <p className="text-[10px] text-zinc-600">
                     {comment.date || "Just now"}
                   </p>
                 </div>

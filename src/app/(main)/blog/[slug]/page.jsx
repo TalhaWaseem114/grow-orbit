@@ -205,7 +205,7 @@ export default async function Page({ params }) {
           <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-12 md:p-16 z-10">
             <div className="max-w-[900px]">
               <div className="flex items-center gap-3 mb-5">
-                <span className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
+                <span className="bg-orange-500/15 border border-orange-500/30 text-orange-400 text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full">
                   {post.category}
                 </span>
                 <span className="flex items-center gap-1.5 text-white/60 text-[10px] font-bold">
@@ -240,7 +240,7 @@ export default async function Page({ params }) {
                     </p>
                   </div>
                 </Link>
-                <div className="hidden sm:flex items-center gap-2 text-white/40 text-[10px] font-bold">
+                <div className="hidden sm:flex items-center gap-2 text-white/60 text-[10px] font-bold">
                   <Calendar size={10} />
                   {new Date(post.date).toLocaleDateString("en-US", {
                     month: "long",
@@ -267,7 +267,7 @@ export default async function Page({ params }) {
             {post.tags?.map((tag) => (
               <span
                 key={tag}
-                className="text-[9px] font-bold uppercase tracking-widest text-zinc-500 bg-zinc-100 border border-zinc-200 px-3 py-1.5 rounded-full"
+                className="text-[9px] font-bold uppercase tracking-widest text-zinc-700 bg-zinc-100 border border-zinc-200 px-3 py-1.5 rounded-full"
               >
                 {tag}
               </span>

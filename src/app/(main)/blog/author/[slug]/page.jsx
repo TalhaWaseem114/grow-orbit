@@ -131,7 +131,7 @@ export default async function AuthorPage({ params }) {
         {/* Back Link */}
         <Link
           href="/blog"
-          className="inline-flex items-center gap-2 text-zinc-400 hover:text-orange-500 text-[10px] font-bold uppercase tracking-widest no-underline transition-colors mb-8"
+          className="inline-flex items-center gap-2 text-zinc-600 hover:text-orange-500 text-[10px] font-bold uppercase tracking-widest no-underline transition-colors mb-8"
         >
           <ArrowLeft size={12} /> BACK TO GROWTH JOURNAL
         </Link>
@@ -277,12 +277,12 @@ export default async function AuthorPage({ params }) {
                       <h3 className="text-[15px] font-black leading-snug tracking-tight mb-3 text-zinc-900 group-hover:text-orange-600 transition-colors line-clamp-2">
                         {post.title}
                       </h3>
-                      <p className="text-[13px] text-zinc-500 font-light leading-relaxed mb-6 line-clamp-3 flex-1">
+                      <p className="text-[13px] text-zinc-650 font-light leading-relaxed mb-6 line-clamp-3 flex-1">
                         {post.excerpt}
                       </p>
 
                       <div className="flex items-center justify-between pt-5 border-t border-zinc-100">
-                        <span className="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">
+                        <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">
                           {new Date(post.date).toLocaleDateString("en-US", {
                             month: "short",
                             day: "numeric",
@@ -290,7 +290,7 @@ export default async function AuthorPage({ params }) {
                             timeZone: "UTC"
                           })}
                         </span>
-                        <span className="flex items-center gap-1 text-[9px] font-bold text-zinc-400">
+                        <span className="flex items-center gap-1 text-[9px] font-bold text-zinc-600">
                           <Clock size={10} /> {getReadTime(post)}
                         </span>
                       </div>

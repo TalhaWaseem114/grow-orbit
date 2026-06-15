@@ -77,7 +77,7 @@ export default function BlogClient({ initialPosts }) {
         <div className="max-w-[1200px] mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-3 px-6 py-2.5 rounded-full bg-white shadow-[0_10px_30px_-5px_rgba(0,0,0,0.05)] border border-zinc-100 mb-12">
             <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            <span className="text-zinc-500 font-bold uppercase tracking-[0.3em] text-[9px]">
+            <span className="text-zinc-600 font-bold uppercase tracking-[0.3em] text-[9px]">
               Orbit Intelligence
             </span>
           </div>
@@ -123,7 +123,7 @@ export default function BlogClient({ initialPosts }) {
           <div className="max-w-[1400px] mx-auto">
             <div className="flex items-center gap-3 mb-8">
               <Zap size={14} className="text-orange-500" />
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-400">
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600">
                 Featured
               </span>
             </div>
@@ -164,7 +164,7 @@ export default function BlogClient({ initialPosts }) {
                           <span className="text-[10px] font-bold text-white/60">
                             {post.author?.name || "Grow Orbit"}
                           </span>
-                          <span className="flex items-center gap-1.5 text-[10px] font-bold text-white/40">
+                          <span className="flex items-center gap-1.5 text-[10px] font-bold text-white/60">
                             <Clock size={10} /> {getReadTime(post)}
                           </span>
                         </div>
@@ -248,7 +248,7 @@ export default function BlogClient({ initialPosts }) {
                       <h3 className="text-[15px] font-black leading-snug tracking-tight mb-3 text-zinc-900 group-hover:text-orange-600 transition-colors line-clamp-2">
                         {post.title}
                       </h3>
-                      <p className="text-[13px] text-zinc-500 font-light leading-relaxed mb-6 line-clamp-3 flex-1">
+                      <p className="text-[13px] text-zinc-650 font-light leading-relaxed mb-6 line-clamp-3 flex-1">
                         {post.excerpt}
                       </p>
 
@@ -258,7 +258,7 @@ export default function BlogClient({ initialPosts }) {
                           {post.tags.slice(0, 3).map((tag) => (
                             <span
                               key={tag}
-                              className="text-[8px] font-bold uppercase tracking-widest text-zinc-400 bg-zinc-50 border border-zinc-100 px-2.5 py-1 rounded-full"
+                              className="text-[8px] font-bold uppercase tracking-widest text-zinc-600 bg-zinc-50 border border-zinc-100 px-2.5 py-1 rounded-full"
                             >
                               {tag}
                             </span>
@@ -276,7 +276,7 @@ export default function BlogClient({ initialPosts }) {
                             <p className="text-[10px] font-bold text-zinc-700 leading-none">
                               {post.author?.name || "Grow Orbit"}
                             </p>
-                            <p className="text-[9px] text-zinc-400 mt-0.5" suppressHydrationWarning>
+                            <p className="text-[9px] text-zinc-600 mt-0.5" suppressHydrationWarning>
                               {new Date(post.date).toLocaleDateString("en-US", {
                                 month: "short",
                                 day: "numeric",
@@ -286,7 +286,7 @@ export default function BlogClient({ initialPosts }) {
                             </p>
                           </div>
                         </div>
-                        <span className="flex items-center gap-1 text-[9px] font-bold text-zinc-400">
+                        <span className="flex items-center gap-1 text-[9px] font-bold text-zinc-600">
                           <Clock size={10} /> {getReadTime(post)}
                         </span>
                       </div>

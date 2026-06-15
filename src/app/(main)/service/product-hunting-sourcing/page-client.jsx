@@ -638,7 +638,7 @@ function SourcingProcess() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-zinc-100 rounded-[40px] overflow-hidden" style={{ boxShadow: "0 8px 40px rgba(0,0,0,0.06)" }}>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-px bg-zinc-100 rounded-[40px] overflow-hidden" style={{ boxShadow: "0 10px 45px rgba(0,0,0,0.10)" }}>
           {steps.map((item, i) => (
             <div
               key={i}

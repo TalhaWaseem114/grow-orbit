@@ -134,7 +134,7 @@ export default function Navbar() {
             </div>
             <span className="text-xl font-black tracking-tight uppercase flex gap-1.5 transition-colors">
               <span className={isDarkTextNeeded ? "text-[#2B3036]" : "text-white"}>GROW</span>
-              <span className="text-[#F1A52B]">ORBIT</span>
+              <span className={isDarkTextNeeded ? "text-orange-600" : "text-[#F1A52B]"}>ORBIT</span>
             </span>
           </Link>
         </div>

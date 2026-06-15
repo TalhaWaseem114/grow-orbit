@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import {
@@ -14,8 +15,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroButton from "@/components/ui/HeroButton";
 
-import ProcessSection from "@/components/service/brand launch/ProcessSection";
-import PriceMatrix from "@/components/service/brand launch/PriceMatrix";
+const ProcessSection = dynamic(() => import("@/components/service/brand launch/ProcessSection"), { ssr: false });
+const PriceMatrix = dynamic(() => import("@/components/service/brand launch/PriceMatrix"), { ssr: false });
 import LaunchCTA from "./components/LaunchCTA";
 
 

@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -7,14 +8,14 @@ import { ArrowRight } from "lucide-react";
 // Section Imports
 import DTCHero from "@/components/service/dtc website/components/DTCHero";
 import MetricsStrip from "@/components/service/dtc website/components/MetricsStrip";
-import TheProblem from "@/components/service/dtc website/components/TheProblem";
-import DTCFramework from "@/components/service/dtc website/components/DTCFramework";
-import Deliverables from "@/components/service/dtc website/components/Deliverables";
-import DTCTechStack from "@/components/service/dtc website/components/DTCTechStack";
-import ExpectedOutcomes from "@/components/service/dtc website/components/ExpectedOutcomes";
-import HowWeWork from "@/components/service/dtc website/components/HowWeWork";
-import FAQ from "@/components/service/dtc website/components/FAQ";
-import DtcWebsiteCTA from "@/components/service/dtc website/components/DtcWebsiteCTA";
+const TheProblem = dynamic(() => import("@/components/service/dtc website/components/TheProblem"), { ssr: false });
+const DTCFramework = dynamic(() => import("@/components/service/dtc website/components/DTCFramework"), { ssr: false });
+const Deliverables = dynamic(() => import("@/components/service/dtc website/components/Deliverables"), { ssr: false });
+const DTCTechStack = dynamic(() => import("@/components/service/dtc website/components/DTCTechStack"), { ssr: false });
+const ExpectedOutcomes = dynamic(() => import("@/components/service/dtc website/components/ExpectedOutcomes"), { ssr: false });
+const HowWeWork = dynamic(() => import("@/components/service/dtc website/components/HowWeWork"), { ssr: false });
+const FAQ = dynamic(() => import("@/components/service/dtc website/components/FAQ"), { ssr: false });
+const DtcWebsiteCTA = dynamic(() => import("@/components/service/dtc website/components/DtcWebsiteCTA"), { ssr: false });
 
 // ─────────────────────────────────────────────
 // FOOTER NAV

@@ -1,20 +1,21 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import SupportHero from "@/components/service/ongoing support/components/SupportHero";
 import MetricsStrip from "@/components/service/ongoing support/components/MetricsStrip";
-import TheProblem from "@/components/service/ongoing support/components/TheProblem";
-import WhoItsFor from "@/components/service/ongoing support/components/WhoItsFor";
-import SupportFramework from "@/components/service/ongoing support/components/SupportFramework";
-import SupportCycles from "@/components/service/ongoing support/components/SupportCycles";
-import MonthlyDeliverables from "@/components/service/ongoing support/components/MonthlyDeliverables";
-import SupportTechStack from "@/components/service/ongoing support/components/SupportTechStack";
-import ExpectedOutcomes from "@/components/service/ongoing support/components/ExpectedOutcomes";
-import HowWeWork from "@/components/service/ongoing support/components/HowWeWork";
-import PriceMatrix from "@/components/service/ongoing support/components/PriceMatrix";
-import SupportFAQ from "@/components/service/ongoing support/components/SupportFAQ";
-import SupportCTA from "@/components/service/ongoing support/components/SupportCTA";
-import FooterNav from "@/components/service/ongoing support/components/FooterNav";
+const TheProblem = dynamic(() => import("@/components/service/ongoing support/components/TheProblem"), { ssr: false });
+const WhoItsFor = dynamic(() => import("@/components/service/ongoing support/components/WhoItsFor"), { ssr: false });
+const SupportFramework = dynamic(() => import("@/components/service/ongoing support/components/SupportFramework"), { ssr: false });
+const SupportCycles = dynamic(() => import("@/components/service/ongoing support/components/SupportCycles"), { ssr: false });
+const MonthlyDeliverables = dynamic(() => import("@/components/service/ongoing support/components/MonthlyDeliverables"), { ssr: false });
+const SupportTechStack = dynamic(() => import("@/components/service/ongoing support/components/SupportTechStack"), { ssr: false });
+const ExpectedOutcomes = dynamic(() => import("@/components/service/ongoing support/components/ExpectedOutcomes"), { ssr: false });
+const HowWeWork = dynamic(() => import("@/components/service/ongoing support/components/HowWeWork"), { ssr: false });
+const PriceMatrix = dynamic(() => import("@/components/service/ongoing support/components/PriceMatrix"), { ssr: false });
+const SupportFAQ = dynamic(() => import("@/components/service/ongoing support/components/SupportFAQ"), { ssr: false });
+const SupportCTA = dynamic(() => import("@/components/service/ongoing support/components/SupportCTA"), { ssr: false });
+const FooterNav = dynamic(() => import("@/components/service/ongoing support/components/FooterNav"), { ssr: false });
 
 export default function OngoingSupport() {
   useEffect(() => {

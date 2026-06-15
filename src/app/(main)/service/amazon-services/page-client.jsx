@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import {
@@ -11,7 +12,7 @@ import {
 } from "lucide-react";
 import gsap from "gsap";
 import HeroButton from "@/components/ui/HeroButton";
-import WhoItsFor from "@/components/service/amazon services/WhoItsFor";
+const WhoItsFor = dynamic(() => import("@/components/service/amazon services/WhoItsFor"), { ssr: false });
 
 /* ─────────────────────────────────────────────
    SHARED

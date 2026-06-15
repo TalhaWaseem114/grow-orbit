@@ -174,15 +174,15 @@ export default function OrbitPortfolioSection() {
         </div>
 
         {/* Filter Navigation */}
-        <div className="mb-10 sm:mb-16 w-full flex flex-col items-center gap-4 relative z-20 px-2">
+        <nav className="mb-10 sm:mb-16 w-full flex flex-col items-center gap-4 relative z-20 px-2" aria-label="Portfolio Filter Navigation">
           <div className="w-full sm:w-auto bg-white/80 backdrop-blur-xl border border-white/40 p-1.5 sm:p-2.5 rounded-2xl sm:rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.08)] flex flex-col transition-all duration-500">
             {/* Service Filter */}
-            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar w-full sm:flex-wrap sm:justify-center px-1 sm:px-0 relative mb-1 sm:mb-2">
+            <div className="flex items-center gap-1 overflow-x-auto no-scrollbar w-full sm:flex-wrap sm:justify-center px-1 sm:px-0 relative mb-1 sm:mb-2" aria-label="Filter by Service Type">
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`shrink-0 whitespace-nowrap px-3 sm:px-6 py-2 sm:py-2.5 rounded-full text-[8.5px] sm:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] transition-all duration-300 active:scale-[0.98] ${activeCategory === cat.id ? "bg-black text-white shadow-lg" : "text-zinc-400 hover:text-zinc-900 bg-black/5 sm:bg-transparent"}`}
+                  className={`shrink-0 whitespace-nowrap px-4 sm:px-6 py-2.5 sm:py-2.5 rounded-full text-[8.5px] sm:text-[10px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] transition-all duration-300 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 relative after:absolute after:-inset-y-1.5 after:-inset-x-1 ${activeCategory === cat.id ? "bg-black text-white shadow-lg" : "text-zinc-400 hover:text-zinc-900 bg-black/5 sm:bg-transparent"}`}
                 >
                   {cat.label}
                 </button>
@@ -192,9 +192,9 @@ export default function OrbitPortfolioSection() {
             {/* Secondary Filters Grid */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6 border-t border-zinc-100 pt-2 sm:pt-4">
               {/* Material Filter */}
-              <div className="flex items-center gap-1 overflow-x-auto no-scrollbar w-full sm:w-auto px-1 sm:px-0">
+              <div className="flex items-center gap-1 overflow-x-auto no-scrollbar w-full sm:w-auto px-1 sm:px-0" aria-label="Filter by Material">
                 {materialsList.map((mat) => (
-                  <button key={mat} onClick={() => setActiveMaterial(mat)} className={`shrink-0 whitespace-nowrap px-3 sm:px-3 py-1.5 sm:py-1 rounded-full text-[8px] sm:text-[8px] font-bold uppercase tracking-widest transition-all duration-300 border ${activeMaterial === mat ? "bg-white text-orange-500 border-orange-100 shadow-[0_4px_10px_rgba(249,115,22,0.1)]" : "bg-transparent text-zinc-400 border-transparent hover:border-zinc-200 hover:text-zinc-600 hover:bg-black/5"}`}>{mat}</button>
+                  <button key={mat} onClick={() => setActiveMaterial(mat)} className={`shrink-0 whitespace-nowrap px-4 sm:px-3 py-2 sm:py-1 rounded-full text-[8px] sm:text-[8px] font-bold uppercase tracking-widest transition-all duration-300 border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 relative after:absolute after:-inset-y-2.5 after:-inset-x-1 ${activeMaterial === mat ? "bg-white text-orange-500 border-orange-100 shadow-[0_4px_10px_rgba(249,115,22,0.1)]" : "bg-transparent text-zinc-400 border-transparent hover:border-zinc-200 hover:text-zinc-600 hover:bg-black/5"}`}>{mat}</button>
                 ))}
               </div>
 
@@ -202,10 +202,13 @@ export default function OrbitPortfolioSection() {
               <div className="relative">
                 <button
                   onClick={() => setIsNicheOpen(!isNicheOpen)}
-                  className="flex items-center gap-2 px-3 py-1.5 sm:py-1 rounded-full font-bold text-[8px] sm:text-[8px] uppercase tracking-widest transition-all duration-300 bg-zinc-50 text-zinc-600 border border-zinc-200 hover:border-orange-500"
+                  className="flex items-center gap-2 px-4 py-2.5 sm:py-1.5 rounded-full font-bold text-[8px] sm:text-[8px] uppercase tracking-widest transition-all duration-300 bg-zinc-50 text-zinc-600 border border-zinc-200 hover:border-orange-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 relative after:absolute after:-inset-y-2 after:-inset-x-1"
+                  aria-haspopup="listbox"
+                  aria-expanded={isNicheOpen}
+                  aria-label="Filter by product category niche"
                 >
                   {activeNiche}
-                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${isNicheOpen ? "rotate-180" : ""}`}>
+                  <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${isNicheOpen ? "rotate-180" : ""}`} aria-hidden="true">
                     <polyline points="6 9 12 15 18 9"></polyline>
                   </svg>
                 </button>
@@ -213,12 +216,14 @@ export default function OrbitPortfolioSection() {
                 {isNicheOpen && (
                   <>
                     <div className="fixed inset-0 z-40" onClick={() => setIsNicheOpen(false)} />
-                    <div className="absolute left-1/2 sm:left-auto sm:right-0 -translate-x-1/2 sm:translate-x-0 top-full mt-2 w-48 bg-white rounded-xl shadow-2xl border border-zinc-100 overflow-hidden py-2 z-50 max-h-60 overflow-y-auto">
+                    <div className="absolute left-1/2 sm:left-auto sm:right-0 -translate-x-1/2 sm:translate-x-0 top-full mt-2 w-48 bg-white rounded-xl shadow-2xl border border-zinc-100 overflow-hidden py-2 z-50 max-h-60 overflow-y-auto" role="listbox">
                       {nichesList.map((niche) => (
                         <button
                           key={niche}
                           onClick={() => { setActiveNiche(niche); setIsNicheOpen(false); }}
-                          className={`w-full text-left px-4 py-2.5 text-[9px] font-bold uppercase tracking-widest transition-colors ${activeNiche === niche ? "text-orange-500 bg-orange-50" : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"}`}
+                          role="option"
+                          aria-selected={activeNiche === niche}
+                          className={`w-full text-left px-4 py-2.5 text-[9px] font-bold uppercase tracking-widest transition-colors focus-visible:bg-orange-50 focus-visible:text-orange-500 focus-visible:outline-none ${activeNiche === niche ? "text-orange-500 bg-orange-50" : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"}`}
                         >
                           {niche}
                         </button>
@@ -229,7 +234,7 @@ export default function OrbitPortfolioSection() {
               </div>
             </div>
           </div>
-        </div>
+        </nav>
 
         {/* Grid Section */}
         <div ref={containerRef} className="w-full min-h-[400px] sm:min-h-[600px] relative z-10">

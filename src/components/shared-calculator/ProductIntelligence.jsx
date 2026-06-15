@@ -1,5 +1,6 @@
 import React from 'react';
-import { Activity, ShieldCheck, Zap, AlertTriangle } from 'lucide-react';
+import Link from 'next/link';
+import { Activity, ShieldCheck, Zap, AlertTriangle, ArrowRight } from 'lucide-react';
 
 export default function ProductIntelligence({ results, inputs }) {
   // Determine health score out of 100
@@ -33,6 +34,45 @@ export default function ProductIntelligence({ results, inputs }) {
     healthBg = "bg-orange-500/10";
     statusText = "AVERAGE";
   }
+
+  const getDynamicCta = () => {
+    if (feeRatio > 0.40) {
+      return {
+        title: "Amazon Fees are Consuming Your Margin",
+        description: `Amazon fees are taking ${(feeRatio * 100).toFixed(0)}% of your retail price. Let our creative team help you redesign packaging to shrink size tiers or audit your listings.`,
+        buttonText: "Speak with our Creative Team",
+        link: "/service/design-creative?ref=calc-high-fees",
+        accent: "border-orange-500/25 bg-orange-500/[0.04]"
+      };
+    }
+    if (results.profitMargin < 15) {
+      return {
+        title: "Your Net Margin is in the Danger Zone",
+        description: "A net margin below 15% leaves no room for advertising overheads or return rate spikes. Let us audit your sourcing and PPC efficiency.",
+        buttonText: "Optimize Sourcing & PPC",
+        link: "/service/product-hunting-sourcing?ref=calc-low-margin",
+        accent: "border-red-500/25 bg-red-500/[0.04]"
+      };
+    }
+    if (results.profitMargin >= 30 && results.roi < 40) {
+      return {
+        title: "Low ROI on Sourcing Capital",
+        description: "While your profit margin is strong, your return on inventory capital is lagging. Let's find lower-cost suppliers or optimize your cash flow.",
+        buttonText: "Request Sourcing Audit",
+        link: "/service/product-hunting-sourcing?ref=calc-low-roi",
+        accent: "border-amber-500/25 bg-amber-500/[0.04]"
+      };
+    }
+    return {
+      title: "Strong Economics — Ready to Scale?",
+      description: "Your unit economics look healthy and viable. Capitalize on this honeymoon margin by deploying high-impact listing systems and targeted advertising.",
+      buttonText: "Schedule Free Strategy Audit",
+      link: "/contact?ref=calc-healthy",
+      accent: "border-emerald-500/25 bg-emerald-500/[0.04]"
+    };
+  };
+
+  const cta = getDynamicCta();
 
   return (
     <div className="bg-zinc-950 p-6 rounded-[24px] border border-zinc-800 shadow-2xl relative overflow-hidden mt-4">
@@ -105,6 +145,25 @@ export default function ProductIntelligence({ results, inputs }) {
 
         </div>
 
+      </div>
+
+      {/* Dynamic CTA Block */}
+      <div className={`mt-8 p-5 rounded-2xl border ${cta.accent} flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 transition-all duration-300`}>
+        <div className="space-y-1">
+          <h4 className="text-[11px] font-black uppercase tracking-wider text-white flex items-center gap-1.5">
+            <span className="text-orange-500">✦</span> {cta.title}
+          </h4>
+          <p className="text-[10px] text-zinc-400 font-medium leading-relaxed max-w-[480px]">
+            {cta.description}
+          </p>
+        </div>
+        <Link 
+          href={cta.link}
+          className="shrink-0 inline-flex items-center gap-1.5 px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-black text-[9px] uppercase tracking-widest rounded-xl transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950 hover:translate-x-0.5"
+        >
+          {cta.buttonText}
+          <ArrowRight size={10} />
+        </Link>
       </div>
 
     </div>

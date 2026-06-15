@@ -122,7 +122,7 @@ export default function Navbar() {
 
         {/* ── Logo ── */}
         <div className="flex-1 flex justify-start">
-          <Link href="/" prefetch={false} className="flex items-center gap-2.5 no-underline shrink-0" aria-label="Grow Orbit Home">
+          <Link href="/" prefetch={false} className="flex items-center gap-2.5 no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-xl" aria-label="Grow Orbit Home">
             <div className="relative flex items-center justify-center w-10 h-10">
               <Image
                 src="/logo.png"
@@ -141,9 +141,9 @@ export default function Navbar() {
 
         {/* ── Mobile Toggle ── */}
         <button
-          className={`md:hidden p-2 rounded-lg transition-colors ${textColorClass} focus-visible:ring-2 focus-visible:ring-orange-500`}
+          className={`md:hidden p-2 rounded-lg transition-colors ${textColorClass} focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:outline-none`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle menu"
+          aria-label="Toggle Navigation Menu"
           aria-expanded={mobileMenuOpen}
         >
           {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
@@ -152,7 +152,7 @@ export default function Navbar() {
         {/* ════════════════════════════════════════
             DESKTOP NAV
         ════════════════════════════════════════ */}
-        <nav className="hidden md:flex md:items-center md:gap-5 lg:gap-6 justify-center">
+        <nav className="hidden md:flex md:items-center md:gap-5 lg:gap-6 justify-center" aria-label="Desktop Navigation">
           {navItems.map((item) => {
             let path = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
             if (item === "Home") path = "/";
@@ -169,7 +169,7 @@ export default function Navbar() {
                     onClick={() => setMegaMenuOpen(!megaMenuOpen)}
                     aria-expanded={megaMenuOpen}
                     aria-haspopup="true"
-                    className={`nav-link flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest transition-colors cursor-pointer outline-none bg-transparent border-none p-0 focus-visible:text-orange-500
+                    className={`nav-link flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest transition-colors cursor-pointer outline-none bg-transparent border-none p-0 focus-visible:text-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm
                       ${isActive || megaMenuOpen ? "text-orange-500 nav-link-active" : textColorClass}
                       ${!(isActive || megaMenuOpen) && hoverColorClass}`}
                   >
@@ -188,7 +188,7 @@ export default function Navbar() {
                 key={item}
                 href={path}
                 prefetch={false}
-                className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline
+                className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm
                   ${isActive ? "text-orange-500 nav-link-active" : textColorClass}
                   ${!isActive && hoverColorClass}`}
               >
@@ -202,13 +202,13 @@ export default function Navbar() {
         <div className="hidden md:flex flex-1 items-center justify-end gap-3 lg:gap-5">
           {!user ? (
               <>
-                <Link href="/login" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline ${textColorClass} ${hoverColorClass}`}>
+                <Link href="/login" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
                   Sign In
                 </Link>
                 <Link
                   href="/register"
                   prefetch={false}
-                  className={`relative overflow-hidden px-6 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all no-underline
+                  className={`relative overflow-hidden px-6 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
                     ${isDarkTextNeeded
                       ? "bg-black text-white hover:bg-orange-600 shadow-lg hover:shadow-orange-500/25"
                       : "bg-white text-black hover:bg-orange-500 hover:text-white shadow-lg hover:shadow-orange-500/25"
@@ -224,7 +224,7 @@ export default function Navbar() {
                   <Link
                     href="/admin-dashboard"
                     prefetch={false}
-                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all no-underline border ${isDarkTextNeeded ? "border-orange-500 text-orange-600 hover:bg-orange-50" : "border-orange-500/50 text-orange-400 hover:bg-orange-500/10"}`}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all no-underline border focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none ${isDarkTextNeeded ? "border-orange-500 text-orange-600 hover:bg-orange-50" : "border-orange-500/50 text-orange-400 hover:bg-orange-500/10"}`}
                   >
                     <LayoutDashboard size={12} />
                     Admin Panel
@@ -273,7 +273,7 @@ export default function Navbar() {
           MOBILE NAV — slides down
       ════════════════════════════════════════ */}
       {mobileMenuOpen && (
-        <nav className="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-y-auto max-h-[85vh] animate-in slide-in-from-top duration-200">
+        <nav className="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-y-auto max-h-[85vh] animate-in slide-in-from-top duration-200" aria-label="Mobile Navigation">
           <div className="px-4 py-5 space-y-1">
             {navItems.map((item) => {
               let path = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
@@ -290,7 +290,7 @@ export default function Navbar() {
                     <button
                       onClick={() => setMobileServiceExpanded(!mobileServiceExpanded)}
                       aria-expanded={mobileServiceExpanded}
-                      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest transition-colors focus-visible:bg-orange-50
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest transition-colors focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500
                         ${isActive ? "text-orange-500 bg-orange-50" : "text-gray-700 hover:bg-gray-50"}`}
                     >
                       {item}
@@ -315,7 +315,7 @@ export default function Navbar() {
                   key={item}
                   href={path}
                   prefetch={false}
-                  className={`block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest no-underline transition-colors
+                  className={`block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest no-underline transition-colors focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500
                     ${isActive ? "text-orange-500 bg-orange-50" : "text-gray-700 hover:bg-gray-50"}`}
                   onClick={closeMobileMenu}
                 >
@@ -328,13 +328,13 @@ export default function Navbar() {
             <div className="pt-3 mt-3 border-t border-gray-100 space-y-2">
               {!user ? (
                 <>
-                  <Link href="/login" prefetch={false} className="block px-4 py-3 rounded-xl text-[15px] font-medium text-gray-700 hover:bg-gray-50 no-underline" onClick={closeMobileMenu}>
+                  <Link href="/login" prefetch={false} className="block px-4 py-3 rounded-xl text-[15px] font-medium text-gray-700 hover:bg-gray-50 no-underline focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" onClick={closeMobileMenu}>
                     Sign In
                   </Link>
                   <Link
                     href="/register"
                     prefetch={false}
-                  className="block text-center px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest bg-black text-white hover:bg-orange-600 no-underline transition-colors"
+                    className="block text-center px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest bg-black text-white hover:bg-orange-600 no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
                     onClick={closeMobileMenu}
                   >
                     Get Started
@@ -347,7 +347,7 @@ export default function Navbar() {
                       href="/admin-dashboard"
                       prefetch={false}
                       onClick={closeMobileMenu}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[15px] font-bold transition-colors no-underline"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[15px] font-bold transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
                     >
                       <LayoutDashboard size={18} />
                       Admin Dashboard

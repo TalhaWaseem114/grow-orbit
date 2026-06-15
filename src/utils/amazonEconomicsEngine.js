@@ -239,6 +239,7 @@ export function runEconomicsEngine(inputs) {
     tierName,
     isStandard,
     currencySymbol,
+    sellingPrice,
     dimensions: sizeResolution.dimensions,
     billableWeight,
     dimWeight,

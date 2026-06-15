@@ -165,7 +165,7 @@ export default function ProfitCalculatorPage({ market }) {
                         type="checkbox"
                         checked={inputs.vatToggle}
                         onChange={(e) => handleInputChange("vatToggle", e.target.checked)}
-                        className="rounded border-zinc-350 accent-orange-500 cursor-pointer"
+                        className="rounded border-zinc-350 accent-orange-500 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
                       />
                       <span className="text-[9px] font-bold uppercase text-zinc-550">VAT ex.</span>
                     </label>
@@ -174,7 +174,7 @@ export default function ProfitCalculatorPage({ market }) {
                   <select
                     value={inputs.marketplace}
                     onChange={(e) => handleInputChange("marketplace", e.target.value)}
-                    className="text-[10px] bg-zinc-50 border border-zinc-200 rounded px-2 py-1 font-bold outline-none text-zinc-700 cursor-pointer"
+                    className="text-[10px] bg-zinc-50 border border-zinc-200 rounded px-2 py-1 font-bold outline-none text-zinc-700 cursor-pointer focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                   >
                     <option value="US">USA ($)</option>
                     <option value="UK">United Kingdom (£)</option>
@@ -197,7 +197,7 @@ export default function ProfitCalculatorPage({ market }) {
                       value={inputs.sellingPrice}
                       onChange={(e) => handleInputChange("sellingPrice", e.target.value)}
                       placeholder="30.00"
-                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors disabled:bg-zinc-100 disabled:text-zinc-400 disabled:cursor-not-allowed"
+                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors disabled:bg-zinc-100 disabled:text-zinc-400 disabled:cursor-not-allowed"
                     />
                   </div>
                   {calculationMode === "targetMargin" && (
@@ -218,7 +218,7 @@ export default function ProfitCalculatorPage({ market }) {
                       value={inputs.productCost}
                       onChange={(e) => handleInputChange("productCost", e.target.value)}
                       placeholder="8.00"
-                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors disabled:bg-zinc-100 disabled:text-zinc-400 disabled:cursor-not-allowed"
+                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors disabled:bg-zinc-100 disabled:text-zinc-400 disabled:cursor-not-allowed"
                     />
                   </div>
                   {calculationMode === "maxCost" && (
@@ -238,7 +238,7 @@ export default function ProfitCalculatorPage({ market }) {
                         value={inputs.targetMargin}
                         onChange={(e) => handleInputChange("targetMargin", e.target.value)}
                         placeholder="30"
-                        className="w-full pl-3 pr-7 py-2.5 bg-zinc-50 border border-orange-500/30 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                        className="w-full pl-3 pr-7 py-2.5 bg-zinc-50 border border-orange-500/30 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                       />
                       <span className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-400 text-sm font-bold">%</span>
                     </div>
@@ -258,7 +258,7 @@ export default function ProfitCalculatorPage({ market }) {
                         value={inputs.desiredProfit}
                         onChange={(e) => handleInputChange("desiredProfit", e.target.value)}
                         placeholder="5.00"
-                        className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-orange-500/30 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                        className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-orange-500/30 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                       />
                     </div>
                   </div>
@@ -276,7 +276,7 @@ export default function ProfitCalculatorPage({ market }) {
                       value={inputs.shippingToAmazon}
                       onChange={(e) => handleInputChange("shippingToAmazon", e.target.value)}
                       placeholder="1.50"
-                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -289,7 +289,7 @@ export default function ProfitCalculatorPage({ market }) {
                   <select
                     value={inputs.category}
                     onChange={(e) => handleInputChange("category", e.target.value)}
-                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-[11px] text-zinc-900 font-bold outline-none cursor-pointer focus:border-orange-500 transition-colors"
+                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-[11px] text-zinc-900 font-bold outline-none cursor-pointer focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                   >
                     <option value="home-kitchen">Home & Kitchen (15%)</option>
                     <option value="electronics">Consumer Electronics (8%)</option>
@@ -315,7 +315,7 @@ export default function ProfitCalculatorPage({ market }) {
                       value={inputs.length}
                       onChange={(e) => handleInputChange("length", e.target.value)}
                       placeholder="10.0"
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                   <div>
@@ -325,7 +325,7 @@ export default function ProfitCalculatorPage({ market }) {
                       value={inputs.width}
                       onChange={(e) => handleInputChange("width", e.target.value)}
                       placeholder="8.0"
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                   <div>
@@ -335,7 +335,7 @@ export default function ProfitCalculatorPage({ market }) {
                       value={inputs.height}
                       onChange={(e) => handleInputChange("height", e.target.value)}
                       placeholder="2.0"
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -350,7 +350,7 @@ export default function ProfitCalculatorPage({ market }) {
                     value={inputs.weight}
                     onChange={(e) => handleInputChange("weight", e.target.value)}
                     placeholder="1.2"
-                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                   />
                 </div>
 
@@ -363,7 +363,7 @@ export default function ProfitCalculatorPage({ market }) {
                       value={inputs.ppcPercent}
                       onChange={(e) => handleInputChange("ppcPercent", e.target.value)}
                       placeholder="10"
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                   <div>
@@ -373,7 +373,7 @@ export default function ProfitCalculatorPage({ market }) {
                       value={inputs.returnsPercent}
                       onChange={(e) => handleInputChange("returnsPercent", e.target.value)}
                       placeholder="2"
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                 </div>

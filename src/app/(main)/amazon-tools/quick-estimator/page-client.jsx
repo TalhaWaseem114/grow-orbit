@@ -103,12 +103,12 @@ export default function QuickEstimatorPage({ market }) {
                   <select
                     value={inputs.marketplace}
                     onChange={(e) => handleInputChange("marketplace", e.target.value)}
-                    className="text-[10px] bg-zinc-50 border border-zinc-200 rounded px-2 py-1 font-bold outline-none text-zinc-700 cursor-pointer focus:border-orange-500 transition-colors"
+                    className="text-[10px] bg-zinc-50 border border-zinc-200 rounded px-2 py-1 font-bold outline-none text-zinc-700 cursor-pointer focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                   >
                     <option value="US">USA ($)</option>
                     <option value="UK">UK (£)</option>
                   </select>
-                  <button onClick={handleClear} className="text-[9px] font-black uppercase tracking-widest text-zinc-400 bg-zinc-100 hover:bg-zinc-200 px-3 py-1 rounded-full transition-colors">
+                  <button onClick={handleClear} className="text-[9px] font-black uppercase tracking-widest text-zinc-400 bg-zinc-100 hover:bg-zinc-200 px-3 py-1 rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 relative after:absolute after:-inset-y-2 after:-inset-x-2">
                     CLEAR
                   </button>
                 </div>
@@ -130,7 +130,7 @@ export default function QuickEstimatorPage({ market }) {
                       value={inputs.sellingPrice}
                       onChange={(e) => handleInputChange("sellingPrice", e.target.value)}
                       placeholder="30.00"
-                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                   {errors.sellingPrice && <p className="text-red-500 text-[9px] mt-1 font-bold">{errors.sellingPrice}</p>}
@@ -148,7 +148,7 @@ export default function QuickEstimatorPage({ market }) {
                       value={inputs.productCost}
                       onChange={(e) => handleInputChange("productCost", e.target.value)}
                       placeholder="8.00"
-                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-205/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                   {errors.productCost && <p className="text-red-500 text-[9px] mt-1 font-bold">{errors.productCost}</p>}
@@ -163,7 +163,7 @@ export default function QuickEstimatorPage({ market }) {
                       value={inputs.length}
                       onChange={(e) => handleInputChange("length", e.target.value)}
                       placeholder="10.0"
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                   <div>
@@ -173,7 +173,7 @@ export default function QuickEstimatorPage({ market }) {
                       value={inputs.width}
                       onChange={(e) => handleInputChange("width", e.target.value)}
                       placeholder="8.0"
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                   <div>
@@ -183,7 +183,7 @@ export default function QuickEstimatorPage({ market }) {
                       value={inputs.height}
                       onChange={(e) => handleInputChange("height", e.target.value)}
                       placeholder="2.0"
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -198,14 +198,14 @@ export default function QuickEstimatorPage({ market }) {
                     value={inputs.weight}
                     onChange={(e) => handleInputChange("weight", e.target.value)}
                     placeholder="1.2"
-                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                   />
                   {errors.weight && <p className="text-red-500 text-[9px] mt-1 font-bold">{errors.weight}</p>}
                 </div>
 
               </div>
 
-              <button className="w-full mt-6 bg-orange-500 hover:bg-orange-600 text-white font-black uppercase tracking-widest text-[11px] py-4 rounded-[14px] transition-colors shadow-lg shadow-orange-500/20">
+              <button className="w-full mt-6 bg-orange-500 hover:bg-orange-600 text-white font-black uppercase tracking-widest text-[11px] py-4 rounded-[14px] transition-colors shadow-lg shadow-orange-500/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2">
                 UPDATE ESTIMATE
               </button>
             </div>
@@ -281,7 +281,7 @@ export default function QuickEstimatorPage({ market }) {
               
               <Link 
                 href="/amazon-tools/profit-calculator"
-                className="bg-orange-500 hover:bg-orange-600 text-white text-[9px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full transition-colors inline-flex items-center gap-1.5"
+                className="bg-orange-500 hover:bg-orange-600 text-white text-[9px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full transition-colors inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
               >
                 Open Pro Calculator
               </Link>

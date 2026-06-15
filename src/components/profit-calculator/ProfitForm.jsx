@@ -69,7 +69,7 @@ export default function ProfitForm({ inputs, handleInputChange, errors, resetInp
             <button 
               type="button"
               onClick={resetInputs}
-              className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-orange-500 transition-colors border border-zinc-200/60 rounded-lg px-2.5 py-1.5 bg-zinc-50 hover:bg-white cursor-pointer"
+              className="text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-orange-500 transition-colors border border-zinc-200/60 rounded-lg px-2.5 py-1.5 bg-zinc-50 hover:bg-white cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 relative after:absolute after:-inset-y-2 after:-inset-x-2"
             >
               Clear
             </button>
@@ -103,8 +103,8 @@ export default function ProfitForm({ inputs, handleInputChange, errors, resetInp
                     ${field.suffix ? 'pr-7' : 'pr-3.5'}
                     py-2.5
                     ${errors[field.name]
-                      ? 'border-red-300 focus:border-red-500 focus:ring-2 focus:ring-red-500/10'
-                      : 'border-zinc-200/80 hover:border-zinc-350 focus:border-orange-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10'
+                      ? 'border-red-300 focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:outline-none'
+                      : 'border-zinc-200/80 hover:border-zinc-350 focus-visible:border-orange-500 focus-visible:bg-white focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:outline-none'
                     }
                   `}
                 />
@@ -128,7 +128,7 @@ export default function ProfitForm({ inputs, handleInputChange, errors, resetInp
       <div className="mt-6 pt-4 border-t border-zinc-100">
         <button
           type="submit"
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-wider py-3 rounded-xl shadow-md shadow-orange-500/10 hover:shadow-orange-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer"
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold text-xs uppercase tracking-wider py-3 rounded-xl shadow-md shadow-orange-500/10 hover:shadow-orange-500/25 transition-all flex items-center justify-center gap-2 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
         >
           Calculate Profitability
         </button>

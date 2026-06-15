@@ -88,7 +88,7 @@ export default function StorageFeeCalculatorPage({ market }) {
           <div className="flex items-center gap-2 self-start md:self-auto">
             <button
               onClick={handleShare}
-              className="inline-flex items-center gap-1.5 px-4 py-2 border bg-white border-zinc-200 hover:border-zinc-300 text-zinc-650 hover:text-zinc-950 transition-all font-black text-[9px] uppercase tracking-widest rounded-full shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-1.5 px-4 py-2 border bg-white border-zinc-200 hover:border-zinc-300 text-zinc-650 hover:text-zinc-950 transition-all font-black text-[9px] uppercase tracking-widest rounded-full shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 relative after:absolute after:-inset-y-2 after:-inset-x-2"
             >
               <Share2 size={10} className="text-orange-500" />
               {isCopied ? 'COPIED!' : 'SHARE CALCULATION'}
@@ -111,7 +111,7 @@ export default function StorageFeeCalculatorPage({ market }) {
                 <select
                   value={inputs.marketplace}
                   onChange={(e) => handleInputChange("marketplace", e.target.value)}
-                  className="text-[10px] bg-zinc-50 border border-zinc-200 rounded px-2 py-1 font-bold outline-none text-zinc-700 cursor-pointer focus:border-orange-500 transition-colors"
+                  className="text-[10px] bg-zinc-50 border border-zinc-200 rounded px-2 py-1 font-bold outline-none text-zinc-700 cursor-pointer focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                 >
                   <option value="US">USA ($)</option>
                   <option value="UK">UK (£)</option>
@@ -126,7 +126,7 @@ export default function StorageFeeCalculatorPage({ market }) {
                       type="number"
                       value={inputs.length}
                       onChange={(e) => handleInputChange("length", e.target.value)}
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors text-center"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors text-center"
                     />
                   </div>
                   <div>
@@ -135,7 +135,7 @@ export default function StorageFeeCalculatorPage({ market }) {
                       type="number"
                       value={inputs.width}
                       onChange={(e) => handleInputChange("width", e.target.value)}
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors text-center"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors text-center"
                     />
                   </div>
                   <div>
@@ -144,7 +144,7 @@ export default function StorageFeeCalculatorPage({ market }) {
                       type="number"
                       value={inputs.height}
                       onChange={(e) => handleInputChange("height", e.target.value)}
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors text-center"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors text-center"
                     />
                   </div>
                 </div>
@@ -157,7 +157,7 @@ export default function StorageFeeCalculatorPage({ market }) {
                     type="number"
                     value={inputs.weight}
                     onChange={(e) => handleInputChange("weight", e.target.value)}
-                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -178,7 +178,7 @@ export default function StorageFeeCalculatorPage({ market }) {
                     type="number"
                     value={unitsCount}
                     onChange={(e) => setUnitsCount(e.target.value)}
-                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                   />
                 </div>
                 
@@ -190,7 +190,7 @@ export default function StorageFeeCalculatorPage({ market }) {
                     type="number"
                     value={monthsCount}
                     onChange={(e) => setMonthsCount(e.target.value)}
-                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                   />
                 </div>
 
@@ -302,7 +302,7 @@ export default function StorageFeeCalculatorPage({ market }) {
               </p>
               <Link 
                 href="/amazon-tools/fba-vs-fbm-vs-3pl"
-                className="bg-orange-500 hover:bg-orange-600 text-white text-[9px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full transition-colors inline-flex items-center gap-1.5"
+                className="bg-orange-500 hover:bg-orange-600 text-white text-[9px] font-black uppercase tracking-widest px-6 py-2.5 rounded-full transition-colors inline-flex items-center gap-1.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-zinc-950"
               >
                 Open Comparison Tool
               </Link>

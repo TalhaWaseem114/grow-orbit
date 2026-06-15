@@ -92,6 +92,7 @@ export default function Footer() {
   return (
     <div className="px-3 pb-3 md:px-6 md:pb-6 mt-10 md:mt-20">
       <footer
+        role="contentinfo"
         className="bg-[#0A0A0B] text-white pt-24 pb-12 px-6 md:px-12 rounded-[40px] md:rounded-[60px] relative overflow-hidden shadow-[0_40px_100px_-10px_rgba(0,0,0,0.5)]"
         style={{ fontFamily: "'Montserrat', sans-serif" }}
       >
@@ -211,7 +212,7 @@ export default function Footer() {
                       key={s.name}
                       href={s.url}
                       aria-label={`Follow us on ${s.name}`}
-                      className="text-zinc-400 text-sm font-medium hover:text-orange-500 transition-colors no-underline focus-visible:text-orange-500 outline-none"
+                      className="text-zinc-400 text-sm font-medium hover:text-orange-500 transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
                     >
                       {s.name} ↗
                     </Link>
@@ -339,7 +340,7 @@ export default function Footer() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="group w-full mt-2 bg-zinc-900 hover:bg-orange-500 text-white py-4 rounded-2xl font-black text-[12px] uppercase tracking-[0.2em] transition-all duration-300 shadow-lg active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3"
+                  className="group w-full mt-2 bg-zinc-900 hover:bg-orange-500 text-white py-4 rounded-2xl font-black text-[12px] uppercase tracking-[0.2em] transition-all duration-300 shadow-lg active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
                 >
                   {loading ? "Sending..." : (
                     <>
@@ -370,17 +371,17 @@ export default function Footer() {
             </div>
 
             {/* Links grid */}
-            <div className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3">
+            <nav className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3" aria-label="Services Quick Links">
               {serviceLinks.map((s, i) => (
                 <Link
                   key={i}
                   href={s.url}
-                  className="text-zinc-500 text-[12px] font-medium hover:text-white transition-colors no-underline leading-snug"
+                  className="text-zinc-500 text-[12px] font-medium hover:text-white transition-colors no-underline leading-snug focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
                 >
                   {s.name}
                 </Link>
               ))}
-            </div>
+            </nav>
           </div>
         </div>
 
@@ -424,12 +425,12 @@ export default function Footer() {
           </Link>
 
           {/* Nav links */}
-          <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+          <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2" aria-label="Footer Navigation">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.url}
-                className="text-zinc-600 text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline"
+                className="text-zinc-600 text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
               >
                 {link.name}
               </Link>

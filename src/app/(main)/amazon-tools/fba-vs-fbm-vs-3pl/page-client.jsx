@@ -100,7 +100,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
                 <select
                   value={inputs.marketplace}
                   onChange={(e) => handleInputChange("marketplace", e.target.value)}
-                  className="text-[10px] bg-zinc-50 border border-zinc-200 rounded px-2 py-1 font-bold outline-none text-zinc-700 cursor-pointer focus:border-orange-500 transition-colors"
+                  className="text-[10px] bg-zinc-50 border border-zinc-200 rounded px-2 py-1 font-bold outline-none text-zinc-700 cursor-pointer focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                 >
                   <option value="US">USA ($)</option>
                   <option value="UK">UK (£)</option>
@@ -121,7 +121,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
                       value={inputs.sellingPrice}
                       onChange={(e) => handleInputChange("sellingPrice", e.target.value)}
                       placeholder="30.00"
-                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -138,7 +138,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
                       value={inputs.productCost}
                       onChange={(e) => handleInputChange("productCost", e.target.value)}
                       placeholder="8.00"
-                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                      className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -150,7 +150,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
                       type="number"
                       value={inputs.length}
                       onChange={(e) => handleInputChange("length", e.target.value)}
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors text-center"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors text-center"
                     />
                   </div>
                   <div>
@@ -159,7 +159,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
                       type="number"
                       value={inputs.width}
                       onChange={(e) => handleInputChange("width", e.target.value)}
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors text-center"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors text-center"
                     />
                   </div>
                   <div>
@@ -168,7 +168,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
                       type="number"
                       value={inputs.height}
                       onChange={(e) => handleInputChange("height", e.target.value)}
-                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors text-center"
+                      className="w-full px-3 py-2 bg-zinc-50 border border-zinc-200/80 rounded-lg text-xs text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors text-center"
                     />
                   </div>
                 </div>
@@ -181,7 +181,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
                     type="number"
                     value={inputs.weight}
                     onChange={(e) => handleInputChange("weight", e.target.value)}
-                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-orange-500 transition-colors"
+                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/20 focus-visible:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -204,7 +204,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
                     value={inputs.fbmFulfillment}
                     onChange={(e) => handleInputChange("fbmFulfillment", e.target.value)}
                     placeholder="4.50"
-                    className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-indigo-500 transition-colors"
+                    className="w-full pl-7 pr-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-indigo-500/20 focus-visible:outline-none transition-colors"
                   />
                 </div>
               </div>
@@ -223,7 +223,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
                     type="number"
                     value={inputs.tplFulfillment}
                     onChange={(e) => handleInputChange("tplFulfillment", e.target.value)}
-                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-emerald-500 transition-colors"
+                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500/20 focus-visible:outline-none transition-colors"
                   />
                 </div>
                 <div>
@@ -232,7 +232,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
                     type="number"
                     value={inputs.tplStorage}
                     onChange={(e) => handleInputChange("tplStorage", e.target.value)}
-                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus:border-emerald-500 transition-colors"
+                    className="w-full px-3 py-2.5 bg-zinc-50 border border-zinc-200/80 rounded-xl text-sm text-zinc-900 font-bold outline-none focus-visible:border-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500/20 focus-visible:outline-none transition-colors"
                   />
                 </div>
               </div>

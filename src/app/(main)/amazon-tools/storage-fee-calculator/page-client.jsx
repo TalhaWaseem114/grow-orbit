@@ -2,12 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useAmazonEconomics } from '@/hooks/useAmazonEconomics';
 import ResultExplanationBlock from '@/components/shared-calculator/ResultExplanationBlock';
 import FbaSizeVisualizer from '@/components/shared-calculator/FbaSizeVisualizer';
 import AssumptionsPanel from '@/components/shared-calculator/AssumptionsPanel';
 import { ArrowLeft, Share2, Box, Calendar, AlertTriangle, ShieldCheck } from 'lucide-react';
-import CalculatorResourceHub from '@/components/shared-calculator/CalculatorResourceHub';
+
+// Lazy-load below-fold resource hub
+const CalculatorResourceHub = dynamic(() => import('@/components/shared-calculator/CalculatorResourceHub'), { ssr: false });
 
 export default function StorageFeeCalculatorPage({ market }) {
   const { inputs, errors, results, handleInputChange, syncUrlParams } = useAmazonEconomics(market);

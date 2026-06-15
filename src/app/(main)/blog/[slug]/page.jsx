@@ -304,6 +304,10 @@ export default async function Page({ params }) {
                 const url = parts[0];
                 const btnText = parts[1];
                 const hookText = parts[2] || "";
+                
+                const isInternal = url.startsWith("/");
+                const btnClass = "inline-flex items-center justify-center bg-gradient-to-br from-orange-500 to-orange-600 text-white font-black text-sm sm:text-base uppercase tracking-widest px-8 sm:px-12 py-4 sm:py-5 rounded-full shadow-xl shadow-orange-500/20 hover:scale-105 hover:shadow-orange-500/40 transition-all duration-300";
+
                 return (
                   <div key={i} className="flex flex-col items-center justify-center my-16 text-center">
                     {hookText && (
@@ -311,14 +315,20 @@ export default async function Page({ params }) {
                         {hookText}
                       </p>
                     )}
-                    <a 
-                      href={url} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="inline-flex items-center justify-center bg-gradient-to-br from-orange-500 to-orange-600 text-white font-black text-sm sm:text-base uppercase tracking-widest px-8 sm:px-12 py-4 sm:py-5 rounded-full shadow-xl shadow-orange-500/20 hover:scale-105 hover:shadow-orange-500/40 transition-all duration-300"
-                    >
-                      {btnText}
-                    </a>
+                    {isInternal ? (
+                      <Link href={url} className={btnClass}>
+                        {btnText}
+                      </Link>
+                    ) : (
+                      <a 
+                        href={url} 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className={btnClass}
+                      >
+                        {btnText}
+                      </a>
+                    )}
                   </div>
                 );
               }

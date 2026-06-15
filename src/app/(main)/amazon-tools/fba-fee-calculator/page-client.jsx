@@ -2,12 +2,15 @@
 
 import React, { useEffect } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useAmazonEconomics } from '@/hooks/useAmazonEconomics';
 import FbaSizeVisualizer from '@/components/shared-calculator/FbaSizeVisualizer';
 import ResultExplanationBlock from '@/components/shared-calculator/ResultExplanationBlock';
 import AssumptionsPanel from '@/components/shared-calculator/AssumptionsPanel';
-import CalculatorResourceHub from '@/components/shared-calculator/CalculatorResourceHub';
 import { ArrowLeft, Share2, Globe, Box, Target, Percent } from 'lucide-react';
+
+// Lazy-load below-fold resource hub
+const CalculatorResourceHub = dynamic(() => import('@/components/shared-calculator/CalculatorResourceHub'), { ssr: false });
 
 export default function FbaFeeCalculatorPage({ market }) {
   const { inputs, errors, results, handleInputChange, syncUrlParams } = useAmazonEconomics(market);

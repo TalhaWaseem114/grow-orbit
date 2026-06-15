@@ -2,14 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { useAmazonEconomics } from '@/hooks/useAmazonEconomics';
 import ResultExplanationBlock from '@/components/shared-calculator/ResultExplanationBlock';
 import FbaSizeVisualizer from '@/components/shared-calculator/FbaSizeVisualizer';
-import ProfitDonutChart from '@/components/shared-calculator/ProfitDonutChart';
-import ProductIntelligence from '@/components/shared-calculator/ProductIntelligence';
 import AssumptionsPanel from '@/components/shared-calculator/AssumptionsPanel';
 import { ArrowLeft, Share2, FileDown, Box, Globe, Truck, Percent, Target } from 'lucide-react';
 import CalculatorResourceHub from '@/components/shared-calculator/CalculatorResourceHub';
+
+// Lazy-load heavy visualization components (only needed after calculation)
+const ProfitDonutChart = dynamic(() => import('@/components/shared-calculator/ProfitDonutChart'), { ssr: false });
+const ProductIntelligence = dynamic(() => import('@/components/shared-calculator/ProductIntelligence'), { ssr: false });
 
 export default function ProfitCalculatorPage({ market }) {
   const { inputs, errors, results, handleInputChange, syncUrlParams, setAllInputs } = useAmazonEconomics(market);

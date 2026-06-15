@@ -6,9 +6,9 @@ import {
   Heart,
   MessageSquare, Send, Linkedin, Twitter, Globe, Award
 } from "lucide-react";
-import { doc, getDoc, updateDoc, increment, collection, getDocs, addDoc, serverTimestamp, query, orderBy } from "firebase/firestore";
+import { doc, getDoc, updateDoc, increment, collection, getDocs, addDoc, serverTimestamp, query, orderBy } from "firebase/firestore/lite";
 import { onAuthStateChanged } from "firebase/auth";
-import { db, auth } from "@/firebase/firebaseConfig";
+import { dbLite as db, auth } from "@/firebase/firebaseConfig";
 import { getAuthorBySlug, getAuthorSlugByName } from "@/data/authorData";
 
 const montserrat = { fontFamily: "'Montserrat', sans-serif" };
@@ -57,15 +57,6 @@ export default function BlogPostClient({ post }) {
 
   // Fetch comments
   useEffect(() => {
-    const isLighthouse = typeof window !== "undefined" && (
-      navigator.userAgent.includes("Chrome-Lighthouse") || 
-      navigator.userAgent.includes("Lighthouse")
-    );
-    if (isLighthouse) {
-      setComments([]);
-      return;
-    }
-
     async function fetchComments() {
       if (post?.id) {
         try {

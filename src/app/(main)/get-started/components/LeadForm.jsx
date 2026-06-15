@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "../../../../../src/firebase/firebaseConfig.js";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore/lite";
+import { dbLite as db } from "../../../../../src/firebase/firebaseConfig.js";
 import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 

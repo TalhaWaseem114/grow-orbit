@@ -1,13 +1,13 @@
 "use client";
 
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore/lite";
 import gsap from "gsap";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
 import { ArrowRight, Zap, TrendingUp } from "lucide-react";
-import { db } from "../../firebase/firebaseConfig.js";
+import { dbLite as db } from "../../firebase/firebaseConfig.js";
 
 export default function Footer() {
   const router = useRouter();

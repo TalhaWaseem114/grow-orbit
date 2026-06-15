@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import { db } from "@/firebase/firebaseConfig";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore/lite";
+import { dbLite as db } from "@/firebase/firebaseConfig";
 import {
   ArrowRight, Clock, Mail, MessageCircle,
   CheckCircle2, Search, BarChart3, Zap,

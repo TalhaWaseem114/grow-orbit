@@ -206,12 +206,12 @@ export default function BlogPostClient({ post }) {
               </Link>
               <div className="flex justify-center sm:justify-start gap-2.5">
                 {authorDetails.socialLinks?.linkedin && (
-                  <a href={authorDetails.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-orange-500 transition-colors">
+                  <a href={authorDetails.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-orange-500 transition-colors" aria-label={`${authorDetails.name}'s LinkedIn Profile`}>
                     <Linkedin size={14} />
                   </a>
                 )}
                 {authorDetails.socialLinks?.twitter && (
-                  <a href={authorDetails.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-orange-500 transition-colors">
+                  <a href={authorDetails.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-orange-500 transition-colors" aria-label={`${authorDetails.name}'s Twitter Profile`}>
                     <Twitter size={14} />
                   </a>
                 )}

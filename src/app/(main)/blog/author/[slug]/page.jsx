@@ -203,6 +203,7 @@ export default async function AuthorPage({ params }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-orange-500 flex items-center justify-center text-white transition-all hover:scale-105"
+                    aria-label={`${author.name}'s LinkedIn Profile`}
                   >
                     <Linkedin size={14} />
                   </a>
@@ -213,6 +214,7 @@ export default async function AuthorPage({ params }) {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-orange-500 flex items-center justify-center text-white transition-all hover:scale-105"
+                    aria-label={`${author.name}'s Twitter Profile`}
                   >
                     <Twitter size={14} />
                   </a>
@@ -221,6 +223,7 @@ export default async function AuthorPage({ params }) {
                   <a
                     href={author.socialLinks.website}
                     className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-orange-500 flex items-center justify-center text-white transition-all hover:scale-105"
+                    aria-label={`${author.name}'s Personal Website`}
                   >
                     <Globe size={14} />
                   </a>

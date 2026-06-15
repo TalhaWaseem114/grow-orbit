@@ -7,6 +7,7 @@ import { ArrowLeft, ArrowRight, Clock, Calendar, Tag, BookOpen } from "lucide-re
 import { getReadTime, parseMarkdownText } from "@/lib/blogUtils";
 import { getAuthorBySlug, getAuthorSlugByName } from "@/data/authorData";
 import BlogShareBar from "@/components/blog/BlogShareBar";
+import EditorialGuidelines from "@/components/blog/EditorialGuidelines";
 
 export const revalidate = 60; // ISR revalidation every 60 seconds
 
@@ -147,6 +148,7 @@ export default async function Page({ params }) {
             "headline": post.title,
             "image": [post.coverImage],
             "datePublished": post.date,
+            "dateModified": post.lastModified || post.date,
             "author": {
               "@type": "Person",
               "name": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).name,
@@ -449,6 +451,8 @@ export default async function Page({ params }) {
               );
             })}
           </article>
+          
+          <EditorialGuidelines updatedDate={post.lastModified || post.date} authorName={post.author?.name} />
 
           {/* Client-Side Interactive Components (Upvotes, Comments) */}
           <BlogPostClient post={{ id: post.id, slug: post.slug, upvotes: post.upvotes, author: post.author }} />

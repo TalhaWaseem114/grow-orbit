@@ -112,6 +112,22 @@ export default function AdminDashboard() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  /* Persist active tab selection to localStorage */
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedTab = localStorage.getItem("adminActiveTab");
+      if (savedTab) {
+        setActiveTab(savedTab);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("adminActiveTab", activeTab);
+    }
+  }, [activeTab]);
+
   /* Authentication Guard */
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {

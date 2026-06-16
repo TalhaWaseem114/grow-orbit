@@ -50,7 +50,9 @@ export default function CmsTab({
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 12, background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.3)", borderRadius: 12, padding: "16px" }}>
-        <AlertCircle size={24} color="#f97316" flexShrink={0} />
+        <div style={{ display: "flex", flexShrink: 0 }}>
+          <AlertCircle size={24} color="#f97316" />
+        </div>
         <div>
           <h3 style={{ fontSize: 14, fontWeight: 800, color: "#f97316", marginBottom: 4 }}>Layout Configuration Locked</h3>
           <p style={{ fontSize: 12, color: "#d4d4d4", lineHeight: 1.5 }}>
@@ -61,7 +63,9 @@ export default function CmsTab({
 
       {(activeTheme !== liveTheme || JSON.stringify(activeSections) !== JSON.stringify(liveSections)) && !themeSaved && (
         <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(249,115,22,0.08)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 12, padding: "10px 16px" }}>
-          <AlertCircle size={14} color="#f97316" flexShrink={0} />
+          <div style={{ display: "flex", flexShrink: 0 }}>
+            <AlertCircle size={14} color="#f97316" />
+          </div>
           <span style={{ fontSize: 11, fontWeight: 600, color: "#f97316" }}>Unsaved changes detected. Click "Publish Live" to update the website.</span>
         </div>
       )}

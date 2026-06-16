@@ -86,7 +86,7 @@ function AmazonServicesHero() {
 
             <div className="mb-6 inline-flex">
               <Link
-                href="/amazon-services-landing"
+                href="/get-started/amazon-services-landing"
                 className="group flex items-center gap-2.5 bg-orange-500/10 border border-orange-500/20 hover:border-orange-500/40 text-orange-500 px-4 py-2 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-widest no-underline transition-all duration-300 shadow-[0_4px_20px_rgba(249,115,22,0.05)]"
               >
                 <span className="relative flex h-2 w-2">

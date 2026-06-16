@@ -1,7 +1,7 @@
 import ClientPage from "./page-client";
 import { getPageMetadata } from "@/config/seo";
 
-export const metadata = getPageMetadata("/amazon-services-landing");
+export const metadata = getPageMetadata("/get-started/design-creative-landing");
 
 export default function Page(props) {
   const organizationSchema = {
@@ -14,7 +14,7 @@ export default function Page(props) {
       "https://twitter.com/groworbit",
       "https://www.linkedin.com/company/groworbit"
     ],
-    "description": "Amazon growth services landing page. PPC efficiency, organic rank optimization, and full Amazon store management.",
+    "description": "Amazon design & creative landing page. 3D renders, listing image design, A+ Content layouts, and custom storefront design.",
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "4.9",

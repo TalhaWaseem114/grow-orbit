@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { 
-  LayoutGrid, List, Download, Search, Calendar, ChevronRight, 
+  LayoutGrid, List, KanbanSquare, Download, Search, Calendar, ChevronRight, 
   Phone, Mail, Trash2, History, AlertCircle 
 } from "lucide-react";
+
+import KanbanBoard from "./KanbanBoard";
 
 /* ─────────────────────────────────────────
    CONFIGS & HELPERS
@@ -48,6 +50,10 @@ export default function LeadsTab({
   setLeadFilter,
   priorityFilter,
   setPriorityFilter,
+  ownerFilter,
+  setOwnerFilter,
+  sourceFilter,
+  setSourceFilter,
   startDate,
   setStartDate,
   endDate,
@@ -64,17 +70,60 @@ export default function LeadsTab({
   handleStatusChange,
   handleAssignLead,
   handleUpdatePriority,
+  handleUpdateFollowUp,
   handleAddLeadNote,
   exportLeads
 }) {
   const startInputRef = useRef(null);
   const endInputRef = useRef(null);
 
+  /* Bulk Actions State */
+  const [selectedLeads, setSelectedLeads] = useState([]);
+  const [isPerformingBulkAction, setIsPerformingBulkAction] = useState(false);
+
+  const toggleLeadSelection = (leadId) => {
+    setSelectedLeads(prev => prev.includes(leadId) ? prev.filter(id => id !== leadId) : [...prev, leadId]);
+  };
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) setSelectedLeads(filteredLeads.map(l => l.id));
+    else setSelectedLeads([]);
+  };
+
+  const performBulkAction = async (actionType, value = null) => {
+    if (!selectedLeads.length || isPerformingBulkAction) return;
+    setIsPerformingBulkAction(true);
+    try {
+      if (actionType === "delete") {
+        if (!window.confirm(`Are you sure you want to delete ${selectedLeads.length} leads?`)) return;
+        await Promise.all(selectedLeads.map(id => handleDeleteLead(id)));
+      } else if (actionType === "status") {
+        await Promise.all(selectedLeads.map(id => handleStatusChange(id, value)));
+      } else if (actionType === "assign") {
+        const admin = users.find(u => u.uid === value || u.id === value);
+        await Promise.all(selectedLeads.map(id => handleAssignLead(id, value, admin?.fullName || admin?.displayName || "Admin")));
+      }
+      setSelectedLeads([]);
+    } catch (err) {
+      console.error("Bulk action failed:", err);
+      alert("Some bulk actions failed. Check console.");
+    } finally {
+      setIsPerformingBulkAction(false);
+    }
+  };
+
   /* Filtered leads internal computation to offload from page.jsx */
   const filteredLeads = useMemo(() => {
     let res = leads;
     if (leadFilter !== "all") res = res.filter(l => (l.status || "new") === leadFilter);
     if (priorityFilter !== "all") res = res.filter(l => (l.priority || "low") === priorityFilter);
+    if (ownerFilter !== "all") {
+      if (ownerFilter === "unassigned") res = res.filter(l => !l.assignedTo);
+      else res = res.filter(l => l.assignedTo === ownerFilter);
+    }
+    if (sourceFilter !== "all") {
+      res = res.filter(l => (l.source || "Direct") === sourceFilter);
+    }
 
     // Search query match
     if (leadSearch.trim()) {
@@ -99,7 +148,7 @@ export default function LeadsTab({
     }
 
     return res;
-  }, [leads, leadFilter, priorityFilter, leadSearch, startDate, endDate]);
+  }, [leads, leadFilter, priorityFilter, ownerFilter, sourceFilter, leadSearch, startDate, endDate]);
 
   return (
     <div className="tab-content" style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -115,14 +164,23 @@ export default function LeadsTab({
             <button
               onClick={() => setLeadViewMode("cards")}
               style={{ padding: "6px 10px", borderRadius: 8, border: "none", cursor: "pointer", background: leadViewMode === "cards" ? "#f97316" : "transparent", color: leadViewMode === "cards" ? "#fff" : "#525252", transition: "all 0.2s", display: "flex" }}
+              title="Cards View"
             >
               <LayoutGrid size={14} />
             </button>
             <button
               onClick={() => setLeadViewMode("table")}
               style={{ padding: "6px 10px", borderRadius: 8, border: "none", cursor: "pointer", background: leadViewMode === "table" ? "#f97316" : "transparent", color: leadViewMode === "table" ? "#fff" : "#525252", transition: "all 0.2s", display: "flex" }}
+              title="Table View"
             >
               <List size={14} />
+            </button>
+            <button
+              onClick={() => setLeadViewMode("kanban")}
+              style={{ padding: "6px 10px", borderRadius: 8, border: "none", cursor: "pointer", background: leadViewMode === "kanban" ? "#f97316" : "transparent", color: leadViewMode === "kanban" ? "#fff" : "#525252", transition: "all 0.2s", display: "flex" }}
+              title="Kanban Board"
+            >
+              <KanbanSquare size={14} />
             </button>
           </div>
 
@@ -143,19 +201,37 @@ export default function LeadsTab({
         </div>
       </div>
 
+      {/* Analytics Mini-Dashboard */}
+      <div className="leads-analytics" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
+        <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, padding: "16px 20px" }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Total Leads</div>
+          <div style={{ fontSize: 24, fontWeight: 900, color: "#fff" }}>{filteredLeads.length}</div>
+        </div>
+        <div style={{ background: "rgba(16,185,129,0.05)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 16, padding: "16px 20px" }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "#10b981", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Meetings Booked</div>
+          <div style={{ fontSize: 24, fontWeight: 900, color: "#10b981" }}>{filteredLeads.filter(l => l.meetingBooked).length}</div>
+        </div>
+        <div style={{ background: "rgba(249,115,22,0.05)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 16, padding: "16px 20px" }}>
+          <div style={{ fontSize: 10, fontWeight: 700, color: "#f97316", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Conversion Rate</div>
+          <div style={{ fontSize: 24, fontWeight: 900, color: "#f97316" }}>
+            {filteredLeads.length ? Math.round((filteredLeads.filter(l => l.meetingBooked).length / filteredLeads.length) * 100) : 0}%
+          </div>
+        </div>
+      </div>
+
       {/* Search + Filter bar */}
-      <div className="leads-controls" style={{ display: "flex", gap: 10 }}>
-        <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "10px 16px" }}>
+      <div className="leads-controls" style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+        <div style={{ flex: "1 1 300px", display: "flex", alignItems: "center", gap: 10, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "10px 16px" }}>
           <Search size={14} color="#525252" />
           <input
             type="text"
             placeholder="Search leads by name, email, or service…"
             value={leadSearch}
             onChange={e => setLeadSearch(e.target.value)}
-            style={{ flex: 1, background: "none", border: "none", color: "#fff", fontSize: 12, fontWeight: 500 }}
+            style={{ flex: 1, background: "none", border: "none", color: "#fff", fontSize: 12, fontWeight: 500, outline: "none" }}
           />
         </div>
-        <div className="leads-filters" style={{ display: "flex", gap: 6 }}>
+        <div className="leads-filters" style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           {["all", "new", "hot", "replied", "archived"].map(f => (
             <button key={f} onClick={() => setLeadFilter(f)}
               style={{ padding: "8px 14px", borderRadius: 10, border: "1px solid", cursor: "pointer", fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", transition: "all 0.15s",
@@ -185,55 +261,122 @@ export default function LeadsTab({
         </div>
       </div>
 
-      {/* Date Filter Bar */}
-      <div className="leads-date-filter" style={{ display: "flex", gap: 10, alignItems: "center" }}>
-        <div
-          onClick={() => startInputRef.current?.showPicker()}
-          style={{ display: "flex", alignItems: "center", gap: 12, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", cursor: "pointer" }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(249,115,22,0.3)"}
-          onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"}
+      {/* Advanced Filters (Date, Owner, Source) */}
+      <div className="leads-advanced-filters" style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+        {/* Owner Filter */}
+        <select
+          value={ownerFilter}
+          onChange={e => setOwnerFilter(e.target.value)}
+          style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer" }}
         >
-          <Calendar size={14} color="#525252" />
-          <span style={{ fontSize: 9, fontWeight: 800, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.15em" }}>From</span>
-          <input
-            ref={startInputRef}
-            type="date"
-            value={startDate}
-            onChange={e => setStartDate(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-            style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer", colorScheme: "dark" }}
-          />
-        </div>
+          <option value="all">All Owners</option>
+          <option value="unassigned">Unassigned</option>
+          {users.filter(u => u.role === "admin").map(u => (
+            <option key={u.id || u.uid} value={u.id || u.uid}>{u.fullName || u.displayName || u.email}</option>
+          ))}
+        </select>
 
-        <div
-          onClick={() => endInputRef.current?.showPicker()}
-          style={{ display: "flex", alignItems: "center", gap: 12, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", cursor: "pointer" }}
-          onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(249,115,22,0.3)"}
-          onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"}
+        {/* Source Filter */}
+        <select
+          value={sourceFilter}
+          onChange={e => setSourceFilter(e.target.value)}
+          style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer" }}
         >
-          <Calendar size={14} color="#525252" />
-          <span style={{ fontSize: 9, fontWeight: 800, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.15em" }}>To</span>
-          <input
-            ref={endInputRef}
-            type="date"
-            value={endDate}
-            onChange={e => setEndDate(e.target.value)}
-            onClick={(e) => e.stopPropagation()}
-            style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer", colorScheme: "dark" }}
-          />
-        </div>
-
-        {(startDate || endDate) && (
-          <button
-            onClick={() => { setStartDate(""); setEndDate(""); }}
-            style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", color: "#ef4444", fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer", padding: "8px 16px", borderRadius: 10, marginLeft: 6, transition: "all 0.2s" }}
-            onMouseEnter={e => { e.currentTarget.style.background = "rgba(239,68,68,0.12)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "rgba(239,68,68,0.08)"; }}
+          <option value="all">All Sources</option>
+          <option value="Landing Page Form">Landing Page Form</option>
+          <option value="Design & Creative Landing Page">Design & Creative Landing Page</option>
+          <option value="Design & Creative Bottom Form">Design & Creative Bottom Form</option>
+          <option value="Direct">Direct</option>
+        </select>
+        <div className="leads-date-filter" style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          <div
+            onClick={() => startInputRef.current?.showPicker()}
+            style={{ display: "flex", alignItems: "center", gap: 12, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", cursor: "pointer" }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(249,115,22,0.3)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"}
           >
-            Reset Dates
-          </button>
-        )}
+            <Calendar size={14} color="#525252" />
+            <span style={{ fontSize: 9, fontWeight: 800, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.15em" }}>From</span>
+            <input
+              ref={startInputRef}
+              type="date"
+              value={startDate}
+              onChange={e => setStartDate(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer", colorScheme: "dark" }}
+            />
+          </div>
+
+          <div
+            onClick={() => endInputRef.current?.showPicker()}
+            style={{ display: "flex", alignItems: "center", gap: 12, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", cursor: "pointer" }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(249,115,22,0.3)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"}
+          >
+            <Calendar size={14} color="#525252" />
+            <span style={{ fontSize: 9, fontWeight: 800, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.15em" }}>To</span>
+            <input
+              ref={endInputRef}
+              type="date"
+              value={endDate}
+              onChange={e => setEndDate(e.target.value)}
+              onClick={(e) => e.stopPropagation()}
+              style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer", colorScheme: "dark" }}
+            />
+          </div>
+
+          {(startDate || endDate) && (
+            <button
+              onClick={() => { setStartDate(""); setEndDate(""); }}
+              style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", color: "#ef4444", fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer", padding: "8px 16px", borderRadius: 10, marginLeft: 6, transition: "all 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(239,68,68,0.12)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(239,68,68,0.08)"; }}
+            >
+              Reset Dates
+            </button>
+          )}
+        </div>
       </div>
+
+      {/* Bulk Action Toolbar */}
+      {selectedLeads.length > 0 && (
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 12, padding: "10px 16px", marginBottom: 10 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <span style={{ fontSize: 11, fontWeight: 800, color: "#f97316", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+              {selectedLeads.length} Selected
+            </span>
+            <div style={{ width: 1, height: 16, background: "rgba(249,115,22,0.2)" }} />
+            <button onClick={() => setSelectedLeads([])} style={{ background: "none", border: "none", color: "#a3a3a3", fontSize: 10, cursor: "pointer", textDecoration: "underline" }}>Clear</button>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <select
+              onChange={(e) => { if(e.target.value) performBulkAction("status", e.target.value); e.target.value = ""; }}
+              style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none", cursor: "pointer" }}
+            >
+              <option value="">Change Status...</option>
+              <option value="new">New</option>
+              <option value="replied">Replied</option>
+              <option value="hot">Hot 🔥</option>
+              <option value="archived">Archived</option>
+            </select>
+            <select
+              onChange={(e) => { if(e.target.value) performBulkAction("assign", e.target.value); e.target.value = ""; }}
+              style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none", cursor: "pointer" }}
+            >
+              <option value="">Assign Owner...</option>
+              {users.filter(u => u.role === "admin").map(u => (
+                <option key={u.id || u.uid} value={u.id || u.uid}>{u.fullName || u.displayName || u.email}</option>
+              ))}
+            </select>
+            <button
+              onClick={() => performBulkAction("delete")}
+              style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)", color: "#ef4444", borderRadius: 8, padding: "6px 10px", fontSize: 10, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}
+            >
+              <Trash2 size={12} /> Delete
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Lead cards */}
       {loading ? (
@@ -246,7 +389,14 @@ export default function LeadsTab({
           <p style={{ fontSize: 12, fontWeight: 600 }}>No leads match this filter.</p>
         </div>
       ) : (
-        leadViewMode === "cards" ? (
+        leadViewMode === "kanban" ? (
+          <KanbanBoard 
+            leads={filteredLeads}
+            handleStatusChange={handleStatusChange}
+            setExpandedLead={setExpandedLead}
+            setLeadViewMode={setLeadViewMode}
+          />
+        ) : leadViewMode === "cards" ? (
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {filteredLeads.map(lead => {
               const isOpen = expandedLead === lead.id;
@@ -264,6 +414,16 @@ export default function LeadsTab({
                     onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}
                     onMouseLeave={e => e.currentTarget.style.background = "none"}
                   >
+                    {/* Checkbox */}
+                    <div style={{ flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center", marginRight: 8 }}>
+                      <input
+                        type="checkbox"
+                        checked={selectedLeads.includes(lead.id)}
+                        onChange={() => toggleLeadSelection(lead.id)}
+                        onClick={e => e.stopPropagation()}
+                        style={{ width: 16, height: 16, accentColor: "#f97316", cursor: "pointer" }}
+                      />
+                    </div>
                     {/* Avatar */}
                     <div className="lead-avatar" style={{ width: 44, height: 44, borderRadius: 12, background: `linear-gradient(135deg, ${cfg.color}33, ${cfg.color}11)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, fontWeight: 900, color: cfg.color, flexShrink: 0 }}>
                       {lead.fullName?.[0] || "L"}
@@ -273,6 +433,11 @@ export default function LeadsTab({
                       <div className="lead-badges" style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
                         <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{lead.fullName || "Unknown"}</span>
                         <StatusBadge status={status} />
+                        {lead.meetingBooked && (
+                          <span style={{ fontSize: 9, fontWeight: 700, color: "#10b981", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.25)", borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+                            🗓️ Booked
+                          </span>
+                        )}
                         {lead.priority === "high" && (
                           <span style={{ fontSize: 9, fontWeight: 700, color: PRIORITY_CONFIG.high.color, background: PRIORITY_CONFIG.high.bg, border: `1px solid ${PRIORITY_CONFIG.high.border}`, borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
                             HIGH PRIORITY
@@ -281,6 +446,11 @@ export default function LeadsTab({
                         <span style={{ fontSize: 9, fontWeight: 700, color: "#525252", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
                           {lead.source || "Direct"}
                         </span>
+                        {lead.nextFollowUp && new Date(lead.nextFollowUp) < new Date(new Date().setHours(0,0,0,0)) && status !== "archived" && status !== "hot" && (
+                           <span style={{ fontSize: 9, fontWeight: 800, color: "#ef4444", background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+                             ⏰ OVERDUE
+                           </span>
+                        )}
                         {lead.whatsapp && lead.whatsapp !== "N/A" && (
                           <span style={{ fontSize: 9, fontWeight: 700, color: "#4ade80", background: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.2)", borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
                             WA
@@ -425,6 +595,24 @@ export default function LeadsTab({
                             </div>
                           </div>
 
+                          {/* Next Follow Up */}
+                          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
+                            <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Next Follow Up</div>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                              <input 
+                                type="date"
+                                value={lead.nextFollowUp || ""}
+                                onChange={(e) => handleUpdateFollowUp(lead.id, e.target.value)}
+                                style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none", cursor: "pointer", colorScheme: "dark" }}
+                              />
+                              {lead.nextFollowUp && new Date(lead.nextFollowUp) < new Date(new Date().setHours(0,0,0,0)) && status !== "archived" && (
+                                <span style={{ fontSize: 9, fontWeight: 800, color: "#ef4444", background: "rgba(239,68,68,0.1)", padding: "4px 8px", borderRadius: 6, textTransform: "uppercase" }}>
+                                  Overdue
+                               </span>
+                              )}
+                            </div>
+                          </div>
+
                           {/* Pipeline Status */}
                           <div style={{ marginTop: "auto" }}>
                             <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Move Stage</div>
@@ -457,6 +645,9 @@ export default function LeadsTab({
             <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 800 }}>
               <thead>
                 <tr style={{ background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+                  <th style={{ padding: "16px 24px", width: 40, textAlign: "center" }}>
+                    <input type="checkbox" onChange={handleSelectAll} checked={filteredLeads.length > 0 && selectedLeads.length === filteredLeads.length} style={{ accentColor: "#f97316", cursor: "pointer" }} />
+                  </th>
                   <th style={{ padding: "16px 24px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em" }}>Status</th>
                   <th style={{ padding: "16px 24px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em" }}>Prio</th>
                   <th style={{ padding: "16px 24px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em" }}>Client</th>
@@ -472,6 +663,9 @@ export default function LeadsTab({
                   const status = lead.status || "new";
                   return (
                     <tr key={lead.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.02)", transition: "background 0.2s" }} onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.01)"} onMouseLeave={e => e.currentTarget.style.background = "none"}>
+                      <td style={{ padding: "14px 24px", textAlign: "center" }}>
+                        <input type="checkbox" checked={selectedLeads.includes(lead.id)} onChange={() => toggleLeadSelection(lead.id)} style={{ accentColor: "#f97316", cursor: "pointer" }} />
+                      </td>
                       <td style={{ padding: "14px 24px" }}><StatusBadge status={status} /></td>
                       <td style={{ padding: "14px 24px" }}>
                         {lead.priority === "high" ? (
@@ -481,7 +675,19 @@ export default function LeadsTab({
                         )}
                       </td>
                       <td style={{ padding: "14px 24px" }}>
-                        <div style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{lead.fullName || "Unknown"}</div>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{lead.fullName || "Unknown"}</span>
+                          {lead.nextFollowUp && new Date(lead.nextFollowUp) < new Date(new Date().setHours(0,0,0,0)) && status !== "archived" && status !== "hot" && (
+                             <span style={{ fontSize: 9, fontWeight: 800, color: "#ef4444", background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
+                               ⏰ OVERDUE
+                             </span>
+                          )}
+                          {lead.meetingBooked && (
+                            <span style={{ fontSize: 8, fontWeight: 800, color: "#10b981", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.25)", padding: "1.5px 5.5px", borderRadius: 4, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                              Booked
+                            </span>
+                          )}
+                        </div>
                         <div style={{ fontSize: 11, color: "#525252" }}>{lead.email}</div>
                       </td>
                       <td style={{ padding: "14px 24px" }}>

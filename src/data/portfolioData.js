@@ -628,6 +628,70 @@ export const PORTFOLIO_ITEMS = [
       role: "Marketing Director, Luminos",
     },
   },
+  /* ─── LISTING IMAGES & A+ (AETHERA CHRONOS) ─── */
+  {
+    id: "li-12",
+    category: "Listing Images",
+    niche: "Home & Personal Care",
+    brandName: "Aethera Chronos",
+    outcome: "+125% Sales",
+    badge: { value: "+125%", label: "Sales Lift" },
+    tags: ["High-End Aesthetic", "Feature Callouts", "Premium Display"],
+    services: ["Listing Images", "A+ Content"],
+    materials: ["Premium Materials", "Ultrasonic Tech"],
+    src: "/newUpload/main%20image.png",
+    isDark: true,
+    timeline: "14 Days",
+    challenge: "Aethera Chronos launched a premium ultrasonic cleaner, but their original imagery failed to communicate the high-end build quality and the advanced cleaning technology. It blended in with cheap, generic alternatives on the market.",
+    solution: "We designed a luxurious, cinematic visual suite using deep navy and gold tones to establish Aethera Chronos as a premium brand. By clearly visualizing the ultrasonic waves, the spacious capacity, and the unmatched versatility, we elevated the product's perceived value and built instant customer trust.",
+    serviceDetails: {
+      "Listing Images": {
+        description: "A premium set of listing images emphasizing the powerful 45,000Hz ultrasonic technology, visible transformation, and unmatched versatility.",
+        images: [
+          { src: "/newUpload/main%20image.png", label: "Hero Image" },
+          { src: "/newUpload/aethera%20listing%20image%20(1).png", label: "Features Breakdown" },
+          { src: "/newUpload/aethera%20listing%20image%20(3).png", label: "Ultrasonic Waves" },
+          { src: "/newUpload/aethera%20listing%20image%20(4).png", label: "Visible Transformation" },
+          { src: "/newUpload/aethera%20listing%20image%20(5).png", label: "Easy Operation" },
+          { src: "/newUpload/aethera%20listing%20image%20(6).png", label: "Intuitive Smart Touch" },
+          { src: "/newUpload/aethera%20listing%20image%20(7).png", label: "Spacious Capacity" },
+          { src: "/newUpload/aethera%20listing%20image%20(8).png", label: "Unmatched Versatility" },
+        ],
+      },
+      "A+ Content": {
+        description: "Cinematic A+ Content modules that walk the customer through every advanced feature, establishing a strong brand identity.",
+        images: [
+          { src: "/newUpload/Artboard%201%20(6).png", label: "A+ Module 1" },
+          { src: "/newUpload/Artboard%202%20(6).png", label: "A+ Module 2" },
+          { src: "/newUpload/Artboard%203%20(6).png", label: "A+ Module 3" },
+          { src: "/newUpload/Artboard%204%20(6).png", label: "A+ Module 4" },
+          { src: "/newUpload/Artboard%205%20(6).png", label: "A+ Module 5" },
+          { src: "/newUpload/Artboard%206%20(5).png", label: "A+ Module 6" },
+          { src: "/newUpload/Artboard%207%20(5).png", label: "A+ Module 7" },
+        ],
+      },
+    },
+    gallery: [
+      { src: "/newUpload/main%20image.png", label: "Hero Image" },
+      { src: "/newUpload/aethera%20listing%20image%20(3).png", label: "Ultrasonic Waves" },
+      { src: "/newUpload/aethera%20listing%20image%20(4).png", label: "Visible Transformation" },
+      { src: "/newUpload/aethera%20listing%20image%20(7).png", label: "Spacious Capacity" },
+      { src: "/newUpload/aethera%20listing%20image%20(8).png", label: "Unmatched Versatility" },
+      { src: "/newUpload/aethera%20brand%20identity.png", label: "A+ Brand Header" },
+      { src: "/newUpload/Artboard%202%20(6).png", label: "A+ Feature" },
+    ],
+    metrics: [
+      { label: "Sales Lift", value: "+125%" },
+      { label: "CVR Growth", value: "+65%" },
+      { label: "Perceived Value", value: "Premium" },
+      { label: "Return Rate", value: "-15%" },
+    ],
+    testimonial: {
+      quote: "The new visuals transformed our ultrasonic cleaner from a basic utility item into a sophisticated, premium product. The dark, luxurious aesthetic perfectly matched our brand vision, and our conversion rates skyrocketed.",
+      author: "Michael S.",
+      role: "Founder, Aethera Chronos",
+    },
+  },
 ];
 
 /* ═══════════════════════════════════════════════

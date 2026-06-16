@@ -32,7 +32,7 @@ const FormSectionThemeTwo = forwardRef(function FormSectionThemeTwo(_, ref) {
           <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 rounded-full px-4 py-2 mb-6">
             <span className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
             <span className="text-orange-600 font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.3em]">
-              Only 2 spots remaining for {currentMonth}
+              Limited spots available for {currentMonth}
             </span>
           </div>
           <h2

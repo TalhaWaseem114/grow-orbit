@@ -2,7 +2,7 @@
 
 import React from "react";
 import { 
-  Users, Briefcase, Activity, TrendingUp, AlertCircle, ArrowUpRight 
+  Users, Briefcase, Activity, TrendingUp, AlertCircle, ArrowUpRight, Calendar 
 } from "lucide-react";
 
 /* ─────────────────────────────────────────
@@ -117,11 +117,12 @@ export default function OverviewTab({
       </div>
 
       {/* Stats */}
-      <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4, 1fr)", gap: 14 }}>
-        <StatCard title="Total Users"    value={users.length}  sub="Registered accounts"    icon={Users}    delta="+2 this week" />
+      <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(5, 1fr)", gap: 14 }}>
         <StatCard title="Active Leads"   value={leads.length}  sub="All time enquiries"     icon={Briefcase} accent />
         <StatCard title="New Leads"      value={newLeadsCount} sub="Awaiting response"      icon={Activity} />
+        <StatCard title="Booked Meetings" value={leads.filter(l => l.meetingBooked).length} sub="Calendly bookings" icon={Calendar} />
         <StatCard title="Conversion Est" value={conversionRate} sub="Interest-to-Lead ratio" icon={TrendingUp} />
+        <StatCard title="Total Users"    value={users.length}  sub="Registered accounts"    icon={Users} />
       </div>
 
       {/* Recent leads quick view */}

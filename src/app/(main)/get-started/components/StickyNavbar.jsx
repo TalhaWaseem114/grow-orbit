@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
-import HeroMegaMenu from "../HeroMegaMenu";
+import HeroMegaMenu from "./HeroMegaMenu";
 
 export default function StickyNavbar({ scrolled, scrollToForm }) {
   const [servicesOpen, setServicesOpen] = useState(false);

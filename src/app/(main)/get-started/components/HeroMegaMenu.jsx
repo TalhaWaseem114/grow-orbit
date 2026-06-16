@@ -196,9 +196,9 @@ export default function HeroMegaMenu({ onClose }) {
               {otherServices.map((item) => <MenuItem key={item.name} item={item} onClose={onClose} pathname={pathname} />)}
             </div>
 
-            </div>
           </div>
         </div>
       </div>
+    </div>
   );
 }

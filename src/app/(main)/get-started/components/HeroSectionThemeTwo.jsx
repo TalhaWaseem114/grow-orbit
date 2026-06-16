@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, ArrowRight, Star, TrendingUp, Rocket, Shield, Heart, X, Play } from "lucide-react";
-import HeroMegaMenu from "../HeroMegaMenu";
+import HeroMegaMenu from "./HeroMegaMenu";
 
 export default function HeroSectionThemeTwo({ scrollToForm }) {
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -69,7 +69,7 @@ export default function HeroSectionThemeTwo({ scrollToForm }) {
           </header>
 
           <div className="relative z-10 max-w-2xl fade-up lg:mt-10">
-            <div className="relative mb-6 sm:mb-12 -ml-[20px] sm:-ml-6 md:-ml-8 lg:-ml-[50px] -translate-y-[10px] sm:translate-y-[5px]">
+            <div className="relative mb-6 sm:mb-12 -ml-[20px] sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[5px] sm:translate-y-[20px]">
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.6)] animate-pulse" />
                 <div className="w-8 sm:w-12 h-px bg-orange-500/30" />
@@ -88,16 +88,6 @@ export default function HeroSectionThemeTwo({ scrollToForm }) {
             {/* Specialized Landing Selector */}
             <div className="mb-8 flex flex-wrap gap-2.5 items-center justify-start">
               <span className="text-zinc-500 font-mono text-[9px] uppercase tracking-wider">Explore Specializations:</span>
-              <Link
-                href="/get-started/amazon-services-landing"
-                className="group flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 hover:border-orange-500/40 text-orange-500 px-3.5 py-1.5 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider no-underline transition-all duration-300 shadow-[0_4px_12px_rgba(249,115,22,0.05)]"
-              >
-                <span className="relative flex h-1.5 w-1.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-orange-500"></span>
-                </span>
-                Amazon PPC &amp; Operations
-              </Link>
               <Link
                 href="/get-started/design-creative-landing"
                 className="group flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 hover:border-violet-500/40 text-violet-400 px-3.5 py-1.5 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider no-underline transition-all duration-300 shadow-[0_4px_12px_rgba(139,92,246,0.05)]"

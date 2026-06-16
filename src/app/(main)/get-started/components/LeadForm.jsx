@@ -1,55 +1,149 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { addDoc, collection, serverTimestamp } from "firebase/firestore/lite";
 import { dbLite as db } from "../../../../../src/firebase/firebaseConfig.js";
 import { useRouter } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function LeadForm() {
   const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", whatsapp: "", service: "", pain: "" });
   const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [error, setError] = useState("");
+  const lastSubmitRef = useRef(0);
+  const [utmData, setUtmData] = useState({});
+
+  // Capture UTM parameters on mount
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      setUtmData({
+        utm_source: params.get("utm_source") || "direct",
+        utm_medium: params.get("utm_medium") || "",
+        utm_campaign: params.get("utm_campaign") || "",
+        utm_content: params.get("utm_content") || "",
+        utm_term: params.get("utm_term") || "",
+        landingUrl: window.location.href,
+      });
+    }
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    if (error) setError(""); // Clear error on input change
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!form.name.trim() || !form.email.trim()) {
-      alert("Please fill in all required fields.");
+
+    // Prevent duplicate submissions
+    if (submitted || loading) return;
+
+    // Rate limiting — 5s cooldown
+    const now = Date.now();
+    if (now - lastSubmitRef.current < 5000) {
+      setError("Please wait a moment before resubmitting.");
       return;
     }
+    lastSubmitRef.current = now;
+
+    // Validation
+    if (!form.name.trim() || !form.email.trim()) {
+      setError("Please fill in your name and email address.");
+      return;
+    }
+    if (!EMAIL_REGEX.test(form.email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setError("");
     setLoading(true);
+
     try {
-      await addDoc(collection(db, "leads"), {
+      const docRef = await addDoc(collection(db, "leads"), {
         fullName: form.name,
         email: form.email,
         whatsapp: form.whatsapp || "N/A",
-        requestedService: form.service,
+        requestedService: form.service || "Not specified",
         notes: form.pain || "No message provided",
         source: "Landing Page Form",
         status: "new",
         createdAt: serverTimestamp(),
+        // Normalized optional fields
+        asinOrUrl: null,
+        monthlyRevenue: null,
+        brandName: null,
+        // UTM attribution data
+        ...utmData,
       });
-      // Redirect immediately to the high-conversion thank you page
-      router.push("/thank-you");
+
+      // Track Meta Pixel Lead event
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("track", "Lead", {
+          content_name: form.service || "General Grow Orbit Form",
+          status: "new"
+        });
+      }
+
+      // Mark as submitted to prevent double-submit
+      setSubmitted(true);
+
+      // Show success animation before redirect
+      setShowSuccess(true);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Redirect to the internal booking page with the Firestore document ID
+      const nameParam = encodeURIComponent(form.name);
+      const emailParam = encodeURIComponent(form.email);
+      router.push(`/get-started/book-meeting?leadId=${docRef.id}&name=${nameParam}&email=${emailParam}`);
     } catch (err) {
-      console.error(err);
-      alert("Submission failed. Please try again.");
-    } finally {
-      setLoading(false);
+      console.error("Firestore submission error:", err);
+      setError("Submission failed. Please check your connection and try again.");
+      setLoading(false); // Only reset loading on error
     }
   };
 
+  // Success transition overlay
+  if (showSuccess) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 gap-4 animate-fade-in">
+        <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500">
+          <CheckCircle2 size={32} className="stroke-[2]" />
+        </div>
+        <div className="text-center">
+          <p className="text-lg font-black text-zinc-900 tracking-tight">Details Received!</p>
+          <p className="text-sm text-zinc-500 font-light mt-1">Taking you to schedule your meeting...</p>
+        </div>
+        <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mt-2" />
+        <style>{`
+          @keyframes fade-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+          .animate-fade-in { animation: fade-in 0.4s ease both; }
+        `}</style>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      {/* Inline error message */}
+      {error && (
+        <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-600">
+          <AlertCircle size={14} className="shrink-0" />
+          <p className="text-[12px] font-medium">{error}</p>
+        </div>
+      )}
+
       {[
-        { label: "Full Name *",       name: "name",     type: "text",  placeholder: "Your name"         },
-        { label: "Email Address *",   name: "email",    type: "email", placeholder: "you@brand.com"     },
-        { label: "WhatsApp (Optional - For Quick Response)", name: "whatsapp", type: "tel",   placeholder: "+1 (555) 000-0000" },
+        { label: "Full Name *",       name: "name",     type: "text",  placeholder: "Your name",         required: true },
+        { label: "Email Address *",   name: "email",    type: "email", placeholder: "you@brand.com",     required: true },
+        { label: "WhatsApp (Optional - For Quick Response)", name: "whatsapp", type: "tel",   placeholder: "+1 (555) 000-0000", required: false },
       ].map((f) => (
         <div key={f.name}>
           <label htmlFor={`lead-${f.name}`} className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5 pl-1">{f.label}</label>
@@ -57,6 +151,7 @@ export default function LeadForm() {
             id={`lead-${f.name}`}
             type={f.type}
             name={f.name}
+            required={f.required}
             value={form[f.name]}
             onChange={handleChange}
             placeholder={f.placeholder}
@@ -104,7 +199,7 @@ export default function LeadForm() {
 
       <button
         type="submit"
-        disabled={loading}
+        disabled={loading || submitted}
         className="w-full py-4 rounded-2xl font-black text-[12px] uppercase tracking-[0.2em] text-white bg-orange-500 hover:bg-zinc-900 transition-all duration-300 shadow-[0_8px_30px_rgba(249,115,22,0.3)] disabled:opacity-50 flex items-center justify-center gap-3 group"
       >
         {loading ? "Sending..." : (

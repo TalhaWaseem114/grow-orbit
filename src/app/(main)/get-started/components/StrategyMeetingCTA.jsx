@@ -54,7 +54,7 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
                 <div className="inline-flex items-center gap-3 mb-2 px-4 py-2 rounded-xl sm:rounded-full border border-orange-500/30 bg-orange-500/10 self-start">
                   <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse shrink-0" />
                   <span className="text-white font-bold text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.4em] leading-tight sm:leading-none">
-                    We onboard only 3–4 brands per month — 2 spots left for {currentMonth}
+                    We onboard only 3–4 brands per month — limited spots open for {currentMonth}
                   </span>
                 </div>
 

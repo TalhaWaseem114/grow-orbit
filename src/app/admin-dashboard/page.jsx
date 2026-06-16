@@ -3,7 +3,7 @@
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import {
   collection, deleteDoc, doc, getDocs,
-  orderBy, query, getDoc, updateDoc, onSnapshot
+  orderBy, query, getDoc, updateDoc, onSnapshot, arrayUnion
 } from "firebase/firestore";
 import {
   Briefcase, ChevronRight, Globe, Layout, LogOut, Settings,
@@ -85,6 +85,8 @@ export default function AdminDashboard() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
+  const [ownerFilter, setOwnerFilter] = useState("all");
+  const [sourceFilter, setSourceFilter] = useState("all");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   /* CMS Theme Builder State variables passed down */
@@ -203,18 +205,71 @@ export default function AdminDashboard() {
     }
   }, [authChecking]);
 
-  /* Real-time lead listener for notifications */
+  /* Real-time lead listener for notifications and booking confirmations */
   const prevLeadCount = useRef(null);
   useEffect(() => {
     if (authChecking) return;
     const lQ = query(collection(db, leadsCollectionName), orderBy("createdAt", "desc"));
     const unsub = onSnapshot(lQ,
-      (snapshot) => {
-        const newLeads = snapshot.docs.map(d => ({ id: d.id, status: "new", ...d.data() }));
+      async (snapshot) => {
+        const rawDocs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
-        // Send browser notification if a new lead was appended
-        if (prevLeadCount.current !== null && newLeads.length > prevLeadCount.current) {
-          const latest = newLeads[0];
+        // Separate booking confirmations from actual leads
+        const confirmations = rawDocs.filter(d => d.type === "booking_confirmation");
+        const actualLeads = rawDocs.filter(d => d.type !== "booking_confirmation").map(d => ({ status: "new", ...d }));
+
+        // Process confirmations if logged-in admin has permissions
+        await Promise.all(confirmations.map(async (conf) => {
+          const targetLead = actualLeads.find(l => l.id === conf.leadId || (l.email === conf.email && conf.email));
+          if (targetLead) {
+            // Only update if not already marked booked
+            if (!targetLead.meetingBooked) {
+              try {
+                const leadRef = doc(db, leadsCollectionName, targetLead.id);
+                await updateDoc(leadRef, {
+                  meetingBooked: true,
+                  status: "hot", // Automatically mark as HOT when a meeting is booked
+                  timeline: arrayUnion({
+                    text: "Meeting successfully scheduled on Calendly.",
+                    timestamp: new Date(),
+                    adminName: "System",
+                    adminId: "system"
+                  })
+                });
+              } catch (err) {
+                console.warn("Failed to update parent lead with booking status:", err.message);
+              }
+            }
+            // Clean up the confirmation document
+            try {
+              const confRef = doc(db, leadsCollectionName, conf.id);
+              await deleteDoc(confRef);
+            } catch (err) {
+              console.warn("Failed to delete processed booking confirmation:", err.message);
+            }
+          } else {
+            // If parent lead is not found (deleted or not loaded yet), clean up orphaned confirmation
+            try {
+              const confRef = doc(db, leadsCollectionName, conf.id);
+              await deleteDoc(confRef);
+            } catch (err) {
+              console.warn("Failed to delete orphaned booking confirmation:", err.message);
+            }
+          }
+        }));
+
+        // Apply temporary local booked status for leads whose confirmations are in this snapshot batch
+        const processedLeads = actualLeads.map(l => {
+          const hasConfirmation = confirmations.some(c => c.leadId === l.id || (c.email === l.email && l.email));
+          if (hasConfirmation) {
+            return { ...l, meetingBooked: true, status: "hot" };
+          }
+          return l;
+        });
+
+        // Send browser notification if a new actual lead was appended
+        if (prevLeadCount.current !== null && processedLeads.length > prevLeadCount.current) {
+          const latest = processedLeads[0];
           if ("Notification" in window && Notification.permission === "granted") {
             const n = new Notification("🚀 New Lead — Grow Orbit", {
               body: `${latest.fullName || "Someone"} just enquired about ${latest.requestedService || "your services"}`,
@@ -230,8 +285,8 @@ export default function AdminDashboard() {
             };
           }
         }
-        prevLeadCount.current = newLeads.length;
-        setLeads(newLeads);
+        prevLeadCount.current = processedLeads.length;
+        setLeads(processedLeads);
       },
       (error) => {
         console.warn("[AdminDashboard] Real-time Leads snapshot subscription error:", error.message);
@@ -341,6 +396,13 @@ export default function AdminDashboard() {
       await updateDoc(doc(db, leadsCollectionName, leadId), { priority });
       setLeads(leads.map(l => l.id === leadId ? { ...l, priority } : l));
     } catch (e) { console.warn("Priority update failed:", e.message); }
+  };
+
+  const handleUpdateFollowUp = async (leadId, dateString) => {
+    try {
+      await updateDoc(doc(db, leadsCollectionName, leadId), { nextFollowUp: dateString });
+      setLeads(leads.map(l => l.id === leadId ? { ...l, nextFollowUp: dateString } : l));
+    } catch (e) { console.warn("Follow-up date update failed:", e.message); }
   };
 
   const handleAddLeadNote = async (leadId, noteText) => {
@@ -693,6 +755,10 @@ export default function AdminDashboard() {
                   setLeadFilter={setLeadFilter}
                   priorityFilter={priorityFilter}
                   setPriorityFilter={setPriorityFilter}
+                  ownerFilter={ownerFilter}
+                  setOwnerFilter={setOwnerFilter}
+                  sourceFilter={sourceFilter}
+                  setSourceFilter={setSourceFilter}
                   startDate={startDate}
                   setStartDate={setStartDate}
                   endDate={endDate}
@@ -709,6 +775,7 @@ export default function AdminDashboard() {
                   handleStatusChange={handleStatusChange}
                   handleAssignLead={handleAssignLead}
                   handleUpdatePriority={handleUpdatePriority}
+                  handleUpdateFollowUp={handleUpdateFollowUp}
                   handleAddLeadNote={handleAddLeadNote}
                   exportLeads={exportLeads}
                 />

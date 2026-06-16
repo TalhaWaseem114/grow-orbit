@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ChevronDown, CheckCircle2, ArrowRight, Star, TrendingUp, Rocket, Shield, Heart } from "lucide-react";
-import HeroMegaMenu from "../HeroMegaMenu";
+import HeroMegaMenu from "./HeroMegaMenu";
 import LeadForm from "./LeadForm";
 
 export default function HeroSection({ scrollToForm, formRef }) {
@@ -85,7 +85,7 @@ export default function HeroSection({ scrollToForm, formRef }) {
 
         <div className="relative z-10 max-w-2xl xl:max-w-3xl fade-up mt-2 sm:mt-[20px]">
           {/* Eyebrow */}
-          <div className="relative mb-10 sm:mb-12 -ml-4 sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[5px]">
+          <div className="relative mb-10 sm:mb-12 -ml-4 sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[20px]">
             <div className="flex items-center gap-4">
               <div className="w-2.5 h-2.5 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.6)] animate-pulse" />
               <div className="w-12 h-px bg-orange-500/30" />
@@ -104,16 +104,6 @@ export default function HeroSection({ scrollToForm, formRef }) {
           {/* Specialized Landing Selector */}
           <div className="mb-8 flex flex-wrap gap-2.5 items-center justify-start">
             <span className="text-zinc-500 font-mono text-[9px] uppercase tracking-wider">Explore Specializations:</span>
-            <Link
-              href="/get-started/amazon-services-landing"
-              className="group flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 hover:border-orange-500/40 text-orange-500 px-3.5 py-1.5 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider no-underline transition-all duration-300 shadow-[0_4px_12px_rgba(249,115,22,0.05)]"
-            >
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-orange-500"></span>
-              </span>
-              Amazon PPC &amp; Operations
-            </Link>
             <Link
               href="/get-started/design-creative-landing"
               className="group flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 hover:border-violet-500/40 text-violet-400 px-3.5 py-1.5 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider no-underline transition-all duration-300 shadow-[0_4px_12px_rgba(139,92,246,0.05)]"
@@ -262,7 +252,7 @@ export default function HeroSection({ scrollToForm, formRef }) {
       >
         <div className="max-w-sm mx-auto w-full fade-up delay-2">
           <div className="mb-8">
-            <p className="text-orange-500 font-bold text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-3">Only 2 spots remaining for {currentMonth} onboarding</p>
+            <p className="text-orange-500 font-bold text-[10px] uppercase tracking-[0.2em] sm:tracking-[0.3em] mb-3">Limited spots available for {currentMonth} onboarding</p>
             <h2
               className="text-2xl font-black tracking-tighter text-zinc-900 mb-2 uppercase"
               style={{ fontFamily: "'Montserrat', sans-serif" }}

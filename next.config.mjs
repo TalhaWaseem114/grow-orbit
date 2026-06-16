@@ -21,6 +21,30 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/amazon-services-landing/",
+        destination: "/get-started/amazon-services-landing/",
+        permanent: true,
+      },
+      {
+        source: "/amazon-services-landing",
+        destination: "/get-started/amazon-services-landing/",
+        permanent: true,
+      },
+      {
+        source: "/design-creative-landing/",
+        destination: "/get-started/design-creative-landing/",
+        permanent: true,
+      },
+      {
+        source: "/design-creative-landing",
+        destination: "/get-started/design-creative-landing/",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

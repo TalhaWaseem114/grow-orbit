@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore/lite";
-import { dbLite as db } from "@/firebase/firebaseConfig";
+
 import {
   ArrowRight, Clock, Mail, MessageCircle,
   CheckCircle2, Search, BarChart3, Zap,
@@ -98,19 +97,31 @@ export default function ContactUs() {
     }
     setLoading(true);
     try {
-      await addDoc(collection(db, "leads"), {
-        fullName: form.name,
-        email: form.email,
-        whatsapp: form.whatsapp || "N/A",
-        requestedService: form.service || "Not specified",
-        notes: form.message || "No message provided",
-        source: "Contact Page Form",
-        status: "new",
-        createdAt: serverTimestamp(),
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: form.name,
+          email: form.email,
+          whatsapp: form.whatsapp || "N/A",
+          requestedService: form.service || "Not specified",
+          notes: form.message || "No message provided",
+          source: "Contact Page Form",
+        }),
       });
-      router.push("/thank-you");
+
+      if (!response.ok) {
+        throw new Error("Failed to submit lead");
+      }
+
+      const resData = await response.json();
+      const nameParam = encodeURIComponent(form.name);
+      const emailParam = encodeURIComponent(form.email);
+      router.push(`/get-started/book-meeting?leadId=${resData.id}&name=${nameParam}&email=${emailParam}`);
     } catch (err) {
-      console.error(err);
+      console.error("Submission Error:", err);
       alert("Submission failed. Please try again.");
     } finally {
       setLoading(false);

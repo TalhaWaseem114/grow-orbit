@@ -1,8 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore/lite";
-import { dbLite as db } from "../../../../../../src/firebase/firebaseConfig.js";
 import { useRouter } from "next/navigation";
 import { ArrowRight, CheckCircle, AlertCircle, CheckCircle2 } from "lucide-react";
 
@@ -74,22 +72,30 @@ export default function DesignLeadForm() {
     setLoading(true);
 
     try {
-      const docRef = await addDoc(collection(db, "leads"), {
-        fullName: form.name,
-        email: form.email,
-        whatsapp: form.whatsapp || "N/A",
-        asinOrUrl: form.asin,
-        monthlyRevenue: form.revenue || "N/A",
-        requestedService: "Visual Design & Creative",
-        notes: form.pain || "Requesting Free Visual Redesign Audit",
-        source: "Design & Creative Landing Page",
-        status: "new",
-        createdAt: serverTimestamp(),
-        // Normalized optional fields
-        brandName: null,
-        // UTM attribution data
-        ...utmData,
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: form.name,
+          email: form.email,
+          whatsapp: form.whatsapp || "N/A",
+          asinOrUrl: form.asin,
+          monthlyRevenue: form.revenue || "N/A",
+          requestedService: "Visual Design & Creative",
+          notes: form.pain || "Requesting Free Visual Redesign Audit",
+          source: "Design & Creative Landing Page",
+          brandName: null,
+          ...utmData,
+        }),
       });
+
+      if (!response.ok) {
+        throw new Error("Failed to submit lead");
+      }
+
+      const resData = await response.json();
 
       // Track Meta Pixel Lead event
       if (typeof window !== "undefined" && window.fbq) {
@@ -109,9 +115,9 @@ export default function DesignLeadForm() {
       // Redirect to the internal booking page with the Firestore document ID
       const nameParam = encodeURIComponent(form.name);
       const emailParam = encodeURIComponent(form.email);
-      router.push(`/get-started/book-meeting?leadId=${docRef.id}&name=${nameParam}&email=${emailParam}`);
+      router.push(`/get-started/book-meeting?leadId=${resData.id}&name=${nameParam}&email=${emailParam}`);
     } catch (err) {
-      console.error("Firestore submission error:", err);
+      console.error("Lead submission error:", err);
       setError("Submission failed. Please check your connection and try again.");
       setLoading(false); // Only reset loading on error
     }

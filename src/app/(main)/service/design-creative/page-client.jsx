@@ -81,19 +81,7 @@ function DesignHero() {
               </span>
             </div>
 
-            <div className="mb-6 inline-flex">
-              <Link
-                href="/get-started/design-creative-landing"
-                className="group flex items-center gap-2.5 bg-orange-500/10 border border-orange-500/20 hover:border-orange-500/40 text-orange-500 px-4 py-2 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-widest no-underline transition-all duration-300 shadow-[0_4px_20px_rgba(249,115,22,0.05)]"
-              >
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-orange-500"></span>
-                </span>
-                Looking for our Specialized Design Landing Page?
-                <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
+
 
             <h1
               className="text-6xl md:text-7xl lg:text-[85px] font-black tracking-tighter leading-[0.85] mb-8 text-white uppercase"
@@ -126,7 +114,7 @@ function DesignHero() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-center sm:items-center gap-6 mb-12">
-              <Link href="/contact" className="group relative overflow-hidden flex items-center justify-center gap-3 bg-gradient-to-r from-orange-600 to-orange-400 hover:scale-[1.02] active:scale-95 transition-all duration-300 text-white font-black text-[11px] uppercase tracking-[0.25em] px-10 py-4 rounded-full no-underline shadow-[0_10px_40px_rgba(249,115,22,0.4)] w-full sm:w-auto">
+              <Link href="/get-started/" className="group relative overflow-hidden flex items-center justify-center gap-3 bg-gradient-to-r from-orange-600 to-orange-400 hover:scale-[1.02] active:scale-95 transition-all duration-300 text-white font-black text-[11px] uppercase tracking-[0.25em] px-10 py-4 rounded-full no-underline shadow-[0_10px_40px_rgba(249,115,22,0.4)] w-full sm:w-auto">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer-btn_2s_linear_infinite]" />
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   Get Free Design Audit
@@ -708,7 +696,7 @@ function DesignCTA() {
         </p>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
           <Link
-            href="/contact"
+            href="/get-started/"
             className="inline-flex items-center gap-4 px-10 py-5 bg-zinc-900 text-white rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] hover:bg-orange-500 transition-all duration-500 shadow-xl no-underline"
           >
             Book Free Design Audit

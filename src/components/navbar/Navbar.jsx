@@ -220,7 +220,7 @@ export default function Navbar() {
             ) : (
               <div className={`flex items-center gap-4 pl-5 border-l ${isDarkTextNeeded ? "border-gray-200" : "border-white/20"}`}>
                 
-                {role === "admin" && (
+                {role === "admin" ? (
                   <Link
                     href="/admin-dashboard"
                     prefetch={false}
@@ -228,6 +228,15 @@ export default function Navbar() {
                   >
                     <LayoutDashboard size={12} />
                     Admin Panel
+                  </Link>
+                ) : (
+                  <Link
+                    href="/client-dashboard"
+                    prefetch={false}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all no-underline border focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none ${isDarkTextNeeded ? "border-orange-500 text-orange-600 hover:bg-orange-50" : "border-orange-500/50 text-orange-400 hover:bg-orange-500/10"}`}
+                  >
+                    <LayoutDashboard size={12} />
+                    Client Panel
                   </Link>
                 )}
 
@@ -342,7 +351,7 @@ export default function Navbar() {
                 </>
               ) : (
                 <>
-                  {role === "admin" && (
+                  {role === "admin" ? (
                     <Link
                       href="/admin-dashboard"
                       prefetch={false}
@@ -351,6 +360,16 @@ export default function Navbar() {
                     >
                       <LayoutDashboard size={18} />
                       Admin Dashboard
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/client-dashboard"
+                      prefetch={false}
+                      onClick={closeMobileMenu}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[15px] font-bold transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                    >
+                      <LayoutDashboard size={18} />
+                      Client Dashboard
                     </Link>
                   )}
                   <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-[15px] font-medium transition-colors">

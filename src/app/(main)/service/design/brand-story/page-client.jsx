@@ -225,8 +225,8 @@ function BrandStoryHero() {
 
                     {/* Hero section */}
                     <img
-                      src="https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=800&auto=format&fit=crop"
-                      alt="KAZVOO Premium Amazon Brand Story Design Showcase"
+                      src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271681/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-1.png"
+                      alt="Nexa Premium Amazon Brand Story Design Showcase"
                       className="absolute inset-0 w-full h-full object-cover opacity-40"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
@@ -246,9 +246,9 @@ function BrandStoryHero() {
                       <div className="h-16 rounded-xl bg-white/5 border border-white/10 mb-3 backdrop-blur-sm relative overflow-hidden">
                         <div className="absolute inset-0 flex items-center px-4 gap-3">
                           <img
-                            src="https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=800&auto=format&fit=crop"
+                            src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271686/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-4.png"
                             alt="Product"
-                            className="w-10 h-10 rounded-lg object-contain bg-white/10 p-1"
+                            className="w-10 h-10 rounded-lg object-cover bg-white/10 p-1"
                           />
                           <div className="space-y-1.5 flex-1">
                             <div className="h-2 w-24 bg-white/25 rounded-sm" />
@@ -263,10 +263,10 @@ function BrandStoryHero() {
                   <p className="text-[7px] font-mono text-zinc-400 uppercase tracking-widest mb-2 px-1">Product Card Modules</p>
                   <div className="grid grid-cols-4 gap-2 mb-3">
                     {[
-                      { label: "About Us",     src: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop" },
-                      { label: "Our Story",    src: "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop" },
-                      { label: "Best Seller",  src: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=800&auto=format&fit=crop" },
-                      { label: "New Tech",     src: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop" },
+                      { label: "About Us",     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271670/grow_orbit_portfolio/assets/portfolio/nexa_pouches/2.png" },
+                      { label: "Our Story",    src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271672/grow_orbit_portfolio/assets/portfolio/nexa_pouches/3.png" },
+                      { label: "Best Seller",  src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271674/grow_orbit_portfolio/assets/portfolio/nexa_pouches/4.png" },
+                      { label: "New Tech",     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271676/grow_orbit_portfolio/assets/portfolio/nexa_pouches/5.png" },
                     ].map((card, i) => (
                       <div key={i} className={`rounded-xl border p-2 bg-zinc-50 border-zinc-100`}>
                         <div className="aspect-square rounded-lg bg-white mb-1.5 overflow-hidden border border-zinc-100/50">
@@ -523,7 +523,7 @@ function EngageAndConvert() {
                 {/* Background hero */}
                 <div className="relative rounded-2xl overflow-hidden bg-zinc-900 h-36 border border-white/5">
                   <img
-                    src="https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=800&auto=format&fit=crop"
+                    src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271708/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-1.png"
                     alt="Brand Story Background"
                     className="absolute inset-0 w-full h-full object-cover opacity-60"
                   />
@@ -546,10 +546,10 @@ function EngageAndConvert() {
                 <p className="text-[8px] font-mono text-zinc-600 uppercase tracking-widest px-1">Product Card Modules</p>
                 <div className="grid grid-cols-4 gap-2.5">
                   {[
-                    { title: "About Us",     src: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=800&auto=format&fit=crop" },
-                    { title: "Our Story",    src: "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=800&auto=format&fit=crop" },
-                    { title: "Best Seller",  src: "https://images.unsplash.com/photo-1584735935682-2f2b69dff9d2?q=80&w=800&auto=format&fit=crop" },
-                    { title: "Shop All",     src: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=800&auto=format&fit=crop" },
+                    { title: "About Us",     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271698/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/2.png" },
+                    { title: "Our Story",    src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271700/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/3.png" },
+                    { title: "Best Seller",  src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271702/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/4.png" },
+                    { title: "Shop All",     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271704/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/5.png" },
                   ].map((card, i) => (
                     <div key={i} className={`rounded-xl bg-zinc-800/50 border border-white/5 p-2 group/card hover:border-orange-500/30 transition-colors`}>
                       <div className="aspect-square rounded-lg bg-zinc-900 mb-2 overflow-hidden">
@@ -695,39 +695,39 @@ function ExamplesGallery() {
   const examples = [
     {
       id: "BS-0422",
-      niche: "Home & Bedding",
+      niche: "EDC Gear",
       images: [
-        "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?q=80&w=600&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1584132967334-10e028bd69f7?q=80&w=400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1540518614846-7eded433c457?q=80&w=400&auto=format&fit=crop"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271681/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-1.png",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271686/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-4.png",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271689/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-6.png"
       ],
-      tags: ["History", "Product Cards", "Core Values"],
+      tags: ["Technical", "Product Cards", "Core Values"],
       accent: "bg-amber-500",
-      metric: { val: "+22%", label: "Conversion Lift", icon: <ArrowUpRight size={10} /> }
+      metric: { val: "+65%", label: "Conversion Lift", icon: <ArrowUpRight size={10} /> }
     },
     {
       id: "BS-1109",
-      niche: "Outdoor & Adventure",
+      niche: "Home & Auto",
       images: [
-        "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=600&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1527672809634-04ed36500acd?q=80&w=400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1533240332313-0db49b459ad6?q=80&w=400&auto=format&fit=crop"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271708/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-1.png",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271709/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-2.png",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271713/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-6.png"
       ],
-      tags: ["Lifestyle", "Narrative", "Benefits"],
+      tags: ["Power", "Narrative", "Benefits"],
       accent: "bg-zinc-700",
-      metric: { val: "+18%", label: "Add to Cart", icon: <ShoppingCart size={10} /> }
+      metric: { val: "+90%", label: "Sales Lift", icon: <ShoppingCart size={10} /> }
     },
     {
       id: "BS-0715",
-      niche: "Beauty & Skincare",
+      niche: "Automotive",
       images: [
-        "https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=600&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?q=80&w=400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1596461404969-9ae70f2830c1?q=80&w=400&auto=format&fit=crop"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271732/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-1.png",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271734/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-2.png",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271736/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-3.png"
       ],
-      tags: ["Ingredients", "Science", "Ethics"],
+      tags: ["Emergency", "Versatility", "Reliability"],
       accent: "bg-orange-500",
-      metric: { val: "+4.5x", label: "Dwell Time", icon: <Activity size={10} /> }
+      metric: { val: "+105%", label: "Sales Lift", icon: <Activity size={10} /> }
     },
   ];
 

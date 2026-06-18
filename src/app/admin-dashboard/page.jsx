@@ -3,12 +3,12 @@
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import {
   collection, deleteDoc, doc, getDocs,
-  orderBy, query, getDoc, updateDoc, onSnapshot, arrayUnion
+  orderBy, query, getDoc, updateDoc, onSnapshot, arrayUnion, addDoc
 } from "firebase/firestore";
 import {
   Briefcase, ChevronRight, Globe, Layout, LogOut, Settings,
   Shield, Users, Zap, ExternalLink, MoreHorizontal, Download, 
-  Home, FileText, Mail
+  Home, FileText, Mail, HelpCircle
 } from "lucide-react";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -20,6 +20,7 @@ import { db, auth } from "../../firebase/firebaseConfig";
 /* Configs and Services */
 import { THEMES, DEFAULT_THEME } from "@/lib/experimentConfig";
 import { fetchExperimentConfig } from "@/lib/experimentService";
+import { calculateLeadScore } from "@/lib/crmHelpers";
 
 /* Tab Subcomponents */
 import OverviewTab from "./components/OverviewTab";
@@ -30,6 +31,7 @@ import CmsTab from "./components/CmsTab";
 import SettingsTab from "./components/SettingsTab";
 import BlogManagerTab from "./BlogManagerTab";
 import NewsletterTab from "./components/NewsletterTab";
+import ConfirmModal from "./components/ConfirmModal";
 
 /* ─────────────────────────────────────────
    SIDEBAR ITEM HELPER
@@ -71,14 +73,41 @@ export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
   const [leads, setLeads] = useState([]);
   const [leadsCollectionName, setLeadsCollectionName] = useState("Leads");
+  const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [authChecking, setAuthChecking] = useState(true);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentAdminData, setCurrentAdminData] = useState(null);
+
+  /* Confirm Modal configuration */
+  const [confirmModalConfig, setConfirmModalConfig] = useState(null);
+
+  const triggerConfirm = (title, message, onConfirm, isDestructive = false) => {
+    setConfirmModalConfig({ title, message, onConfirm, isDestructive });
+  };
+
+  /* Audit Trail logging */
+  const logActivity = async (action, details) => {
+    try {
+      const currentAdmin = users.find(u => u.id === auth.currentUser?.uid);
+      const name = currentAdmin?.fullName || currentAdmin?.displayName || auth.currentUser?.email || "System";
+      await addDoc(collection(db, "activity_logs"), {
+        action,
+        details,
+        adminId: auth.currentUser?.uid || "unknown",
+        adminName: name,
+        adminEmail: auth.currentUser?.email || "unknown",
+        timestamp: new Date()
+      });
+    } catch (e) {
+      console.warn("[logActivity] Failed to write audit log:", e.message);
+    }
+  };
 
   /* CRM Filter State variables passed down */
   const [leadSearch, setLeadSearch] = useState("");
   const [leadFilter, setLeadFilter] = useState("all");
-  const [leadViewMode, setLeadViewMode] = useState("cards");
+  const [leadViewMode, setLeadViewMode] = useState("table");
   const [expandedLead, setExpandedLead] = useState(null);
   const [crmNote, setCrmNote] = useState("");
   const [userSearch, setUserSearch] = useState("");
@@ -112,21 +141,31 @@ export default function AdminDashboard() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
+  /* Resolve panels allowed for the current logged-in admin profile */
+  const allowedPanels = useMemo(() => {
+    if (!currentAdminData) return [];
+    return Array.isArray(currentAdminData.allowedPanels) && currentAdminData.allowedPanels.length > 0
+      ? currentAdminData.allowedPanels
+      : ["overview", "leads", "users", "team", "blog", "newsletter", "cms", "settings"];
+  }, [currentAdminData]);
+
   /* Persist active tab selection to localStorage */
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && allowedPanels.length > 0) {
       const savedTab = localStorage.getItem("adminActiveTab");
-      if (savedTab) {
+      if (savedTab && allowedPanels.includes(savedTab)) {
         setActiveTab(savedTab);
+      } else {
+        setActiveTab(allowedPanels[0]);
       }
     }
-  }, []);
+  }, [allowedPanels]);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (typeof window !== "undefined" && allowedPanels.includes(activeTab)) {
       localStorage.setItem("adminActiveTab", activeTab);
     }
-  }, [activeTab]);
+  }, [activeTab, allowedPanels]);
 
   /* Authentication Guard */
   useEffect(() => {
@@ -134,8 +173,16 @@ export default function AdminDashboard() {
       if (!user) { router.push("/"); return; }
       try {
         const snap = await getDoc(doc(db, "users", user.uid));
-        if (!snap.exists() || snap.data().role?.trim() !== "admin") { router.push("/"); return; }
-        setAuthChecking(false);
+        if (!snap.exists()) { router.push("/"); return; }
+        const role = snap.data().role?.trim() || "user";
+        if (role === "admin") {
+          setCurrentAdminData({ id: snap.id, ...snap.data() });
+          setAuthChecking(false);
+        } else if (role === "user") {
+          router.push("/client-dashboard");
+        } else {
+          router.push("/");
+        }
       } catch { router.push("/"); }
     });
     return () => unsub();
@@ -186,9 +233,20 @@ export default function AdminDashboard() {
         const chosenCollection = lowCount > 0 ? "leads" : (capCount > 0 ? "Leads" : (lSnap_low ? "leads" : "Leads"));
         setLeadsCollectionName(chosenCollection);
 
-        const finalSnap = chosenCollection === "leads" ? lSnap_low : lSnap_cap;
+        const finalSnap = lowCount > 0 ? lSnap_low : (capCount > 0 ? lSnap_cap : (lSnap_low || lSnap_cap));
         if (finalSnap) {
-          const fetchedLeads = finalSnap.docs.map(d => ({ id: d.id, status: "new", ...d.data() }));
+          const fetchedLeads = finalSnap.docs.map(d => {
+            const data = d.data();
+            let status = data.status || "new";
+            if (status === "new" && data.createdAt) {
+              const created = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
+              const ageDays = (new Date() - created) / (1000 * 60 * 60 * 24);
+              if (ageDays > 7) {
+                status = "cold";
+              }
+            }
+            return { ...data, id: d.id, status };
+          });
           setLeads(fetchedLeads);
         } else {
           console.warn("[AdminDashboard] Both leads queries were blocked or returned null.");
@@ -232,7 +290,17 @@ export default function AdminDashboard() {
 
         // Separate booking confirmations from actual leads
         const confirmations = rawDocs.filter(d => d.type === "booking_confirmation");
-        const actualLeads = rawDocs.filter(d => d.type !== "booking_confirmation").map(d => ({ status: "new", ...d }));
+        const actualLeads = rawDocs.filter(d => d.type !== "booking_confirmation").map(d => {
+          let status = d.status || "new";
+          if (status === "new" && d.createdAt) {
+            const created = d.createdAt.toDate ? d.createdAt.toDate() : new Date(d.createdAt);
+            const ageDays = (new Date() - created) / (1000 * 60 * 60 * 24);
+            if (ageDays > 7) {
+              status = "cold";
+            }
+          }
+          return { ...d, status };
+        });
 
         // Process confirmations if logged-in admin has permissions
         await Promise.all(confirmations.map(async (conf) => {
@@ -245,6 +313,7 @@ export default function AdminDashboard() {
                 await updateDoc(leadRef, {
                   meetingBooked: true,
                   status: "hot", // Automatically mark as HOT when a meeting is booked
+                  priority: "high", // Auto-set priority to HIGH when meeting is booked
                   timeline: arrayUnion({
                     text: "Meeting successfully scheduled on Calendly.",
                     timestamp: new Date(),
@@ -311,6 +380,18 @@ export default function AdminDashboard() {
     return () => unsub();
   }, [authChecking, leadsCollectionName]);
 
+  /* Real-time client listener */
+  useEffect(() => {
+    if (authChecking) return;
+    const q = query(collection(db, "clients"), orderBy("startDate", "desc"));
+    const unsub = onSnapshot(q, (snapshot) => {
+      setClients(snapshot.docs.map(d => ({ id: d.id, ...d.data() })));
+    }, (err) => {
+      console.warn("[AdminDashboard] Real-time Clients snapshot error:", err.message);
+    });
+    return () => unsub();
+  }, [authChecking]);
+
   /* Progressive Web App Install handler */
   useEffect(() => {
     if (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) {
@@ -343,45 +424,113 @@ export default function AdminDashboard() {
 
   const handleLogout = async () => { await signOut(auth); router.push("/login"); };
 
-  const handleDeleteLead = async (id) => {
-    if (!window.confirm("Permanently delete this lead?")) return;
-    try {
-      await deleteDoc(doc(db, leadsCollectionName, id));
-      setLeads(leads.filter(l => l.id !== id));
-    } catch (e) { alert("Delete failed: " + e.message); }
+  const handleDeleteLead = async (id, skipConfirm = false) => {
+    const targetLead = leads.find(l => l.id === id);
+    const label = targetLead ? (targetLead.fullName || targetLead.email) : id;
+    const executeDelete = async () => {
+      try {
+        await deleteDoc(doc(db, leadsCollectionName, id));
+        setLeads(prev => prev.filter(l => l.id !== id));
+        logActivity("DELETE_LEAD", `Deleted lead: "${label}" (${id})`);
+      } catch (e) {
+        alert("Delete failed: " + e.message);
+      }
+    };
+    if (skipConfirm) {
+      await executeDelete();
+    } else {
+      triggerConfirm("Delete Lead", `Are you sure you want to permanently delete lead "${label}"? This action cannot be undone.`, executeDelete, true);
+    }
   };
 
   const handleDeleteUser = async (id) => {
-    if (!window.confirm("Permanently delete this user?")) return;
-    try {
-      await deleteDoc(doc(db, "users", id));
-      setUsers(users.filter(u => u.id !== id));
-    } catch (e) { alert("Delete failed: " + e.message); }
+    const targetUser = users.find(u => u.id === id);
+    const label = targetUser ? (targetUser.displayName || targetUser.fullName || targetUser.email) : id;
+    triggerConfirm("Delete User", `Are you sure you want to permanently delete user account "${label}"? This action cannot be undone.`, async () => {
+      try {
+        await deleteDoc(doc(db, "users", id));
+        setUsers(prev => prev.filter(u => u.id !== id));
+        logActivity("DELETE_USER", `Deleted user account: "${label}" (${id})`);
+      } catch (e) { alert("Delete failed: " + e.message); }
+    }, true);
   };
 
-  const handleRoleChange = async (userId, newRole, currentRole) => {
-    if (newRole === currentRole) return;
-    if (!window.confirm(`Change role to ${newRole.toUpperCase()}?`)) return;
-    try {
-      await updateDoc(doc(db, "users", userId), { role: newRole });
-      setUsers(users.map(u => u.id === userId ? { ...u, role: newRole } : u));
-    } catch (e) { alert("Update failed: " + e.message); }
+  const handleRoleChange = async (userId, newRole, currentRole, allowedPanels = null, skipConfirm = false) => {
+    if (newRole === currentRole && !allowedPanels) return;
+    const targetUser = users.find(u => u.id === userId);
+    const label = targetUser ? (targetUser.displayName || targetUser.fullName || targetUser.email) : userId;
+
+    const executeRoleChange = async () => {
+      try {
+        const updateData = { role: newRole };
+        if (newRole === "admin" && allowedPanels) {
+          updateData.allowedPanels = allowedPanels;
+        } else if (newRole === "user") {
+          updateData.allowedPanels = [];
+        }
+        await updateDoc(doc(db, "users", userId), updateData);
+        setUsers(prev => prev.map(u => u.id === userId ? { ...u, role: newRole, allowedPanels: allowedPanels || u.allowedPanels || [] } : u));
+        
+        if (newRole === "admin") {
+          const panelsStr = allowedPanels ? allowedPanels.join(", ") : "All";
+          logActivity(allowedPanels ? "UPDATE_PERMISSIONS" : "PROMOTE_ADMIN", `Updated role for "${label}" to ADMIN with panel access: [${panelsStr}]`);
+        } else {
+          logActivity("REVOKE_ADMIN", `Revoked admin role from user "${label}"`);
+        }
+
+        if (userId === auth.currentUser?.uid) {
+          setCurrentAdminData(prev => prev ? { ...prev, role: newRole, allowedPanels: allowedPanels || prev.allowedPanels || [] } : null);
+        }
+      } catch (e) { alert("Update failed: " + e.message); }
+    };
+
+    if (skipConfirm) {
+      await executeRoleChange();
+    } else {
+      const confirmTitle = newRole === "admin" 
+        ? (allowedPanels ? "Update Permissions" : "Promote Member") 
+        : "Revoke Admin Access";
+      const confirmMsg = newRole === "admin"
+        ? `Are you sure you want to ${allowedPanels ? "update the permissions for" : "promote"} "${label}" to Admin access?`
+        : `Are you sure you want to revoke Admin access for "${label}"? They will lose all dashboard permissions.`;
+
+      triggerConfirm(confirmTitle, confirmMsg, executeRoleChange, newRole !== "admin");
+    }
   };
 
   const exportLeads = () => {
-    const headers = ["Name", "Email", "WhatsApp", "Service", "Source", "Status", "Date", "Notes"];
-    const rows = leads.map(l => [
-      l.fullName || "N/A",
-      l.email || "N/A",
-      l.whatsapp || "N/A",
-      l.requestedService || "N/A",
-      l.source || "Direct",
-      l.status || "new",
-      l.createdAt?.toDate ? l.createdAt.toDate().toLocaleString() : "N/A",
-      `"${(l.notes || l.challenge || "").replace(/"/g, '""')}"`
-    ]);
+    const headers = [
+      "Name", "Email", "WhatsApp", "Service", "ASINs", "Retainer", 
+      "Source", "Status", "Priority", "Assigned To", "Meeting Booked", 
+      "Follow Up Date", "Date Created", "Notes/Challenge"
+    ];
 
-    const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
+    const rows = leads.map(l => {
+      const escapeCsv = (str) => {
+        if (str === null || str === undefined || str === "") return '"N/A"';
+        const StringStr = String(str);
+        return `"${StringStr.replace(/"/g, '""')}"`;
+      };
+
+      return [
+        escapeCsv(l.fullName),
+        escapeCsv(l.email),
+        escapeCsv(l.whatsapp),
+        escapeCsv(l.requestedService),
+        escapeCsv(l.asins),
+        escapeCsv(l.monthlyRetainer),
+        escapeCsv(l.source || "Direct"),
+        escapeCsv(l.status || "new"),
+        escapeCsv(l.priority || "normal"),
+        escapeCsv(l.assignedName || "Unassigned"),
+        escapeCsv(l.meetingBooked ? "Yes" : "No"),
+        escapeCsv(l.nextFollowUp || "None"),
+        escapeCsv(l.createdAt?.toDate ? l.createdAt.toDate().toLocaleString() : "N/A"),
+        escapeCsv(l.notes || l.challenge || "")
+      ];
+    });
+
+    const csvContent = [headers.join(","), ...rows.map(e => e.join(","))].join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const link = document.createElement("a");
     const url = URL.createObjectURL(blob);
@@ -395,29 +544,37 @@ export default function AdminDashboard() {
 
   const handleStatusChange = async (leadId, newStatus) => {
     try {
-      await updateDoc(doc(db, leadsCollectionName, leadId), { status: newStatus });
-      setLeads(leads.map(l => l.id === leadId ? { ...l, status: newStatus } : l));
+      const targetLead = leads.find(l => l.id === leadId);
+      const name = targetLead ? (targetLead.fullName || targetLead.email) : leadId;
+      const updatedLead = { ...targetLead, status: newStatus };
+      const score = calculateLeadScore(updatedLead);
+      await updateDoc(doc(db, leadsCollectionName, leadId), { status: newStatus, score });
+      setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStatus, score } : l));
+      logActivity("UPDATE_LEAD_STATUS", `Changed status for lead "${name}" to ${newStatus.toUpperCase()}`);
     } catch (e) { console.warn("Status change failed:", e.message); }
   };
 
   const handleAssignLead = async (leadId, adminId, adminName) => {
     try {
+      const targetLead = leads.find(l => l.id === leadId);
+      const leadName = targetLead ? (targetLead.fullName || targetLead.email) : leadId;
       await updateDoc(doc(db, leadsCollectionName, leadId), { assignedTo: adminId, assignedName: adminName });
-      setLeads(leads.map(l => l.id === leadId ? { ...l, assignedTo: adminId, assignedName: adminName } : l));
+      setLeads(prev => prev.map(l => l.id === leadId ? { ...l, assignedTo: adminId, assignedName: adminName } : l));
+      logActivity("ASSIGN_LEAD_OWNER", adminId ? `Assigned lead "${leadName}" to ${adminName}` : `Unassigned lead "${leadName}"`);
     } catch (e) { console.warn("Owner assignment failed:", e.message); }
   };
 
   const handleUpdatePriority = async (leadId, priority) => {
     try {
       await updateDoc(doc(db, leadsCollectionName, leadId), { priority });
-      setLeads(leads.map(l => l.id === leadId ? { ...l, priority } : l));
+      setLeads(prev => prev.map(l => l.id === leadId ? { ...l, priority } : l));
     } catch (e) { console.warn("Priority update failed:", e.message); }
   };
 
   const handleUpdateFollowUp = async (leadId, dateString) => {
     try {
       await updateDoc(doc(db, leadsCollectionName, leadId), { nextFollowUp: dateString });
-      setLeads(leads.map(l => l.id === leadId ? { ...l, nextFollowUp: dateString } : l));
+      setLeads(prev => prev.map(l => l.id === leadId ? { ...l, nextFollowUp: dateString } : l));
     } catch (e) { console.warn("Follow-up date update failed:", e.message); }
   };
 
@@ -435,7 +592,7 @@ export default function AdminDashboard() {
       const currentTimeline = leadSnap.data().timeline || [];
 
       await updateDoc(leadRef, { timeline: [newEntry, ...currentTimeline] });
-      setLeads(leads.map(l => l.id === leadId ? { ...l, timeline: [newEntry, ...(l.timeline || [])] } : l));
+      setLeads(prev => prev.map(l => l.id === leadId ? { ...l, timeline: [newEntry, ...(l.timeline || [])] } : l));
       return "done";
     } catch (e) { console.warn("Add timeline note failed:", e.message); return "error"; }
   };
@@ -622,7 +779,7 @@ export default function AdminDashboard() {
           </button>
 
           <nav style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {!isSidebarCollapsed && <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginBottom: 6 }}>Main</div>}
+            {isSidebarCollapsed ? <div style={{ width: 24, height: 1, background: "rgba(255,255,255,0.06)", margin: "4px auto", borderRadius: 1 }} /> : <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginBottom: 6 }}>Main</div>}
             <Link
               href="/"
               style={{
@@ -639,17 +796,51 @@ export default function AdminDashboard() {
               {!isSidebarCollapsed && <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Back to Website</span>}
               {!isSidebarCollapsed && <ExternalLink size={12} style={{ marginLeft: "auto", opacity: 0.5 }} />}
             </Link>
-            <SidebarItem id="overview"   label="Overview"      icon={Globe}    activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
-            {!isSidebarCollapsed && <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>Management</div>}
-            <SidebarItem id="leads" label="Lead Pipeline" icon={Briefcase} activeTab={activeTab} setActiveTab={setActiveTab} badge={newLeadsCount} isCollapsed={isSidebarCollapsed} />
-            <SidebarItem id="users" label="User Directory" icon={Users}    activeTab={activeTab} setActiveTab={setActiveTab} badge={users.length} isCollapsed={isSidebarCollapsed} />
-            <SidebarItem id="team"  label="Agency Team"   icon={Shield}   activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
-            {!isSidebarCollapsed && <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>Content</div>}
-            <SidebarItem id="blog"  label="Blog Manager" icon={FileText}  activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
-            <SidebarItem id="newsletter" label="Newsletter" icon={Mail} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
-            {!isSidebarCollapsed && <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>System</div>}
-            <SidebarItem id="cms"      label="Site Layout" icon={Layout}   activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
-            <SidebarItem id="settings" label="Settings"    icon={Settings} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+            {allowedPanels.includes("overview") && (
+              <SidebarItem id="overview" label="Overview" icon={Globe} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+            )}
+            
+            {/* Management Section */}
+            {(allowedPanels.includes("leads") || allowedPanels.includes("users") || allowedPanels.includes("team")) && (
+              <>
+                {isSidebarCollapsed ? <div style={{ width: 24, height: 1, background: "rgba(255,255,255,0.06)", margin: "6px auto", borderRadius: 1 }} /> : <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>Management</div>}
+                {allowedPanels.includes("leads") && (
+                  <SidebarItem id="leads" label="Lead Pipeline" icon={Briefcase} activeTab={activeTab} setActiveTab={setActiveTab} badge={newLeadsCount} isCollapsed={isSidebarCollapsed} />
+                )}
+                {allowedPanels.includes("users") && (
+                  <SidebarItem id="users" label="User Directory" icon={Users} activeTab={activeTab} setActiveTab={setActiveTab} badge={users.length} isCollapsed={isSidebarCollapsed} />
+                )}
+                {allowedPanels.includes("team") && (
+                  <SidebarItem id="team" label="Agency Team" icon={Shield} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+                )}
+              </>
+            )}
+
+            {/* Content Section */}
+            {(allowedPanels.includes("blog") || allowedPanels.includes("newsletter")) && (
+              <>
+                {isSidebarCollapsed ? <div style={{ width: 24, height: 1, background: "rgba(255,255,255,0.06)", margin: "6px auto", borderRadius: 1 }} /> : <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>Content</div>}
+                {allowedPanels.includes("blog") && (
+                  <SidebarItem id="blog" label="Blog Manager" icon={FileText} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+                )}
+                {allowedPanels.includes("newsletter") && (
+                  <SidebarItem id="newsletter" label="Email Designer" icon={Mail} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+                )}
+              </>
+            )}
+
+            {/* System Section */}
+            {(allowedPanels.includes("cms") || allowedPanels.includes("settings")) && (
+              <>
+                {isSidebarCollapsed ? <div style={{ width: 24, height: 1, background: "rgba(255,255,255,0.06)", margin: "6px auto", borderRadius: 1 }} /> : <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>System</div>}
+                {allowedPanels.includes("cms") && (
+                  <SidebarItem id="cms" label="Site Layout" icon={Layout} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+                )}
+                {allowedPanels.includes("settings") && (
+                  <SidebarItem id="settings" label="Settings" icon={Settings} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+                )}
+              </>
+            )}
           </nav>
         </div>
 
@@ -727,6 +918,21 @@ export default function AdminDashboard() {
 
           <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 10 : 14 }}>
             {!isMobile && (
+              <div style={{
+                fontSize: 9,
+                fontWeight: 800,
+                color: allowedPanels.length === 8 ? "#4ade80" : "#f97316",
+                background: allowedPanels.length === 8 ? "rgba(74,222,128,0.1)" : "rgba(249,115,22,0.1)",
+                border: `1px solid ${allowedPanels.length === 8 ? "rgba(74,222,128,0.2)" : "rgba(249,115,22,0.2)"}`,
+                borderRadius: 8,
+                padding: "4px 8px",
+                textTransform: "uppercase",
+                letterSpacing: "0.08em"
+              }}>
+                {allowedPanels.length === 8 ? "Super Admin" : "Limited Access"}
+              </div>
+            )}
+            {!isMobile && (
               <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 100, padding: "6px 14px" }}>
                 <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", animation: "pulse 2s infinite" }} />
                 <span style={{ fontSize: 11, fontWeight: 700, color: "#d4d4d4", fontFamily: "monospace" }}>{timeStr}</span>
@@ -742,25 +948,28 @@ export default function AdminDashboard() {
         {/* Content Viewports */}
         <div className="admin-content" style={{ flex: 1, overflowY: "auto", padding: "32px" }}>
           {loading ? (
-            <div style={{ display: "flex", flexDirection: "column", items: "center", justifyContent: "center", height: "60vh", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "60vh", gap: 16 }}>
               <div style={{ width: 36, height: 36, borderRadius: "50%", border: "2px solid rgba(249,115,22,0.2)", borderTopColor: "#f97316", animation: "spin 1s linear infinite" }} />
               <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.3em", color: "#525252" }}>Loading dashboard data…</p>
             </div>
           ) : (
             <>
-              {activeTab === "overview" && (
+              {activeTab === "overview" && allowedPanels.includes("overview") && (
                 <OverviewTab 
                   currentTime={currentTime}
                   users={users}
                   leads={leads}
+                  clients={clients}
                   newLeadsCount={newLeadsCount}
                   conversionRate={conversionRate}
                   isMobile={isMobile}
                   setActiveTab={setActiveTab}
+                  db={db}
+                  currentAdmin={currentAdminData}
                 />
               )}
 
-              {activeTab === "leads" && (
+              {activeTab === "leads" && allowedPanels.includes("leads") && (
                 <LeadsTab 
                   leads={leads}
                   users={users}
@@ -794,26 +1003,36 @@ export default function AdminDashboard() {
                   handleUpdateFollowUp={handleUpdateFollowUp}
                   handleAddLeadNote={handleAddLeadNote}
                   exportLeads={exportLeads}
+                  triggerConfirm={triggerConfirm}
+                  logActivity={logActivity}
+                  leadsCollectionName={leadsCollectionName}
                 />
               )}
 
-              {activeTab === "users" && (
+              {activeTab === "users" && allowedPanels.includes("users") && (
                 <UsersTab 
                   users={users}
+                  leads={leads}
+                  clients={clients}
                   userSearch={userSearch}
                   setUserSearch={setUserSearch}
-                  handleRoleChange={handleRoleChange}
                   handleDeleteUser={handleDeleteUser}
+                  handleDeleteLead={handleDeleteLead}
+                  currentUserId={auth.currentUser?.uid}
                 />
               )}
 
-              {activeTab === "team" && (
+              {activeTab === "team" && allowedPanels.includes("team") && (
                 <TeamTab 
                   users={users}
+                  handleRoleChange={handleRoleChange}
+                  currentUserId={auth.currentUser?.uid}
+                  triggerConfirm={triggerConfirm}
+                  logActivity={logActivity}
                 />
               )}
 
-              {activeTab === "cms" && (
+              {activeTab === "cms" && allowedPanels.includes("cms") && (
                 <CmsTab 
                   activeTheme={activeTheme}
                   setActiveTheme={setActiveTheme}
@@ -830,25 +1049,30 @@ export default function AdminDashboard() {
                   configExpandedTheme={configExpandedTheme}
                   setConfigExpandedTheme={setConfigExpandedTheme}
                   isMobile={isMobile}
+                  triggerConfirm={triggerConfirm}
+                  logActivity={logActivity}
                 />
               )}
 
-              {activeTab === "blog" && (
+              {activeTab === "blog" && allowedPanels.includes("blog") && (
                 <BlogManagerTab 
                   isMobile={isMobile}
+                  triggerConfirm={triggerConfirm}
+                  logActivity={logActivity}
                 />
               )}
 
-              {activeTab === "newsletter" && (
+              {activeTab === "newsletter" && allowedPanels.includes("newsletter") && (
                 <NewsletterTab 
                   isMobile={isMobile}
-                  leads={leads}
-                  users={users}
                 />
               )}
 
-              {activeTab === "settings" && (
-                <SettingsTab />
+              {activeTab === "settings" && allowedPanels.includes("settings") && (
+                <SettingsTab 
+                  triggerConfirm={triggerConfirm}
+                  logActivity={logActivity}
+                />
               )}
             </>
           )}
@@ -864,7 +1088,7 @@ export default function AdminDashboard() {
             { id: "users", icon: Users, label: "Users" },
             { id: "newsletter", icon: Mail, label: "Email" },
             { id: "cms", icon: Layout, label: "CMS" },
-          ].map(item => (
+          ].filter(item => allowedPanels.includes(item.id)).map(item => (
             <button
               key={item.id}
               className={`mob-nav-btn ${activeTab === item.id ? "active" : ""}`}
@@ -896,18 +1120,26 @@ export default function AdminDashboard() {
               <ExternalLink size={14} style={{ marginLeft: "auto", opacity: 0.4 }} />
             </Link>
             <div style={{ height: 1, background: "rgba(255,255,255,0.06)", margin: "4px 0 12px" }} />
-            <button className={`mobile-menu-item ${activeTab === "team" ? "active" : ""}`}
-              onClick={() => { setActiveTab("team"); setMobileMenuOpen(false); }}>
-              <Shield size={18} /> Agency Team
-            </button>
-            <button className={`mobile-menu-item ${activeTab === "blog" ? "active" : ""}`}
-              onClick={() => { setActiveTab("blog"); setMobileMenuOpen(false); }}>
-              <FileText size={18} /> Blog Manager
-            </button>
-            <button className={`mobile-menu-item ${activeTab === "settings" ? "active" : ""}`}
-              onClick={() => { setActiveTab("settings"); setMobileMenuOpen(false); }}>
-              <Settings size={18} /> Settings
-            </button>
+            
+            {allowedPanels.includes("team") && (
+              <button className={`mobile-menu-item ${activeTab === "team" ? "active" : ""}`}
+                onClick={() => { setActiveTab("team"); setMobileMenuOpen(false); }}>
+                <Shield size={18} /> Agency Team
+              </button>
+            )}
+            {allowedPanels.includes("blog") && (
+              <button className={`mobile-menu-item ${activeTab === "blog" ? "active" : ""}`}
+                onClick={() => { setActiveTab("blog"); setMobileMenuOpen(false); }}>
+                <FileText size={18} /> Blog Manager
+              </button>
+            )}
+            {allowedPanels.includes("settings") && (
+              <button className={`mobile-menu-item ${activeTab === "settings" ? "active" : ""}`}
+                onClick={() => { setActiveTab("settings"); setMobileMenuOpen(false); }}>
+                <Settings size={18} /> Settings
+              </button>
+            )}
+            
             <div style={{ height: 1, background: "rgba(255,255,255,0.06)", margin: "12px 0" }} />
             {showInstallBtn && (
               <button className="mobile-menu-item" onClick={() => { handleInstallApp(); setMobileMenuOpen(false); }}
@@ -922,6 +1154,19 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+
+      {/* Confirm Modal Overlay */}
+      <ConfirmModal
+        isOpen={!!confirmModalConfig}
+        title={confirmModalConfig?.title || "Confirm Action"}
+        message={confirmModalConfig?.message || ""}
+        isDestructive={confirmModalConfig?.isDestructive}
+        onConfirm={() => {
+          if (confirmModalConfig?.onConfirm) confirmModalConfig.onConfirm();
+          setConfirmModalConfig(null);
+        }}
+        onCancel={() => setConfirmModalConfig(null)}
+      />
     </div>
   );
 }

@@ -1,13 +1,13 @@
 "use client";
 
-import { addDoc, collection, serverTimestamp } from "firebase/firestore/lite";
+
 import gsap from "gsap";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
 import { ArrowRight, Zap, TrendingUp } from "lucide-react";
-import { dbLite as db } from "../../firebase/firebaseConfig.js";
+
 
 export default function Footer() {
   const router = useRouter();
@@ -29,19 +29,31 @@ export default function Footer() {
     }
     setLoading(true);
     try {
-      await addDoc(collection(db, "leads"), {
-        fullName: form.name,
-        email: form.email,
-        whatsapp: "N/A", // Footer form doesn't ask for WhatsApp
-        requestedService: form.service,
-        notes: form.message || "No message provided",
-        source: "Footer Form",
-        status: "new",
-        createdAt: serverTimestamp(),
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: form.name,
+          email: form.email,
+          whatsapp: "N/A",
+          requestedService: form.service,
+          notes: form.message || "No message provided",
+          source: "Footer Form",
+        }),
       });
-      router.push("/thank-you");
+
+      if (!response.ok) {
+        throw new Error("Failed to submit lead");
+      }
+
+      const resData = await response.json();
+      const nameParam = encodeURIComponent(form.name);
+      const emailParam = encodeURIComponent(form.email);
+      router.push(`/get-started/book-meeting?leadId=${resData.id}&name=${nameParam}&email=${emailParam}`);
     } catch (err) {
-      console.error("Firebase Error:", err);
+      console.error("Submission Error:", err);
       alert("Failed to send message. Please try again.");
     } finally {
       setLoading(false);

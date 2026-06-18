@@ -45,6 +45,7 @@ export default function Register() {
       // Check if user document already exists, if not, create it
       const userRef = doc(db, "users", cred.user.uid);
       const userSnap = await getDoc(userRef);
+      let role = "user";
       if (!userSnap.exists()) {
         await setDoc(userRef, {
           email: cred.user.email,
@@ -52,8 +53,14 @@ export default function Register() {
           role: "user",
           createdAt: serverTimestamp(),
         });
+      } else {
+        role = userSnap.data()?.role || "user";
       }
-      router.push("/");
+      if (role === "admin") {
+        router.push("/admin-dashboard");
+      } else {
+        router.push("/client-dashboard");
+      }
     } catch (err) { setError(err.message); } finally { setLoading(false); }
   };
 
@@ -73,7 +80,7 @@ export default function Register() {
         createdAt: serverTimestamp(),
       });
 
-      router.push("/");
+      router.push("/client-dashboard");
     } catch (err) { setError(err.message); } finally { setLoading(false); }
   };
 

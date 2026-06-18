@@ -47,6 +47,7 @@ export default function Login() {
       const cred = await signInWithPopup(auth, provider);
       const userRef = doc(db, "users", cred.user.uid);
       const userSnap = await getDoc(userRef);
+      let role = "user";
       if (!userSnap.exists()) {
         await setDoc(userRef, {
           email: cred.user.email,
@@ -54,8 +55,14 @@ export default function Login() {
           role: "user",
           createdAt: serverTimestamp(),
         });
+      } else {
+        role = userSnap.data()?.role || "user";
       }
-      router.push("/");
+      if (role === "admin") {
+        router.push("/admin-dashboard");
+      } else {
+        router.push("/client-dashboard");
+      }
     } catch (err) { setError("Google login failed."); } finally { setLoading(false); }
   };
 
@@ -63,8 +70,18 @@ export default function Login() {
     e.preventDefault();
     try {
       setLoading(true);
-      await signInWithEmailAndPassword(auth, form.email, form.password);
-      router.push("/");
+      const cred = await signInWithEmailAndPassword(auth, form.email, form.password);
+      const userRef = doc(db, "users", cred.user.uid);
+      const userSnap = await getDoc(userRef);
+      let role = "user";
+      if (userSnap.exists()) {
+        role = userSnap.data()?.role || "user";
+      }
+      if (role === "admin") {
+        router.push("/admin-dashboard");
+      } else {
+        router.push("/client-dashboard");
+      }
     } catch (err) { setError("Invalid email or password."); } finally { setLoading(false); }
   };
 

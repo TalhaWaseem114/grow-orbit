@@ -16,7 +16,7 @@ const STATUS_STYLES = {
   draft:     { label: "Draft",     color: "#f97316", bg: "rgba(249,115,22,0.1)", border: "rgba(249,115,22,0.2)" },
 };
 
-export default function BlogManagerTab({ isMobile }) {
+export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [permissionError, setPermissionError] = useState(null);
@@ -395,14 +395,23 @@ export default function BlogManagerTab({ isMobile }) {
   };
 
   const handleDeletePost = async (id) => {
-    if (!window.confirm("Delete this post? This cannot be undone.")) return;
-    try {
-      await deleteDoc(doc(db, "blogs", id));
-      setPosts(posts.filter((p) => p.id !== id));
-    } catch (error) {
-      console.error("Error deleting post:", error);
-      alert("Failed to delete post.");
-    }
+    const targetPost = posts.find(p => p.id === id);
+    const title = targetPost ? targetPost.title : id;
+    triggerConfirm(
+      "Delete Post",
+      `Are you sure you want to permanently delete post "${title}"? This action cannot be undone.`,
+      async () => {
+        try {
+          await deleteDoc(doc(db, "blogs", id));
+          setPosts(prev => prev.filter((p) => p.id !== id));
+          logActivity("DELETE_POST", `Deleted blog post: "${title}" (${id})`);
+        } catch (error) {
+          console.error("Error deleting post:", error);
+          alert("Failed to delete post.");
+        }
+      },
+      true
+    );
   };
 
   const toggleStatus = async (post) => {
@@ -445,14 +454,23 @@ export default function BlogManagerTab({ isMobile }) {
   };
 
   const handleDeleteComment = async (commentId) => {
-    if (!window.confirm("Delete this comment permanently?")) return;
-    try {
-      await deleteDoc(doc(db, "blogs", viewingCommentsForPost.id, "comments", commentId));
-      setPostComments(postComments.filter(c => c.id !== commentId));
-    } catch (error) {
-      console.error("Error deleting comment:", error);
-      alert("Failed to delete comment.");
-    }
+    const targetComment = postComments.find(c => c.id === commentId);
+    const author = targetComment ? (targetComment.authorName || targetComment.authorEmail) : commentId;
+    triggerConfirm(
+      "Delete Comment",
+      `Are you sure you want to permanently delete the comment from "${author}"?`,
+      async () => {
+        try {
+          await deleteDoc(doc(db, "blogs", viewingCommentsForPost.id, "comments", commentId));
+          setPostComments(prev => prev.filter(c => c.id !== commentId));
+          logActivity("DELETE_COMMENT", `Deleted comment by "${author}" on post: "${viewingCommentsForPost.title}"`);
+        } catch (error) {
+          console.error("Error deleting comment:", error);
+          alert("Failed to delete comment.");
+        }
+      },
+      true
+    );
   };
 
   const handleSubmitReply = async (commentId) => {

@@ -4,8 +4,7 @@ import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Check, Calendar, ArrowRight, Zap, RefreshCw, Sparkles } from "lucide-react";
 import Link from "next/link";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore/lite";
-import { dbLite as db } from "../../../../firebase/firebaseConfig";
+
 
 const MAX_RETRIES = 3;
 
@@ -51,13 +50,21 @@ function BookMeetingContent() {
               // Since the guest is unauthenticated, they cannot update the lead document directly.
               // Our Admin Dashboard has a real-time listener that will process this confirmation document,
               // update the parent lead using admin credentials, and delete the confirmation document.
-              await addDoc(collection(db, "leads"), {
-                type: "booking_confirmation",
-                leadId: leadId,
-                email: initialEmail,
-                meetingBooked: true,
-                createdAt: serverTimestamp()
+              const response = await fetch("/api/leads", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  type: "booking_confirmation",
+                  leadId: leadId,
+                  email: initialEmail,
+                  meetingBooked: true,
+                }),
               });
+              if (!response.ok) {
+                throw new Error("Failed to register booking");
+              }
               console.log("Booking confirmation document created successfully!");
               success = true;
               break;

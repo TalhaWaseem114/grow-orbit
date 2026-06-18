@@ -368,7 +368,7 @@ function EBCHero() {
                   {/* Module: Hero Banner Preview */}
                   <div className="relative rounded-2xl overflow-hidden aspect-[16/5] border border-orange-500/15 group/hero">
                     <img
-                      src="https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=1200&auto=format&fit=crop"
+                      src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271732/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-1.png"
                       className="w-full h-full object-cover transition-transform duration-700 group-hover/hero:scale-110"
                       alt="Premium A+ Hero Design"
                     />
@@ -389,9 +389,9 @@ function EBCHero() {
                   <div className="space-y-2">
                     <div className="grid grid-cols-3 gap-2">
                       {[
-                        { icon: <Star size={12} />, label: "Quality", img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=400&auto=format&fit=crop" },
-                        { icon: <ShieldCheck size={12} />, label: "Trust", img: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?q=80&w=400&auto=format&fit=crop" },
-                        { icon: <Zap size={12} />, label: "Speed", img: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?q=80&w=400&auto=format&fit=crop" }
+                        { icon: <Star size={12} />, label: "Quality", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271720/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/2.png" },
+                        { icon: <ShieldCheck size={12} />, label: "Trust", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271723/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/3.png" },
+                        { icon: <Zap size={12} />, label: "Speed", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271726/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/4.png" }
                       ].map((f, i) => (
                         <div key={i} className="group/feat relative aspect-square bg-white/[0.03] border border-white/5 rounded-xl overflow-hidden hover:border-orange-500/40 transition-all duration-500">
                           <img src={f.img} className="w-full h-full object-cover opacity-60 group-hover/feat:scale-125 group-hover/feat:opacity-100 transition-all duration-700" alt={`${f.label} Feature Highlight`} />
@@ -940,7 +940,7 @@ function BeforeAfterComparison() {
               <div className="rounded-3xl border border-white/5 bg-[#111] overflow-hidden mb-8">
                 {/* Hero banner module */}
                 <div className="aspect-[16/6] relative overflow-hidden">
-                  <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800&auto=format&fit=crop" alt="" className="w-full h-full object-cover opacity-70" />
+                  <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271681/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-1.png" alt="" className="w-full h-full object-cover opacity-70" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-5 right-5">
                     <div className="h-3 w-2/3 bg-white/20 rounded-full mb-2" />

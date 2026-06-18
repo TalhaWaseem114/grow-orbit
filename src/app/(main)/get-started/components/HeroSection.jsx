@@ -101,20 +101,6 @@ export default function HeroSection({ scrollToForm, formRef }) {
             </div>
           </div>
 
-          {/* Specialized Landing Selector */}
-          <div className="mb-8 flex flex-wrap gap-2.5 items-center justify-start">
-            <span className="text-zinc-500 font-mono text-[9px] uppercase tracking-wider">Explore Specializations:</span>
-            <Link
-              href="/get-started/design-creative-landing"
-              className="group flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 hover:border-violet-500/40 text-violet-400 px-3.5 py-1.5 rounded-full text-[9px] sm:text-[10px] font-mono uppercase tracking-wider no-underline transition-all duration-300 shadow-[0_4px_12px_rgba(139,92,246,0.05)]"
-            >
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-violet-500"></span>
-              </span>
-              Visual Design &amp; A+
-            </Link>
-          </div>
 
           <h1
             className="text-white mb-5 sm:mb-6 uppercase text-[38px] sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tighter leading-[0.9] sm:leading-[0.85]"

@@ -757,7 +757,7 @@ function ExamplesGallery() {
           {examples.map((ex, i) => (
             <Link
               key={i}
-              href="/portfolio?filter=brand-story"
+              href="/portfolio"
               className="group relative rounded-[32px] overflow-hidden border border-zinc-100 bg-zinc-950 hover:border-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/5 transition-all duration-700 no-underline block"
             >
               {/* Image sequence layout - Mimicking Amazon Brand Story horizontal module with 3D depth */}
@@ -855,7 +855,7 @@ function ExamplesGallery() {
         <div className="mt-16 text-center">
           <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Want to see more of our design work?</p>
           <Link
-            href="/portfolio?filter=brand-story"
+            href="/portfolio"
             className="inline-flex items-center gap-3 bg-zinc-950 hover:bg-orange-500 transition-all duration-500 text-white font-black text-[12px] uppercase tracking-[0.2em] px-10 py-5 rounded-full no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-orange-500/20"
           >
             View All Brand Stories

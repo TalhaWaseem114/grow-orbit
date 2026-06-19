@@ -523,7 +523,7 @@ function EngageAndConvert() {
                 {/* Background hero */}
                 <div className="relative rounded-2xl overflow-hidden bg-zinc-900 h-36 border border-white/5">
                   <img
-                    src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271708/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-1.png"
+                    src="https://res.cloudinary.com/dciggvulg/image/upload/v1781872045/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-2.jpg"
                     alt="Brand Story Background"
                     className="absolute inset-0 w-full h-full object-cover opacity-60"
                   />

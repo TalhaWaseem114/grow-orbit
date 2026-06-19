@@ -459,8 +459,7 @@ function ClientProof() {
           style={{ fontFamily: "'Playfair Display', serif" }}
         >
           <span className="text-orange-500 text-4xl leading-none align-top mr-1">&ldquo;</span>
-          Our conversion rate jumped 18% in the first 30 days after adding the Brand Story.
-          It was the cheapest 18% we ever bought.
+          Our conversion rate jumped 18% in the first 30 days after upgrading our listings with premium visuals and design. It was the best investment we ever made.
           <span className="text-orange-500 text-4xl leading-none align-bottom ml-1">&rdquo;</span>
         </blockquote>
         <div className="flex flex-col items-center gap-2">
@@ -858,7 +857,7 @@ function ExamplesGallery() {
             href="/portfolio"
             className="inline-flex items-center gap-3 bg-zinc-950 hover:bg-orange-500 transition-all duration-500 text-white font-black text-[12px] uppercase tracking-[0.2em] px-10 py-5 rounded-full no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-orange-500/20"
           >
-            View All Brand Stories
+            View Portfolio
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

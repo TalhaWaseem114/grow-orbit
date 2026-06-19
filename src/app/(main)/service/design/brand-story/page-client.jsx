@@ -693,40 +693,34 @@ function WhatIsIncluded() {
 function ExamplesGallery() {
   const examples = [
     {
-      id: "BS-0422",
       niche: "EDC Gear",
       images: [
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271681/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-1.png",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271686/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-4.png",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271689/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-6.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872034/grow_orbit_portfolio/assets/portfolio/nexa_pouches/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872015/grow_orbit_portfolio/assets/portfolio/nexa_pouches/2.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872016/grow_orbit_portfolio/assets/portfolio/nexa_pouches/3.jpg"
       ],
       tags: ["Technical", "Product Cards", "Core Values"],
-      accent: "bg-amber-500",
-      metric: { val: "+65%", label: "Conversion Lift", icon: <ArrowUpRight size={10} /> }
+      accent: "bg-amber-500"
     },
     {
-      id: "BS-1109",
       niche: "Home & Auto",
       images: [
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271708/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-1.png",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271709/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-2.png",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271713/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-6.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872036/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/2.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872037/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/3.jpg"
       ],
       tags: ["Power", "Narrative", "Benefits"],
-      accent: "bg-zinc-700",
-      metric: { val: "+90%", label: "Sales Lift", icon: <ShoppingCart size={10} /> }
+      accent: "bg-zinc-700"
     },
     {
-      id: "BS-0715",
       niche: "Automotive",
       images: [
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271732/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-1.png",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271734/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-2.png",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781271736/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-3.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872056/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/2.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872057/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/3.jpg"
       ],
       tags: ["Emergency", "Versatility", "Reliability"],
-      accent: "bg-orange-500",
-      metric: { val: "+105%", label: "Sales Lift", icon: <Activity size={10} /> }
+      accent: "bg-orange-500"
     },
   ];
 
@@ -766,15 +760,9 @@ function ExamplesGallery() {
                   <img src={ex.images[0]} alt={`${ex.niche} Brand Story Hero Showcase`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
 
-                  {/* Internal Branding */}
-                  <div className="absolute inset-x-0 bottom-0 p-3 flex justify-between items-end">
-                    <div className="px-2 py-1 rounded-lg bg-white/5 backdrop-blur-md border border-white/10">
-                      <span className="text-[6px] font-mono text-zinc-500 uppercase tracking-[0.2em] leading-none block mb-1">REFERENCE</span>
-                      <span className="text-[8px] font-black text-white/90 uppercase tracking-widest leading-none">{ex.id}</span>
-                    </div>
-                    <div className="w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 backdrop-blur-md">
-                      <Search size={12} />
-                    </div>
+                  {/* Search Icon Overlay */}
+                  <div className="absolute right-3 bottom-3 z-10 w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 backdrop-blur-md">
+                    <Search size={12} />
                   </div>
 
                   {/* Top Gloss */}
@@ -795,29 +783,8 @@ function ExamplesGallery() {
                   <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
                 </div>
 
-                {/* Performance Pill Badge */}
-                <div className="absolute top-5 right-5 z-40">
-                  <div className="bg-[#111111]/90 backdrop-blur-xl border border-white/10 rounded-2xl px-3 py-2.5 shadow-[0_15px_30px_rgba(0,0,0,0.3)] flex items-center gap-3 transform group-hover:scale-105 group-hover:border-orange-500/50 transition-all duration-500">
-                    <div className={`w-8 h-8 rounded-lg ${ex.accent} flex items-center justify-center text-white shadow-inner`}>
-                      {ex.metric.icon}
-                    </div>
-                    <div>
-                      <span className="text-white font-black text-sm tracking-tighter leading-none block mb-0.5">{ex.metric.val}</span>
-                      <span className="text-zinc-500 text-[8px] font-bold uppercase tracking-widest leading-none block">{ex.metric.label}</span>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Animated Edge Light (Horizontal Scan) */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-full group-hover:animate-[horizontal-scan_3s_linear_infinite] pointer-events-none" />
-
-                {/* Interactive Niche Label (Top Left) */}
-                <div className="absolute top-5 left-5 z-40 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                   <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-white/10">
-                      <div className={`w-1 h-1 rounded-full ${ex.accent.replace('bg-', 'bg-')}`} />
-                      <span className="text-[8px] font-black text-white uppercase tracking-[0.2em]">Verified Proof</span>
-                   </div>
-                </div>
 
                 {/* Hover overlay - Subtle Glassmorphism */}
                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 bg-zinc-950/40 backdrop-blur-[2px] z-30 pointer-events-none">
@@ -826,7 +793,7 @@ function ExamplesGallery() {
                       <BookOpen size={24} />
                     </div>
                     <div className="relative inline-block">
-                       <p className="text-[11px] font-black uppercase tracking-[0.4em] text-white">Full Narrative View</p>
+                       <p className="text-[11px] font-black uppercase tracking-[0.4em] text-white">View Project</p>
                        <div className="absolute -bottom-2 inset-x-0 h-[2px] bg-orange-500 scale-x-0 group-hover:scale-x-100 transition-transform duration-700 origin-left" />
                     </div>
                   </div>

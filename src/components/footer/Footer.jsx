@@ -244,7 +244,7 @@ export default function Footer() {
 
           {/* Right — white form card */}
           <div className="lg:w-[460px] w-full shrink-0">
-            <div className="bg-white text-zinc-900 p-9 md:p-11 rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.5)] lg:sticky lg:top-10">
+            <div className="bg-white text-zinc-900 p-5 sm:p-7 md:p-11 rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.5)] lg:sticky lg:top-10">
               <h3
                 className="text-2xl font-black tracking-tight mb-1 uppercase"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}

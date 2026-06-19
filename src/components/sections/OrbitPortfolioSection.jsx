@@ -188,7 +188,7 @@ export default function OrbitPortfolioSection({ initialCategory = "All", isGetSt
         </div>
 
         {/* Mobile Sticky version */}
-        <div className="md:hidden sticky top-[74px] z-[40] mb-6 px-2">
+        <div className="md:hidden sticky top-[56px] z-[40] mb-6 px-2">
           <button
             onClick={() => {
               const portfolioSection = document.getElementById("portfolio");

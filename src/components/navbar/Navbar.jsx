@@ -141,12 +141,14 @@ export default function Navbar() {
 
         {/* ── Mobile Toggle ── */}
         <button
-          className={`md:hidden p-2 rounded-lg transition-colors ${textColorClass} focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:outline-none`}
+          className={`md:hidden p-2 rounded-xl transition-all duration-300 ${textColorClass} focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:outline-none flex flex-col justify-center items-end gap-[5px] w-10 h-10`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle Navigation Menu"
           aria-expanded={mobileMenuOpen}
         >
-          {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+          <span className={`block h-[2px] bg-current transition-all duration-300 ${mobileMenuOpen ? 'w-6 translate-y-[7px] rotate-45' : 'w-6'}`} />
+          <span className={`block h-[2px] bg-current transition-all duration-300 ${mobileMenuOpen ? 'w-0 opacity-0' : 'w-4'}`} />
+          <span className={`block h-[2px] bg-current transition-all duration-300 ${mobileMenuOpen ? 'w-6 -translate-y-[7px] -rotate-45' : 'w-5'}`} />
         </button>
 
         {/* ════════════════════════════════════════

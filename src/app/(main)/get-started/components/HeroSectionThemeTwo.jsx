@@ -41,8 +41,8 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
       `}</style>
       <section className="relative min-h-screen flex flex-col lg:flex-row items-stretch overflow-hidden bg-zinc-950">
 
-        {/* ── Navbar ── */}
-        <header className="absolute top-6 left-5 md:left-16 lg:left-20 right-5 md:right-16 lg:right-20 flex items-center justify-between z-50">
+        {/* ── Desktop Navbar ── */}
+        <header className="hidden lg:flex absolute top-6 left-8 md:left-16 lg:left-20 right-8 md:right-16 lg:right-20 items-center justify-between z-50">
           {/* Left: Logo */}
           <Link href="/" className="flex items-center gap-2 group no-underline shrink-0">
             <Image src="/logo.png" alt="Grow Orbit Logo" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
@@ -53,7 +53,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           </Link>
 
           {/* Middle: Menu Items */}
-          <nav className="hidden lg:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
+          <nav className="flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
             <Link href="/" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors no-underline">Home</Link>
             <div className="relative" ref={servicesRef}>
               <button onMouseEnter={() => setServicesOpen(true)} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer">
@@ -84,7 +84,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
         </header>
 
         {/* ── Left — Text Content ── */}
-        <div className="relative flex-1 flex flex-col justify-start px-5 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-32 sm:pt-36 pb-16 lg:pt-24 lg:pb-20 z-10">
+        <div className="relative flex-1 flex flex-col justify-start px-5 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-24 sm:pt-24 pb-16 lg:pt-24 lg:pb-20 z-10">
           {/* Subtle texture */}
           <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(249,115,22,0.12),transparent_60%)] pointer-events-none" />

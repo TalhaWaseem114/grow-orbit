@@ -3,12 +3,12 @@
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, ArrowRight, Star, TrendingUp, Rocket, Shield, Heart, X, Play } from "lucide-react";
+import { ChevronDown, ArrowRight, Star, TrendingUp, Rocket, Shield, Heart } from "lucide-react";
 import HeroMegaMenu from "./HeroMegaMenu";
+import LeadForm from "./LeadForm";
 
-export default function HeroSectionThemeTwo({ scrollToForm }) {
+export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
   const [servicesOpen, setServicesOpen] = useState(false);
-  const [videoOpen, setVideoOpen] = useState(false);
   const servicesRef = useRef(null);
 
   useEffect(() => {
@@ -21,54 +21,75 @@ export default function HeroSectionThemeTwo({ scrollToForm }) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    if (videoOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
-    return () => { document.body.style.overflow = ""; };
-  }, [videoOpen]);
-
   return (
     <>
+      <style>{`
+        @keyframes subtle-fade-in-up {
+          0% {
+            opacity: 0;
+            transform: translateY(15px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .animate-subtle-form {
+          animation: subtle-fade-in-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+          animation-delay: 0.35s;
+        }
+      `}</style>
       <section className="relative min-h-screen flex flex-col lg:flex-row items-stretch overflow-hidden bg-zinc-950">
 
+        {/* ── Desktop Navbar ── */}
+        <header className="hidden lg:flex absolute top-6 left-8 md:left-16 lg:left-20 right-8 md:right-16 lg:right-20 items-center justify-between z-50">
+          {/* Left: Logo */}
+          <Link href="/" className="flex items-center gap-2 group no-underline shrink-0">
+            <Image src="/logo.png" alt="Grow Orbit Logo" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
+            <span className="text-lg font-black tracking-tight uppercase flex gap-1.5 transition-colors">
+              <span className="text-white">GROW</span>
+              <span className="text-[#F1A52B]">ORBIT</span>
+            </span>
+          </Link>
+
+          {/* Middle: Menu Items */}
+          <nav className="flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
+            <Link href="/" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors no-underline">Home</Link>
+            <div className="relative" ref={servicesRef}>
+              <button onMouseEnter={() => setServicesOpen(true)} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer">
+                Services
+                <ChevronDown size={12} className={`transition-transform duration-300 ${servicesOpen ? 'rotate-180 text-orange-500' : ''}`} />
+              </button>
+              {servicesOpen && (
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 z-[100]" onMouseLeave={() => setServicesOpen(false)}>
+                  <HeroMegaMenu onClose={() => setServicesOpen(false)} />
+                </div>
+              )}
+            </div>
+            <Link href="/case-study" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors no-underline">Case Study</Link>
+          </nav>
+
+          {/* Right: Portfolio Button */}
+          <div className="flex items-center shrink-0">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-orange-500 bg-gradient-to-br from-[#FF4E00] to-[#F29F05] px-6 py-2.5 text-white font-bold text-[10px] uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_15px_50px_rgba(255,78,0,0.45)] active:scale-95 cursor-pointer outline-none"
+            >
+              Portfolio
+            </button>
+          </div>
+        </header>
+
         {/* ── Left — Text Content ── */}
-        <div className="relative flex-1 flex flex-col justify-center px-5 md:px-16 lg:px-20 pt-24 sm:pt-28 pb-16 lg:py-0 z-10">
+        <div className="relative flex-1 flex flex-col justify-start px-5 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-20 sm:pt-24 pb-16 lg:pt-24 lg:pb-20 z-10">
           {/* Subtle texture */}
           <div className="absolute inset-0 opacity-[0.07] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(249,115,22,0.12),transparent_60%)] pointer-events-none" />
 
-          {/* ── Desktop Navbar ── */}
-          <header className="hidden lg:flex absolute top-6 left-8 md:left-16 lg:left-20 right-8 md:right-16 lg:right-20 items-center justify-between z-50">
-            <Link href="/" className="flex items-center gap-2 group no-underline">
-              <Image src="/logo.png" alt="Grow Orbit Logo" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
-              <span className="text-lg font-black tracking-tight uppercase flex gap-1.5 transition-colors">
-                <span className="text-white">GROW</span>
-                <span className="text-[#F1A52B]">ORBIT</span>
-              </span>
-            </Link>
-            <nav className="flex items-center gap-6 ml-auto">
-              <Link href="/" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors no-underline">Home</Link>
-              <Link href="/portfolio" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors no-underline">Portfolio</Link>
-              <Link href="/case-study" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors no-underline">Case Study</Link>
-              <div className="relative" ref={servicesRef}>
-                <button onMouseEnter={() => setServicesOpen(true)} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none">
-                  Services
-                  <ChevronDown size={12} className={`transition-transform duration-300 ${servicesOpen ? 'rotate-180 text-orange-500' : ''}`} />
-                </button>
-                {servicesOpen && (
-                  <div className="absolute top-full right-[-350px] mt-4 z-100" onMouseLeave={() => setServicesOpen(false)}>
-                    <HeroMegaMenu onClose={() => setServicesOpen(false)} />
-                  </div>
-                )}
-              </div>
-            </nav>
-          </header>
-
-          <div className="relative z-10 max-w-2xl fade-up lg:mt-10">
+          <div className="relative z-10 max-w-2xl fade-up lg:mt-2">
             <div className="relative mb-6 sm:mb-12 -ml-[20px] sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[5px] sm:translate-y-[20px]">
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.6)] animate-pulse" />
@@ -85,6 +106,14 @@ export default function HeroSectionThemeTwo({ scrollToForm }) {
               </div>
             </div>
 
+
+            {/* Scarcity Pill */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6 sm:mb-8">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+              <span className="text-[9px] sm:text-[10px] font-bold text-orange-400 uppercase tracking-[0.2em]">
+                Currently Accepting 3-4 Brands &middot; Apply Now
+              </span>
+            </div>
 
             {/* Main Heading */}
             <h1
@@ -106,14 +135,7 @@ export default function HeroSectionThemeTwo({ scrollToForm }) {
             </div>
 
             {/* CTA Button */}
-            <div className="fade-up delay-2 mb-10 flex flex-col items-start">
-              {/* Scarcity Signal */}
-              <div className="flex items-center gap-2 mb-4 px-1">
-                <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                <p className="text-[10px] sm:text-[11px] font-bold text-zinc-500 uppercase tracking-[0.2em]">
-                  Currently accepting 3-4 brands <span className="mx-1 opacity-30">·</span> Apply Now
-                </p>
-              </div>
+            <div className="fade-up delay-2 mb-10 flex flex-col items-start lg:hidden">
               <button
                 onClick={scrollToForm}
                 className="group relative inline-flex w-full lg:w-auto items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#FF4E00] to-[#F29F05] px-6 sm:px-10 py-4 sm:py-[17px] text-white font-black text-[10px] sm:text-[12px] uppercase tracking-[0.15em] sm:tracking-[0.22em] transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_15px_50px_rgba(255,78,0,0.45)] active:scale-95"
@@ -152,8 +174,8 @@ export default function HeroSectionThemeTwo({ scrollToForm }) {
             </div>
 
             {/* Social Proof Strip */}
-            <div className="flex items-center gap-4 fade-up delay-4">
-              <div className="flex -space-x-2.5">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 fade-up delay-4">
+              <div className="flex flex-row flex-nowrap -space-x-2.5 shrink-0">
                 {[
                   "bg-gradient-to-br from-orange-400 to-orange-600",
                   "bg-gradient-to-br from-blue-400 to-blue-600",
@@ -161,7 +183,7 @@ export default function HeroSectionThemeTwo({ scrollToForm }) {
                   "bg-gradient-to-br from-purple-400 to-purple-600",
                   "bg-gradient-to-br from-rose-400 to-rose-600",
                 ].map((bg, i) => (
-                  <div key={i} className={`w-7 h-7 rounded-full ${bg} border-2 border-zinc-950 flex items-center justify-center text-[8px] font-black text-white`}>
+                  <div key={i} className={`w-7 h-7 rounded-full ${bg} border-2 border-zinc-950 flex items-center justify-center text-[8px] font-black text-white shrink-0`}>
                     {["S", "A", "M", "R", "K"][i]}
                   </div>
                 ))}
@@ -180,98 +202,52 @@ export default function HeroSectionThemeTwo({ scrollToForm }) {
           </div>
         </div>
 
-        {/* ── Right — Image + Play Button ── */}
-        <div className="relative flex-none w-full lg:w-[42%] xl:w-[45%] min-h-[400px] lg:min-h-0 overflow-hidden">
-          {/* Background image */}
+        {/* ── Right — Image + Form Card ── */}
+        <div className="relative flex-none w-full lg:w-[42%] xl:w-[38%] 2xl:w-[35%] flex items-start justify-center px-6 pb-6 pt-12 sm:px-8 sm:pb-8 sm:pt-16 lg:px-10 lg:pb-10 lg:pt-[85px] xl:px-12 xl:pb-12 xl:pt-[85px] z-20 overflow-hidden bg-zinc-950">
+          {/* Background image with overlay */}
           <div className="absolute inset-0">
             <img
               src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
               alt="Amazon growth strategy session"
-              className="w-full h-full object-cover object-center"
+              className="w-full h-full object-cover object-center opacity-[0.22]"
             />
+            {/* Dark overlays for high contrast */}
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/75 to-zinc-950" />
+            <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/45 to-transparent hidden lg:block" />
+            {/* Cool bluish tint overlay on the background */}
+            <div className="absolute inset-0 bg-blue-950/4 mix-blend-color pointer-events-none" />
+            {/* Extremely subtle ambient bluish/indigo glows that move behind the glass card */}
+            <div className="absolute top-[25%] left-[20%] w-72 h-72 rounded-full bg-blue-500/4 blur-[65px] animate-float-one pointer-events-none" />
+            <div className="absolute bottom-[20%] right-[15%] w-64 h-64 rounded-full bg-indigo-500/3 blur-[60px] animate-float-two pointer-events-none" />
           </div>
 
-          {/* Overlay gradients */}
-          <div className="hidden lg:block absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/30 to-transparent z-[1]" />
-          <div className="absolute inset-0 bg-gradient-to-b from-zinc-950/60 via-transparent to-transparent z-[1]" />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent z-[1]" />
-
-
-
-          {/* Play Button — Center */}
-          <button
-            onClick={() => setVideoOpen(true)}
-            className="absolute inset-0 z-10 flex flex-col items-center justify-center group cursor-pointer"
+          <div
+            ref={formRef}
+            id="lead-form"
+            className="relative z-10 w-full max-w-[440px] border border-white/8 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.95),inset_0_1px_1px_rgba(255,255,255,0.07)] px-5 py-6 sm:p-8 rounded-3xl animate-subtle-form backdrop-blur-xl overflow-hidden"
+            style={{
+              background: `linear-gradient(to bottom, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005)), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E"), rgba(9, 9, 11, 0.45)`
+            }}
           >
-            <div className="relative">
-              {/* Pulse rings */}
-              <div className="absolute inset-0 w-24 h-24 rounded-full border border-white/20 animate-ping" style={{ animationDuration: "3s" }} />
-              <div className="absolute -inset-4 w-32 h-32 rounded-full border border-white/10 animate-ping" style={{ animationDuration: "4s", animationDelay: "0.5s" }} />
-
-              {/* Button itself */}
-              <div className="relative w-24 h-24 bg-white/10 backdrop-blur-lg rounded-full flex items-center justify-center border border-white/25 group-hover:bg-white/20 group-hover:scale-110 transition-all duration-500 shadow-2xl">
-                <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-[0_8px_30px_rgba(0,0,0,0.3)] group-hover:shadow-[0_12px_40px_rgba(249,115,22,0.3)] transition-shadow duration-500">
-                  <Play size={24} className="text-orange-500 fill-orange-500 ml-1" />
-                </div>
-              </div>
+            <div className="mb-5">
+              <p className="text-orange-500 font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.2em] mb-1.5">
+                Free Strategy Meeting
+              </p>
+              <h3
+                className="text-lg sm:text-xl font-black tracking-tight text-white uppercase leading-snug"
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
+                Tell us your ASIN. <span className="text-orange-500">We'll tell you exactly what's holding it back.</span>
+              </h3>
             </div>
-            <p className="mt-6 text-white font-bold uppercase tracking-[0.3em] text-[10px] drop-shadow-lg">Watch The Breakdown</p>
-          </button>
+
+            <LeadForm theme="dark" compact={true} />
+          </div>
         </div>
 
         {/* Bottom decorative line */}
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/30 to-transparent z-20" />
       </section>
-
-      {/* ── Video Modal ── */}
-      {videoOpen && (
-        <div
-          className="fixed inset-0 z-[9999] flex items-center justify-center"
-          onClick={() => setVideoOpen(false)}
-        >
-          {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" style={{ animation: "fadeIn 0.3s ease" }} />
-
-          {/* Modal content */}
-          <div
-            className="relative z-10 w-[90vw] max-w-5xl aspect-video rounded-2xl overflow-hidden shadow-2xl border border-white/10"
-            onClick={(e) => e.stopPropagation()}
-            style={{ animation: "scaleIn 0.35s ease" }}
-          >
-            {/* Close button */}
-            <button
-              onClick={() => setVideoOpen(false)}
-              className="absolute top-4 right-4 z-20 w-10 h-10 rounded-full bg-black/60 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all duration-200"
-            >
-              <X size={18} />
-            </button>
-
-            {/* Video player */}
-            <video
-              autoPlay
-              controls
-              playsInline
-              className="w-full h-full object-cover bg-black"
-            >
-              {/* Replace this with your actual video URL */}
-              <source src="https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-
-          {/* Modal animations */}
-          <style>{`
-            @keyframes fadeIn {
-              from { opacity: 0; }
-              to { opacity: 1; }
-            }
-            @keyframes scaleIn {
-              from { opacity: 0; transform: scale(0.9); }
-              to { opacity: 1; transform: scale(1); }
-            }
-          `}</style>
-        </div>
-      )}
     </>
   );
 }

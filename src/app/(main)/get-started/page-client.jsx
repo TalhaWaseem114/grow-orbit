@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import ThemeOne from "./themes/ThemeOne";
 import ThemeTwo from "./themes/ThemeTwo";
-import ThemeThree from "./themes/ThemeThree";
 import { subscribeToExperimentConfig } from "@/lib/experimentService";
 
 import { ACTIVE_THEME, ACTIVE_SECTIONS } from "@/lib/activeLandingConfig";
@@ -65,9 +63,7 @@ export default function CampaignPage() {
         }
       `}</style>
 
-      {activeTheme === "theme-1" && <ThemeOne scrolled={scrolled} activeSections={activeSections} />}
-      {activeTheme === "theme-2" && <ThemeTwo scrolled={scrolled} activeSections={activeSections} />}
-      {activeTheme === "theme-3" && <ThemeThree scrolled={scrolled} activeSections={activeSections} />}
+      <ThemeTwo scrolled={scrolled} activeSections={activeSections} />
     </main>
   );
 }

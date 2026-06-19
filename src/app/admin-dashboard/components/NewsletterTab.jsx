@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Mail, Image as ImageIcon, LayoutTemplate, UploadCloud, RotateCcw, Copy, Eye, Palette, ShoppingCart, BarChart3, Sparkles, Smartphone, Monitor } from "lucide-react";
 
 // ─── Template Data ────────────────────────────────────────────
@@ -402,36 +402,22 @@ export default function NewsletterTab({ isMobile }) {
   const [headline, setHeadline] = useState("");
   const [body, setBody] = useState("");
   const [copied, setCopied] = useState(false);
+  const [sourceCopied, setSourceCopied] = useState(false);
   const [subjectCopied, setSubjectCopied] = useState(false);
   const [activeTemplate, setActiveTemplate] = useState(null);
   const [uploadingImage, setUploadingImage] = useState(false);
   const [viewMode, setViewMode] = useState("desktop"); // "desktop" | "mobile"
   const [focusedField, setFocusedField] = useState(null); // "subject" | "headerImage" | "headline" | "body"
+  const [previewHtml, setPreviewHtml] = useState("");
+  const bodyTextareaRef = useRef(null);
 
-  const applyTemplate = (template) => {
-    setSubject(template.subject);
-    setHeaderImage(template.headerImage);
-    setHeadline(template.headline);
-    setBody(template.body);
-    setActiveTemplate(template.id);
-  };
-
-  const clearFields = () => {
-    setSubject("");
-    setHeaderImage("");
-    setHeadline("");
-    setBody("");
-    setActiveTemplate(null);
-  };
-
-  const bodyHasHtml = body.includes("<img") || body.includes("<div") || body.includes("<table") || body.includes("<p");
-
-  const getCompiledHtml = () => {
+  const compileHtml = useCallback((subj, headerImg, headText, bodyText) => {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://grow-orbit.netlify.app";
-    const formattedBody = bodyHasHtml ? body : body.replace(/\n/g, "<br />");
+    const bodyHasHtml = bodyText.includes("<img") || bodyText.includes("<div") || bodyText.includes("<table") || bodyText.includes("<p");
+    const formattedBody = bodyHasHtml ? bodyText : bodyText.replace(/\n/g, "<br />");
     let logoUrl = "/logo.png";
-    if (headerImage) {
-      logoUrl = headerImage.trim();
+    if (headerImg) {
+      logoUrl = headerImg.trim();
     }
     const absoluteLogoUrl = logoUrl.startsWith("http")
       ? logoUrl
@@ -472,7 +458,7 @@ export default function NewsletterTab({ isMobile }) {
       </div>
       <!-- Body -->
       <div class="email-body" style="padding: 36px 32px; background-color: #ffffff; text-align: left;">
-        ${headline ? `<h1 style="font-size: 22px; font-weight: 800; color: #0F172A; margin-top: 0; margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${headline}</h1>` : ""}
+        ${headText ? `<h1 style="font-size: 22px; font-weight: 800; color: #0F172A; margin-top: 0; margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${headText}</h1>` : ""}
         <div style="font-size: 15px; color: #334155; line-height: 1.6; margin-bottom: 28px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${formattedBody}</div>
         
         <!-- CTA -->
@@ -501,7 +487,52 @@ export default function NewsletterTab({ isMobile }) {
     );
 
     return optimizedHtml;
+  }, []);
+
+  const getCompiledHtml = useCallback(() => compileHtml(subject, headerImage, headline, body), [compileHtml, subject, headerImage, headline, body]);
+
+  const applyTemplate = (template) => {
+    setSubject(template.subject);
+    setHeaderImage(template.headerImage);
+    setHeadline(template.headline);
+    setBody(template.body);
+    setActiveTemplate(template.id);
+    setPreviewHtml(compileHtml(template.subject, template.headerImage, template.headline, template.body));
   };
+
+  const clearFields = () => {
+    setSubject("");
+    setHeaderImage("");
+    setHeadline("");
+    setBody("");
+    setActiveTemplate(null);
+    setPreviewHtml("");
+  };
+
+  // Debounce preview update when typing (400ms delay)
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPreviewHtml(compileHtml(subject, headerImage, headline, body));
+    }, 400);
+    return () => clearTimeout(timer);
+  }, [subject, headerImage, headline, body, compileHtml]);
+
+  const insertBodyTag = useCallback((before, after = "") => {
+    const textarea = bodyTextareaRef.current || document.getElementById("newsletter-body-textarea");
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = textarea.value;
+    const selected = text.substring(start, end);
+    const replacement = before + selected + after;
+    const newValue = text.substring(0, start) + replacement + text.substring(end);
+    setBody(newValue);
+    
+    requestAnimationFrame(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + before.length, start + before.length + selected.length);
+    });
+  }, [body]);
 
   const handleCopyRichEmail = async () => {
     if (!subject.trim() || !body.trim()) {
@@ -526,6 +557,18 @@ export default function NewsletterTab({ isMobile }) {
     } catch (err) {
       console.error("Failed to copy HTML email to clipboard:", err);
       alert("Failed to copy rich email layout to clipboard. Please check browser compatibility.");
+    }
+  };
+
+  const handleCopyHtmlSource = async () => {
+    if (!subject.trim() || !body.trim()) return;
+    try {
+      const htmlContent = getCompiledHtml();
+      await navigator.clipboard.writeText(htmlContent);
+      setSourceCopied(true);
+      setTimeout(() => setSourceCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy raw HTML:", err);
     }
   };
 
@@ -771,8 +814,47 @@ export default function NewsletterTab({ isMobile }) {
             </div>
 
             <div>
-              <label style={{ fontSize: 10, fontWeight: 700, color: "#737373", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 8, display: "block" }}>Body (HTML / Text)</label>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <label style={{ fontSize: 10, fontWeight: 700, color: "#737373", letterSpacing: "0.15em", textTransform: "uppercase", margin: 0 }}>Body (HTML / Text)</label>
+                <div style={{ display: "flex", gap: 6 }}>
+                  <button
+                    type="button"
+                    onClick={() => insertBodyTag("<p>", "</p>")}
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "2px 6px", fontSize: 9, fontWeight: 700, color: "#fff", cursor: "pointer" }}
+                  >
+                    Paragraph
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => insertBodyTag("<strong>", "</strong>")}
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "2px 6px", fontSize: 9, fontWeight: 700, color: "#fff", cursor: "pointer" }}
+                  >
+                    Bold
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => insertBodyTag("<br />")}
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "2px 6px", fontSize: 9, fontWeight: 700, color: "#fff", cursor: "pointer" }}
+                  >
+                    Break
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const url = prompt("Enter Link URL:", "https://");
+                      if (url) {
+                        insertBodyTag(`<a href="${url}" style="color: #f97316; font-weight: 700; text-decoration: underline;" target="_blank">`, "</a>");
+                      }
+                    }}
+                    style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "2px 6px", fontSize: 9, fontWeight: 700, color: "#fff", cursor: "pointer" }}
+                  >
+                    Link
+                  </button>
+                </div>
+              </div>
               <textarea 
+                id="newsletter-body-textarea"
+                ref={bodyTextareaRef}
                 value={body} 
                 onChange={e => setBody(e.target.value)} 
                 placeholder="Write body copy or HTML segments here..." 
@@ -798,19 +880,19 @@ export default function NewsletterTab({ isMobile }) {
             </div>
           </div>
 
-          {/* Copy Button */}
-          <div style={{ marginTop: 28 }}>
+          {/* Copy Buttons Row */}
+          <div style={{ marginTop: 28, display: "flex", flexDirection: isMobile ? "column" : "row", gap: 12 }}>
             <button
               onClick={handleCopyRichEmail}
               type="button"
               disabled={!subject.trim() || !body.trim()}
               style={{
-                width: "100%",
+                flex: 1,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 gap: 8,
-                padding: "15px 28px",
+                padding: "14px 20px",
                 borderRadius: 12,
                 background: copied 
                   ? "rgba(74,222,128,0.15)" 
@@ -819,29 +901,60 @@ export default function NewsletterTab({ isMobile }) {
                     : "linear-gradient(135deg, #f97316, #ea580c)",
                 border: copied ? "1px solid rgba(74,222,128,0.3)" : "none",
                 color: copied ? "#4ade80" : (!subject.trim() || !body.trim()) ? "#525252" : "#fff",
-                fontSize: 13,
+                fontSize: 12,
                 fontWeight: 800,
                 cursor: (!subject.trim() || !body.trim()) ? "not-allowed" : "pointer",
                 transition: "all 0.3s ease",
                 textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                boxShadow: (!subject.trim() || !body.trim()) ? "none" : "0 4px 15px rgba(249, 115, 22, 0.25)"
+                letterSpacing: "0.05em",
+                boxShadow: (!subject.trim() || !body.trim()) ? "none" : "0 4px 12px rgba(249, 115, 22, 0.2)"
+              }}
+            >
+              <Copy size={14} />
+              {copied ? "Copied Rich!" : "Copy Rich (Gmail)"}
+            </button>
+
+            <button
+              onClick={handleCopyHtmlSource}
+              type="button"
+              disabled={!subject.trim() || !body.trim()}
+              style={{
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 8,
+                padding: "14px 20px",
+                borderRadius: 12,
+                background: sourceCopied 
+                  ? "rgba(74,222,128,0.15)" 
+                  : "transparent",
+                border: sourceCopied ? "1px solid rgba(74,222,128,0.3)" : "1px solid rgba(255, 255, 255, 0.08)",
+                color: sourceCopied ? "#4ade80" : (!subject.trim() || !body.trim()) ? "#525252" : "#d4d4d4",
+                fontSize: 12,
+                fontWeight: 800,
+                cursor: (!subject.trim() || !body.trim()) ? "not-allowed" : "pointer",
+                transition: "all 0.3s ease",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em"
               }}
               onMouseEnter={e => {
-                if (subject.trim() && body.trim() && !copied) {
-                  e.currentTarget.style.transform = "translateY(-1px)";
-                  e.currentTarget.style.boxShadow = "0 6px 20px rgba(249, 115, 22, 0.35)";
+                if (subject.trim() && body.trim() && !sourceCopied) {
+                  e.currentTarget.style.background = "rgba(255, 255, 255, 0.04)";
+                  e.currentTarget.style.borderColor = "#f97316";
+                  e.currentTarget.style.color = "#f97316";
                 }
               }}
               onMouseLeave={e => {
-                if (subject.trim() && body.trim() && !copied) {
-                  e.currentTarget.style.transform = "none";
-                  e.currentTarget.style.boxShadow = "0 4px 15px rgba(249, 115, 22, 0.25)";
+                if (subject.trim() && body.trim() && !sourceCopied) {
+                  e.currentTarget.style.background = "transparent";
+                  e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.08)";
+                  e.currentTarget.style.color = "#d4d4d4";
                 }
               }}
             >
-              <Copy size={16} />
-              {copied ? "✓ Copied HTML Email to Clipboard!" : "Copy Email for Gmail / Outlook"}
+              <Mail size={14} />
+              {sourceCopied ? "Copied Source!" : "Copy Raw HTML"}
             </button>
           </div>
 
@@ -930,7 +1043,7 @@ export default function NewsletterTab({ isMobile }) {
               )}
               {subject.trim() || body.trim() || headline.trim() ? (
                 <iframe
-                  srcDoc={getCompiledHtml()}
+                  srcDoc={previewHtml}
                   style={{
                     width: "100%",
                     height: "550px",

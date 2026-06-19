@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import {
   MessageCircle, X, Zap, ArrowRight,
   ChevronRight, RotateCcw,
@@ -60,6 +61,8 @@ const TAG_COLORS = {
    MAIN COMPONENT
 ───────────────────────────────────────────── */
 export default function ChatBot() {
+  const pathname = usePathname();
+
   const [isOpen,       setIsOpen]      = useState(false);
   const [visible,      setVisible]     = useState(false);
   const [messages,     setMessages]    = useState([]);
@@ -133,6 +136,8 @@ export default function ChatBot() {
       time: now(),
     }]);
   };
+
+  if (pathname.includes("get-started") || pathname === "/thank-you") return null;
 
   return (
     <>

@@ -2,7 +2,7 @@ export default function ProofNumbers() {
   return (
     <section className="py-16 bg-zinc-950 border-y border-white/5">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 sm:gap-8">
           {[
             { val: "$12M+",  label: "Revenue Managed"          },
             { val: "80+",    label: "Brands Scaled"             },
@@ -10,7 +10,7 @@ export default function ProofNumbers() {
             { val: "1,200+", label: "Listings Optimized"       },
             { val: "35+",    label: "Active Clients"           },
           ].map((s, i) => (
-            <div key={i} className="group text-center">
+            <div key={i} className="group text-center last:col-span-2 last:md:col-span-1">
               <p
                 className="text-3xl md:text-4xl font-black text-white tracking-tighter group-hover:text-orange-400 transition-colors"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}

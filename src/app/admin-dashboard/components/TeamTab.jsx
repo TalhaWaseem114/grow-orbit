@@ -3,7 +3,20 @@
 import React, { useMemo, useState } from "react";
 import { Shield, Mail, Clock, Plus, Search, X, UserMinus } from "lucide-react";
 
-const fmt = d => d?.toDate ? d.toDate().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—";
+const fmt = d => {
+  if (!d) return "—";
+  if (d.toDate && typeof d.toDate === "function") {
+    return d.toDate().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  }
+  if (typeof d === "object" && typeof d.seconds === "number") {
+    return new Date(d.seconds * 1000).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  }
+  const dateObj = new Date(d);
+  if (!isNaN(dateObj.getTime())) {
+    return dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  }
+  return "—";
+};
 
 const PANELS_LIST = [
   { id: "overview", label: "Overview Tab" },
@@ -38,7 +51,11 @@ export default function TeamTab({ users, handleRoleChange, currentUserId, trigge
       
       if (aIsSuper && !bIsSuper) return -1;
       if (!aIsSuper && bIsSuper) return 1;
-      return 0;
+      
+      // Secondary sort: alphabetical by display name / email
+      const nameA = (a.displayName || a.fullName || a.email || "").toLowerCase();
+      const nameB = (b.displayName || b.fullName || b.email || "").toLowerCase();
+      return nameA.localeCompare(nameB);
     });
   }, [users]);
   const nonAdmins = useMemo(() => users.filter(u => u.role?.trim() !== "admin"), [users]);
@@ -148,8 +165,8 @@ export default function TeamTab({ users, handleRoleChange, currentUserId, trigge
                   : "radial-gradient(circle at top right, rgba(249, 115, 22, 0.1), transparent 70%)"
               }} />
               
-              {/* Show Revoke/Configure Access buttons if not the current logged-in user */}
-              {currentUserId !== u.id && (
+              {/* Show Revoke/Configure Access buttons if not the current logged-in user and not a Super Admin */}
+              {currentUserId !== u.id && !isSuper && (
                 <div style={{ position: "absolute", top: 20, right: 20, display: "flex", gap: 6, zIndex: 20 }}>
                   <button
                     onClick={() => {
@@ -426,6 +443,7 @@ export default function TeamTab({ users, handleRoleChange, currentUserId, trigge
             borderRadius: 24,
             width: "100%",
             maxWidth: 480,
+            maxHeight: "90vh",
             display: "flex",
             flexDirection: "column",
             overflow: "hidden",

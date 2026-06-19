@@ -114,19 +114,19 @@ export default function FAQSection({ scrollToForm }) {
         </div>
 
         {/* Bottom CTA */}
-        <div className="flex items-center justify-between px-7 py-6 bg-zinc-950 rounded-[24px] text-white border border-white/5">
-          <div className="flex items-center gap-4">
-            <Terminal size={16} className="text-orange-500 shrink-0" />
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between px-6 py-5 sm:px-7 sm:py-6 bg-zinc-950 rounded-[24px] text-white border border-white/5 gap-4">
+          <div className="flex items-center gap-3">
+            <Terminal size={15} className="text-orange-500 shrink-0" />
             <span className="text-[11px] font-bold text-zinc-300">
               Have a question not covered here?
             </span>
           </div>
           <button
             onClick={scrollToForm}
-            className="flex items-center gap-2 group no-underline shrink-0 cursor-pointer pointer-events-auto"
+            className="flex items-center justify-center gap-2 group no-underline shrink-0 cursor-pointer pointer-events-auto bg-white/5 border border-white/10 hover:border-orange-500/30 rounded-xl px-4 py-2.5 sm:p-0 sm:bg-transparent sm:border-none"
           >
-            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 group-hover:text-white transition-colors hidden sm:inline">
-              Ask Us Directly
+            <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 group-hover:text-white transition-colors">
+              Ask Us <span className="hidden sm:inline">Directly</span>
             </span>
             <ChevronRight size={14} className="text-orange-500 group-hover:translate-x-1 transition-transform" />
           </button>

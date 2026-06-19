@@ -68,8 +68,19 @@ function LeadDetailPanel({
 }) {
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState("");
+  const [newTaskDueDate, setNewTaskDueDate] = useState("");
   const [addingTask, setAddingTask] = useState(false);
   const [convertingClient, setConvertingClient] = useState(false);
+
+  const [estValue, setEstValue] = useState(lead.estimatedDealValue || "");
+  const [retainer, setRetainer] = useState(lead.monthlyRetainer || "");
+  const [winProb, setWinProb] = useState(lead.winProbability || "");
+
+  useEffect(() => {
+    setEstValue(lead.estimatedDealValue || "");
+    setRetainer(lead.monthlyRetainer || "");
+    setWinProb(lead.winProbability || "");
+  }, [lead.id, lead.estimatedDealValue, lead.monthlyRetainer, lead.winProbability]);
 
   useEffect(() => {
     if (!lead.id) {
@@ -99,9 +110,11 @@ function LeadDetailPanel({
         title: newTaskTitle.trim(),
         status: "pending",
         assignedTo: currentAdmin?.id || currentAdmin?.uid || "unassigned",
+        dueDate: newTaskDueDate || null,
         createdAt: serverTimestamp()
       });
       setNewTaskTitle("");
+      setNewTaskDueDate("");
     } catch (err) {
       console.warn("Failed to add task:", err);
     } finally {
@@ -302,10 +315,13 @@ function LeadDetailPanel({
                   <input 
                     type="number"
                     placeholder="0"
-                    value={lead.estimatedDealValue || ""}
-                    onChange={async (e) => {
-                      const val = e.target.value ? Number(e.target.value) : 0;
-                      await updateDoc(doc(db, leadsCollectionName || "leads", lead.id), { estimatedDealValue: val });
+                    value={estValue}
+                    onChange={(e) => setEstValue(e.target.value)}
+                    onBlur={async () => {
+                      const val = estValue ? Number(estValue) : 0;
+                      if (val !== lead.estimatedDealValue) {
+                        await updateDoc(doc(db, leadsCollectionName || "leads", lead.id), { estimatedDealValue: val });
+                      }
                     }}
                     style={{ width: "100%", background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
                   />
@@ -315,10 +331,13 @@ function LeadDetailPanel({
                   <input 
                     type="number"
                     placeholder="0"
-                    value={lead.monthlyRetainer || ""}
-                    onChange={async (e) => {
-                      const val = e.target.value ? Number(e.target.value) : 0;
-                      await updateDoc(doc(db, leadsCollectionName || "leads", lead.id), { monthlyRetainer: val });
+                    value={retainer}
+                    onChange={(e) => setRetainer(e.target.value)}
+                    onBlur={async () => {
+                      const val = retainer ? Number(retainer) : 0;
+                      if (val !== lead.monthlyRetainer) {
+                        await updateDoc(doc(db, leadsCollectionName || "leads", lead.id), { monthlyRetainer: val });
+                      }
                     }}
                     style={{ width: "100%", background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
                   />
@@ -332,10 +351,13 @@ function LeadDetailPanel({
                     min="0"
                     max="100"
                     placeholder="50"
-                    value={lead.winProbability || ""}
-                    onChange={async (e) => {
-                      const val = e.target.value ? Number(e.target.value) : 0;
-                      await updateDoc(doc(db, leadsCollectionName || "leads", lead.id), { winProbability: val });
+                    value={winProb}
+                    onChange={(e) => setWinProb(e.target.value)}
+                    onBlur={async () => {
+                      const val = winProb ? Number(winProb) : 0;
+                      if (val !== lead.winProbability) {
+                        await updateDoc(doc(db, leadsCollectionName || "leads", lead.id), { winProbability: val });
+                      }
                     }}
                     style={{ width: "100%", background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
                   />
@@ -343,7 +365,7 @@ function LeadDetailPanel({
                 <div style={{ flex: 1, textAlign: "right" }}>
                   <div style={{ fontSize: 8, fontWeight: 700, color: "#737373", textTransform: "uppercase" }}>Expected Value</div>
                   <div style={{ fontSize: 14, fontWeight: 900, color: "#f97316", marginTop: 4 }}>
-                    ${Math.round(((Number(lead.estimatedDealValue) || 0) * (Number(lead.winProbability) || 0)) / 100).toLocaleString()}
+                    ${Math.round(((Number(estValue) || 0) * (Number(winProb) || 0)) / 100).toLocaleString()}
                   </div>
                 </div>
               </div>
@@ -354,21 +376,32 @@ function LeadDetailPanel({
           <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
             <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Actionable Tasks</div>
             
-            <form onSubmit={handleAddTask} style={{ display: "flex", gap: 6, marginBottom: 10 }}>
-              <input 
-                type="text"
-                placeholder="Add new task..."
-                value={newTaskTitle}
-                onChange={(e) => setNewTaskTitle(e.target.value)}
-                style={{ flex: 1, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
-              />
-              <button 
-                type="submit"
-                disabled={addingTask || !newTaskTitle.trim()}
-                style={{ background: "#f97316", color: "#fff", border: "none", borderRadius: 8, padding: "6px 12px", fontSize: 10, fontWeight: 800, cursor: "pointer", textTransform: "uppercase" }}
-              >
-                {addingTask ? "..." : "Add"}
-              </button>
+            <form onSubmit={handleAddTask} style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 10 }}>
+              <div style={{ display: "flex", gap: 6 }}>
+                <input 
+                  type="text"
+                  placeholder="Add new task..."
+                  value={newTaskTitle}
+                  onChange={(e) => setNewTaskTitle(e.target.value)}
+                  style={{ flex: 1, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
+                />
+                <button 
+                  type="submit"
+                  disabled={addingTask || !newTaskTitle.trim()}
+                  style={{ background: "#f97316", color: "#fff", border: "none", borderRadius: 8, padding: "6px 12px", fontSize: 10, fontWeight: 800, cursor: "pointer", textTransform: "uppercase" }}
+                >
+                  {addingTask ? "..." : "Add"}
+                </button>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.05em" }}>Due Date:</span>
+                <input 
+                  type="date"
+                  value={newTaskDueDate}
+                  onChange={(e) => setNewTaskDueDate(e.target.value)}
+                  style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, padding: "4px 8px", color: "#fff", fontSize: 10, outline: "none", cursor: "pointer", colorScheme: "dark" }}
+                />
+              </div>
             </form>
 
             <div style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 150, overflowY: "auto" }}>
@@ -569,6 +602,11 @@ function LeadCalendarView({
   for (let d = 1; d <= daysInMonth; d++) {
     const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
     cells.push({ day: d, dateStr });
+  }
+  // Pad grid to full weeks (multiples of 7)
+  const totalCellsNeeded = Math.ceil(cells.length / 7) * 7;
+  while (cells.length < totalCellsNeeded) {
+    cells.push({ day: null, dateStr: null });
   }
 
   return (
@@ -890,6 +928,21 @@ export default function LeadsTab({
   const [isPerformingBulkAction, setIsPerformingBulkAction] = useState(false);
   const [isDocModalOpen, setIsDocModalOpen] = useState(false);
 
+  // Compute lead counts per status dynamically for visual filters
+  const countsByStatus = useMemo(() => {
+    const counts = { all: (leads || []).length };
+    ["new", "contacted", "qualified", "hot", "proposal_sent", "won", "lost"].forEach(f => {
+      counts[f] = (leads || []).filter(l => {
+        const s = l.status || "new";
+        if (s === "replied" && f === "contacted") return true;
+        if (s === "archived" && f === "lost") return true;
+        if (s === "cold" && f === "lost") return true;
+        return s === f;
+      }).length;
+    });
+    return counts;
+  }, [leads]);
+
   const toggleLeadSelection = (leadId) => {
     setSelectedLeads(prev => prev.includes(leadId) ? prev.filter(id => id !== leadId) : [...prev, leadId]);
   };
@@ -1116,7 +1169,7 @@ export default function LeadsTab({
                 borderColor: leadFilter === f ? (f === "all" ? "rgba(255,255,255,0.15)" : STATUS_CONFIG[f]?.border || "rgba(255,255,255,0.1)") : "rgba(255,255,255,0.04)",
               }}
             >
-              {f === "all" ? `All (${leads.length})` : STATUS_CONFIG[f]?.label || f}
+              {f === "all" ? `All (${countsByStatus.all})` : `${STATUS_CONFIG[f]?.label || f} (${countsByStatus[f]})`}
             </button>
           ))}
         </div>

@@ -263,7 +263,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
           </div>
           <button
             onClick={scrollToForm}
-            className="group shrink-0 flex items-center gap-2.5 bg-orange-500 hover:bg-white hover:text-zinc-900 text-white font-black text-[10px] uppercase tracking-[0.2em] px-6 py-3 rounded-xl transition-all duration-300 no-underline"
+            className="group w-full sm:w-auto flex items-center justify-center gap-2.5 bg-orange-500 hover:bg-white hover:text-zinc-900 text-white font-black text-[10px] uppercase tracking-[0.2em] px-6 py-3.5 rounded-xl transition-all duration-300 no-underline"
           >
             Start The Process
             <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />

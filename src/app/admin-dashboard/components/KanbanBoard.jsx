@@ -308,7 +308,7 @@ export default function KanbanBoard({
                           <Mail size={12} />
                         </a>
                         {lead.assignedName && (
-                          <div style={{ width: 16, height: 16, borderRadius: "50%", background: "#333", color: "#fff", fontSize: 8, display: "flex", alignItems: "center", justifyContext: "center", justifyContent: "center", fontWeight: "bold" }} title={`Assigned to ${lead.assignedName}`}>
+                          <div style={{ width: 16, height: 16, borderRadius: "50%", background: "#333", color: "#fff", fontSize: 8, display: "flex", alignItems: "center", justifyContent: "center", fontWeight: "bold" }} title={`Assigned to ${lead.assignedName}`}>
                             {lead.assignedName[0]}
                           </div>
                         )}

@@ -3,7 +3,12 @@
 import React, { useMemo, useState } from "react";
 import { Search, Trash2, ShieldAlert, Shield, Phone, Mail, UserCheck, DollarSign, Calendar, FileText } from "lucide-react";
 
-const fmt = d => d?.toDate ? d.toDate().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—";
+const fmt = d => {
+  if (!d) return "—";
+  if (d.toDate) return d.toDate().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const date = new Date(d);
+  return !isNaN(date.getTime()) ? date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—";
+};
 
 export default function UsersTab({
   users,
@@ -60,8 +65,8 @@ export default function UsersTab({
       res = res.filter(u => u.type === typeFilter);
     }
     return [...res].sort((a, b) => {
-      const aTime = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : 0;
-      const bTime = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : 0;
+      const aTime = a.createdAt?.toDate ? a.createdAt.toDate().getTime() : (a.createdAt ? new Date(a.createdAt).getTime() : 0);
+      const bTime = b.createdAt?.toDate ? b.createdAt.toDate().getTime() : (b.createdAt ? new Date(b.createdAt).getTime() : 0);
       return bTime - aTime;
     });
   }, [combinedIdentities, userSearch, typeFilter]);
@@ -79,8 +84,8 @@ export default function UsersTab({
       );
     }
     return [...res].sort((a, b) => {
-      const aTime = a.startDate?.toDate ? a.startDate.toDate().getTime() : 0;
-      const bTime = b.startDate?.toDate ? b.startDate.toDate().getTime() : 0;
+      const aTime = a.startDate?.toDate ? a.startDate.toDate().getTime() : (a.startDate ? new Date(a.startDate).getTime() : 0);
+      const bTime = b.startDate?.toDate ? b.startDate.toDate().getTime() : (b.startDate ? new Date(b.startDate).getTime() : 0);
       return bTime - aTime;
     });
   }, [clients, userSearch]);
@@ -174,7 +179,7 @@ export default function UsersTab({
           </div>
 
           {/* Directory Table */}
-          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, overflow: "hidden" }}>
+          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, overflowX: "auto" }}>
             {/* Table head */}
             <div className="users-table-head" style={{ display: "grid", gridTemplateColumns: "1fr 140px 130px 80px", padding: "12px 24px", borderBottom: "1px solid rgba(255,255,255,0.04)", fontSize: 9, fontWeight: 700, color: "#333", textTransform: "uppercase", letterSpacing: "0.25em" }}>
               <span>Identity</span><span>Role / Access</span><span>Date Created</span><span style={{ textAlign: "right" }}>Action</span>
@@ -290,7 +295,7 @@ export default function UsersTab({
         </>
       ) : (
         /* ACTIVE CLIENTS VIEW */
-        <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, overflow: "hidden" }}>
+        <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, overflowX: "auto" }}>
           {/* Table head */}
           <div className="users-table-head" style={{ display: "grid", gridTemplateColumns: "1.2fr 130px 140px 140px 110px 120px", padding: "12px 24px", borderBottom: "1px solid rgba(255,255,255,0.04)", fontSize: 9, fontWeight: 700, color: "#333", textTransform: "uppercase", letterSpacing: "0.25em" }}>
             <span>Client Info</span>

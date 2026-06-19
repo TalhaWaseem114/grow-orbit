@@ -6,7 +6,8 @@ import { ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export default function LeadForm() {
+export default function LeadForm({ theme = "light", compact = false }) {
+  const isDark = theme === "dark";
   const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", whatsapp: "", service: "", pain: "" });
   const [loading, setLoading] = useState(false);
@@ -120,12 +121,16 @@ export default function LeadForm() {
   if (showSuccess) {
     return (
       <div className="flex flex-col items-center justify-center py-12 gap-4 animate-fade-in">
-        <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-500">
+        <div className={`w-16 h-16 rounded-full border flex items-center justify-center ${
+          isDark
+            ? "bg-emerald-500/20 border border-emerald-500/30 text-emerald-400"
+            : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-500"
+        }`}>
           <CheckCircle2 size={32} className="stroke-[2]" />
         </div>
         <div className="text-center">
-          <p className="text-lg font-black text-zinc-900 tracking-tight">Details Received!</p>
-          <p className="text-sm text-zinc-500 font-light mt-1">Taking you to schedule your meeting...</p>
+          <p className={`text-lg font-black tracking-tight ${isDark ? "text-white" : "text-zinc-900"}`}>Details Received!</p>
+          <p className={`text-sm font-light mt-1 ${isDark ? "text-zinc-400" : "text-zinc-500"}`}>Taking you to schedule your meeting...</p>
         </div>
         <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mt-2" />
         <style>{`
@@ -137,10 +142,14 @@ export default function LeadForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+    <form onSubmit={handleSubmit} className={compact ? "space-y-2.5" : "space-y-4"} noValidate>
       {/* Inline error message */}
       {error && (
-        <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-600">
+        <div className={`flex items-center gap-2 border rounded-xl px-4 py-3 ${
+          isDark
+            ? "bg-red-500/10 border-red-500/20 text-red-400"
+            : "bg-red-50 border-red-200 text-red-600"
+        }`}>
           <AlertCircle size={14} className="shrink-0" />
           <p className="text-[12px] font-medium">{error}</p>
         </div>
@@ -149,10 +158,12 @@ export default function LeadForm() {
       {[
         { label: "Full Name *",       name: "name",     type: "text",  placeholder: "Your name",         required: true },
         { label: "Email Address *",   name: "email",    type: "email", placeholder: "you@brand.com",     required: true },
-        { label: "WhatsApp (Optional - For Quick Response)", name: "whatsapp", type: "tel",   placeholder: "+1 (555) 000-0000", required: false },
+        { label: "WhatsApp (Optional)", name: "whatsapp", type: "tel",   placeholder: "+1 (555) 000-0000", required: false },
       ].map((f) => (
         <div key={f.name}>
-          <label htmlFor={`lead-${f.name}`} className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5 pl-1">{f.label}</label>
+          <label htmlFor={`lead-${f.name}`} className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
+            isDark ? "text-zinc-400" : "text-zinc-500"
+          }`}>{f.label}</label>
           <input
             id={`lead-${f.name}`}
             type={f.type}
@@ -161,69 +172,99 @@ export default function LeadForm() {
             value={form[f.name]}
             onChange={handleChange}
             placeholder={f.placeholder}
-            className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-2xl text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light"
+            className={`w-full border text-[13px] transition-all font-light focus:outline-none focus:border-orange-500 ${
+              compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
+            } ${
+              isDark
+                ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
+                : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white"
+            }`}
           />
         </div>
       ))}
 
       <div>
-        <label htmlFor="lead-service" className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5 pl-1">Service You're Interested In</label>
+        <label htmlFor="lead-service" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
+          isDark ? "text-zinc-400" : "text-zinc-500"
+        }`}>Service You're Interested In</label>
         <div className="relative">
           <select
             id="lead-service"
             name="service"
             value={form.service}
             onChange={handleChange}
-            className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-2xl text-[14px] text-zinc-900 focus:outline-none focus:border-orange-500 focus:bg-white transition-all appearance-none cursor-pointer font-light"
+            className={`w-full border text-[13px] transition-all appearance-none cursor-pointer font-light focus:outline-none focus:border-orange-500 ${
+              compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
+            } ${
+              isDark
+                ? "bg-white/[0.03] border-white/10 text-white focus:bg-zinc-950"
+                : "bg-zinc-50 border-zinc-200 text-zinc-900 focus:bg-white"
+            }`}
           >
-            <option value="" disabled>Select a service...</option>
-            <option value="Product Hunting & Research">Product Hunting & Research</option>
-            <option value="Product Sourcing & Setup">Product Sourcing & Setup</option>
-            <option value="Brand Launch (Full)">Brand Launch (Full)</option>
-            <option value="Listing Optimization">Listing Optimization</option>
-            <option value="PPC / Ads Management">PPC / Ads Management</option>
-            <option value="A+ Content & Creative">A+ Content & Creative</option>
-            <option value="Full Account Management">Full Account Management</option>
-            <option value="I'm Not Sure Yet">I'm Not Sure Yet — Help Me Decide</option>
+            <option value="" disabled className={isDark ? "bg-zinc-950 text-white" : ""}>Select a service...</option>
+            <option value="Product Hunting & Research" className={isDark ? "bg-zinc-950 text-white" : ""}>Product Hunting & Research</option>
+            <option value="Product Sourcing & Setup" className={isDark ? "bg-zinc-950 text-white" : ""}>Product Sourcing & Setup</option>
+            <option value="Brand Launch (Full)" className={isDark ? "bg-zinc-950 text-white" : ""}>Brand Launch (Full)</option>
+            <option value="Listing Optimization" className={isDark ? "bg-zinc-950 text-white" : ""}>Listing Optimization</option>
+            <option value="PPC / Ads Management" className={isDark ? "bg-zinc-950 text-white" : ""}>PPC / Ads Management</option>
+            <option value="A+ Content & Creative" className={isDark ? "bg-zinc-950 text-white" : ""}>A+ Content & Creative</option>
+            <option value="Full Account Management" className={isDark ? "bg-zinc-950 text-white" : ""}>Full Account Management</option>
+            <option value="I'm Not Sure Yet" className={isDark ? "bg-zinc-950 text-white" : ""}>I'm Not Sure Yet — Help Me Decide</option>
           </select>
           <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none text-sm">↓</span>
         </div>
       </div>
 
       <div>
-        <label htmlFor="lead-pain" className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500 mb-1.5 pl-1">Anything else? (optional)</label>
+        <label htmlFor="lead-pain" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
+          isDark ? "text-zinc-400" : "text-zinc-500"
+        }`}>Anything else? (optional)</label>
         <textarea
           id="lead-pain"
-          rows={3}
+          rows={compact ? 3 : 4}
           name="pain"
           value={form.pain}
           onChange={handleChange}
           placeholder="Tell us about your product, current stage, or what you need help with..."
-          className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-2xl text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all resize-none font-light"
+          className={`w-full border text-[13px] transition-all resize-none font-light focus:outline-none focus:border-orange-500 ${
+            compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
+          } ${
+            isDark
+              ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
+              : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white"
+          }`}
         />
       </div>
 
       <button
         type="submit"
         disabled={loading || submitted}
-        className="w-full py-4 rounded-2xl font-black text-[12px] uppercase tracking-[0.2em] text-white bg-orange-500 hover:bg-zinc-900 transition-all duration-300 shadow-[0_8px_30px_rgba(249,115,22,0.3)] disabled:opacity-50 flex items-center justify-center gap-3 group"
+        className={`w-full font-black text-[11px] uppercase tracking-[0.2em] text-white bg-orange-500 transition-all duration-300 shadow-[0_8px_30px_rgba(249,115,22,0.3)] disabled:opacity-50 flex items-center justify-center gap-3 group ${
+          compact ? "py-3 rounded-xl" : "py-4 rounded-2xl"
+        } ${
+          isDark ? "hover:bg-white hover:text-black" : "hover:bg-zinc-900"
+        }`}
       >
         {loading ? "Sending..." : (
           <>
             Book My Free Meeting
-            <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </>
         )}
       </button>
 
-      <div className="bg-zinc-50 border border-zinc-100 rounded-2xl p-4 mt-4">
-        <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-900 mb-2">What happens next:</p>
-        <ul className="space-y-1.5">
-          <li className="flex items-center gap-2 text-[12px] text-zinc-500 font-light"><span className="w-4 h-4 rounded bg-orange-500/10 text-orange-500 flex items-center justify-center font-black text-[9px]">1</span> We understand your goals & stage</li>
-          <li className="flex items-center gap-2 text-[12px] text-zinc-500 font-light"><span className="w-4 h-4 rounded bg-orange-500/10 text-orange-500 flex items-center justify-center font-black text-[9px]">2</span> You get a free 15-min strategy call</li>
-          <li className="flex items-center gap-2 text-[12px] text-zinc-500 font-light"><span className="w-4 h-4 rounded bg-orange-500/10 text-orange-500 flex items-center justify-center font-black text-[9px]">3</span> We map out a custom growth roadmap</li>
-        </ul>
-      </div>
+      {!compact && (
+        <div className={`border rounded-2xl p-4 mt-4 ${
+          isDark ? "bg-white/[0.02] border-white/[0.05]" : "bg-zinc-50 border-zinc-100"
+        }`}>
+          <p className={`text-[10px] font-bold uppercase tracking-widest mb-2 ${isDark ? "text-white" : "text-zinc-900"}`}>What happens next:</p>
+          <ul className="space-y-1.5">
+            <li className={`flex items-center gap-2 text-[12px] font-light ${isDark ? "text-zinc-400" : "text-zinc-500"}`}><span className="w-4 h-4 rounded bg-orange-500/10 text-orange-500 flex items-center justify-center font-black text-[9px]">1</span> We understand your goals & stage</li>
+            <li className={`flex items-center gap-2 text-[12px] font-light ${isDark ? "text-zinc-400" : "text-zinc-500"}`}><span className="w-4 h-4 rounded bg-orange-500/10 text-orange-500 flex items-center justify-center font-black text-[9px]">2</span> You get a free 15-min strategy call</li>
+            <li className={`flex items-center gap-2 text-[12px] font-light ${isDark ? "text-zinc-400" : "text-zinc-500"}`}><span className="w-4 h-4 rounded bg-orange-500/10 text-orange-500 flex items-center justify-center font-black text-[9px]">3</span> We map out a custom growth roadmap</li>
+          </ul>
+        </div>
+      )}
     </form>
   );
 }

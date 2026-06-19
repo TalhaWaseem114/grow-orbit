@@ -99,7 +99,7 @@ export default function Footer() {
     { name: "Instagram", url: "https://www.instagram.com/groworbit" },
   ];
 
-  if (pathname === "/thank-you") return null;
+  if (pathname === "/thank-you" || pathname.includes("/book-meeting")) return null;
 
   return (
     <div className="px-3 pb-3 md:px-6 md:pb-6 mt-10 md:mt-20">

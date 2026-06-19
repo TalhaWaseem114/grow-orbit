@@ -61,7 +61,15 @@ export default function StickyNavbar({ scrolled, scrollToForm }) {
               )}
             </div>
 
-            <Link href="/portfolio" className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white no-underline transition-colors">Portfolio</Link>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors cursor-pointer outline-none bg-transparent border-none p-0"
+            >
+              Portfolio
+            </button>
             <Link href="/case-study" className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white no-underline transition-colors">Case Study</Link>
             <Link href="/about" className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white no-underline transition-colors">About Us</Link>
           </nav>

@@ -67,29 +67,39 @@ function OverviewMiniCalendar({ leads }) {
     return null;
   });
 
-  const getDayData = (day) => {
-    if (!day) return { leads: 0, meetings: 0 };
-    const dateStr = new Date(currentYear, currentMonth, day).toDateString();
+  // Pre-bucket leads and meetings by date string for O(1) lookups
+  const { leadsMap, meetingsMap } = React.useMemo(() => {
+    const lMap = {};
+    const mMap = {};
     
-    let leadCount = 0;
-    let meetingCount = 0;
-    
-    leads.forEach(l => {
-      if (l.createdAt?.toDate && l.createdAt.toDate().toDateString() === dateStr) {
-        leadCount++;
+    (leads || []).forEach(l => {
+      if (l.createdAt?.toDate) {
+        const dStr = l.createdAt.toDate().toDateString();
+        lMap[dStr] = (lMap[dStr] || 0) + 1;
       }
       if (l.meetingBooked) {
         if (l.followUpDate) {
           const mDate = new Date(l.followUpDate);
-          if (mDate.toDateString() === dateStr) {
-            meetingCount++;
+          if (!isNaN(mDate.getTime())) {
+            const mDateStr = mDate.toDateString();
+            mMap[mDateStr] = (mMap[mDateStr] || 0) + 1;
           }
-        } else if (l.createdAt?.toDate && l.createdAt.toDate().toDateString() === dateStr) {
-           meetingCount++;
+        } else if (l.createdAt?.toDate) {
+          const dStr = l.createdAt.toDate().toDateString();
+          mMap[dStr] = (mMap[dStr] || 0) + 1;
         }
       }
     });
-    return { leads: leadCount, meetings: meetingCount };
+    return { leadsMap: lMap, meetingsMap: mMap };
+  }, [leads]);
+
+  const getDayData = (day) => {
+    if (!day) return { leads: 0, meetings: 0 };
+    const dateStr = new Date(currentYear, currentMonth, day).toDateString();
+    return { 
+      leads: leadsMap[dateStr] || 0, 
+      meetings: meetingsMap[dateStr] || 0 
+    };
   };
 
   const monthName = today.toLocaleString('default', { month: 'long' });
@@ -532,7 +542,7 @@ export default function OverviewTab({
               <div style={{
                 width: 36, height: 36, borderRadius: 10,
                 background: "rgba(239,68,68,0.12)",
-                display: "flex", alignItems: "center", justifyContext: "center", justifyContent: "center",
+                display: "flex", alignItems: "center", justifyContent: "center",
                 flexShrink: 0
               }}>
                 <Clock size={16} color="#ef4444" />
@@ -571,7 +581,7 @@ export default function OverviewTab({
               <div style={{
                 width: 36, height: 36, borderRadius: 10,
                 background: "rgba(249,115,22,0.12)",
-                display: "flex", alignItems: "center", justifyContext: "center", justifyContent: "center",
+                display: "flex", alignItems: "center", justifyContent: "center",
                 flexShrink: 0
               }}>
                 <Calendar size={16} color="#f97316" />
@@ -741,6 +751,50 @@ export default function OverviewTab({
               <p style={{ fontSize: 11, color: "#3f3f46" }}>No admin accounts found.</p>
             )}
           </div>
+
+          {/* My Pending Tasks Checklist */}
+          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <CheckCircle2 size={14} color="#f97316" />
+                <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em" }}>My Pending Tasks</div>
+              </div>
+              <div style={{ fontSize: 10, fontWeight: 800, background: "rgba(249,115,22,0.1)", color: "#f97316", padding: "2px 6px", borderRadius: 6 }}>{myTasks.length} pending</div>
+            </div>
+            
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, maxHeight: 200, overflowY: "auto", paddingRight: 4 }}>
+              {myTasks.map((task) => (
+                <div key={task.id} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.02)", borderRadius: 10 }}>
+                  <input
+                    type="checkbox"
+                    checked={task.status === "completed"}
+                    onChange={() => handleToggleTask(task.id, task.status)}
+                    style={{ marginTop: 2, accentColor: "#f97316", cursor: "pointer" }}
+                  />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontSize: 11, fontWeight: 600, color: "#fff", textDecoration: task.status === "completed" ? "line-through" : "none", opacity: task.status === "completed" ? 0.5 : 1 }}>
+                      {task.title}
+                    </div>
+                    {task.description && (
+                      <div style={{ fontSize: 9, color: "#71717a", marginTop: 2 }}>
+                        {task.description}
+                      </div>
+                    )}
+                    {task.dueDate && (
+                      <div style={{ fontSize: 8, color: "#525252", marginTop: 4, display: "flex", alignItems: "center", gap: 4 }}>
+                        <Clock size={8} /> Due: {new Date(task.dueDate).toLocaleDateString()}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              ))}
+              {myTasks.length === 0 && (
+                <div style={{ textAlign: "center", padding: "20px 0", fontSize: 11, color: "#3f3f46" }}>
+                  No pending tasks. You're all caught up!
+                </div>
+              )}
+            </div>
+          </div>
           
           {/* Mini Calendar for leads & meetings */}
           <OverviewMiniCalendar leads={leads} />
@@ -750,7 +804,7 @@ export default function OverviewTab({
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {/* Recent audit activity feed */}
           <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px", display: "flex", flexDirection: "column", gap: 16, flex: 1, minHeight: 400 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContext: "space-between", gap: 8, paddingBottom: 12, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, paddingBottom: 12, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <Activity size={16} color="#f97316" />
                 <div style={{ fontSize: 12, fontWeight: 800, color: "#fff", textTransform: "uppercase", letterSpacing: "0.2em" }}>Activity Timeline</div>

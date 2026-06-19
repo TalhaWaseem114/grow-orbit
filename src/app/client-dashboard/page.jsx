@@ -143,7 +143,7 @@ export default function ClientDashboard() {
         </div>
       ) : !clientData ? (
         <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: 40, textAlign: "center" }}>
-          <div style={{ width: 64, height: 64, borderRadius: 20, background: "rgba(249,115,22,0.08)", display: "flex", alignItems: "center", justifyContext: "center", justifyContent: "center", margin: "0 auto 24px" }}>
+          <div style={{ width: 64, height: 64, borderRadius: 20, background: "rgba(249,115,22,0.08)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 24px" }}>
             <Sparkles size={28} color="#f97316" />
           </div>
           <h2 style={{ fontSize: 20, fontWeight: 900, marginBottom: 8 }}>Workspace Pending Setup</h2>
@@ -310,7 +310,7 @@ export default function ClientDashboard() {
               <div style={{ background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 24, padding: "24px 32px" }}>
                 <div style={{ fontSize: 9, fontWeight: 700, color: "#f97316", letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 16 }}>Your Account Manager</div>
                 <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
-                  <div style={{ width: 48, height: 48, borderRadius: 14, background: "linear-gradient(135deg, rgba(249,115,22,0.15), rgba(249,115,22,0.05))", border: "1px solid rgba(249,115,22,0.25)", display: "flex", alignItems: "center", justifyContext: "center", justifyContent: "center", fontSize: 18, fontWeight: 950, color: "#f97316" }}>
+                  <div style={{ width: 48, height: 48, borderRadius: 14, background: "linear-gradient(135deg, rgba(249,115,22,0.15), rgba(249,115,22,0.05))", border: "1px solid rgba(249,115,22,0.25)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, fontWeight: 950, color: "#f97316" }}>
                     {clientData.accountManager?.[0] || "M"}
                   </div>
                   <div style={{ textAlign: "left" }}>

@@ -38,6 +38,7 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
   const [loadingSettings, setLoadingSettings] = useState(true);
   const [savingSettings, setSavingSettings] = useState(false);
   const [isLocked, setIsLocked] = useState(true);
+  const [originalWebhook, setOriginalWebhook] = useState("");
 
   // System usage & configuration state variables
   const [dbConnectionStatus, setDbConnectionStatus] = useState("checking"); // "checking" | "connected" | "error"
@@ -92,10 +93,12 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
         const docRef = doc(db, "settings", "global");
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
+          const data = docSnap.data();
           setSettings(prev => ({
             ...prev,
-            ...docSnap.data()
+            ...data
           }));
+          setOriginalWebhook(data.leadNotificationWebhook || "");
         }
         setDbConnectionStatus("connected");
       } catch (err) {
@@ -122,12 +125,24 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
     return res;
   }, [logs, logSearch]);
 
-  // Group logs by Date
+  // Group logs by Date (with robust parsing)
   const groupedLogs = useMemo(() => {
     const groups = {};
     filteredLogs.forEach(log => {
-      if (!log.timestamp?.toDate) return;
-      const dateStr = log.timestamp.toDate().toLocaleDateString("en-US", { 
+      let dateObj;
+      const t = log.timestamp;
+      if (!t) return;
+      if (t.toDate && typeof t.toDate === "function") {
+        dateObj = t.toDate();
+      } else if (typeof t === "object" && typeof t.seconds === "number") {
+        dateObj = new Date(t.seconds * 1000);
+      } else {
+        dateObj = new Date(t);
+      }
+      
+      if (isNaN(dateObj.getTime())) return;
+
+      const dateStr = dateObj.toLocaleDateString("en-US", { 
         weekday: "short", 
         year: "numeric", 
         month: "short", 
@@ -149,6 +164,14 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
     );
   };
 
+  const handleLockAndDiscard = () => {
+    setSettings(prev => ({
+      ...prev,
+      leadNotificationWebhook: originalWebhook
+    }));
+    setIsLocked(true);
+  };
+
   const handleSaveSettings = async (e) => {
     e.preventDefault();
     setSavingSettings(true);
@@ -160,6 +183,7 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
       }, { merge: true });
 
       logActivity("UPDATE_SETTINGS", "Updated global system configurations");
+      setOriginalWebhook(settings.leadNotificationWebhook || "");
       setIsLocked(true);
       alert("Settings saved successfully!");
     } catch (err) {
@@ -188,13 +212,30 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
 
   const exportLogsToCSV = () => {
     const headers = ["Timestamp", "Action", "Admin User", "Admin Email", "Details"];
-    const rows = logs.map(log => [
-      log.timestamp?.toDate ? log.timestamp.toDate().toLocaleString() : "—",
-      log.action || "—",
-      log.adminName || "—",
-      log.adminEmail || "—",
-      `"${(log.details || "").replace(/"/g, '""')}"`
-    ]);
+    const rows = logs.map(log => {
+      let timeStr = "—";
+      if (log.timestamp) {
+        let dateObj;
+        const t = log.timestamp;
+        if (t.toDate && typeof t.toDate === "function") {
+          dateObj = t.toDate();
+        } else if (typeof t === "object" && typeof t.seconds === "number") {
+          dateObj = new Date(t.seconds * 1000);
+        } else {
+          dateObj = new Date(t);
+        }
+        if (!isNaN(dateObj.getTime())) {
+          timeStr = dateObj.toLocaleString();
+        }
+      }
+      return [
+        timeStr,
+        log.action || "—",
+        log.adminName || "—",
+        log.adminEmail || "—",
+        `"${(log.details || "").replace(/"/g, '""')}"`
+      ];
+    });
 
     const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
@@ -343,7 +384,7 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
                   </label>
                   <button
                     type="button"
-                    onClick={isLocked ? handleUnlock : () => setIsLocked(true)}
+                    onClick={isLocked ? handleUnlock : handleLockAndDiscard}
                     style={{
                       background: "none",
                       border: "none",
@@ -526,7 +567,7 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
             fontFamily: "monospace"
           }}>
             {loadingLogs ? (
-              <div style={{ display: "flex", alignItems: "center", justifyContext: "center", justifyContent: "center", height: "100%", color: "#525252", fontSize: 11 }}>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#525252", fontSize: 11 }}>
                 Loading log stream...
               </div>
             ) : filteredLogs.length === 0 ? (
@@ -555,9 +596,21 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
 
                   {dayLogs.map(log => {
                     const badge = getBadgeStyle(log.action);
-                    const time = log.timestamp?.toDate 
-                      ? log.timestamp.toDate().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }) 
-                      : "—";
+                    let time = "—";
+                    if (log.timestamp) {
+                      let dateObj;
+                      const t = log.timestamp;
+                      if (t.toDate && typeof t.toDate === "function") {
+                        dateObj = t.toDate();
+                      } else if (typeof t === "object" && typeof t.seconds === "number") {
+                        dateObj = new Date(t.seconds * 1000);
+                      } else {
+                        dateObj = new Date(t);
+                      }
+                      if (!isNaN(dateObj.getTime())) {
+                        time = dateObj.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+                      }
+                    }
 
                     return (
                       <div key={log.id} style={{ fontSize: 11, borderBottom: "1px solid rgba(255,255,255,0.02)", paddingBottom: 8, display: "flex", flexDirection: "column", gap: 4 }}>

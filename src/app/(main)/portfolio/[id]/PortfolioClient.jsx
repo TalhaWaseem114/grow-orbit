@@ -552,6 +552,8 @@ export default function PortfolioDetailPage() {
       <style>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        div[class*="border-zinc-100"][class*="bg-white"] { box-shadow: 0 2px 12px rgba(0,0,0,0.03); transition: all 0.3s ease; }
+        div[class*="border-zinc-100"][class*="bg-white"]:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.06); }
       `}</style>
 
       {lightboxImage && <Lightbox image={lightboxImage} onClose={() => setLightboxImage(null)} />}

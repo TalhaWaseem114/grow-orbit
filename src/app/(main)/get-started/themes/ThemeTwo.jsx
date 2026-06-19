@@ -28,7 +28,7 @@ export default function ThemeTwo({ scrolled, activeSections = {} }) {
   return (
     <>
       {activeSections.Navbar !== false && <StickyNavbar scrolled={scrolled} scrollToForm={scrollToForm} />}
-      {activeSections.Hero !== false && <HeroSectionThemeTwo scrollToForm={scrollToForm} />}
+      {activeSections.Hero !== false && <HeroSectionThemeTwo scrollToForm={scrollToForm} formRef={formRef} />}
       {activeSections.Diagnoses !== false && <DiagnosesSection />}
       {activeSections.Marquee !== false && <ServicesMarquee />}
       {activeSections.Proof !== false && <ProofNumbers />}
@@ -41,7 +41,6 @@ export default function ThemeTwo({ scrolled, activeSections = {} }) {
       {activeSections.Brands !== false && <BrandStrip />}
       {activeSections.Testimonials !== false && <OrbitTestimonialsSection />}
       {activeSections.Process !== false && <OrbitProcessSection scrollToForm={scrollToForm} />}
-      {activeSections.Form !== false && <FormSectionThemeTwo ref={formRef} />}
       {activeSections.FAQ !== false && <FAQSection scrollToForm={scrollToForm} />}
       {activeSections.Meeting !== false && <StrategyMeetingCTA scrollToForm={scrollToForm} />}
     </>

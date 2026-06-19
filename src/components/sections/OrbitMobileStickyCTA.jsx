@@ -7,6 +7,7 @@ import { ArrowRight } from "lucide-react";
 export default function OrbitMobileStickyCTA() {
   const router = useRouter();
   const pathname = usePathname();
+
   const [showStickyCTA, setShowStickyCTA] = useState(false);
   const [scrollPercent, setScrollPercent] = useState(0);
 
@@ -33,6 +34,8 @@ export default function OrbitMobileStickyCTA() {
     }
     router.push("/get-started#lead-form");
   };
+
+  if (pathname.includes("/book-meeting") || pathname === "/thank-you") return null;
 
   return (
     <>

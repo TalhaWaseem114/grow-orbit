@@ -16,6 +16,24 @@ const STATUS_STYLES = {
   draft:     { label: "Draft",     color: "#f97316", bg: "rgba(249,115,22,0.1)", border: "rgba(249,115,22,0.2)" },
 };
 
+const formatDisplayDate = (d, includeYear = true) => {
+  if (!d) return "—";
+  let dateObj;
+  if (d.toDate && typeof d.toDate === "function") {
+    dateObj = d.toDate();
+  } else if (typeof d === "object" && typeof d.seconds === "number") {
+    dateObj = new Date(d.seconds * 1000);
+  } else {
+    dateObj = new Date(d);
+  }
+  
+  if (isNaN(dateObj.getTime())) {
+    return "—";
+  }
+  
+  return dateObj.toLocaleDateString("en-US", includeYear ? { month: "short", day: "numeric", year: "numeric" } : { month: "short", day: "numeric" });
+};
+
 export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }) {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -140,13 +158,20 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
         fetchedPosts.push({ id: doc.id, ...doc.data() });
       });
       // Sort by date descending
-      fetchedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+      fetchedPosts.sort((a, b) => {
+        const dateA = a.date ? new Date(a.date).getTime() : 0;
+        const dateB = b.date ? new Date(b.date).getTime() : 0;
+        const validA = isNaN(dateA) ? 0 : dateA;
+        const validB = isNaN(dateB) ? 0 : dateB;
+        return validB - validA;
+      });
       setPosts(fetchedPosts);
 
-      // Fetch unreplied comment counts for notification badges
+      // Fetch unreplied comment counts for notification badges (only for published posts)
       const counts = {};
       await Promise.all(
         fetchedPosts.map(async (post) => {
+          if (post.status !== "published") return;
           try {
             const commentsSnap = await getDocs(collection(db, "blogs", post.id, "comments"));
             let count = 0;
@@ -195,7 +220,8 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
 
     // 3. Date Filter
     if (dateFilter !== "all") {
-      const postDate = new Date(p.date);
+      const postDate = p.date ? new Date(p.date) : null;
+      if (!postDate || isNaN(postDate.getTime())) return false;
       const now = new Date();
       if (dateFilter === "last_30_days") {
         const thirtyDaysAgo = new Date();
@@ -221,8 +247,13 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
 
   // Apply Sorting
   const sortedPosts = [...filteredPosts].sort((a, b) => {
-    if (sortBy === "date_desc") return new Date(b.date) - new Date(a.date);
-    if (sortBy === "date_asc") return new Date(a.date) - new Date(b.date);
+    if (sortBy === "date_desc" || sortBy === "date_asc") {
+      const dateA = a.date ? new Date(a.date).getTime() : 0;
+      const dateB = b.date ? new Date(b.date).getTime() : 0;
+      const validA = isNaN(dateA) ? 0 : dateA;
+      const validB = isNaN(dateB) ? 0 : dateB;
+      return sortBy === "date_desc" ? validB - validA : validA - validB;
+    }
     if (sortBy === "comments_desc") {
       const countA = unrepliedCounts[a.id] || 0;
       const countB = unrepliedCounts[b.id] || 0;
@@ -1499,7 +1530,7 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
                       <div style={{ fontSize: 11, color: "#a3a3a3", display: "flex", gap: isMobile ? 4 : 8, flexDirection: isMobile ? "column" : "row", alignItems: isMobile ? "flex-start" : "center" }}>
                         <span>{comment.authorEmail || "No Email"}</span>
                         {!isMobile && <span>•</span>}
-                        <span>{comment.date || "Just now"}</span>
+                        <span>{formatDisplayDate(comment.createdAt)}</span>
                       </div>
                     </div>
                   </div>
@@ -1744,7 +1775,7 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
                   </div>
                   <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
                     <span style={{ fontSize: 10, color: "#525252" }}>{post.category}</span>
-                    {!isMobile && <span style={{ fontSize: 10, color: "#333", fontFamily: "monospace" }}>{new Date(post.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}</span>}
+                    {!isMobile && <span style={{ fontSize: 10, color: "#333", fontFamily: "monospace" }}>{formatDisplayDate(post.date, false)}</span>}
                   </div>
                 </div>
 

@@ -25,11 +25,11 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
         `}</style>
 
         <div
-          className="group relative rounded-[40px] overflow-hidden transition-all duration-500 hover:shadow-2xl"
+          className="group relative rounded-3xl sm:rounded-[40px] overflow-hidden transition-all duration-500 hover:shadow-2xl"
           style={{ animation: "free-glow 3s ease-in-out infinite" }}
         >
           <div className="h-1.5 w-full bg-linear-to-r from-orange-500 via-orange-400 to-amber-400" />
-          <div className="relative border border-t-0 border-orange-500/20 rounded-b-[40px] p-5 sm:p-6 lg:p-8 overflow-hidden bg-zinc-950">
+          <div className="relative border border-t-0 border-orange-500/20 rounded-b-3xl sm:rounded-b-[40px] p-5 sm:p-6 lg:p-8 overflow-hidden bg-zinc-950">
             {/* Background Image */}
             <img
               src="/assets/orbital-cta-bg.png"
@@ -51,48 +51,49 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
               {/* Left Side */}
               <div className="lg:col-span-7">
                 {/* Scarcity Pill */}
-                <div className="inline-flex items-center gap-3 mb-2 px-4 py-2 rounded-xl sm:rounded-full border border-orange-500/30 bg-orange-500/10 self-start">
-                  <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse shrink-0" />
-                  <span className="text-white font-bold text-[9px] uppercase tracking-[0.3em] sm:tracking-[0.4em] leading-tight sm:leading-none">
+                <div className="flex items-start gap-2.5 mb-4 px-3 py-2 rounded-xl sm:rounded-full border border-orange-500/30 bg-orange-500/10 self-stretch sm:self-start">
+                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse shrink-0 mt-1 sm:mt-0" />
+                  <span className="text-white font-bold text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.4em] leading-normal sm:leading-none">
                     We onboard only 3–4 brands per month — limited spots open for {currentMonth}
                   </span>
                 </div>
 
-                <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-2">
-                  <div className="inline-flex items-center gap-2 bg-orange-500/20 border border-orange-500/40 px-4 py-2 rounded-lg sm:rounded-full">
-                    <div className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] text-orange-400">100% Free</span>
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-4">
+                  <div className="inline-flex items-center gap-2 bg-orange-500/20 border border-orange-500/40 px-3 py-1.5 rounded-lg sm:rounded-full">
+                    <div className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
+                    <span className="text-[9px] font-black uppercase tracking-[0.25em] sm:tracking-[0.3em] text-orange-400">100% Free</span>
                   </div>
                   <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-3 py-1.5 rounded-lg sm:rounded-full">
                     <span className="text-[9px] font-bold uppercase tracking-[0.15em] sm:tracking-[0.2em] text-zinc-400">No Strings Attached</span>
                   </div>
                   <div className="inline-flex items-center gap-2 bg-orange-500/15 border border-orange-500/30 px-3 py-1.5 rounded-lg sm:rounded-full">
-                    <span className="text-[9px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-orange-400">Limited Slots — Book This Week</span>
+                    <span className="text-[9px] font-black uppercase tracking-[0.15em] sm:tracking-[0.2em] text-orange-400">Limited Slots</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-5 mb-4">
-                  <div className="w-16 h-16 rounded-2xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400 group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-500 shrink-0">
-                    <PhoneCall size={26} />
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-5 mb-5">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl bg-orange-500/20 border border-orange-500/30 flex items-center justify-center text-orange-400 group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-500 shrink-0">
+                    <PhoneCall size={20} className="sm:hidden" />
+                    <PhoneCall size={26} className="hidden sm:block" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-widest text-orange-500 mb-2">Your journey starts with one conversation.</p>
+                    <p className="text-[9px] font-bold uppercase tracking-widest text-orange-500 mb-1 sm:mb-2">Your journey starts with one conversation.</p>
                     <h3
-                      className="text-xl sm:text-2xl lg:text-3xl font-black uppercase tracking-tight leading-none text-white"
+                      className="text-lg sm:text-2xl lg:text-3xl font-black uppercase tracking-tight leading-tight sm:leading-none text-white"
                       style={{ fontFamily: "'Montserrat', sans-serif" }}
                     >
                       Free 15-Min Strategy Meeting
                     </h3>
                     <div className="flex items-center gap-3 mt-1.5">
-                      <span className="text-[12px] font-mono font-bold uppercase tracking-widest text-orange-400">15 min</span>
-                      <span className="text-[10px] font-bold uppercase tracking-widest text-zinc-600">•</span>
-                      <span className="text-[11px] font-bold text-zinc-400 line-through">$97 Value</span>
-                      <span className="text-[12px] font-black text-orange-400 uppercase">Free</span>
+                      <span className="text-[11px] sm:text-[12px] font-mono font-bold uppercase tracking-widest text-orange-400">15 min</span>
+                      <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-widest text-zinc-600">•</span>
+                      <span className="text-[10px] sm:text-[11px] font-bold text-zinc-400 line-through">$97 Value</span>
+                      <span className="text-[11px] sm:text-[12px] font-black text-orange-400 uppercase">Free</span>
                     </div>
                   </div>
                 </div>
 
-                <p className="text-[15px] text-zinc-400 font-light leading-relaxed max-w-xl mb-3">
+                <p className="text-[14px] sm:text-[15px] text-zinc-400 font-light leading-relaxed max-w-xl mb-4">
                   Whether you have a <span className="text-white font-medium">product idea you want to launch</span> or an <span className="text-white font-medium">existing brand you want to scale</span> — this meeting is your starting point. We'll map out exactly where you are, where you want to go, and how to get there.
                 </p>
 

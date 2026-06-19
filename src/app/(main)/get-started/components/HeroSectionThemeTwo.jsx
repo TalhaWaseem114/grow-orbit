@@ -108,9 +108,9 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
 
 
             {/* Scarcity Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6 sm:mb-8">
-              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-              <span className="text-[9px] sm:text-[10px] font-bold text-orange-400 uppercase tracking-[0.2em]">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6 sm:mb-8 whitespace-nowrap">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse shrink-0" />
+              <span className="text-[9px] sm:text-[10px] font-bold text-orange-400 uppercase tracking-[0.2em] whitespace-nowrap">
                 Currently Accepting 3-4 Brands &middot; Apply Now
               </span>
             </div>

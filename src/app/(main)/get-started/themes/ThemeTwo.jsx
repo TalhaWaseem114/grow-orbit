@@ -36,7 +36,7 @@ export default function ThemeTwo({ scrolled, activeSections = {} }) {
       <OrbitBridgeCTA scrollToForm={scrollToForm} />
 
       {activeSections.Services !== false && <ServicesSectionThemeTwo />}
-      {activeSections.Portfolio !== false && <OrbitPortfolioSection />}
+      {activeSections.Portfolio !== false && <OrbitPortfolioSection isGetStarted={true} />}
       {activeSections.TrustedBrands !== false && <TrustedBrands />}
       {activeSections.Brands !== false && <BrandStrip />}
       {activeSections.Testimonials !== false && <OrbitTestimonialsSection />}

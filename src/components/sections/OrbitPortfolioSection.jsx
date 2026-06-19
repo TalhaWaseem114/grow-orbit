@@ -6,7 +6,7 @@ import { ArrowUpRight, ArrowRight, X, SlidersHorizontal, Check, RotateCcw } from
 import gsap from "gsap";
 import { PORTFOLIO_ITEMS } from "@/data/portfolioData";
 
-export default function OrbitPortfolioSection({ initialCategory = "All" }) {
+export default function OrbitPortfolioSection({ initialCategory = "All", isGetStarted = false }) {
   const [activeCategory, setActiveCategory] = useState(initialCategory);
 
   useEffect(() => {
@@ -32,7 +32,8 @@ export default function OrbitPortfolioSection({ initialCategory = "All" }) {
   const containerRef = useRef(null);
 
   /* Use first 12 items from shared data for better filtering variety */
-  const portfolioItems = PORTFOLIO_ITEMS.slice(0, 16).map(p => ({
+  const limit = isGetStarted ? 12 : 16;
+  const portfolioItems = PORTFOLIO_ITEMS.slice(0, limit).map(p => ({
     id: p.id,
     src: p.src,
     category: p.category,

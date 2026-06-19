@@ -281,107 +281,112 @@ export default function Navbar() {
       {/* ════════════════════════════════════════
           MOBILE NAV — slides down
       ════════════════════════════════════════ */}
-      {mobileMenuOpen && (
-        <nav className="md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-y-auto max-h-[85vh] animate-in slide-in-from-top duration-200" aria-label="Mobile Navigation">
-          <div className="px-4 py-5 space-y-1">
-            {navItems.map((item) => {
-              let path = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
-              if (item === "Home") path = "/";
-              if (item === "Case Studies") path = "/case-study";
-              if (item === "Tools") path = "/amazon-tools";
+      <nav
+        className={`md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-y-auto transition-all duration-350 ease-in-out origin-top ${
+          mobileMenuOpen
+            ? "max-h-[85vh] opacity-100 translate-y-0 scale-y-100 visible"
+            : "max-h-0 opacity-0 -translate-y-2 scale-y-95 invisible pointer-events-none"
+        }`}
+        aria-label="Mobile Navigation"
+      >
+        <div className="px-4 py-5 space-y-1">
+          {navItems.map((item) => {
+            let path = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
+            if (item === "Home") path = "/";
+            if (item === "Case Studies") path = "/case-study";
+            if (item === "Tools") path = "/amazon-tools";
 
-              const isActive = pathname.replace(/\/$/, "") === path.replace(/\/$/, "") || (path === "/" && pathname === "/");
-              const isService = item === "Service";
+            const isActive = pathname.replace(/\/$/, "") === path.replace(/\/$/, "") || (path === "/" && pathname === "/");
+            const isService = item === "Service";
 
-              if (isService) {
-                return (
-                  <div key={item}>
-                    <button
-                      onClick={() => setMobileServiceExpanded(!mobileServiceExpanded)}
-                      aria-expanded={mobileServiceExpanded}
-                      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest transition-colors focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500
-                        ${isActive ? "text-orange-500 bg-orange-50" : "text-gray-700 hover:bg-gray-50"}`}
-                    >
-                      {item}
-                      <ChevronDown
-                        size={16}
-                        className={`transition-transform duration-300 ${
-                          mobileServiceExpanded ? "rotate-180" : ""
-                        }`}
-                      />
-                    </button>
-                    {mobileServiceExpanded && (
-                      <div className="mt-1 ml-2 pl-3 border-l-2 border-orange-500/20">
-                        <MegaMenu isMobile onClose={closeMobileMenu} />
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-
+            if (isService) {
               return (
+                <div key={item}>
+                  <button
+                    onClick={() => setMobileServiceExpanded(!mobileServiceExpanded)}
+                    aria-expanded={mobileServiceExpanded}
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest transition-colors focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500
+                      ${isActive ? "text-orange-500 bg-orange-50" : "text-gray-700 hover:bg-gray-50"}`}
+                  >
+                    {item}
+                    <ChevronDown
+                      size={16}
+                      className={`transition-transform duration-300 ${
+                        mobileServiceExpanded ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
+                  {mobileServiceExpanded && (
+                    <div className="mt-1 ml-2 pl-3 border-l-2 border-orange-500/20">
+                      <MegaMenu isMobile onClose={closeMobileMenu} />
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            return (
+              <Link
+                key={item}
+                href={path}
+                prefetch={false}
+                className={`block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest no-underline transition-colors focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500
+                  ${isActive ? "text-orange-500 bg-orange-50" : "text-gray-700 hover:bg-gray-50"}`}
+                onClick={closeMobileMenu}
+              >
+                {item}
+              </Link>
+            );
+          })}
+
+          {/* Auth — mobile */}
+          <div className="pt-3 mt-3 border-t border-gray-100 space-y-2">
+            {!user ? (
+              <>
+                <Link href="/login" prefetch={false} className="block px-4 py-3 rounded-xl text-[15px] font-medium text-gray-700 hover:bg-gray-50 no-underline focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" onClick={closeMobileMenu}>
+                  Sign In
+                </Link>
                 <Link
-                  key={item}
-                  href={path}
+                  href="/register"
                   prefetch={false}
-                  className={`block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest no-underline transition-colors focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500
-                    ${isActive ? "text-orange-500 bg-orange-50" : "text-gray-700 hover:bg-gray-50"}`}
+                  className="block text-center px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest bg-black text-white hover:bg-orange-600 no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
                   onClick={closeMobileMenu}
                 >
-                  {item}
+                  Get Started
                 </Link>
-              );
-            })}
-
-            {/* Auth — mobile */}
-            <div className="pt-3 mt-3 border-t border-gray-100 space-y-2">
-              {!user ? (
-                <>
-                  <Link href="/login" prefetch={false} className="block px-4 py-3 rounded-xl text-[15px] font-medium text-gray-700 hover:bg-gray-50 no-underline focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" onClick={closeMobileMenu}>
-                    Sign In
-                  </Link>
+              </>
+            ) : (
+              <>
+                {role === "admin" ? (
                   <Link
-                    href="/register"
+                    href="/admin-dashboard"
                     prefetch={false}
-                    className="block text-center px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest bg-black text-white hover:bg-orange-600 no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
                     onClick={closeMobileMenu}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[15px] font-bold transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
                   >
-                    Get Started
+                    <LayoutDashboard size={18} />
+                    Admin Dashboard
                   </Link>
-                </>
-              ) : (
-                <>
-                  {role === "admin" ? (
-                    <Link
-                      href="/admin-dashboard"
-                      prefetch={false}
-                      onClick={closeMobileMenu}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[15px] font-bold transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
-                    >
-                      <LayoutDashboard size={18} />
-                      Admin Dashboard
-                    </Link>
-                  ) : (
-                    <Link
-                      href="/client-dashboard"
-                      prefetch={false}
-                      onClick={closeMobileMenu}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[15px] font-bold transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
-                    >
-                      <LayoutDashboard size={18} />
-                      Client Dashboard
-                    </Link>
-                  )}
-                  <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-[15px] font-medium transition-colors">
-                    <LogOut size={18} />
-                    Sign Out
-                  </button>
-                </>
-              )}
-            </div>
+                ) : (
+                  <Link
+                    href="/client-dashboard"
+                    prefetch={false}
+                    onClick={closeMobileMenu}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[15px] font-bold transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                  >
+                    <LayoutDashboard size={18} />
+                    Client Dashboard
+                  </Link>
+                )}
+                <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-[15px] font-medium transition-colors">
+                  <LogOut size={18} />
+                  Sign Out
+                </button>
+              </>
+            )}
           </div>
-        </nav>
-      )}
+        </div>
+      </nav>
     </header>
   );
 }

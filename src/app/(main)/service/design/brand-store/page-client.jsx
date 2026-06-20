@@ -40,7 +40,7 @@ function BrandStoreCTA() {
             <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none z-0 opacity-[0.05] translate-x-1/4">
               <Store size={600} strokeWidth={0.2} className="text-orange-500" />
             </div>
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
               <div className="lg:col-span-7">
                 <div className="inline-flex items-center gap-3 mb-8 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
                   <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
@@ -75,7 +75,7 @@ function BrandStoreCTA() {
                   ))}
                 </div>
               </div>
-              <div className="lg:col-span-5 block mt-12 lg:mt-0 relative group/card">
+              <div className="lg:col-span-5 block mt-12 lg:mt-[60px] relative group/card self-start">
                 <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-[32px] p-5 sm:p-8 shadow-2xl overflow-hidden hover:border-orange-500/30 transition-all duration-500">
                   <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                   <div className="flex justify-between items-start mb-10 relative z-10">
@@ -299,7 +299,7 @@ function BrandStoreHero() {
           </div>
 
           {/* ── Right: Brand Store Mockup ── */}
-          <div className="lg:col-span-5 relative mt-[-20px] lg:mt-[50px] self-start" ref={floatRef}>
+          <div className="lg:col-span-5 relative mt-[-20px] lg:mt-[60px] self-start" ref={floatRef}>
             <div className="absolute -top-4 -right-4 bg-white rounded-[20px] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-30 flex gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center text-white"><Monitor size={16} /></div>
               <div className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center text-white"><LayoutGrid size={16} /></div>
@@ -333,14 +333,14 @@ function BrandStoreHero() {
                 {/* Hero banner */}
                 <div className="relative rounded-2xl overflow-hidden bg-zinc-900 h-28">
                   <img
-                    src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=800&auto=format&fit=crop"
+                    src="https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg"
                     alt="Premium Amazon Brand Storefront UX Design Showcase"
                     className="w-full h-full object-cover opacity-60"
                   />
                   <div className="absolute inset-0 bg-gradient-to-r from-zinc-900/80 to-transparent" />
                   <div className="absolute inset-0 flex items-center px-5">
                     <div className="space-y-1">
-                      <p className="text-[10px] font-black text-white uppercase tracking-tighter">KAZVOO PREMIUM</p>
+                      <p className="text-[10px] font-black text-white uppercase tracking-tighter">KAZVO PREMIUM</p>
                       <p className="text-[7px] text-zinc-300 font-light max-w-[120px] leading-tight">Engineered for clean air. Designed for your home.</p>
                       <div className="h-2 w-12 bg-orange-500 rounded-sm mt-1" />
                     </div>
@@ -348,34 +348,32 @@ function BrandStoreHero() {
                   <div className="absolute top-2 right-2 bg-orange-500 text-white text-[7px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full">Brand Store</div>
                 </div>
 
-                {/* Nav tabs */}
-                <div className="flex gap-2">
-                  {["Home", "All Products", "New Arrivals", "Best Sellers"].map((tab, i) => (
-                    <div key={i} className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider ${i === 0 ? "bg-orange-500 text-white" : "bg-zinc-50 text-zinc-400 border border-zinc-100"}`}>
-                      {tab}
-                    </div>
-                  ))}
-                </div>
+                 {/* Nav tabs */}
+                 <div className="flex gap-2">
+                   {["Home", "All Products", "New Arrivals", "Best Sellers"].map((tab, i) => (
+                     <div key={i} className={`px-3 py-1.5 rounded-lg text-[9px] font-bold uppercase tracking-wider ${i === 0 ? "bg-orange-500 text-white" : "bg-zinc-50 text-zinc-400 border border-zinc-100"}`}>
+                       {tab}
+                     </div>
+                   ))}
+                 </div>
 
-                {/* Product grid */}
-                {/* Refined 3-Column Grid (No Carousel) */}
-                <p className="text-[7px] font-mono text-zinc-400 uppercase tracking-widest px-1">Featured Collections</p>
-                <div className="grid grid-cols-3 gap-2">
-                  {[
-                    { src: "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=400&auto=format&fit=crop" },
-                    { src: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400&auto=format&fit=crop" },
-                    { src: "https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=400&auto=format&fit=crop" },
-                  ].map((product, i) => (
-                    <div key={i} className="rounded-xl border border-zinc-100 overflow-hidden bg-white shadow-[0_8px_40px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_8px_40px_rgba(0,0,0,0.06)]">
-                      <div className="aspect-square bg-zinc-50 relative overflow-hidden">
-                        <img src={product.src} alt="Product" className="w-full h-full object-cover" />
-                      </div>
-                      <div className="p-2">
-                        <div className="h-1.5 w-full bg-zinc-100 rounded-full mb-1" />
-                        <div className="h-1 w-1/2 bg-orange-500/20 rounded-full" />
-                      </div>
-                    </div>
-                  ))}
+                 <p className="text-[7px] font-mono text-zinc-400 uppercase tracking-widest px-1">Featured Collections</p>
+                 <div className="grid grid-cols-3 gap-2">
+                   {[
+                     { title: "4-in-1 Vacuum", price: "$89.99", src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg" },
+                     { title: "Tire Inflator", price: "$69.99", src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg" },
+                     { title: "78pc Tool Kit", price: "$49.99", src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872083/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/main_image.jpg" },
+                   ].map((product, i) => (
+                     <div key={i} className="rounded-xl border border-zinc-100 overflow-hidden bg-white shadow-[0_8px_40px_rgba(0,0,0,0.03)] transition-all duration-300 hover:shadow-[0_8px_40px_rgba(0,0,0,0.06)]">
+                       <div className="aspect-square bg-zinc-50 relative overflow-hidden">
+                         <img src={product.src} alt={product.title} className="w-full h-full object-cover" />
+                       </div>
+                       <div className="p-2">
+                         <p className="text-[7px] font-black text-zinc-900 uppercase tracking-tight mb-0.5 leading-tight truncate">{product.title}</p>
+                         <p className="text-[6px] font-bold text-orange-500 uppercase tracking-widest leading-none">{product.price}</p>
+                       </div>
+                     </div>
+                   ))}
                 </div>
 
                 {/* Footer bar */}
@@ -669,7 +667,7 @@ function ShowcaseSection() {
               <div className="p-6 space-y-4">
                 {/* Hero banner */}
                 <div className="relative rounded-2xl overflow-hidden bg-zinc-800 h-24">
-                  <img src="https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop" className="absolute inset-0 w-full h-full object-cover opacity-40" alt="" />
+                  <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781872045/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-2.jpg" className="absolute inset-0 w-full h-full object-cover opacity-40" alt="" />
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-500/40 to-transparent" />
                   <div className="absolute inset-3 flex items-end justify-between gap-3">
                     <div className="space-y-1.5 flex-1 relative z-10">
@@ -681,44 +679,51 @@ function ShowcaseSection() {
                   <div className="absolute top-2 right-2 text-[6px] font-mono text-orange-400 bg-orange-500/10 px-1.5 py-0.5 rounded border border-orange-500/20 uppercase tracking-wider z-10">Hero</div>
                 </div>
 
-                {/* Navigation row */}
-                <div className="flex gap-1.5 items-center">
-                  <span className="text-[6px] font-mono text-zinc-600 uppercase tracking-widest mr-1">Nav:</span>
-                  {["Home", "All", "Category A", "New In"].map((tab, i) => (
-                    <div key={i} className={`px-2 py-1 rounded-lg text-[7px] font-bold ${i === 0 ? "bg-orange-500 text-white" : "bg-white/5 text-zinc-500 border border-white/10"}`}>{tab}</div>
-                  ))}
-                </div>
+                 {/* Navigation row */}
+                 <div className="flex gap-1.5 items-center">
+                   <span className="text-[6px] font-mono text-zinc-600 uppercase tracking-widest mr-1">Nav:</span>
+                   {["Home", "All", "Cleaning", "Automotive"].map((tab, i) => (
+                     <div key={i} className={`px-2 py-1 rounded-lg text-[7px] font-bold ${i === 0 ? "bg-orange-500 text-white" : "bg-white/5 text-zinc-500 border border-white/10"}`}>{tab}</div>
+                   ))}
+                 </div>
 
-                {/* Product tiles */}
-                <p className="text-[6px] font-mono text-zinc-700 uppercase tracking-widest px-1">Featured Grid</p>
-                <div className="grid grid-cols-4 gap-1.5">
-                  {[
-                    { label: "Best Seller", src: "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=400&auto=format&fit=crop", highlight: true },
-                    { label: "New",         src: "https://images.unsplash.com/photo-1515488042361-ee00e0ddd4e4?q=80&w=400&auto=format&fit=crop", highlight: false },
-                    { label: "Bundle",      src: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=400&auto=format&fit=crop", highlight: false },
-                    { label: "Featured",    src: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=400&auto=format&fit=crop", highlight: true },
-                  ].map((tile, i) => (
-                    <div key={i} className={`rounded-lg border overflow-hidden transition-all duration-500 hover:scale-105 ${tile.highlight ? "border-orange-500/30 bg-orange-500/5" : "border-white/5 bg-white/3"}`}>
-                      <div className="aspect-square bg-white relative">
-                        <img src={tile.src} alt="" className="w-full h-full object-contain p-1.5" />
-                        {tile.highlight && <div className="absolute top-0.5 left-0.5 bg-orange-500 text-white text-[4px] font-black px-1 py-0.5 rounded-full uppercase">HOT</div>}
-                      </div>
-                      <div className="p-1 px-1.5 bg-zinc-950/20">
-                        <div className="h-1 w-full bg-white/20 rounded-sm mb-1" />
-                        <div className="h-0.5 w-2/3 bg-white/10 rounded-sm" />
-                      </div>
-                    </div>
-                  ))}
+                 {/* Product tiles */}
+                 <p className="text-[6px] font-mono text-zinc-700 uppercase tracking-widest px-1">Featured Grid</p>
+                 <div className="grid grid-cols-4 gap-1.5">
+                   {[
+                     { label: "Vacuum", src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg", highlight: true },
+                     { label: "Inflator", src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg", highlight: false },
+                     { label: "Tool Kit", src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872083/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/main_image.jpg", highlight: false },
+                     { label: "Trimmer", src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg", highlight: true },
+                   ].map((tile, i) => (
+                     <div key={i} className={`rounded-lg border overflow-hidden transition-all duration-500 hover:scale-105 ${tile.highlight ? "border-orange-500/30 bg-orange-500/5" : "border-white/5 bg-white/3"}`}>
+                       <div className="aspect-square bg-white relative">
+                         <img src={tile.src} alt="" className="w-full h-full object-contain p-1.5" />
+                         {tile.highlight && <div className="absolute top-0.5 left-0.5 bg-orange-500 text-white text-[4px] font-black px-1 py-0.5 rounded-full uppercase">HOT</div>}
+                       </div>
+                       <div className="p-1 px-1.5 bg-zinc-950/20">
+                         <div className="h-1 w-full bg-white/20 rounded-sm mb-1" />
+                         <div className="h-0.5 w-2/3 bg-white/10 rounded-sm" />
+                       </div>
+                     </div>
+                   ))}
                 </div>
 
                 {/* Sub-pages row */}
-                <div className="bg-zinc-950 rounded-xl p-4 border border-white/5">
-                  <p className="text-[7px] font-mono text-zinc-600 uppercase tracking-widest mb-3">Sub-Category Pages</p>
+                <div className="bg-zinc-950/60 rounded-xl p-3 border border-white/5">
+                  <p className="text-[6.5px] font-mono text-zinc-500 uppercase tracking-widest mb-2">Sub-Category Hubs</p>
                   <div className="grid grid-cols-3 gap-2">
-                    {["Category A", "Category B", "New Arrivals"].map((pg, i) => (
-                      <div key={i} className="bg-white/5 border border-white/5 hover:border-orange-500/20 rounded-lg p-2 text-center transition-colors cursor-pointer">
-                        <div className="w-6 h-6 rounded-lg bg-orange-500/20 mx-auto mb-1.5" />
-                        <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-wide">{pg}</span>
+                    {[
+                      { name: "Cleaning Tech", image: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872053/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-8.jpg" },
+                      { name: "Auto Gear", image: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872065/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-2.jpg" },
+                      { name: "DIY & Tools", image: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872079/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/4.jpg" }
+                    ].map((pg, i) => (
+                      <div key={i} className="relative rounded-lg overflow-hidden aspect-[2/1] border border-white/5 hover:border-orange-500/30 transition-all cursor-pointer group/sub">
+                        <img src={pg.image} alt={pg.name} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover/sub:scale-110 transition-transform duration-700" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/30 to-transparent" />
+                        <div className="absolute bottom-1.5 inset-x-1 text-center">
+                          <span className="text-[5.5px] sm:text-[6.5px] font-black text-white uppercase tracking-wider block leading-tight">{pg.name}</span>
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -739,11 +744,14 @@ function ExamplesGallery() {
   const stores = [
     {
       id: "ST-01",
-      niche: "Home & Living",
-      images: [
-        "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=600&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1547592180-85f173990554?q=80&w=400&auto=format&fit=crop"
+      portfolioId: "li-02",
+      niche: "EDC Gear",
+      heroImage: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872022/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-1.jpg",
+      gridProducts: [
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872015/grow_orbit_portfolio/assets/portfolio/nexa_pouches/2.jpg" },
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872016/grow_orbit_portfolio/assets/portfolio/nexa_pouches/3.jpg" },
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872017/grow_orbit_portfolio/assets/portfolio/nexa_pouches/4.jpg" },
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872019/grow_orbit_portfolio/assets/portfolio/nexa_pouches/5.jpg" }
       ],
       tags: ["Multi-Category", "Lifestyle", "Featured Products"],
       accent: "bg-amber-500",
@@ -751,11 +759,14 @@ function ExamplesGallery() {
     },
     {
       id: "ST-02",
+      portfolioId: "li-06",
       niche: "Health & Supplements",
-      images: [
-        "https://images.unsplash.com/photo-1579722820308-d74e571900a9?q=80&w=600&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1550572017-edd951b55104?q=80&w=400&auto=format&fit=crop"
+      heroImage: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872086/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/3.jpg",
+      gridProducts: [
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872088/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/4.jpg" },
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872091/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/6.jpg" },
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872093/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/7.jpg" },
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872084/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/10.jpg" }
       ],
       tags: ["Trust-Building", "Science",   "Comparison Table"],
       accent: "bg-orange-500",
@@ -763,20 +774,23 @@ function ExamplesGallery() {
     },
     {
       id: "ST-03",
-      niche: "Outdoor & Sports",
-      images: [
-        "https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=600&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1551632811-561732d1e306?q=80&w=400&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=400&auto=format&fit=crop"
+      portfolioId: "li-03",
+      niche: "Personal Care & Home",
+      heroImage: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872128/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-1.jpg",
+      gridProducts: [
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg" }, // Nose Trimmer
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg" }, // Vacuum Cleaner
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg" }, // Tire Inflator
+        { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872083/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/main_image.jpg" } // Screwdriver Set
       ],
-      tags: ["Lifestyle Shots","Sub-Pages", "Bestsellers"],
+      tags: ["Cross-Selling", "Multi-Product", "Brand Consistency"],
       accent: "bg-zinc-700",
       metric: { val: "3.1x", label: "ROAS LIFT", icon: <BarChart3 size={10} /> }
     },
   ];
 
   return (
-    <section id="examples" className="py-32 bg-white relative overflow-hidden scroll-mt-24">
+    <section id="examples" className="py-32 bg-[#f0f4f8] relative overflow-hidden scroll-mt-24">
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
 
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
@@ -786,7 +800,7 @@ function ExamplesGallery() {
               className="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-[0.88] text-zinc-900"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
-              Stores<br />
+              Stores{" "}
               <span className="italic font-light text-zinc-300 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
                 we've built.
               </span>
@@ -797,107 +811,107 @@ function ExamplesGallery() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {stores.map((store, i) => (
             <Link
               key={i}
-              href="/portfolio?filter=brand-store"
-              className="group relative rounded-[32px] overflow-hidden border border-zinc-100 bg-zinc-950 hover:border-orange-500/30 transition-all duration-700 no-underline block shadow-none"
+              href={`/portfolio/${store.portfolioId}`}
+              className="group relative block p-5 bg-[#f0f4f8] rounded-[36px] transition-all duration-700 ease-out no-underline border border-transparent shadow-[10px_10px_20px_#d2dbe6,-10px_-10px_20px_#ffffff] hover:shadow-[16px_16px_32px_#d2dbe6,-16px_-16px_32px_#ffffff]"
             >
-              {/* Mini Brand Store Dashboard Layout */}
-              <div className="aspect-[16/10] relative overflow-hidden flex flex-col p-3 bg-[#0a0a0a] group-hover:bg-[#050505] transition-colors duration-700" style={{ perspective: "1500px" }}>
+               {/* Mini Brand Store Dashboard Layout */}
+               <div className={`aspect-[16/10] relative overflow-hidden flex flex-col p-3 rounded-2xl border ${
+                 i === 1
+                   ? "bg-zinc-900 border-white/10 shadow-[inset_2px_2px_10px_rgba(0,0,0,0.8),inset_-2px_-2px_5px_rgba(255,255,255,0.05)]"
+                   : "bg-white/70 border-white/50 shadow-[inset_2px_2px_5px_rgba(0,0,0,0.03),inset_-2px_-2px_5px_rgba(255,255,255,0.7)]"
+               }`} style={{ perspective: "1500px" }}>
 
-                {/* 01: Mini Browser Bar / Store Nav */}
-                <div className="flex items-center justify-between px-3 py-2 bg-zinc-900/50 rounded-xl border border-white/5 mb-2 transform group-hover:translate-z-5 transition-transform duration-700">
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500/40" />
-                    <span className="text-[7px] font-mono text-zinc-500 uppercase tracking-widest">Store Builder</span>
-                  </div>
-                  <div className="flex gap-3">
-                    {["Home", "Shop", "About"].map((tab, j) => (
-                      <span key={j} className={`text-[6px] font-bold uppercase tracking-tight ${j === 0 ? "text-orange-500" : "text-zinc-600"}`}>{tab}</span>
-                    ))}
-                  </div>
-                </div>
+                 {/* 01: Mini Browser Bar / Store Nav */}
+                 <div className={`flex items-center justify-between px-3 py-2 backdrop-blur-sm rounded-xl border mb-2 transform group-hover:translate-z-5 transition-transform duration-700 ${
+                   i === 1 ? 'bg-white/5 border-white/10' : 'bg-white/40 border-white/45'
+                 }`}>
+                   <div className="flex items-center gap-2">
+                     <div className="w-1.5 h-1.5 rounded-full bg-orange-500/80 animate-pulse" />
+                     <span className={`text-[7px] font-mono uppercase tracking-widest ${i === 1 ? 'text-zinc-400' : 'text-zinc-500'}`}>Store Builder</span>
+                   </div>
+                   <div className="flex gap-3">
+                     {["Home", "Shop", "About"].map((tab, j) => (
+                       <span key={j} className={`text-[6px] font-bold uppercase tracking-tight ${j === 0 ? "text-orange-500" : (i === 1 ? "text-zinc-500" : "text-zinc-400")}`}>{tab}</span>
+                     ))}
+                   </div>
+                 </div>
 
-                {/* 02: Hero Banner Module */}
-                <div className="h-28 relative rounded-xl overflow-hidden border border-white/10 group-hover:border-orange-500/30 transition-all duration-700 transform group-hover:translate-z-10 mb-2 shadow-none">
-                  <img src={store.images[0]} alt="" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-                  <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent opacity-60" />
-                  <div className="absolute inset-y-0 left-4 flex flex-col justify-center gap-1">
-                    <div className="h-1.5 w-16 bg-white/40 rounded-sm" />
-                    <div className="h-1 w-24 bg-white/20 rounded-sm" />
-                    <div className="mt-2 h-3 w-8 bg-orange-500/80 rounded-sm" />
-                  </div>
-                  {/* Reference Badge */}
-                  <div className="absolute top-2 right-2 px-1.5 py-0.5 rounded bg-black/40 backdrop-blur-md border border-white/10 group-hover:border-orange-500/30 transition-colors">
-                    <span className="text-[6px] font-black text-white/90 uppercase tracking-widest leading-none">{store.id}</span>
-                  </div>
-                </div>
+                 {/* 02: Hero Banner Module */}
+                 <div className="h-28 relative rounded-xl overflow-hidden border border-white/50 group-hover:border-orange-500/30 transition-all duration-700 transform group-hover:translate-z-10 mb-2 shadow-sm">
+                   <img src={store.heroImage} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[3s]" />
+                   <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent opacity-60" />
+                   {/* Reference Badge Removed */}
+                 </div>
 
-                {/* 03: Product Modules Grid */}
-                <div className="flex-1 grid grid-cols-4 gap-2 transform group-hover:translate-z-2 transition-transform duration-700 delay-75">
-                  {[...Array(4)].map((_, j) => (
-                    <div key={j} className="relative rounded-lg bg-zinc-900 border border-white/5 overflow-hidden group/mod hover:border-orange-500/30 transition-colors">
-                       <img
-                        src={store.images[j % 3 === 0 ? 1 : j % 3 === 1 ? 2 : 0]}
-                        alt=""
-                        className="w-full h-full object-cover opacity-60 group-hover/mod:opacity-100 transition-opacity"
-                       />
-                       <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                       <div className="absolute bottom-1.5 left-1.5 h-1 w-2/3 bg-white/20 rounded-sm" />
-                    </div>
-                  ))}
-                </div>
+                 {/* 03: Product Modules Grid */}
+                 <div className="flex-1 grid grid-cols-4 gap-2 transform group-hover:translate-z-2 transition-transform duration-700 delay-75">
+                   {store.gridProducts.map((prod, j) => (
+                     <div key={j} className={`relative rounded-lg overflow-hidden group/mod shadow-sm border ${
+                       i === 1 ? 'bg-white/5 border-white/10' : 'bg-white/40 border-white/45'
+                     }`}>
+                        <img
+                         src={prod.src}
+                         alt=""
+                         className="w-full h-full object-cover opacity-80 group-hover/mod:opacity-100 transition-opacity"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+                        <div className={`absolute bottom-1.5 left-1.5 h-1 w-2/3 rounded-sm ${i === 1 ? 'bg-white/20' : 'bg-white/40'}`} />
+                     </div>
+                   ))}
+                 </div>
 
-                {/* Performance Pill Badge */}
-                <div className="absolute top-10 right-10 z-40 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-                  <div className="bg-[#111111]/90 backdrop-blur-xl border border-white/10 rounded-2xl px-3 py-2.5 shadow-[0_15px_30px_rgba(0,0,0,0.3)] flex items-center gap-3 group-hover:border-orange-500/50 transition-all duration-500">
-                    <div className={`w-8 h-8 rounded-lg ${store.accent} flex items-center justify-center text-white shadow-inner`}>
-                      {store.metric.icon}
-                    </div>
-                    <div>
-                      <span className="text-white font-black text-sm tracking-tighter leading-none block mb-0.5">{store.metric.val}</span>
-                      <span className="text-zinc-500 text-[8px] font-bold uppercase tracking-widest leading-none block">{store.metric.label}</span>
-                    </div>
-                  </div>
-                </div>
+                 {/* Performance Pill Badge */}
+                 <div className="absolute top-10 right-10 z-40 opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                   <div className="bg-white/95 backdrop-blur-md border border-white/60 rounded-2xl px-3 py-2.5 shadow-[0_15px_30px_rgba(0,0,0,0.08)] flex items-center gap-3 group-hover:border-orange-500/30 transition-all duration-500">
+                     <div className={`w-8 h-8 rounded-lg ${store.accent} flex items-center justify-center text-white shadow-inner`}>
+                       {store.metric.icon}
+                     </div>
+                     <div>
+                       <span className="text-zinc-900 font-black text-sm tracking-tighter leading-none block mb-0.5">{store.metric.val}</span>
+                       <span className="text-zinc-500 text-[8px] font-bold uppercase tracking-widest leading-none block">{store.metric.label}</span>
+                     </div>
+                   </div>
+                 </div>
 
-                {/* Hover overlay - Subtle Details */}
-                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 bg-zinc-950/20 backdrop-blur-[1px] z-30 pointer-events-none">
-                  <div className="text-center transform scale-90 group-hover:scale-100 transition-transform duration-500 translate-y-4">
-                    <div className="relative inline-block px-4 py-2 bg-orange-500 rounded-full">
-                       <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white">Full Experience</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                 {/* Hover overlay - Subtle Details */}
+                 <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 bg-white/10 backdrop-blur-[2px] z-30 pointer-events-none">
+                   <div className="text-center transform scale-90 group-hover:scale-100 transition-transform duration-500 translate-y-4">
+                     <div className="relative inline-block px-4 py-2 bg-orange-500 rounded-full shadow-lg">
+                        <p className="text-[9px] font-black uppercase tracking-[0.4em] text-white">Full Experience</p>
+                     </div>
+                   </div>
+                 </div>
+               </div>
 
-              {/* Card info */}
-              <div className="p-6 border-t border-white/5 bg-zinc-950">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-black text-white uppercase tracking-tight text-[13px] group-hover:text-orange-500 transition-colors">{store.niche}</h4>
-                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500/30 group-hover:bg-orange-500 transition-colors animate-pulse" />
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {store.tags.map((tag, j) => (
-                    <span key={j} className="text-[8px] font-bold uppercase tracking-widest text-zinc-500 border border-white/5 group-hover:border-orange-500/20 px-2 rounded-lg transition-colors">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
+               {/* Card info */}
+               <div className="p-6 border-t border-white/40 mt-2">
+                 <div className="flex items-center justify-between mb-3">
+                   <h4 className="font-black text-zinc-900 uppercase tracking-tight text-[13px] group-hover:text-orange-500 transition-colors">{store.niche}</h4>
+                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500/30 group-hover:bg-orange-500 transition-colors animate-pulse" />
+                 </div>
+                 <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar whitespace-nowrap pb-1">
+                   {store.tags.map((tag, j) => (
+                     <span key={j} className="shrink-0 text-[8px] font-bold uppercase tracking-widest text-zinc-500 bg-white/35 backdrop-blur-md border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.01)] group-hover:bg-white/50 group-hover:border-orange-500/15 px-2.5 py-1.5 rounded-xl transition-all">
+                       {tag}
+                     </span>
+                   ))}
+                 </div>
+               </div>
             </Link>
           ))}
         </div>
 
         <div className="mt-16 text-center">
-          <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Want to see more of our storefront work?</p>
+          <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Want to see more of our portfolio work?</p>
           <Link
-            href="/portfolio?filter=brand-store"
+            href="/portfolio"
             className="inline-flex items-center gap-3 bg-zinc-950 hover:bg-orange-500 transition-all duration-500 text-white font-black text-[12px] uppercase tracking-[0.2em] px-10 py-5 rounded-full no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-orange-500/20"
           >
-            View All Brand Stores
+            View Portfolio
             <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>

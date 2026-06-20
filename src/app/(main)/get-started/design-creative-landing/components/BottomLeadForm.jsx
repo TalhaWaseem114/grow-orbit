@@ -6,6 +6,8 @@ import { ArrowRight, AlertCircle, CheckCircle2 } from "lucide-react";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+import { getSavedUtmData } from "@/utils/utmTracker";
+
 export default function BottomLeadForm() {
   const router = useRouter();
   const [form, setForm] = useState({
@@ -20,20 +22,15 @@ export default function BottomLeadForm() {
   const [error, setError] = useState("");
   const lastSubmitRef = useRef(0);
   const [utmData, setUtmData] = useState({});
+  const [honeypot, setHoneypot] = useState("");
 
   // Capture UTM parameters on mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      setUtmData({
-        utm_source: params.get("utm_source") || "direct",
-        utm_medium: params.get("utm_medium") || "",
-        utm_campaign: params.get("utm_campaign") || "",
-        utm_content: params.get("utm_content") || "",
-        utm_term: params.get("utm_term") || "",
-        landingUrl: window.location.href,
-      });
+    const data = getSavedUtmData();
+    if (!data.utm_source) {
+      data.utm_source = "direct";
     }
+    setUtmData(data);
   }, []);
 
   const handleChange = (e) => {
@@ -85,6 +82,7 @@ export default function BottomLeadForm() {
           source: "Design & Creative Bottom Form",
           asinOrUrl: null,
           monthlyRevenue: null,
+          website_confirm: honeypot,
           ...utmData,
         }),
       });
@@ -143,6 +141,17 @@ export default function BottomLeadForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      {/* Honeypot field for spam prevention */}
+      <input
+        type="text"
+        name="website_confirm"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+      />
+
       {/* Inline error message */}
       {error && (
         <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-600">
@@ -161,7 +170,7 @@ export default function BottomLeadForm() {
           value={form.name}
           onChange={handleChange}
           placeholder="Full Name"
-          className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-[14px] text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light"
+          className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-base md:text-[14px] text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light"
         />
       </div>
 
@@ -175,7 +184,7 @@ export default function BottomLeadForm() {
           value={form.email}
           onChange={handleChange}
           placeholder="Email Address"
-          className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-[14px] text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light"
+          className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-base md:text-[14px] text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light"
         />
       </div>
 
@@ -188,7 +197,7 @@ export default function BottomLeadForm() {
           value={form.brandName}
           onChange={handleChange}
           placeholder="Brand/Company Name"
-          className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-[14px] text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light"
+          className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-base md:text-[14px] text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light"
         />
       </div>
 
@@ -201,7 +210,7 @@ export default function BottomLeadForm() {
           value={form.projectDetails}
           onChange={handleChange}
           placeholder="Tell us about your project..."
-          className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-[14px] text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all resize-none font-light"
+          className="w-full px-5 py-3.5 bg-zinc-50 border border-zinc-200 rounded-xl text-base md:text-[14px] text-zinc-950 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all resize-none font-light"
         />
       </div>
 

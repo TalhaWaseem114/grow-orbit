@@ -37,7 +37,7 @@ export default function CoachingCTA() {
               <Headphones size={600} strokeWidth={0.2} className="text-orange-500" />
             </div>
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
               {/* Left Column: Content */}
               <div className="lg:col-span-7">
@@ -87,7 +87,7 @@ export default function CoachingCTA() {
               </div>
 
               {/* Right Column: Session Preview Card */}
-              <div className="lg:col-span-5 mt-12 lg:mt-0 relative group/card">
+              <div className="lg:col-span-5 mt-12 lg:mt-[60px] relative group/card self-start">
                 <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-[28px] sm:rounded-[32px] p-5 sm:p-6 shadow-2xl overflow-hidden hover:border-orange-500/30 transition-all duration-500">
 
                   {/* Card Glow */}

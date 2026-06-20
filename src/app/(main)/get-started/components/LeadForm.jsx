@@ -6,6 +6,8 @@ import { ArrowRight, CheckCircle2, AlertCircle } from "lucide-react";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+import { getSavedUtmData } from "@/utils/utmTracker";
+
 export default function LeadForm({ theme = "light", compact = false }) {
   const isDark = theme === "dark";
   const router = useRouter();
@@ -16,20 +18,15 @@ export default function LeadForm({ theme = "light", compact = false }) {
   const [error, setError] = useState("");
   const lastSubmitRef = useRef(0);
   const [utmData, setUtmData] = useState({});
+  const [honeypot, setHoneypot] = useState(""); // Honeypot state
 
   // Capture UTM parameters on mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      setUtmData({
-        utm_source: params.get("utm_source") || "direct",
-        utm_medium: params.get("utm_medium") || "",
-        utm_campaign: params.get("utm_campaign") || "",
-        utm_content: params.get("utm_content") || "",
-        utm_term: params.get("utm_term") || "",
-        landingUrl: window.location.href,
-      });
+    const data = getSavedUtmData();
+    if (!data.utm_source) {
+      data.utm_source = "direct";
     }
+    setUtmData(data);
   }, []);
 
   const handleChange = (e) => {
@@ -81,6 +78,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
           asinOrUrl: null,
           monthlyRevenue: null,
           brandName: null,
+          website_confirm: honeypot,
           ...utmData,
         }),
       });
@@ -143,6 +141,17 @@ export default function LeadForm({ theme = "light", compact = false }) {
 
   return (
     <form onSubmit={handleSubmit} className={compact ? "space-y-2.5" : "space-y-4"} noValidate>
+      {/* Honeypot field for spam prevention */}
+      <input
+        type="text"
+        name="website_confirm"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+      />
+
       {/* Inline error message */}
       {error && (
         <div className={`flex items-center gap-2 border rounded-xl px-4 py-3 ${
@@ -172,7 +181,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
             value={form[f.name]}
             onChange={handleChange}
             placeholder={f.placeholder}
-            className={`w-full border text-[13px] transition-all font-light focus:outline-none focus:border-orange-500 ${
+            className={`w-full border text-base md:text-[13px] transition-all font-light focus:outline-none focus:border-orange-500 ${
               compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
             } ${
               isDark
@@ -193,7 +202,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
             name="service"
             value={form.service}
             onChange={handleChange}
-            className={`w-full border text-[13px] transition-all appearance-none cursor-pointer font-light focus:outline-none focus:border-orange-500 ${
+            className={`w-full border text-base md:text-[13px] transition-all appearance-none cursor-pointer font-light focus:outline-none focus:border-orange-500 ${
               compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
             } ${
               isDark
@@ -226,7 +235,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
           value={form.pain}
           onChange={handleChange}
           placeholder="Tell us about your product, current stage, or what you need help with..."
-          className={`w-full border text-[13px] transition-all resize-none font-light focus:outline-none focus:border-orange-500 ${
+          className={`w-full border text-base md:text-[13px] transition-all resize-none font-light focus:outline-none focus:border-orange-500 ${
             compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
           } ${
             isDark

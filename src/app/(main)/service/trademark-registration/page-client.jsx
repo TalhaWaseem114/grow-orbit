@@ -144,7 +144,7 @@ function TrademarkHero() {
           </div>
 
           {/* Right: Premium Brand Protection Vault */}
-          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[70px] perspective-1000" ref={floatRef}>
+          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px] perspective-1000" ref={floatRef}>
 
             {/* Ambient Lighting - Deep Security Blue & Orange Glow */}
             <div className="absolute -inset-16 bg-gradient-to-br from-orange-500/30 via-transparent to-indigo-500/20 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />

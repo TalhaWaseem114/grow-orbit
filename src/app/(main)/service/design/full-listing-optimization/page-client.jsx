@@ -35,7 +35,7 @@ function FullListingHeroCTA() {
         <div className="max-w-[1400px] mx-auto">
           <div className="bg-[#0a0a0a] rounded-[40px] py-14 px-8 lg:px-20 text-left relative overflow-hidden border border-white/5 group shadow-none">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_50%,rgba(249,115,22,0.12),transparent_60%)] pointer-events-none" />
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
               <div className="lg:col-span-7">
                 <div className="inline-flex items-center gap-3 mb-8 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
                   <div className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
@@ -68,7 +68,7 @@ function FullListingHeroCTA() {
                   ))}
                 </div>
               </div>
-              <div className="lg:col-span-5 block relative group/card mt-12 lg:mt-0">
+              <div className="lg:col-span-5 block relative group/card mt-12 lg:mt-[60px] self-start">
                 <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 shadow-2xl overflow-hidden hover:border-orange-500/30 transition-all duration-500">
                   <div className="absolute top-0 right-0 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
                   <div className="flex justify-between items-start mb-10 relative z-10">
@@ -180,7 +180,7 @@ function FullListingHero() {
       </div>
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
 
           {/* Left */}
           <div className="lg:col-span-7 relative">
@@ -288,7 +288,7 @@ function FullListingHero() {
           </div>
 
           {/* Right: Synergy Protocol Visual */}
-          <div className="lg:col-span-5 relative block mt-[-20px] lg:mt-[70px] h-[680px] sm:h-[760px] lg:h-auto self-center lg:self-start w-full max-w-[340px] sm:max-w-md mx-auto lg:max-w-none lg:mx-0">
+          <div className="lg:col-span-5 relative block mt-[-20px] lg:mt-[60px] h-[680px] sm:h-[760px] lg:h-auto self-start w-full max-w-[340px] sm:max-w-md mx-auto lg:max-w-none lg:mx-0">
 
             <div className="relative transform scale-[0.85] sm:scale-95 lg:scale-100 origin-top lg:origin-center">
               <div className="relative -space-y-40 sm:-space-y-32">
@@ -742,31 +742,35 @@ function OurProcess() {
 function RealResults() {
   const transformations = [
     {
+      id: "li-06",
       niche: "Supplements & Health",
       tag: "Listing Setup",
-      before: { label: "Standard photos", note: "Cluttered, amateur lighting", img: "https://images.unsplash.com/photo-1550572017-edd951b55104?q=80&w=400&auto=format&fit=crop" },
-      after: { label: "Premium 3D Rendering", note: "+45% CVR Lift", img: "https://images.unsplash.com/photo-1579722820308-d74e571900a9?q=80&w=400&auto=format&fit=crop" },
+      before: { label: "Standard photos", note: "Cluttered, amateur lighting", img: "/images/before/supplements_before.png" },
+      after: { label: "Premium 3D Rendering", note: "+45% CVR Lift", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872097/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/main_image.jpg" },
       icon: <Sparkles size={20} />
     },
     {
+      id: "li-03",
       niche: "Home & Kitchen",
       tag: "Full Optimization",
-      before: { label: "Basic descriptions", note: "Text unreadable on mobile", img: "https://images.unsplash.com/photo-1466637574441-749b8f19452f?q=80&w=400&auto=format&fit=crop" },
-      after: { label: "Lifestyle infographs", note: "+32% Organic Sales", img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=400&auto=format&fit=crop" },
+      before: { label: "Basic descriptions", note: "Text unreadable on mobile", img: "/images/before/vacuum_before.png" },
+      after: { label: "Lifestyle infographs", note: "+32% Organic Sales", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg" },
       icon: <Search size={20} />
     },
     {
-      niche: "Pet Supplies",
+      id: "li-04",
+      niche: "Automotive Tools",
       tag: "Visual Refresh",
-      before: { label: "Amateur photography", note: "No benefit-first imagery", img: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=400&auto=format&fit=crop" },
-      after: { label: "Emotion-led lifestyle", note: "+61% CTR In Search", img: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?q=80&w=400&auto=format&fit=crop" },
+      before: { label: "Amateur photography", note: "No benefit-first imagery", img: "/images/before/tire_before.png" },
+      after: { label: "Emotion-led lifestyle", note: "+61% CTR In Search", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg" },
       icon: <TrendingUp size={20} />
     },
     {
-      niche: "Beauty & Skincare",
+      id: "li-02",
+      niche: "EDC Gear",
       tag: "Premium Overhaul",
-      before: { label: "Inconsistent branding", note: "No premium brand feel", img: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=400&auto=format&fit=crop" },
-      after: { label: "High-end studio assets", note: "+28% Revenue Jump", img: "https://images.unsplash.com/photo-1615397323864-fd1b9794cb58?q=80&w=400&auto=format&fit=crop" },
+      before: { label: "Inconsistent branding", note: "No premium brand feel", img: "/images/before/nexa_before.png" },
+      after: { label: "High-end studio assets", note: "+28% Revenue Jump", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872034/grow_orbit_portfolio/assets/portfolio/nexa_pouches/main_image.jpg" },
       icon: <Camera size={20} />
     },
   ];
@@ -793,7 +797,7 @@ function RealResults() {
           {transformations.map((t, i) => (
             <Link
               key={i}
-              href="/portfolio"
+              href={`/portfolio/${t.id}`}
               className="group bg-white rounded-[32px] border border-zinc-100 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.1)] hover:border-orange-500/20 transition-all duration-500 overflow-hidden no-underline block"
             >
               {/* Header */}
@@ -1030,44 +1034,47 @@ function Packages() {
 function Portfolio() {
   const examples = [
     {
-      niche: "Kitchen & Home",
+      id: "li-06",
+      niche: "Health & Supplements",
       rating: 4.8,
-      reviews: "1,204",
-      metric: { val: "+22%", label: "ATC RATE" },
-      heroImg: "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=800&auto=format&fit=crop",
+      reviews: "2,104",
+      metric: { val: "+130%", label: "SALES LIFT" },
+      heroImg: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872097/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/main_image.jpg",
       thumbs: [
-        "https://images.unsplash.com/photo-1556910103-1c02745aae4d?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1556912173-3bb406ef7e77?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1556911220-e15b29be8c8f?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=200&auto=format&fit=crop"
+        "/images/before/supplements_before.png",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872097/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872086/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/3.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872088/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/4.jpg"
       ]
     },
     {
-      niche: "Pet Products",
+      id: "li-02",
+      niche: "EDC Gear",
+      rating: 4.8,
+      reviews: "1,245",
+      metric: { val: "+65%", label: "CVR LIFT" },
+      heroImg: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872034/grow_orbit_portfolio/assets/portfolio/nexa_pouches/main_image.jpg",
+      thumbs: [
+        "/images/before/nexa_before.png",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872034/grow_orbit_portfolio/assets/portfolio/nexa_pouches/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872016/grow_orbit_portfolio/assets/portfolio/nexa_pouches/3.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872017/grow_orbit_portfolio/assets/portfolio/nexa_pouches/4.jpg"
+      ]
+    },
+    {
+      id: "li-03",
+      niche: "Home & Auto",
       rating: 4.9,
-      reviews: "3,412",
-      metric: { val: "+31%", label: "CONVERSION" },
-      heroImg: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?q=80&w=800&auto=format&fit=crop",
+      reviews: "4,102",
+      metric: { val: "+90%", label: "SALES LIFT" },
+      heroImg: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg",
       thumbs: [
-        "https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?q=80&w=200&auto=format&fit=crop"
+        "/images/before/vacuum_before.png",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872036/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/2.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872037/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/3.jpg"
       ]
-    },
-    {
-      niche: "Beauty & Skincare",
-      rating: 4.7,
-      reviews: "2,847",
-      metric: { val: "+2.5x", label: "TIME ON PAGE" },
-      heroImg: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=800&auto=format&fit=crop",
-      thumbs: [
-        "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=200&auto=format&fit=crop"
-      ]
-    },
+    }
   ];
 
   return (
@@ -1089,84 +1096,100 @@ function Portfolio() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6">
           {examples.map((ex, i) => (
             <Link
               key={i}
-              href="/portfolio"
-              className="group relative block p-4 bg-zinc-50 border border-zinc-100 rounded-[40px] shadow-[0_25px_80px_-20px_rgba(0,0,0,0.15)] hover:shadow-[0_55px_110px_-25px_rgba(0,0,0,0.28)] hover:bg-white hover:border-orange-500/20 transition-all duration-700 ease-out no-underline"
+              href={`/portfolio/${ex.id}`}
+              className="group relative block p-5 bg-[#f0f4f8] rounded-[36px] transition-all duration-700 ease-out no-underline border border-transparent shadow-[10px_10px_20px_#d2dbe6,-10px_-10px_20px_#ffffff] hover:shadow-[16px_16px_32px_#d2dbe6,-16px_-16px_32px_#ffffff]"
             >
+               {/* Card Header (Category & Status) */}
+               <div className="flex items-center justify-between mb-4 px-1">
+                 <span className="text-[9px] font-mono font-bold tracking-[0.2em] text-zinc-500 uppercase">{ex.niche}</span>
+                 <div className="flex items-center gap-1 bg-white/40 backdrop-blur-sm border border-white/45 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.6),0_1px_2px_rgba(0,0,0,0.02)] px-2.5 py-1 rounded-full">
+                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                   <span className="text-[6px] font-black uppercase tracking-widest text-orange-500">Optimized</span>
+                 </div>
+               </div>
+
                {/* Top Section: Thumbs + Main Image */}
                <div className="flex gap-3 mb-4">
 
                  {/* Left Thumbs Column */}
                  <div className="w-[20%] flex flex-col gap-2 shrink-0">
-                   {ex.thumbs.map((t, idx) => (
-                     <div key={idx} className={`aspect-square rounded-2xl overflow-hidden border-[3px] transition-colors duration-300 ${idx === 0 ? "border-orange-500" : "border-transparent"}`}>
-                       <img src={t} alt="" className={`w-full h-full object-cover rounded-xl ${idx !== 0 && "group-hover:grayscale-0 grayscale-[20%]"}`} />
+                   {/* BEFORE THUMBNAIL */}
+                   <div className="aspect-square rounded-2xl overflow-hidden border-[3px] border-red-500/30 bg-red-50 relative group/before">
+                     <img src={ex.thumbs[0]} className="w-full h-full object-cover p-0 opacity-80" />
+                     <div className="absolute inset-0 bg-red-500/10" />
+                     <div className="absolute bottom-1 left-0 right-0 flex justify-center">
+                       <span className="text-[5px] font-black text-red-600 bg-white/90 px-1 rounded-sm uppercase tracking-widest">Before</span>
+                     </div>
+                   </div>
+
+                   {/* OTHER THUMBNAILS */}
+                   {ex.thumbs.slice(1).map((t, idx) => (
+                     <div key={idx} className="aspect-square rounded-2xl overflow-hidden border border-white/45 bg-white/30 backdrop-blur-md shadow-sm">
+                       <img src={t} alt="Thumbnail" className="w-full h-full object-contain p-1 rounded-xl grayscale-[20%] group-hover:grayscale-0 transition-all duration-300" />
                      </div>
                    ))}
                  </div>
 
                  {/* Main Listing Viewport (approx 1:1) */}
-                 <div className="flex-1 aspect-square rounded-2xl overflow-hidden relative bg-white border border-zinc-100/50">
+                 <div className="flex-1 aspect-square rounded-2xl overflow-hidden relative bg-white/90 backdrop-blur-md border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.03)] flex items-center justify-center">
                     <img
                       src={ex.heroImg}
                       alt={ex.niche}
-                      className="w-full h-full object-cover transition-transform duration-[3s] group-hover:scale-105"
+                      className="w-full h-full object-cover p-0 transition-transform duration-[3s] group-hover:scale-105"
                     />
 
                     {/* Enhanced Hover Overlay (Centered Premium Indicator) */}
                     <div className="absolute inset-0 bg-zinc-950/60 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center z-10">
-                      <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-3xl border border-white/20 flex items-center justify-center text-white mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <Eye size={24} />
+                      <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-3xl border border-white/20 flex items-center justify-center text-white mb-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <Eye size={20} />
                       </div>
-                      <span className="text-white font-black text-[10px] tracking-[0.4em] uppercase text-center px-6 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
-                        View Listing<br/>Images
+                      <span className="text-white font-black text-[8px] tracking-[0.3em] uppercase text-center px-4 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+                        View Details
                       </span>
                     </div>
 
                     {/* Top Right Analytics (Metric Pill) */}
-                    <div className="absolute top-4 right-4 z-20 bg-zinc-950/90 backdrop-blur-3xl border border-white/10 rounded-2xl p-3 flex flex-col items-center justify-center gap-0.5 shadow-xl transform transition-transform duration-500 group-hover:translate-y-[-4px]">
+                    <div className="absolute top-3 right-3 z-20 bg-zinc-950/90 backdrop-blur-3xl border border-white/10 rounded-xl p-2 flex flex-col items-center justify-center gap-0.5 shadow-none transform transition-transform duration-500 group-hover:translate-y-[-2px]">
                       <span className="text-orange-500 font-black text-xs tracking-tighter leading-none">{ex.metric.val}</span>
-                      <span className="text-[6px] font-bold uppercase tracking-widest text-zinc-500 leading-none">{ex.metric.label}</span>
+                      <span className="text-[5px] font-bold uppercase tracking-widest text-zinc-500 leading-none">{ex.metric.label}</span>
                     </div>
 
                     {/* Bottom Right Indicator */}
-                    <div className="absolute bottom-4 right-4 z-20 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1.5 border border-zinc-100/50 shadow-md">
-                      <span className="text-zinc-600 font-bold text-[10px] tracking-wider">1 / 7</span>
+                    <div className="absolute bottom-3 right-3 z-20 bg-white/95 backdrop-blur-sm rounded-full px-2 py-1 border border-zinc-100/50">
+                      <span className="text-zinc-600 font-bold text-[8px] tracking-wider">1 / 7</span>
                     </div>
                  </div>
                </div>
 
                {/* Rating Section */}
-               <div className="flex items-center gap-2 mb-6 px-1">
+               <div className="flex items-center gap-2 mb-4 px-1">
                  <div className="flex gap-[2px] text-orange-500">
-                    {[...Array(4)].map((_, i) => <Star key={i} size={15} className="fill-orange-500" />)}
-                    <StarHalf size={15} className="fill-orange-500 text-orange-500" />
+                    {[...Array(4)].map((_, idx) => <Star key={idx} size={13} className="fill-orange-500" />)}
+                    <StarHalf size={13} className="fill-orange-500 text-orange-500" />
                  </div>
-                 <span className="font-extrabold text-orange-500 text-[13px] tracking-tight">{ex.rating}</span>
-                 <span className="text-zinc-400 text-[11px] font-medium ml-1">({ex.reviews} ratings)</span>
+                 <span className="font-extrabold text-orange-500 text-[12px] tracking-tight">{ex.rating}</span>
+                 <span className="text-zinc-500 text-[10px] font-medium ml-1">({ex.reviews} ratings)</span>
                </div>
 
-               {/* Buttons Row (Vibrant Reference Style) */}
-               <div className="grid grid-cols-4 gap-2 px-0.5 mt-2">
-                 <div className="col-span-1 flex items-center justify-center gap-1.5 bg-gradient-to-r from-orange-500 to-amber-400 rounded-full py-2.5 shadow-[0_10px_25px_-5px_rgba(249,115,22,0.15)] hover:scale-105 transition-all duration-300">
-                   <Camera size={11} className="text-white shrink-0" />
-                   <span className="text-white font-black text-[7px] uppercase tracking-widest">Hero</span>
-                 </div>
-                 <div className="col-span-1 flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#7c3aed] to-[#a855f7] rounded-full py-2.5 shadow-[0_10px_25px_-5px_rgba(124,58,237,0.12)] hover:scale-105 transition-all duration-300">
-                   <ShoppingBag size={11} className="text-white shrink-0" />
-                   <span className="text-white font-black text-[7px] uppercase tracking-widest">Life</span>
-                 </div>
-                 <div className="col-span-1 flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#ff2d55] to-[#ff3b30] rounded-full py-2.5 shadow-[0_10px_25px_-5px_rgba(255,45,85,0.12)] hover:scale-105 transition-all duration-300">
-                   <Sparkles size={11} className="text-white shrink-0" />
-                   <span className="text-white font-black text-[7px] uppercase tracking-widest">Info</span>
-                 </div>
-                 <div className="col-span-1 flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#00c7be] to-[#00d2c3] rounded-full py-2.5 shadow-[0_10px_25px_-5px_rgba(0,199,190,0.12)] hover:scale-105 transition-all duration-300">
-                   <Boxes size={11} className="text-white shrink-0" />
-                   <span className="text-white font-black text-[7px] uppercase tracking-widest">3D</span>
-                 </div>
+               {/* Premium Neumorphic Feature Tags Grid */}
+               <div className="grid grid-cols-4 gap-1.5 mt-4 px-0.5 border-t border-white/40 pt-4">
+                 {[
+                   { label: "Hero", icon: <Camera size={11} />, colorClass: "text-blue-500" },
+                   { label: "Lifestyle", icon: <ShoppingBag size={11} />, colorClass: "text-emerald-500" },
+                   { label: "Infographic", icon: <Sparkles size={11} />, colorClass: "text-violet-500" },
+                   { label: "3D Render", icon: <Boxes size={11} />, colorClass: "text-orange-500" },
+                 ].map((tag, j) => (
+                   <div key={j} className="col-span-1 flex flex-col items-center justify-center py-2.5 rounded-2xl bg-white/35 backdrop-blur-md border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.01)] group-hover:bg-white/50 group-hover:border-orange-500/15 transition-all duration-300">
+                     <div className={`${tag.colorClass} mb-1 transition-transform duration-300 group-hover:scale-110`}>
+                       {tag.icon}
+                     </div>
+                     <span className="text-zinc-500 group-hover:text-zinc-950 font-bold text-[7px] sm:text-[8px] uppercase tracking-widest transition-colors leading-none">{tag.label}</span>
+                   </div>
+                 ))}
                </div>
             </Link>
           ))}

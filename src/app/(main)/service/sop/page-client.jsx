@@ -148,7 +148,7 @@ function SOPHero() {
           </div>
 
           {/* Right: Systems Orchestrator Widget */}
-          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[50px]" ref={floatRef}>
+          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px]" ref={floatRef}>
             <style>{`
               @keyframes dash-flow {
                 to { stroke-dashoffset: -20; }

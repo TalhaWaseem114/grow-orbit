@@ -205,7 +205,7 @@ function BrandLaunchHero() {
           </div>
 
           {/* Right: Launch Mission Control */}
-          <div className="lg:col-span-5 relative block mt-0 lg:mt-[70px] scale-[0.95] sm:scale-100 origin-top lg:origin-center" ref={floatRef}>
+          <div className="lg:col-span-5 relative block mt-0 lg:mt-[60px] scale-[0.95] sm:scale-100 origin-top lg:origin-center self-start" ref={floatRef}>
             {/* Floating metric cards */}
             <div className="absolute -top-8 -right-2 lg:-right-4 bg-white rounded-[20px] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.08)] z-30 border border-zinc-100">
               <div className="flex items-center gap-3">

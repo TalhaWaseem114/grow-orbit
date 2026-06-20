@@ -187,7 +187,7 @@ function ListingImagesHero() {
           </div>
 
           {/* ── Right: Amazon listing image mockup ── */}
-          <div className="lg:col-span-5 relative block mt-16 lg:mt-[70px] self-start" ref={floatRef}>
+          <div className="lg:col-span-5 relative block mt-16 lg:mt-[60px] self-start" ref={floatRef}>
             <div className="absolute -top-4 -right-4 bg-white rounded-[20px] p-4 border border-zinc-100 z-30 flex gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center text-white shadow-lg shadow-orange-500/20"><Camera size={16} /></div>
               <div className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center text-white shadow-lg shadow-zinc-900/20"><Sparkles size={16} /></div>
@@ -220,10 +220,10 @@ function ListingImagesHero() {
                   {/* Thumbnail strip */}
                   <div className="col-span-1 flex flex-col gap-1.5">
                     {[
-                      { src: "/assets/portfolio/lumina bites 1/main image.png", active: true  },
-                      { src: "/assets/portfolio/lumina bites 1/2.png", active: false },
-                      { src: "/assets/portfolio/lumina bites 1/3.png", active: false },
-                      { src: "/assets/portfolio/lumina bites 1/4.png", active: false },
+                      { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg", active: true  },
+                      { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872004/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/2.jpg", active: false },
+                      { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872005/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/3.jpg", active: false },
+                      { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872007/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/4.jpg", active: false },
                     ].map((thumb, i) => (
                       <div key={i} className={`aspect-square rounded-lg border-2 ${thumb.active ? "border-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.3)]" : "border-transparent"} overflow-hidden bg-white transition-all duration-300`}>
                         <img src={thumb.src} alt="Amazon Product Thumbnail Detail View" className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all" />
@@ -233,7 +233,7 @@ function ListingImagesHero() {
                   {/* Main image */}
                   <div className="col-span-4 aspect-square rounded-xl bg-white relative overflow-hidden border border-zinc-50 group/hero">
                     <img
-                      src="/assets/portfolio/lumina bites 1/main image.png"
+                      src="https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg"
                       alt="High-Impact Amazon Listing Main Image Optimization Showcase"
                       className="w-full h-full object-cover transition-transform duration-1000 group-hover/hero:scale-110"
                     />
@@ -403,13 +403,13 @@ function BasicToShowcase() {
   };
 
   const imageTypes = [
-    { label: "01 Hero / Main Image",       tag: "HERO",        desc: "White background, product dominant, thumbnail-tested. The first impression that determines CTR from search.", img: "/assets/portfolio/lumina bites 1/main image.png" },
-    { label: "02 Lifestyle Image",         tag: "LIFESTYLE",   desc: "Product in real-life context. Builds desire and emotional connection before the click.", img: "/assets/portfolio/lumina bites 1/6.png" },
-    { label: "03 Feature Infographic",     tag: "INFOGRAPHIC", desc: "Text + visual callouts that communicate benefits without requiring shoppers to read bullet points.", img: "/assets/portfolio/lumina bites 1/3.png" },
-    { label: "04 Comparison Shot",         tag: "COMPARISON",  desc: "Positions your product above alternatives. Answers 'why this one?' without a single word of copy.", img: "/assets/portfolio/lumina bites 1/8.png" },
-    { label: "05 Dimension / Scale Image", tag: "SCALE",       desc: "Removes size anxiety. Critical for home, kitchen, apparel, and any product where size affects purchase decisions.", img: "/assets/portfolio/lumina bites 1/4.png" },
-    { label: "06 How-to / Usage Image",    tag: "USAGE",       desc: "Reduces returns and increases satisfaction. Shows shoppers exactly what they're getting and how to use it.", img: "/assets/portfolio/lumina bites 1/5.png" },
-    { label: "07 Social Proof / UGC-Style",tag: "TRUST",       desc: "Rating callouts, review highlights, and authentic-feeling imagery that builds confidence at the final moment.", img: "/assets/portfolio/lumina bites 1/7.png" },
+    { label: "01 Hero / Main Image",       tag: "HERO",        desc: "White background, product dominant, thumbnail-tested. The first impression that determines CTR from search.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg" },
+    { label: "02 Lifestyle Image",         tag: "LIFESTYLE",   desc: "Product in real-life context. Builds desire and emotional connection before the click.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872009/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/6.jpg" },
+    { label: "03 Feature Infographic",     tag: "INFOGRAPHIC", desc: "Text + visual callouts that communicate benefits without requiring shoppers to read bullet points.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872005/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/3.jpg" },
+    { label: "04 Comparison Shot",         tag: "COMPARISON",  desc: "Positions your product above alternatives. Answers 'why this one?' without a single word of copy.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872012/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/8.jpg" },
+    { label: "05 Dimension / Scale Image", tag: "SCALE",       desc: "Removes size anxiety. Critical for home, kitchen, apparel, and any product where size affects purchase decisions.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872007/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/4.jpg" },
+    { label: "06 How-to / Usage Image",    tag: "USAGE",       desc: "Reduces returns and increases satisfaction. Shows shoppers exactly what they're getting and how to use it.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872008/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/5.jpg" },
+    { label: "07 Social Proof / UGC-Style",tag: "TRUST",       desc: "Rating callouts, review highlights, and authentic-feeling imagery that builds confidence at the final moment.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872010/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/7.jpg" },
   ];
 
   return (
@@ -676,81 +676,87 @@ function Packages() {
 function Portfolio() {
   const examples = [
     {
+      id: "li-01",
       niche: "Snacks",
       rating: 4.9,
       reviews: "8,342",
       metric: { val: "+80%", label: "SALES LIFT" },
-      heroImg: "/assets/portfolio/lumina bites 1/main image.png",
+      heroImg: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg",
       thumbs: [
-        "/assets/portfolio/lumina bites 1/main image.png",
-        "/assets/portfolio/lumina bites 1/2.png",
-        "/assets/portfolio/lumina bites 1/3.png",
-        "/assets/portfolio/lumina bites 1/4.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872004/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/2.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872005/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/3.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872007/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/4.jpg"
       ]
     },
     {
+      id: "li-02",
       niche: "EDC Gear",
       rating: 4.8,
       reviews: "1,245",
       metric: { val: "+65%", label: "CVR LIFT" },
-      heroImg: "/assets/portfolio/nexa pouches/main image.png",
+      heroImg: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872034/grow_orbit_portfolio/assets/portfolio/nexa_pouches/main_image.jpg",
       thumbs: [
-        "/assets/portfolio/nexa pouches/main image.png",
-        "/assets/portfolio/nexa pouches/2.png",
-        "/assets/portfolio/nexa pouches/3.png",
-        "/assets/portfolio/nexa pouches/4.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872034/grow_orbit_portfolio/assets/portfolio/nexa_pouches/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872016/grow_orbit_portfolio/assets/portfolio/nexa_pouches/3.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872017/grow_orbit_portfolio/assets/portfolio/nexa_pouches/4.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872019/grow_orbit_portfolio/assets/portfolio/nexa_pouches/5.jpg"
       ]
     },
     {
+      id: "li-03",
       niche: "Home & Auto",
       rating: 4.9,
       reviews: "4,102",
       metric: { val: "+90%", label: "SALES LIFT" },
-      heroImg: "/assets/portfolio/kazvo vacume cleaner/main image.png",
+      heroImg: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg",
       thumbs: [
-        "/assets/portfolio/kazvo vacume cleaner/main image.png",
-        "/assets/portfolio/kazvo vacume cleaner/2.png",
-        "/assets/portfolio/kazvo vacume cleaner/3.png",
-        "/assets/portfolio/kazvo vacume cleaner/4.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872036/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/2.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872037/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/3.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872038/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/4.jpg"
       ]
     },
     {
+      id: "li-04",
       niche: "Automotive",
       rating: 4.8,
       reviews: "1,523",
       metric: { val: "+105%", label: "SALES LIFT" },
-      heroImg: "/assets/portfolio/kazvo tire inflator/main image.png",
+      heroImg: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg",
       thumbs: [
-        "/assets/portfolio/kazvo tire inflator/main image.png",
-        "/assets/portfolio/kazvo tire inflator/2.png",
-        "/assets/portfolio/kazvo tire inflator/3.png",
-        "/assets/portfolio/kazvo tire inflator/4.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872057/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/3.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872059/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/4.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872060/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/5.jpg"
       ]
     },
     {
+      id: "li-05",
       niche: "DIY & Tools",
       rating: 4.9,
       reviews: "842",
       metric: { val: "+75%", label: "SALES LIFT" },
-      heroImg: "/assets/portfolio/kazvo screw set 78/main image.png",
+      heroImg: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872083/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/main_image.jpg",
       thumbs: [
-        "/assets/portfolio/kazvo screw set 78/main image.png",
-        "/assets/portfolio/kazvo screw set 78/2.png",
-        "/assets/portfolio/kazvo screw set 78/3.png",
-        "/assets/portfolio/kazvo screw set 78/4.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872083/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872077/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/3.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872079/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/4.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872081/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/6.jpg"
       ]
     },
     {
+      id: "li-06",
       niche: "Health & Supplements",
       rating: 4.8,
       reviews: "2,104",
       metric: { val: "+130%", label: "SALES LIFT" },
-      heroImg: "/assets/portfolio/core vitality suppliments/main image.png",
+      heroImg: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872097/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/main_image.jpg",
       thumbs: [
-        "/assets/portfolio/core vitality suppliments/main image.png",
-        "/assets/portfolio/core vitality suppliments/2.png",
-        "/assets/portfolio/core vitality suppliments/3.png",
-        "/assets/portfolio/core vitality suppliments/4.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872097/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/main_image.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872086/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/3.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872088/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/4.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872084/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/10.jpg"
       ]
     }
   ];
@@ -781,89 +787,90 @@ function Portfolio() {
           {examples.map((ex, i) => (
             <Link
               key={i}
-              href="/portfolio?filter=listing-image"
-              className="group relative block p-4 bg-zinc-50 border border-zinc-100 rounded-[40px] transition-all duration-700 ease-out no-underline shadow-none hover:shadow-xl hover:shadow-orange-500/5"
+              href={`/portfolio/${ex.id}`}
+              className="group relative block p-5 bg-[#f0f4f8] rounded-[36px] transition-all duration-700 ease-out no-underline border border-transparent shadow-[10px_10px_20px_#d2dbe6,-10px_-10px_20px_#ffffff] hover:shadow-[16px_16px_32px_#d2dbe6,-16px_-16px_32px_#ffffff]"
             >
+               {/* Card Header (Category & Status) */}
+               <div className="flex items-center justify-between mb-4 px-1">
+                 <span className="text-[9px] font-mono font-bold tracking-[0.2em] text-zinc-500 uppercase">{ex.niche}</span>
+                 <div className="flex items-center gap-1 bg-white/40 backdrop-blur-sm border border-white/45 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.6),0_1px_2px_rgba(0,0,0,0.02)] px-2.5 py-1 rounded-full">
+                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                   <span className="text-[6px] font-black uppercase tracking-widest text-orange-500">Optimized</span>
+                 </div>
+               </div>
+
                {/* Top Section: Thumbs + Main Image */}
                <div className="flex gap-3 mb-4">
 
                  {/* Left Thumbs Column */}
                  <div className="w-[20%] flex flex-col gap-2 shrink-0">
                    {ex.thumbs.map((t, idx) => (
-                     <div key={idx} className={`bg-white aspect-square rounded-2xl overflow-hidden border-[3px] transition-colors duration-300 ${idx === 0 ? "border-orange-500" : "border-transparent"}`}>
+                     <div key={idx} className={`aspect-square rounded-2xl overflow-hidden border-[3px] transition-all duration-300 ${
+                       idx === 0
+                         ? "bg-white border-orange-500 shadow-[2px_2px_5px_rgba(0,0,0,0.05)]"
+                         : "bg-white/30 backdrop-blur-md border border-white/45 shadow-sm"
+                     }`}>
                        <img src={t} alt="Portfolio Thumbnail Showcase" className={`w-full h-full object-contain p-1 rounded-xl ${idx !== 0 && "group-hover:grayscale-0 grayscale-[20%]"}`} />
                      </div>
                    ))}
                  </div>
 
                  {/* Main Listing Viewport (approx 1:1) */}
-                 <div className="flex-1 aspect-square rounded-2xl overflow-hidden relative bg-white border border-zinc-100/50 flex items-center justify-center">
+                 <div className="flex-1 aspect-square rounded-2xl overflow-hidden relative bg-white/90 backdrop-blur-md border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.03)] flex items-center justify-center">
                     <img
                       src={ex.heroImg}
                       alt={ex.niche}
-                      className="w-full h-full object-contain p-4 transition-transform duration-[3s] group-hover:scale-105"
+                      className="w-full h-full object-cover p-0 transition-transform duration-[3s] group-hover:scale-105"
                     />
 
                     {/* Enhanced Hover Overlay (Centered Premium Indicator) */}
                     <div className="absolute inset-0 bg-zinc-950/60 backdrop-blur-[3px] opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col items-center justify-center z-10">
-                      <div className="w-16 h-16 rounded-full bg-white/10 backdrop-blur-3xl border border-white/20 flex items-center justify-center text-white mb-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                        <Eye size={24} />
+                      <div className="w-14 h-14 rounded-full bg-white/10 backdrop-blur-3xl border border-white/20 flex items-center justify-center text-white mb-3 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                        <Eye size={20} />
                       </div>
-                      <span className="text-white font-black text-[10px] tracking-[0.4em] uppercase text-center px-6 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
-                        View Listing<br/>Images
+                      <span className="text-white font-black text-[8px] tracking-[0.3em] uppercase text-center px-4 leading-relaxed opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
+                        View Details
                       </span>
                     </div>
 
                     {/* Top Right Analytics (Metric Pill) */}
-                    <div className="absolute top-4 right-4 z-20 bg-zinc-950/90 backdrop-blur-3xl border border-white/10 rounded-2xl p-3 flex flex-col items-center justify-center gap-0.5 shadow-none transform transition-transform duration-500 group-hover:translate-y-[-4px]">
+                    <div className="absolute top-3 right-3 z-20 bg-zinc-950/90 backdrop-blur-3xl border border-white/10 rounded-xl p-2 flex flex-col items-center justify-center gap-0.5 shadow-none transform transition-transform duration-500 group-hover:translate-y-[-2px]">
                       <span className="text-orange-500 font-black text-xs tracking-tighter leading-none">{ex.metric.val}</span>
-                      <span className="text-[6px] font-bold uppercase tracking-widest text-zinc-500 leading-none">{ex.metric.label}</span>
-                    </div>
-
-                    {/* Orange Result Badge (Bottom Left) */}
-                    <div className="absolute bottom-4 left-4 z-20 bg-orange-500 text-white rounded-xl px-3 py-2 flex items-center gap-2 shadow-lg shadow-orange-500/20 transform -translate-x-1 group-hover:translate-x-0 transition-transform duration-500">
-                      <TrendingUp size={12} />
-                      <div className="flex flex-col">
-                        <span className="text-[11px] font-black leading-none">{ex.metric.val}</span>
-                        <span className="text-[7px] font-bold uppercase tracking-widest leading-none mt-1">{ex.metric.label}</span>
-                      </div>
+                      <span className="text-[5px] font-bold uppercase tracking-widest text-zinc-500 leading-none">{ex.metric.label}</span>
                     </div>
 
                     {/* Bottom Right Indicator */}
-                    <div className="absolute bottom-4 right-4 z-20 bg-white/95 backdrop-blur-sm rounded-full px-3 py-1.5 border border-zinc-100/50">
-                      <span className="text-zinc-600 font-bold text-[10px] tracking-wider">1 / 7</span>
+                    <div className="absolute bottom-3 right-3 z-20 bg-white/95 backdrop-blur-sm rounded-full px-2 py-1 border border-zinc-100/50">
+                      <span className="text-zinc-600 font-bold text-[8px] tracking-wider">1 / 7</span>
                     </div>
                  </div>
                </div>
 
                {/* Rating Section */}
-               <div className="flex items-center gap-2 mb-6 px-1">
+               <div className="flex items-center gap-2 mb-4 px-1">
                  <div className="flex gap-[2px] text-orange-500">
-                    {[...Array(4)].map((_, i) => <Star key={i} size={15} className="fill-orange-500" />)}
-                    <StarHalf size={15} className="fill-orange-500 text-orange-500" />
+                    {[...Array(4)].map((_, idx) => <Star key={idx} size={13} className="fill-orange-500" />)}
+                    <StarHalf size={13} className="fill-orange-500 text-orange-500" />
                  </div>
-                 <span className="font-extrabold text-orange-500 text-[13px] tracking-tight">{ex.rating}</span>
-                 <span className="text-zinc-400 text-[11px] font-medium ml-1">({ex.reviews} ratings)</span>
+                 <span className="font-extrabold text-orange-500 text-[12px] tracking-tight">{ex.rating}</span>
+                 <span className="text-zinc-500 text-[10px] font-medium ml-1">({ex.reviews} ratings)</span>
                </div>
 
-               {/* Buttons Row (Vibrant Reference Style) */}
-               <div className="grid grid-cols-4 gap-2 px-0.5 mt-2">
-                 <div className="col-span-1 flex items-center justify-center gap-1.5 bg-gradient-to-r from-orange-500 to-amber-400 rounded-full py-2.5 hover:scale-105 transition-all duration-300">
-                   <Camera size={11} className="text-white shrink-0" />
-                   <span className="text-white font-black text-[7px] uppercase tracking-widest">Hero</span>
-                 </div>
-                 <div className="col-span-1 flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#7c3aed] to-[#a855f7] rounded-full py-2.5 hover:scale-105 transition-all duration-300">
-                   <ShoppingBag size={11} className="text-white shrink-0" />
-                   <span className="text-white font-black text-[7px] uppercase tracking-widest">Life</span>
-                 </div>
-                 <div className="col-span-1 flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#ff2d55] to-[#ff3b30] rounded-full py-2.5 hover:scale-105 transition-all duration-300">
-                   <Sparkles size={11} className="text-white shrink-0" />
-                   <span className="text-white font-black text-[7px] uppercase tracking-widest">Info</span>
-                 </div>
-                 <div className="col-span-1 flex items-center justify-center gap-1.5 bg-gradient-to-r from-[#00c7be] to-[#00d2c3] rounded-full py-2.5 hover:scale-105 transition-all duration-300">
-                   <Boxes size={11} className="text-white shrink-0" />
-                   <span className="text-white font-black text-[7px] uppercase tracking-widest">3D</span>
-                 </div>
+               {/* Premium Neumorphic Feature Tags Grid */}
+               <div className="grid grid-cols-4 gap-1.5 mt-4 px-0.5 border-t border-white/40 pt-4">
+                 {[
+                   { label: "Hero", icon: <Camera size={11} />, colorClass: "text-blue-500" },
+                   { label: "Lifestyle", icon: <ShoppingBag size={11} />, colorClass: "text-emerald-500" },
+                   { label: "Infographic", icon: <Sparkles size={11} />, colorClass: "text-violet-500" },
+                   { label: "3D Render", icon: <Boxes size={11} />, colorClass: "text-orange-500" },
+                 ].map((tag, j) => (
+                   <div key={j} className="col-span-1 flex flex-col items-center justify-center py-2.5 rounded-2xl bg-white/35 backdrop-blur-md border border-white/30 shadow-[0_4px_12px_rgba(0,0,0,0.01)] group-hover:bg-white/50 group-hover:border-orange-500/15 transition-all duration-300">
+                     <div className={`${tag.colorClass} mb-1 transition-transform duration-300 group-hover:scale-110`}>
+                       {tag.icon}
+                     </div>
+                     <span className="text-zinc-500 group-hover:text-zinc-950 font-bold text-[7px] sm:text-[8px] uppercase tracking-widest transition-colors leading-none">{tag.label}</span>
+                   </div>
+                 ))}
                </div>
             </Link>
           ))}
@@ -888,6 +895,37 @@ function Portfolio() {
    06b — WHAT BAD IMAGES COST YOU
    ═══════════════════════════════════════════════ */
 function CostCalculator() {
+  const [category, setCategory] = useState("beauty");
+  const [adSpend, setAdSpend] = useState(10000);
+  const [currentCtr, setCurrentCtr] = useState(0.4);
+  const [customBenchmark, setCustomBenchmark] = useState(1.1);
+
+  const categories = [
+    { id: "supplements", name: "Supplements", icon: "💊", benchmark: 1.2, cpc: 2.20 },
+    { id: "beauty", name: "Beauty", icon: "✨", benchmark: 1.1, cpc: 1.75 },
+    { id: "home", name: "Home & Kitchen", icon: "🍳", benchmark: 0.9, cpc: 1.10 },
+    { id: "electronics", name: "Electronics", icon: "💻", benchmark: 1.0, cpc: 1.40 },
+    { id: "pets", name: "Pet Supplies", icon: "🐕", benchmark: 1.3, cpc: 1.60 },
+    { id: "custom", name: "Custom", icon: "⚙️", benchmark: 1.5, cpc: 1.50 },
+  ];
+
+  const activeCategory = categories.find((c) => c.id === category);
+  const benchmarkCtr = category === "custom" ? customBenchmark : activeCategory.benchmark;
+  const cpc = activeCategory.cpc;
+
+  // Calculations
+  const opportunityGap = currentCtr >= benchmarkCtr ? 0 : Math.round(((benchmarkCtr - currentCtr) / benchmarkCtr) * 100);
+  const lostValue = Math.round(adSpend * (opportunityGap / 100));
+  const currentClicks = Math.round(adSpend / cpc);
+  const benchmarkClicks = Math.round(currentClicks * (benchmarkCtr / currentCtr));
+  const clicksLost = currentCtr >= benchmarkCtr ? 0 : Math.max(0, benchmarkClicks - currentClicks);
+
+  // SVG Gauge calculations
+  const strokeWidth = 6;
+  const radius = 50;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (opportunityGap / 100) * circumference;
+
   return (
     <section className="py-16 md:py-24 bg-zinc-950 relative overflow-hidden">
       {/* Premium Background Elements */}
@@ -903,18 +941,18 @@ function CostCalculator() {
         <div className="absolute top-[15%] left-[10%] w-32 h-32 bg-orange-600/10 blur-[60px] rounded-full animate-pulse" />
         <div className="absolute bottom-[20%] right-[5%] w-40 h-40 bg-purple-600/10 blur-[80px] rounded-full animate-pulse delay-1000" />
 
-        {/* Orbiting particles (simplified) */}
+        {/* Orbiting particles */}
         <div className="absolute top-1/4 left-1/4 w-1 h-1 bg-white rounded-full blur-[1px] animate-[ping_3s_infinite]" />
         <div className="absolute bottom-1/3 right-1/4 w-1.5 h-1.5 bg-orange-500 rounded-full blur-[2px] animate-[pulse_4s_infinite]" />
       </div>
 
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/20 to-transparent" />
 
-      <div className="max-w-[900px] mx-auto px-6 lg:px-12 relative z-10">
+      <div className="max-w-[1100px] mx-auto px-6 lg:px-12 relative z-10">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-3 mb-4 bg-white/[0.03] border border-white/10 px-4 py-1.5 rounded-full">
             <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-            <p className="text-[9px] font-mono font-bold uppercase tracking-[0.4em] text-zinc-400">Conversion Math</p>
+            <p className="text-[9px] font-mono font-bold uppercase tracking-[0.4em] text-zinc-400">Leak Calculator</p>
           </div>
           <h2
             className="text-[32px] md:text-[70px] font-black tracking-tighter uppercase leading-[0.9] md:leading-[0.85] text-white mb-6"
@@ -926,99 +964,233 @@ function CostCalculator() {
             </span>
           </h2>
           <p className="text-zinc-500 text-sm font-light max-w-xl mx-auto leading-relaxed">
-            Amazon shoppers decide in <span className="text-white font-bold">1.3 seconds</span>. If your images aren't category-leading, you're paying a "boring tax" on every click.
+            Amazon shoppers decide in <span className="text-white font-bold">1.3 seconds</span>. Adjust the sliders below to calculate the impact of sub-par listing graphics on your business.
           </p>
         </div>
 
         <div className="relative group">
-          {/* Card Glow Effect */}
-          <div className="absolute -inset-1 bg-gradient-to-b from-orange-500/20 to-transparent blur-2xl rounded-[48px] opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+          <div className="absolute -inset-1 bg-gradient-to-b from-orange-500/20 to-transparent blur-2xl rounded-[48px] opacity-30 group-hover:opacity-50 transition-opacity duration-1000" />
 
-          <div className="relative bg-[#080808]/80 border border-white/[0.08] rounded-[48px] p-8 md:p-10 lg:px-14 lg:py-12 backdrop-blur-2xl shadow-2xl">
-            <div className="space-y-8">
-              {/* Row: Current CTR */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-2 border-b border-white/[0.05]">
-                <div className="flex items-center gap-5">
-                  <div className="w-10 h-10 rounded-2xl bg-red-500/10 flex items-center justify-center border border-red-500/20 shadow-[0_0_15px_rgba(239,68,68,0.1)]">
-                    <Activity size={18} className="text-red-400" />
-                  </div>
-                  <span className="text-zinc-400 text-sm font-medium tracking-wide uppercase">Your current CTR</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="h-1 w-24 bg-white/5 rounded-full overflow-hidden hidden md:block">
-                    <div className="h-full bg-red-500 w-[30%]" />
-                  </div>
-                  <span className="text-3xl sm:text-4xl font-black text-red-500 tracking-tighter tabular-nums">0.4%</span>
-                </div>
-              </div>
-
-              {/* Row: Benchmark CTR */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-2 border-b border-white/[0.05]">
-                <div className="flex items-center gap-5">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 shadow-[0_0_15px_rgba(16,185,129,0.1)]">
-                    <Target size={18} className="text-emerald-400" />
-                  </div>
-                  <span className="text-zinc-400 text-sm font-medium tracking-wide uppercase">Category average CTR</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="h-1 w-24 bg-white/5 rounded-full overflow-hidden hidden md:block">
-                    <div className="h-full bg-emerald-500 w-[80%]" />
-                  </div>
-                  <span className="text-3xl sm:text-4xl font-black text-white tracking-tighter tabular-nums">1.1%</span>
-                </div>
-              </div>
-
-              {/* Row: The Gap */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-2 border-b border-white/[0.05]">
-                <div className="flex items-center gap-5">
-                  <div className="w-10 h-10 rounded-2xl bg-orange-500/10 flex items-center justify-center border border-orange-500/20 shadow-[0_0_15px_rgba(249,115,22,0.1)]">
-                    <Zap size={18} className="text-orange-400" />
-                  </div>
-                  <span className="text-zinc-400 text-sm font-medium tracking-wide uppercase">Opportunity Gap</span>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="h-1 w-24 bg-white/5 rounded-full overflow-hidden hidden md:block">
-                    <div className="h-full bg-orange-500 w-[63%]" />
-                  </div>
-                  <span className="text-3xl sm:text-4xl font-black text-orange-500 tracking-tighter tabular-nums">63%</span>
-                </div>
-              </div>
-
-              {/* The Punchline Impact Card */}
-              <div className="relative mt-16 group/punchline">
-                <div className="absolute inset-0 bg-gradient-to-br from-red-600/30 via-orange-600/10 to-transparent rounded-[32px] blur-xl opacity-50 group-hover/punchline:opacity-80 transition-opacity duration-700" />
-
-                <div className="relative bg-zinc-950/60 border border-white/10 rounded-[32px] p-8 md:p-12 backdrop-blur-3xl overflow-hidden">
-                  {/* Subtle red leak animation */}
-                  <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-30 animate-pulse" />
-
-                  <div className="flex flex-col md:flex-row items-center justify-between gap-10">
-                    <div className="text-center md:text-left relative z-10">
-                      <div className="inline-flex items-center gap-2 bg-red-500/20 border border-red-500/30 px-3 py-1 rounded-full mb-6">
-                        <div className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
-                        <span className="text-[9px] font-black uppercase tracking-[0.25em] text-red-400">On $10K/mo Ad Spend</span>
-                      </div>
-                      <div className="flex flex-col gap-1">
-                        <p className="text-5xl md:text-7xl font-black tracking-tighter text-white leading-none" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                          $6,300<span className="text-red-500/80 text-3xl md:text-5xl ml-1">/mo</span>
-                        </p>
-                        <p className="text-zinc-500 text-xs font-mono uppercase tracking-[0.3em] mt-3">Monthly Lost Traffic Value</p>
-                      </div>
-                    </div>
-
-                    <div className="shrink-0 relative z-10 w-full md:w-auto">
-                      <Link
-                        href="/contact"
-                        className="group/btn relative w-full flex items-center justify-center bg-orange-500 hover:bg-white text-white hover:text-black font-black text-[12px] uppercase tracking-[0.2em] px-10 py-5 rounded-2xl no-underline transition-all duration-500 shadow-[0_20px_40px_rgba(249,115,22,0.2)] whitespace-nowrap"
+          <div className="relative bg-[#080808]/90 border border-white/[0.08] rounded-[48px] p-6 md:p-10 lg:p-12 backdrop-blur-2xl shadow-2xl">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-stretch">
+              
+              {/* Inputs Column */}
+              <div className="lg:col-span-7 space-y-8 pr-0 lg:pr-6 border-b lg:border-b-0 lg:border-r border-white/[0.08] pb-10 lg:pb-0">
+                {/* Category Selection */}
+                <div>
+                  <label className="block text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 mb-4">
+                    1. Select Product Category
+                  </label>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {categories.map((cat) => (
+                      <button
+                        key={cat.id}
+                        onClick={() => setCategory(cat.id)}
+                        className={`flex flex-col items-start p-3 rounded-2xl border transition-all text-left group/btn ${
+                          category === cat.id
+                            ? "bg-orange-500/10 border-orange-500 text-white"
+                            : "bg-white/[0.02] border-white/5 text-zinc-400 hover:bg-white/[0.04] hover:border-white/10"
+                        }`}
                       >
-                        Stop The Leak
-                        <ArrowRight size={16} className="absolute right-6 group-hover/btn:translate-x-2 transition-transform duration-500" />
-                      </Link>
-                      <p className="text-[9px] text-zinc-600 text-center uppercase tracking-widest font-bold mt-4">Immediate Implementation Available</p>
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <span className="text-sm">{cat.icon}</span>
+                          <span className="text-[11px] font-bold tracking-tight uppercase">{cat.name}</span>
+                        </div>
+                        <span className="text-[9px] font-mono text-zinc-500">
+                          {cat.id === "custom" ? "Adjust Target" : `Benchmark: ${cat.benchmark}%`}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Ad Spend Slider */}
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
+                      2. Monthly Ad Spend
+                    </label>
+                    <span className="text-lg font-black text-white tracking-tight">
+                      ${adSpend.toLocaleString()}
+                    </span>
+                  </div>
+                  <div className="relative flex items-center">
+                    <input
+                      type="range"
+                      min="1000"
+                      max="100000"
+                      step="1000"
+                      value={adSpend}
+                      onChange={(e) => setAdSpend(Number(e.target.value))}
+                      className="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                    />
+                  </div>
+                  <div className="flex justify-between text-[9px] font-mono text-zinc-600 mt-2">
+                    <span>$1K</span>
+                    <span>$50K</span>
+                    <span>$100K</span>
+                  </div>
+                </div>
+
+                {/* Current CTR Slider */}
+                <div>
+                  <div className="flex justify-between items-center mb-3">
+                    <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
+                      3. Your Current CTR
+                    </label>
+                    <span className="text-lg font-black text-red-500 tracking-tight">
+                      {currentCtr.toFixed(2)}%
+                    </span>
+                  </div>
+                  <div className="relative flex items-center">
+                    <input
+                      type="range"
+                      min="0.1"
+                      max="3.0"
+                      step="0.05"
+                      value={currentCtr}
+                      onChange={(e) => setCurrentCtr(Number(e.target.value))}
+                      className="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-red-500"
+                    />
+                  </div>
+                  <div className="flex justify-between text-[9px] font-mono text-zinc-600 mt-2">
+                    <span>0.1% (Low)</span>
+                    <span>1.5%</span>
+                    <span>3.0% (Excellent)</span>
+                  </div>
+                </div>
+
+                {/* Custom Benchmark Slider (conditional) */}
+                {category === "custom" && (
+                  <div className="animate-[fadeIn_0.3s_ease-out]">
+                    <div className="flex justify-between items-center mb-3">
+                      <label className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
+                        4. Custom Target CTR
+                      </label>
+                      <span className="text-lg font-black text-emerald-400 tracking-tight">
+                        {customBenchmark.toFixed(2)}%
+                      </span>
+                    </div>
+                    <div className="relative flex items-center">
+                      <input
+                        type="range"
+                        min="0.5"
+                        max="4.0"
+                        step="0.1"
+                        value={customBenchmark}
+                        onChange={(e) => setCustomBenchmark(Number(e.target.value))}
+                        className="w-full h-1.5 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-emerald-500"
+                      />
+                    </div>
+                    <div className="flex justify-between text-[9px] font-mono text-zinc-600 mt-2">
+                      <span>0.5%</span>
+                      <span>2.2%</span>
+                      <span>4.0%</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Results Column */}
+              <div className="lg:col-span-5 flex flex-col justify-between space-y-8 pl-0 lg:pl-6">
+                <div className="space-y-6">
+                  <span className="block text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400">
+                    Live Performance Diagnostics
+                  </span>
+
+                  {/* Circle Gauge & Summary */}
+                  <div className="flex flex-col sm:flex-row items-center gap-6 bg-white/[0.01] border border-white/5 rounded-3xl p-5">
+                    {/* SVG Gauge */}
+                    <div className="relative w-28 h-28 shrink-0 flex items-center justify-center">
+                      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 112 112">
+                        {/* Background circle */}
+                        <circle
+                          cx="56"
+                          cy="56"
+                          r={radius}
+                          strokeWidth={strokeWidth}
+                          stroke="rgba(255,255,255,0.03)"
+                          fill="transparent"
+                        />
+                        {/* Progress circle */}
+                        <circle
+                          cx="56"
+                          cy="56"
+                          r={radius}
+                          strokeWidth={strokeWidth}
+                          stroke={opportunityGap > 0 ? "#f97316" : "#10b981"}
+                          fill="transparent"
+                          strokeDasharray={circumference}
+                          strokeDashoffset={strokeDashoffset}
+                          strokeLinecap="round"
+                          className="transition-all duration-500 ease-out"
+                        />
+                      </svg>
+                      {/* Gauge Inner Label */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center">
+                        <span className={`text-2xl font-black tracking-tighter leading-none ${opportunityGap > 0 ? "text-orange-500" : "text-emerald-500"}`}>
+                          {opportunityGap}%
+                        </span>
+                        <span className="text-[7px] font-mono text-zinc-500 uppercase tracking-widest mt-1">
+                          {opportunityGap > 0 ? "Leak Gap" : "Optimal"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 text-center sm:text-left">
+                      <h4 className="text-sm font-bold text-white uppercase tracking-wider">
+                        {opportunityGap > 0 ? "Opportunity Leak Found" : "Performance Optimized!"}
+                      </h4>
+                      <p className="text-xs text-zinc-500 font-light leading-relaxed">
+                        {opportunityGap > 0
+                          ? `Your current images are underperforming compared to the category average CTR of ${benchmarkCtr.toFixed(2)}%.`
+                          : `Amazing! Your CTR is equal to or higher than the benchmark CTR of ${benchmarkCtr.toFixed(2)}%.`}
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Financial Waste Display */}
+                  <div className="relative overflow-hidden bg-zinc-950 border border-white/10 rounded-[28px] p-6 shadow-inner">
+                    {/* Glowing background behind lost cash */}
+                    <div className={`absolute inset-0 bg-gradient-to-tr opacity-20 blur-xl ${opportunityGap > 0 ? 'from-red-600/30 via-orange-600/10' : 'from-emerald-600/20'} to-transparent`} />
+                    
+                    <div className="relative z-10 flex flex-col gap-1.5">
+                      <span className="text-[8px] font-mono font-bold uppercase tracking-widest text-zinc-500">
+                        {opportunityGap > 0 ? "Monthly Traffic Value Lost" : "Ad Spend Protection"}
+                      </span>
+                      <p className={`text-4xl md:text-5xl font-black tracking-tighter leading-none ${opportunityGap > 0 ? "text-red-500" : "text-emerald-400"}`}>
+                        ${lostValue.toLocaleString()}
+                        <span className="text-zinc-500 text-lg font-mono font-normal ml-1">/mo</span>
+                      </p>
+                      
+                      {opportunityGap > 0 ? (
+                        <p className="text-[10px] text-zinc-500 font-light mt-2">
+                          Equivalent to losing <span className="text-white font-bold">{clicksLost.toLocaleString()} potential clicks</span> every month.
+                        </p>
+                      ) : (
+                        <p className="text-[10px] text-zinc-500 font-light mt-2">
+                          Your visual funnel is capturing the maximum click value for your budget.
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
+
+                <div className="w-full">
+                  <Link
+                    href="/contact"
+                    className="group/btn relative w-full flex items-center justify-center bg-orange-500 hover:bg-white text-white hover:text-black font-black text-[11px] uppercase tracking-[0.2em] px-8 py-4.5 rounded-2xl no-underline transition-all duration-500 shadow-[0_20px_40px_rgba(249,115,22,0.15)] hover:shadow-[0_20px_40px_rgba(255,255,255,0.1)] whitespace-nowrap"
+                  >
+                    {opportunityGap > 0 ? "Stop The Traffic Leak" : "Claim Your Scale Strategy"}
+                    <ArrowRight size={15} className="absolute right-6 group-hover/btn:translate-x-2 transition-transform duration-500" />
+                  </Link>
+                  <p className="text-[8px] text-zinc-600 text-center uppercase tracking-[0.15em] font-mono mt-3">
+                    Includes Free 15-Min Visual CTR Audit
+                  </p>
+                </div>
+
               </div>
+
             </div>
           </div>
         </div>

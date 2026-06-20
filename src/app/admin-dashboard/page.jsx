@@ -285,11 +285,10 @@ export default function AdminDashboard() {
     if (authChecking) return;
     const lQ = query(collection(db, leadsCollectionName), orderBy("createdAt", "desc"));
     const unsub = onSnapshot(lQ,
-      async (snapshot) => {
+      (snapshot) => {
         const rawDocs = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
         // Separate booking confirmations from actual leads
-        const confirmations = rawDocs.filter(d => d.type === "booking_confirmation");
         const actualLeads = rawDocs.filter(d => d.type !== "booking_confirmation").map(d => {
           let status = d.status || "new";
           if (status === "new" && d.createdAt) {
@@ -302,59 +301,9 @@ export default function AdminDashboard() {
           return { ...d, status };
         });
 
-        // Process confirmations if logged-in admin has permissions
-        await Promise.all(confirmations.map(async (conf) => {
-          const targetLead = actualLeads.find(l => l.id === conf.leadId || (l.email === conf.email && conf.email));
-          if (targetLead) {
-            // Only update if not already marked booked
-            if (!targetLead.meetingBooked) {
-              try {
-                const leadRef = doc(db, leadsCollectionName, targetLead.id);
-                await updateDoc(leadRef, {
-                  meetingBooked: true,
-                  status: "hot", // Automatically mark as HOT when a meeting is booked
-                  priority: "high", // Auto-set priority to HIGH when meeting is booked
-                  timeline: arrayUnion({
-                    text: "Meeting successfully scheduled on Calendly.",
-                    timestamp: new Date(),
-                    adminName: "System",
-                    adminId: "system"
-                  })
-                });
-              } catch (err) {
-                console.warn("Failed to update parent lead with booking status:", err.message);
-              }
-            }
-            // Clean up the confirmation document
-            try {
-              const confRef = doc(db, leadsCollectionName, conf.id);
-              await deleteDoc(confRef);
-            } catch (err) {
-              console.warn("Failed to delete processed booking confirmation:", err.message);
-            }
-          } else {
-            // If parent lead is not found (deleted or not loaded yet), clean up orphaned confirmation
-            try {
-              const confRef = doc(db, leadsCollectionName, conf.id);
-              await deleteDoc(confRef);
-            } catch (err) {
-              console.warn("Failed to delete orphaned booking confirmation:", err.message);
-            }
-          }
-        }));
-
-        // Apply temporary local booked status for leads whose confirmations are in this snapshot batch
-        const processedLeads = actualLeads.map(l => {
-          const hasConfirmation = confirmations.some(c => c.leadId === l.id || (c.email === l.email && l.email));
-          if (hasConfirmation) {
-            return { ...l, meetingBooked: true, status: "hot" };
-          }
-          return l;
-        });
-
         // Send browser notification if a new actual lead was appended
-        if (prevLeadCount.current !== null && processedLeads.length > prevLeadCount.current) {
-          const latest = processedLeads[0];
+        if (prevLeadCount.current !== null && actualLeads.length > prevLeadCount.current) {
+          const latest = actualLeads[0];
           if ("Notification" in window && Notification.permission === "granted") {
             const n = new Notification("🚀 New Lead — Grow Orbit", {
               body: `${latest.fullName || "Someone"} just enquired about ${latest.requestedService || "your services"}`,
@@ -370,8 +319,8 @@ export default function AdminDashboard() {
             };
           }
         }
-        prevLeadCount.current = processedLeads.length;
-        setLeads(processedLeads);
+        prevLeadCount.current = actualLeads.length;
+        setLeads(actualLeads);
       },
       (error) => {
         console.warn("[AdminDashboard] Real-time Leads snapshot subscription error:", error.message);

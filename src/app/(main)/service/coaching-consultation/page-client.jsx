@@ -186,7 +186,7 @@ function CoachingHero() {
           </div>
 
           {/* ── Right: Premium Diagnostics Room ── */}
-          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[70px]" ref={floatRef}>
+          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px]" ref={floatRef}>
             {/* Ambient Backglow */}
             <div className="absolute -inset-10 bg-gradient-to-br from-orange-500/20 via-transparent to-orange-500/10 blur-[80px] rounded-full pointer-events-none" />
 

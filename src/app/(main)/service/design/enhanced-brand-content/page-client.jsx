@@ -44,7 +44,7 @@ function EnhancedContentCTA() {
               <Sparkles size={600} strokeWidth={0.2} className="text-orange-500" />
             </div>
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
               {/* Left Column: Content */}
               <div className="lg:col-span-7">
@@ -94,7 +94,7 @@ function EnhancedContentCTA() {
               </div>
 
               {/* Right Column: 15-Minute Strategy Card */}
-              <div className="lg:col-span-5 block mt-12 lg:mt-0 relative group/card">
+              <div className="lg:col-span-5 block mt-12 lg:mt-[60px] relative group/card self-start">
                 <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-[32px] p-5 sm:p-8 shadow-2xl overflow-hidden hover:border-orange-500/30 transition-all duration-500">
 
                   {/* Card Glow */}
@@ -325,7 +325,7 @@ function EBCHero() {
           </div>
 
           {/* Right — A+ Content Composer Visual */}
-          <div className="lg:col-span-5 relative block mt-16 lg:mt-[70px] self-start">
+          <div className="lg:col-span-5 relative block mt-16 lg:mt-[60px] self-start">
             <div className="relative scale-[0.82] sm:scale-[0.95] lg:scale-100 origin-top sm:origin-top-right">
 
               {/* Ambient Glows */}
@@ -366,18 +366,12 @@ function EBCHero() {
                 <div className="relative z-10 p-5 space-y-3">
 
                   {/* Module: Hero Banner Preview */}
-                  <div className="relative rounded-2xl overflow-hidden aspect-[16/5] border border-orange-500/15 group/hero">
+                  <div className="relative rounded-2xl overflow-hidden aspect-[16/5.5] border border-orange-500/15 group/hero">
                     <img
-                      src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271732/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-1.png"
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover/hero:scale-110"
+                      src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271681/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-1.png"
+                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover/hero:scale-110"
                       alt="Premium A+ Hero Design"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
-                    <div className="absolute inset-0 flex items-center px-6">
-                      <div className="text-left">
-                        <span className="text-[8px] font-black text-white uppercase tracking-[0.3em] drop-shadow-md">Hero Banner</span>
-                      </div>
-                    </div>
                     <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm rounded-full px-2.5 py-1 border border-white/10">
                       <div className="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse" />
                       <span className="text-[6px] font-black text-white/90 uppercase tracking-widest">Deployed</span>
@@ -389,15 +383,14 @@ function EBCHero() {
                   <div className="space-y-2">
                     <div className="grid grid-cols-3 gap-2">
                       {[
-                        { icon: <Star size={12} />, label: "Quality", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271720/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/2.png" },
-                        { icon: <ShieldCheck size={12} />, label: "Trust", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271723/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/3.png" },
-                        { icon: <Zap size={12} />, label: "Speed", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271726/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/4.png" }
+                        { icon: <Star size={12} />, label: "Quality", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872024/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-2.jpg" },
+                        { icon: <ShieldCheck size={12} />, label: "Trust", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872025/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-3.jpg" },
+                        { icon: <Zap size={12} />, label: "Design", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271686/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-4.png" }
                       ].map((f, i) => (
-                        <div key={i} className="group/feat relative aspect-square bg-white/[0.03] border border-white/5 rounded-xl overflow-hidden hover:border-orange-500/40 transition-all duration-500">
-                          <img src={f.img} className="w-full h-full object-cover opacity-60 group-hover/feat:scale-125 group-hover/feat:opacity-100 transition-all duration-700" alt={`${f.label} Feature Highlight`} />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                          <div className="absolute bottom-2 left-0 right-0 text-center">
-                            <span className="text-[6px] font-black text-white uppercase tracking-widest drop-shadow-lg">{f.label}</span>
+                        <div key={i} className="group/feat relative aspect-[4/3] bg-white/[0.03] border border-white/5 rounded-xl overflow-hidden hover:border-orange-500/40 transition-all duration-500">
+                          <img src={f.img} className="w-full h-full object-cover object-top opacity-60 group-hover/feat:scale-125 group-hover/feat:opacity-100 transition-all duration-700" alt={`${f.label} Feature Highlight`} />
+                          <div className="absolute top-1.5 left-1.5 bg-black/50 backdrop-blur-sm rounded px-1.5 py-0.5 border border-white/10">
+                            <span className="text-[5px] font-black text-white/90 uppercase tracking-widest">{f.label}</span>
                           </div>
                           <div className="absolute top-2 right-2 w-5 h-5 rounded-lg bg-orange-500/80 backdrop-blur-sm flex items-center justify-center text-white scale-0 group-hover/feat:scale-100 transition-transform">
                              {React.cloneElement(f.icon, { size: 10 })}
@@ -646,12 +639,12 @@ function WhyEBCMatters() {
    ═══════════════════════════════════════════════ */
 function ModuleTypes() {
   const modules = [
-    { tag: "BANNER",  label: "Full-Width Banner",        desc: "Hero-style imagery that spans the entire content area. Sets the tone for your brand story and grabs immediate attention.", img: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=600&auto=format&fit=crop" },
-    { tag: "GRID",    label: "Feature Grid",             desc: "3-column or 4-column layouts showcasing product benefits with icon + text combinations that shoppers scan instantly.", img: "https://images.unsplash.com/photo-1595341888016-a3929810963a?q=80&w=600&auto=format&fit=crop" },
-    { tag: "COMPARE", label: "Comparison Chart",         desc: "Side-by-side product comparisons that position your offering as the clear winner in the category.", img: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?q=80&w=600&auto=format&fit=crop" },
-    { tag: "STORY",   label: "Image & Text Overlay",     desc: "Lifestyle imagery with integrated copywriting that communicates your brand values and product story.", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=600&auto=format&fit=crop" },
-    { tag: "SIDEBAR", label: "Image & Sidebar",          desc: "Split-screen layout pairing detailed visuals with key specifications, ideal for technical products.", img: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&auto=format&fit=crop" },
-    { tag: "BRAND",   label: "Brand Story Carousel",     desc: "A horizontally scrolling brand showcase above A+ Content — builds trust and cross-sells your catalog.", img: "https://images.unsplash.com/photo-1493612276216-ee3925520721?q=80&w=600&auto=format&fit=crop" },
+    { tag: "BANNER",  label: "Full-Width Banner",        desc: "Hero-style imagery that spans the entire content area. Sets the tone for your brand story and grabs immediate attention.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872063/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-1.jpg" },
+    { tag: "CALLOUT", label: "Technical Callout",        desc: "Detailed x-ray or diagram views highlighting internal components and core technologies to build product trust.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872064/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-10.jpg" },
+    { tag: "LIFESTYLE", label: "In-Use Context",         desc: "High-impact lifestyle photography showing the product in action, helping customers visualize ownership.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872112/grow_orbit_portfolio/neogrid_hand_grip/aplus-5.jpg" },
+    { tag: "STORY",   label: "Image & Text Overlay",     desc: "Lifestyle imagery with integrated copywriting that communicates your brand values and product story.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872024/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-2.jpg" },
+    { tag: "SIDEBAR", label: "Image & Sidebar",          desc: "Split-screen layout pairing detailed visuals with key specifications, ideal for technical products.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872069/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-5.jpg" },
+    { tag: "BRAND",   label: "Brand Story Header",       desc: "A premium brand showcase above A+ Content — builds trust, establishes authority, and cross-sells your catalog.", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872128/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-1.jpg" },
   ];
 
   return (
@@ -680,7 +673,7 @@ function ModuleTypes() {
                 <span className="text-[9px] font-mono font-black text-orange-500 bg-orange-500/10 border border-orange-500/20 px-3 py-1.5 rounded-full uppercase tracking-widest">{m.tag}</span>
                 <div className="h-px flex-1 bg-white/5 group-hover:bg-orange-500/20 transition-colors" />
               </div>
-              <div className="aspect-[16/10] rounded-2xl overflow-hidden mb-6 border border-white/5">
+              <div className="aspect-[244/100] rounded-2xl overflow-hidden mb-6 border border-white/5">
                 <img src={m.img} alt={`${m.label} Amazon EBC Module Example`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-50 group-hover:opacity-100" />
               </div>
               <h4 className="text-[14px] font-black uppercase tracking-[0.12em] text-white mb-3 group-hover:text-orange-400 transition-colors">{m.label}</h4>
@@ -1023,9 +1016,9 @@ function Portfolio() {
       id: "EB-01",
       niche: "EDC Gear",
       images: [
-        "/assets/portfolio/nexa pouches/aplus-1.png",
-        "/assets/portfolio/nexa pouches/aplus-2.png",
-        "/assets/portfolio/nexa pouches/aplus-3.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872022/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-1.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872024/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-2.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872025/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-3.jpg"
       ],
       stats: ["+65% CVR", "3.2x ROAS"],
       tags: ["Lifestyle Imagery", "Feature Breakdown"],
@@ -1036,14 +1029,14 @@ function Portfolio() {
       id: "EB-02",
       niche: "Home & Auto",
       images: [
-        "/assets/portfolio/kazvo vacume cleaner/aplus-1.png",
-        "/assets/portfolio/kazvo vacume cleaner/aplus-2.png",
-        "/assets/portfolio/kazvo vacume cleaner/aplus-3.png",
-        "/assets/portfolio/kazvo vacume cleaner/aplus-4.png",
-        "/assets/portfolio/kazvo vacume cleaner/aplus-5.png",
-        "/assets/portfolio/kazvo vacume cleaner/aplus-6.png",
-        "/assets/portfolio/kazvo vacume cleaner/aplus-7.png",
-        "/assets/portfolio/kazvo vacume cleaner/aplus-8.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872044/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-1.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872045/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-2.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872047/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-3.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872048/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-4.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872049/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-5.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872050/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-6.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872052/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-7.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872053/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-8.jpg"
       ],
       stats: ["+90% Sales", "4.5x ROAS"],
       tags: ["High-Tech Infographics", "Cinematic Dark"],
@@ -1054,16 +1047,16 @@ function Portfolio() {
       id: "EB-03",
       niche: "Automotive",
       images: [
-        "/assets/portfolio/kazvo tire inflator/aplus-1.png",
-        "/assets/portfolio/kazvo tire inflator/aplus-2.png",
-        "/assets/portfolio/kazvo tire inflator/aplus-3.png",
-        "/assets/portfolio/kazvo tire inflator/aplus-4.png",
-        "/assets/portfolio/kazvo tire inflator/aplus-5.png",
-        "/assets/portfolio/kazvo tire inflator/aplus-6.png",
-        "/assets/portfolio/kazvo tire inflator/aplus-7.png",
-        "/assets/portfolio/kazvo tire inflator/aplus-8.png",
-        "/assets/portfolio/kazvo tire inflator/aplus-9.png",
-        "/assets/portfolio/kazvo tire inflator/aplus-10.png"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872063/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-1.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872065/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-2.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872066/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-3.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872068/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-4.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872069/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-5.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872070/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-6.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872071/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-7.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872073/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-8.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872074/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-9.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872064/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-10.jpg"
       ],
       stats: ["+105% Sales", "3.8x ROAS"],
       tags: ["Cinematic Dark", "Feature Callouts"],
@@ -1093,46 +1086,47 @@ function Portfolio() {
           {examples.map((ex, i) => (
             <Link
               key={i}
-              href="/portfolio?filter=ebc"
-              className="group relative rounded-[32px] overflow-hidden border border-zinc-100 bg-zinc-950 hover:border-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/5 transition-all duration-700 no-underline block"
+              href="/portfolio/?filter=a%2B-content"
+              className="group relative block p-5 bg-[#f0f4f8] rounded-[36px] transition-all duration-700 ease-out no-underline border border-transparent shadow-[10px_10px_20px_#d2dbe6,-10px_-10px_20px_#ffffff] hover:shadow-[16px_16px_32px_#d2dbe6,-16px_-16px_32px_#ffffff]"
             >
               {/* Header with Badges */}
-              <div className="px-4 py-3 border-b border-white/5 bg-zinc-950 flex justify-between items-center">
+              <div className="flex items-center justify-between mb-4 px-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <div className="px-2 py-1 rounded bg-orange-500/5 border border-orange-500/10">
-                    <span className="text-[8px] font-semibold text-orange-500/80 uppercase tracking-widest leading-none block">A+ Content</span>
+                  <div className="flex items-center gap-1 bg-white/40 backdrop-blur-sm border border-white/45 shadow-[inset_1px_1px_2px_rgba(255,255,255,0.6),0_1px_2px_rgba(0,0,0,0.02)] px-2.5 py-1 rounded-full">
+                    <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                    <span className="text-[6px] font-black uppercase tracking-widest text-orange-500">A+ Content</span>
                   </div>
-                  <div className="px-2 py-1 rounded bg-white/[0.02] border border-white/5 hidden sm:block">
-                    <span className="text-[8px] font-medium text-zinc-500 uppercase tracking-widest leading-none block">Ref: {ex.id}</span>
+                  <div className="px-2.5 py-1 rounded-full bg-white/40 backdrop-blur-sm border border-white/45 shadow-sm hidden sm:block">
+                    <span className="text-[7px] font-bold text-zinc-500 uppercase tracking-widest leading-none block">Ref: {ex.id}</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <div className={`w-6 h-6 rounded-md flex items-center justify-center text-white/90 ${ex.accent} shrink-0`}>
+                <div className="flex items-center gap-2.5 bg-white/50 backdrop-blur-md border border-white/60 shadow-[0_2px_10px_rgba(0,0,0,0.03)] px-3 py-1.5 rounded-xl">
+                  <div className={`w-5 h-5 rounded flex items-center justify-center text-white/90 ${ex.accent} shrink-0`}>
                     {ex.metric.icon}
                   </div>
                   <div className="text-right">
-                    <span className="text-white/90 font-bold text-xs tracking-tight leading-none block">{ex.metric.val}</span>
-                    <span className="text-zinc-500 text-[7px] font-semibold uppercase tracking-widest leading-none block mt-0.5">{ex.metric.label}</span>
+                    <span className="text-zinc-800 font-black text-xs tracking-tight leading-none block">{ex.metric.val}</span>
+                    <span className="text-zinc-500 text-[6px] font-bold uppercase tracking-widest leading-none block mt-0.5">{ex.metric.label}</span>
                   </div>
                 </div>
               </div>
 
               {/* Image stack layout - Full uncropped view */}
-              <div className="relative overflow-hidden flex flex-col gap-0 bg-[#0a0a0a] group-hover:bg-[#050505] transition-colors duration-700 h-[400px] overflow-y-auto no-scrollbar">
+              <div className="relative rounded-2xl overflow-hidden flex flex-col gap-0 bg-white/90 backdrop-blur-md border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.03)] h-[400px] overflow-y-auto no-scrollbar group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all duration-700">
                 <img src={ex.images[0]} alt="" className="w-full h-auto block" />
                 <img src={ex.images[1]} alt="" className="w-full h-auto block" />
                 <img src={ex.images[2]} alt="" className="w-full h-auto block" />
               </div>
 
               {/* Card info */}
-              <div className="p-6 border-t border-white/5 bg-zinc-950">
+              <div className="mt-5 px-2">
                 <div className="flex items-center justify-between mb-3">
-                  <h4 className="font-black text-white uppercase tracking-tight text-[13px] group-hover:text-orange-500 transition-colors">{ex.niche}</h4>
+                  <h4 className="font-black text-zinc-800 uppercase tracking-tight text-[13px] group-hover:text-orange-500 transition-colors">{ex.niche}</h4>
                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500/30 group-hover:bg-orange-500 transition-colors animate-pulse" />
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {ex.tags.map((tag, j) => (
-                    <span key={j} className="text-[8px] font-bold uppercase tracking-widest text-zinc-500 border border-white/5 group-hover:border-orange-500/20 px-2 rounded-lg transition-colors">
+                    <span key={j} className="text-[7px] font-bold uppercase tracking-widest text-zinc-500 bg-white/40 backdrop-blur-sm border border-white/60 shadow-sm px-2.5 py-1 rounded-full transition-colors">
                       {tag}
                     </span>
                   ))}
@@ -1145,7 +1139,7 @@ function Portfolio() {
         <div className="mt-16 text-center">
           <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Want to see more of our A+ design work?</p>
           <Link
-            href="/portfolio?filter=ebc"
+            href="/portfolio/?filter=a%2B-content"
             className="inline-flex items-center gap-3 bg-zinc-950 hover:bg-orange-500 transition-all duration-500 text-white font-black text-[12px] uppercase tracking-[0.2em] px-10 py-5 rounded-full no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-orange-500/20"
           >
             View All A+ Content

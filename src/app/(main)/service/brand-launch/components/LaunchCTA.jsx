@@ -39,7 +39,7 @@ export default function LaunchCTA() {
               <Rocket size={600} strokeWidth={0.2} className="text-orange-500" />
             </div>
 
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
 
               {/* Left Column: Content */}
               <div className="lg:col-span-7">
@@ -88,7 +88,7 @@ export default function LaunchCTA() {
               </div>
 
               {/* Right Column: 15-Minute Strategy Card */}
-              <div className="lg:col-span-5 block mt-12 lg:mt-0 relative group/card">
+              <div className="lg:col-span-5 block mt-12 lg:mt-[60px] relative group/card self-start">
                 <div className="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-[32px] p-6 sm:p-8 shadow-2xl overflow-hidden hover:border-orange-500/30 transition-all duration-500">
 
                   {/* Card Glow */}

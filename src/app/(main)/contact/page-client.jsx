@@ -9,6 +9,7 @@ import {
   CheckCircle2, Search, BarChart3, Zap,
   Users, Shield, Activity, MapPin, ExternalLink
 } from "lucide-react";
+import { getSavedUtmData } from "@/utils/utmTracker";
 
 /* ─────────────────────────────────────────────
    SECTION LABEL
@@ -65,8 +66,17 @@ export default function ContactUs() {
   const router = useRouter();
   const [form, setForm]       = useState({ name:"", email:"", whatsapp:"", service:"", message:"" });
   const [loading, setLoading] = useState(false);
+  const [utmData, setUtmData] = useState({});
+  const [honeypot, setHoneypot] = useState("");
 
   useEffect(() => {
+    // Capture UTM parameters on mount
+    const data = getSavedUtmData();
+    if (!data.utm_source) {
+      data.utm_source = "direct";
+    }
+    setUtmData(data);
+
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
       const ref = params.get("ref");
@@ -109,6 +119,8 @@ export default function ContactUs() {
           requestedService: form.service || "Not specified",
           notes: form.message || "No message provided",
           source: "Contact Page Form",
+          website_confirm: honeypot,
+          ...utmData,
         }),
       });
 
@@ -277,6 +289,16 @@ export default function ContactUs() {
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Honeypot field for spam prevention */}
+                <input
+                  type="text"
+                  name="website_confirm"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  className="hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
 
                 {/* Name + Email */}
                 <div className="grid md:grid-cols-2 gap-4">
@@ -288,7 +310,7 @@ export default function ContactUs() {
                       id="contact-name"
                       type="text" name="name" value={form.name}
                       onChange={handleChange} placeholder="John Doe"
-                      className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light focus-visible:ring-2 focus-visible:ring-orange-500"
+                      className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light focus-visible:ring-2 focus-visible:ring-orange-500"
                     />
                   </div>
                   <div className="space-y-1.5">
@@ -299,7 +321,7 @@ export default function ContactUs() {
                       id="contact-email"
                       type="email" name="email" value={form.email}
                       onChange={handleChange} placeholder="name@brand.com"
-                      className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light focus-visible:ring-2 focus-visible:ring-orange-500"
+                      className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light focus-visible:ring-2 focus-visible:ring-orange-500"
                     />
                   </div>
                 </div>
@@ -313,7 +335,7 @@ export default function ContactUs() {
                     id="contact-whatsapp"
                     type="tel" name="whatsapp" value={form.whatsapp}
                     onChange={handleChange} placeholder="+1 (555) 000-0000"
-                    className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light focus-visible:ring-2 focus-visible:ring-orange-500"
                   />
                 </div>
 
@@ -326,7 +348,7 @@ export default function ContactUs() {
                     <select
                       id="contact-service"
                       name="service" value={form.service} onChange={handleChange}
-                      className={`w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-[14px] focus:outline-none focus:border-orange-500 focus:bg-white transition-all appearance-none cursor-pointer font-light focus-visible:ring-2 focus-visible:ring-orange-500 ${!form.service ? "text-zinc-400" : "text-zinc-900"}`}
+                      className={`w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-base md:text-[14px] focus:outline-none focus:border-orange-500 focus:bg-white transition-all appearance-none cursor-pointer font-light focus-visible:ring-2 focus-visible:ring-orange-500 ${!form.service ? "text-zinc-400" : "text-zinc-900"}`}
                     >
                       <option value="">Select a service...</option>
                       <option value="Product Hunting & Research">Product Hunting & Research</option>
@@ -353,7 +375,7 @@ export default function ContactUs() {
                     rows={3} name="message" value={form.message}
                     onChange={handleChange}
                     placeholder="Tell us about your product, current stage, or what you need help with..."
-                    className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all resize-none font-light focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all resize-none font-light focus-visible:ring-2 focus-visible:ring-orange-500"
                   />
                 </div>
 

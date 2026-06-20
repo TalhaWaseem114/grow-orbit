@@ -166,7 +166,7 @@ function BrandHero() {
           </div>
 
           {/* ── Right: Premium Brand Architecture System ── */}
-          <div className="lg:col-span-5 relative mt-8 lg:mt-[70px] self-start perspective-1000" ref={floatRef}>
+          <div className="lg:col-span-5 relative mt-8 lg:mt-[60px] self-start perspective-1000" ref={floatRef}>
 
             {/* Ambient Background Glows */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] bg-gradient-to-tr from-orange-500/15 via-rose-500/5 to-transparent blur-[80px] -z-10 rounded-full animate-pulse duration-[4s]" />
@@ -475,11 +475,11 @@ function BeforeAfter() {
               {/* Fake listing header */}
               <div className="flex items-start gap-4 mb-5">
                 <div className="w-16 h-16 rounded-xl bg-zinc-100 flex items-center justify-center shrink-0 border border-zinc-200">
-                  <span className="text-zinc-400 text-[18px] font-bold">AB</span>
+                  <span className="text-zinc-400 text-[18px] font-bold">CV</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-bold text-zinc-500 leading-tight mb-1" style={{ fontFamily: "Times New Roman, serif" }}>
-                    Generic Organic Face Cream — No Brand Identity System Applied
+                    Generic Vitality Supplements — No Brand Identity System Applied
                   </p>
                   <div className="flex items-center gap-2 mt-1.5">
                     <div className="flex gap-0.5">
@@ -494,7 +494,7 @@ function BeforeAfter() {
               <div className="grid grid-cols-3 gap-1.5 mb-8 flex-grow">
                 <div className="aspect-square rounded-lg overflow-hidden col-span-2 row-span-2 border border-zinc-100 relative group/img">
                   <img
-                    src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?q=80&w=800&auto=format&fit=crop"
+                    src="/images/before/supplements_before.png"
                     alt="Generic Product"
                     className="w-full h-full object-cover"
                   />
@@ -504,14 +504,14 @@ function BeforeAfter() {
                 </div>
                 <div className="aspect-square rounded-lg overflow-hidden border border-zinc-100">
                   <img
-                    src="https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=400&auto=format&fit=crop"
+                    src="/images/before/supplements_before_detail.png"
                     alt="Messy Shot"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="aspect-square rounded-lg overflow-hidden border border-zinc-100">
                   <img
-                    src="https://images.unsplash.com/photo-1512290923902-8a9f81dc236c?q=80&w=400&auto=format&fit=crop"
+                    src="/images/before/supplements_before_lifestyle.png"
                     alt="Generic Shot"
                     className="w-full h-full object-cover"
                   />
@@ -570,18 +570,18 @@ function BeforeAfter() {
             <div className="bg-white rounded-[32px] border-2 border-orange-200/60 p-6 md:p-8 relative overflow-hidden shadow-xl shadow-orange-500/5 group-hover:shadow-2xl group-hover:shadow-orange-500/10 transition-all duration-500 flex flex-col h-full">
               {/* Fake listing header — polished */}
               <div className="flex items-start gap-4 mb-5">
-                <div className="w-16 h-16 rounded-xl bg-zinc-900 flex items-center justify-center shrink-0 shadow-md">
-                  <span className="text-orange-500 text-[16px] font-black tracking-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>KAZVOO</span>
+                <div className="w-16 h-16 rounded-xl bg-zinc-900 flex flex-col items-center justify-center shrink-0 shadow-md p-1">
+                  <span className="text-orange-500 text-[10px] font-black tracking-tight text-center leading-tight uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>CORE VITALITY</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-[13px] font-bold text-zinc-900 leading-tight mb-1" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                    KAZVOO™ Organic Face Cream — Advanced Hydration Complex
+                    CORE VITALITY™ Supplements — Dual-Phase Bio-Availability Complex
                   </p>
                   <div className="flex items-center gap-2 mt-1.5">
                     <div className="flex gap-0.5">
                       {[1,2,3,4,5].map(s => <Star key={s} size={10} className="text-orange-400 fill-orange-400" />)}
                     </div>
-                    <span className="text-[10px] text-zinc-400 font-medium">4.8 (1,247)</span>
+                    <span className="text-[10px] text-zinc-400 font-medium">4.9 (2,104)</span>
                   </div>
                 </div>
               </div>
@@ -590,25 +590,25 @@ function BeforeAfter() {
               <div className="grid grid-cols-3 gap-1.5 mb-8 flex-grow">
                 <div className="aspect-square rounded-lg overflow-hidden col-span-2 row-span-2 relative group/img shadow-lg border border-zinc-100">
                   <img
-                    src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=800&auto=format&fit=crop"
+                    src="https://res.cloudinary.com/dciggvulg/image/upload/v1781872097/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/main_image.jpg"
                     alt="Branded Product"
                     className="w-full h-full object-cover transition-transform duration-700 group-hover/img:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                   <div className="absolute bottom-3 left-3">
-                    <span className="text-white text-[10px] font-black tracking-tighter" style={{ fontFamily: "'Montserrat', sans-serif" }}>KAZVOO™</span>
+                    <span className="text-white text-[10px] font-black tracking-tighter" style={{ fontFamily: "'Montserrat', sans-serif" }}>CORE VITALITY™</span>
                   </div>
                 </div>
                 <div className="aspect-square rounded-lg overflow-hidden border border-zinc-100 shadow-sm">
                   <img
-                    src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=400&auto=format&fit=crop"
+                    src="https://res.cloudinary.com/dciggvulg/image/upload/v1781872086/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/3.jpg"
                     alt="Detail Shot"
                     className="w-full h-full object-cover"
                   />
                 </div>
                 <div className="aspect-square rounded-lg overflow-hidden border border-zinc-100 shadow-sm">
                   <img
-                    src="https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=400&auto=format&fit=crop"
+                    src="https://res.cloudinary.com/dciggvulg/image/upload/v1781872088/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/4.jpg"
                     alt="Lifestyle Shot"
                     className="w-full h-full object-cover"
                   />
@@ -634,8 +634,8 @@ function BeforeAfter() {
                 <p className="text-[9px] font-black uppercase tracking-widest text-emerald-600 mb-4">Brand Impact</p>
                 <div className="grid grid-cols-3 gap-3">
                   {[
-                    { v: "+33%", l: "Revenue" },
-                    { v: "+81%", l: "Trust" },
+                    { v: "+130%", l: "Revenue" },
+                    { v: "+85%", l: "Trust" },
                     { v: "4.8★", l: "Rating" },
                   ].map((stat, i) => (
                     <div key={i} className="text-center">

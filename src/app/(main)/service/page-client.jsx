@@ -515,7 +515,7 @@ export default function AllServicesPage() {
         </div>
 
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
             
             {/* Left Column: Typography */}
             <div className="lg:col-span-7">
@@ -564,7 +564,7 @@ export default function AllServicesPage() {
             </div>
 
             {/* Right Column: Premium Visual "Constellation" */}
-            <div className="lg:col-span-5 relative hidden lg:flex justify-center items-center h-[400px] lg:h-[500px] perspective-1000">
+            <div className="lg:col-span-5 relative hidden lg:flex justify-center items-center h-[400px] lg:h-[500px] perspective-1000 lg:mt-[60px] self-start">
                
                {/* Central Core */}
                <div className="w-32 h-32 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 absolute z-20 flex items-center justify-center shadow-[0_0_60px_rgba(249,115,22,0.4)] ring-4 ring-zinc-950">

@@ -159,7 +159,7 @@ export default function AuditHero() {
           </div>
 
           {/* Right: Diagnostic Mission Control */}
-          <div className="lg:col-span-5 relative block mt-0 lg:mt-[70px] scale-[0.95] sm:scale-100 origin-top lg:origin-center" ref={engineRef}>
+          <div className="lg:col-span-5 relative block mt-0 lg:mt-[60px] scale-[0.95] sm:scale-100 origin-top lg:origin-center self-start" ref={engineRef}>
             <style>{`
               @keyframes orbit-scan-outer { 0% { transform: rotate(0deg) translateX(95px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(95px) rotate(-360deg); } }
               @keyframes orbit-scan-inner { 0% { transform: rotate(0deg) translateX(60px) rotate(0deg); } 100% { transform: rotate(-360deg) translateX(60px) rotate(360deg); } }

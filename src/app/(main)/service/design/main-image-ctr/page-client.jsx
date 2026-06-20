@@ -45,8 +45,10 @@ const CheckItem = ({ children, light = false }) => (
 function MainImageHero() {
 
   const floatRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     if (!floatRef.current) return;
     gsap.to(floatRef.current, {
       y: -14, duration: 4.5, repeat: -1, yoyo: true, ease: "power1.inOut",
@@ -54,12 +56,12 @@ function MainImageHero() {
   }, []);
 
   const searchGrid = [
-    { yours: false, img: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=400&auto=format&fit=crop" }, // Shoe
-    { yours: true,  img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop" }, // Watch (Yours)
-    { yours: false, img: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=400&auto=format&fit=crop" }, // Headphone
-    { yours: false, img: "https://images.unsplash.com/photo-1526170315870-ef68971f21f3?q=80&w=400&auto=format&fit=crop" }, // Camera
-    { yours: false, img: "https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=400&auto=format&fit=crop" }, // Shoe 2
-    { yours: false, img: "https://images.unsplash.com/photo-1524678606370-a47ad25cb82a?q=80&w=400&auto=format&fit=crop" }, // Headphone 2
+    { yours: false, img: "/images/before/vacuum_before.png" }, // Vacuum
+    { yours: false, img: "/images/before/nexa_before.png" }, // Nexa
+    { yours: false, img: "/images/before/tire_before.png" }, // Tire Inflator
+    { yours: false, img: "/images/before/screws_before.png" }, // Screws
+    { yours: true,  img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg" }, // Trimmer (Yours)
+    { yours: false, img: "/images/before/supplements_before.png" }, // Supplements
   ];
 
   const comparisons = [
@@ -243,7 +245,7 @@ function MainImageHero() {
           </div>
 
           {/* ── Right: CTR Design Studio ── */}
-          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[70px]" ref={floatRef}>
+          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px]" ref={floatRef}>
 
             {/* Deep ambient glow */}
             <div className="absolute -inset-20 pointer-events-none">
@@ -403,7 +405,7 @@ function MainImageHero() {
 
             {/* Floating particles */}
             <div className="absolute inset-0 -z-10 pointer-events-none">
-              {[...Array(7)].map((_, i) => (
+              {mounted && [...Array(7)].map((_, i) => (
                 <div
                   key={i}
                   className="absolute w-1 h-1 bg-orange-500/25 rounded-full"
@@ -533,19 +535,19 @@ function WhyCTRMatters() {
 function BeforeAfterShowcase() {
   const transformations = [
     {
-      niche: "Electronics & Tech",
-      tag: "Smartwatch Angle",
-      before: { label: "Standard flat angle", note: "Supplier stock photo", img: "https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?q=80&w=400&auto=format&fit=crop" },
-      after:  { label: "High-CTR hero angle", note: "+42% CTR lift", img: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=400&auto=format&fit=crop" },
+      niche: "EDC Gear",
+      tag: "Tactical Depth",
+      before: { label: "Flat lifestyle photo", note: "Blends into background", img: "/images/before/nexa_before.png" },
+      after:  { label: "High-CTR 3D Hero", note: "+42% CTR lift", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872034/grow_orbit_portfolio/assets/portfolio/nexa_pouches/main_image.jpg" },
       accentB: "bg-zinc-100",
       accentA: "bg-orange-50",
       icon: <Sparkles size={20} />,
     },
     {
-      niche: "Home & Kitchen",
-      tag: "Product Styling",
-      before: { label: "Unlit product shot", note: "Blends into background", img: "https://images.unsplash.com/photo-1466637574441-749b8f19452f?q=80&w=400&auto=format&fit=crop" },
-      after:  { label: "Prop-styled hero", note: "2.3x search clicks", img: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=400&auto=format&fit=crop" },
+      niche: "Automotive",
+      tag: "Product Scaling",
+      before: { label: "Unlit product shot", note: "Poor size context", img: "/images/before/tire_before.png" },
+      after:  { label: "Max frame-fill hero", note: "2.3x search clicks", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg" },
       accentB: "bg-zinc-100",
       accentA: "bg-orange-50",
       icon: <Camera size={20} />,
@@ -553,17 +555,17 @@ function BeforeAfterShowcase() {
     {
       niche: "Health & Supplements",
       tag: "Bottle Rendering",
-      before: { label: "Low-fill composition", note: "Unclear branding", img: "https://images.unsplash.com/photo-1550572017-edd951b55104?q=80&w=400&auto=format&fit=crop" },
-      after:  { label: "Premium label depth", note: "+34% CTR boost", img: "https://images.unsplash.com/photo-1579722820308-d74e571900a9?q=80&w=400&auto=format&fit=crop" },
+      before: { label: "Low-fill composition", note: "Unclear branding", img: "/images/before/supplements_before.png" },
+      after:  { label: "Premium label depth", note: "+34% CTR boost", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872097/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/main_image.jpg" },
       accentB: "bg-zinc-100",
       accentA: "bg-orange-50",
       icon: <TrendingUp size={20} />,
     },
     {
-      niche: "Pet Products",
-      tag: "Lifestyle Hero",
-      before: { label: "Basic phone photo", note: "Lacks quality trust", img: "https://images.unsplash.com/photo-1587300003388-59208cc962cb?q=80&w=400&auto=format&fit=crop" },
-      after:  { label: "Professional lifestyle", note: "3.8x ROAS growth", img: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?q=80&w=400&auto=format&fit=crop" },
+      niche: "Home & Auto",
+      tag: "Feature Highlighting",
+      before: { label: "Basic flat lay", note: "Lacks quality trust", img: "/images/before/vacuum_before.png" },
+      after:  { label: "Professional hero angle", note: "3.8x ROAS growth", img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg" },
       accentB: "bg-zinc-100",
       accentA: "bg-orange-50",
       icon: <Eye size={20} />,

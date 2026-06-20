@@ -67,7 +67,7 @@ function DSPHero() {
       </div>
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-20 items-start">
 
           {/* Left */}
           <div className="lg:col-span-7 relative">
@@ -159,7 +159,7 @@ function DSPHero() {
           </div>
 
           {/* Right: Premium DSP Campaign Architecture */}
-          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[70px] perspective-1000" ref={floatRef}>
+          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px] perspective-1000" ref={floatRef}>
 
             {/* Ambient Lighting */}
             <div className="absolute -inset-16 bg-gradient-to-br from-orange-500/30 via-transparent to-amber-500/20 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />

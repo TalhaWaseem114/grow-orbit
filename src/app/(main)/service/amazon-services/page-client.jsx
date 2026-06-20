@@ -72,7 +72,7 @@ function AmazonServicesHero() {
       </div>
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
 
           {/* Left Column: Content */}
           <div className="lg:col-span-7">
@@ -145,7 +145,7 @@ function AmazonServicesHero() {
           </div>
 
           {/* Right Column: Visual Component (The "Service Stack" Terminal) */}
-          <div className="lg:col-span-5 relative block mt-14 lg:mt-[60px] scale-[0.95] sm:scale-100 origin-top lg:origin-center" ref={terminalRef}>
+          <div className="lg:col-span-5 relative block mt-14 lg:mt-[60px] scale-[0.95] sm:scale-100 origin-top lg:origin-center self-start" ref={terminalRef}>
             {/* Floating Badges */}
             <div className="absolute -top-4 -right-4 bg-zinc-900 rounded-[20px] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-30 border border-white/5">
               <div className="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center text-white shadow-lg shadow-orange-500/20">

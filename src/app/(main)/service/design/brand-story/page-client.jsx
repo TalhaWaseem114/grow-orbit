@@ -186,7 +186,7 @@ function BrandStoryHero() {
           </div>
 
           {/* ── Right: Brand Story mockup ── */}
-          <div className="lg:col-span-5 relative mt-[70px] self-start perspective-1000" ref={floatRef}>
+          <div className="lg:col-span-5 relative mt-16 lg:mt-[60px] self-start perspective-1000" ref={floatRef}>
 
             <div className="absolute -top-4 -right-4 bg-white rounded-[20px] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-30 flex gap-2.5 animate-[float-slow_6s_ease-in-out_infinite]">
               <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center text-white"><BookOpen size={16} /></div>
@@ -693,31 +693,34 @@ function WhatIsIncluded() {
 function ExamplesGallery() {
   const examples = [
     {
+      portfolioId: "li-02",
       niche: "EDC Gear",
       images: [
         "https://res.cloudinary.com/dciggvulg/image/upload/v1781872034/grow_orbit_portfolio/assets/portfolio/nexa_pouches/main_image.jpg",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872015/grow_orbit_portfolio/assets/portfolio/nexa_pouches/2.jpg",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872016/grow_orbit_portfolio/assets/portfolio/nexa_pouches/3.jpg"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872021/grow_orbit_portfolio/assets/portfolio/nexa_pouches/7.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872019/grow_orbit_portfolio/assets/portfolio/nexa_pouches/5.jpg"
       ],
       tags: ["Technical", "Product Cards", "Core Values"],
       accent: "bg-amber-500"
     },
     {
+      portfolioId: "li-03",
       niche: "Home & Auto",
       images: [
         "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872036/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/2.jpg",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872037/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/3.jpg"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872038/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/4.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872040/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/5.jpg"
       ],
       tags: ["Power", "Narrative", "Benefits"],
       accent: "bg-zinc-700"
     },
     {
+      portfolioId: "li-04",
       niche: "Automotive",
       images: [
         "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872056/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/2.jpg",
-        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872057/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/3.jpg"
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872060/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/5.jpg",
+        "https://res.cloudinary.com/dciggvulg/image/upload/v1781872061/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/6.jpg"
       ],
       tags: ["Emergency", "Versatility", "Reliability"],
       accent: "bg-orange-500"
@@ -750,37 +753,27 @@ function ExamplesGallery() {
           {examples.map((ex, i) => (
             <Link
               key={i}
-              href="/portfolio"
+              href={`/portfolio/${ex.portfolioId}`}
               className="group relative rounded-[32px] overflow-hidden border border-zinc-100 bg-zinc-950 hover:border-orange-500/30 hover:shadow-2xl hover:shadow-orange-500/5 transition-all duration-700 no-underline block"
             >
-              {/* Image sequence layout - Mimicking Amazon Brand Story horizontal module with 3D depth */}
-              <div className="aspect-[16/10] relative overflow-hidden flex gap-1.5 p-3 bg-[#0a0a0a] group-hover:bg-[#050505] transition-colors duration-700" style={{ perspective: "1500px" }}>
+              {/* Image sequence layout - Mimicking Amazon Brand Story horizontal module */}
+              <div className="relative overflow-hidden flex gap-3 p-3 bg-[#0a0a0a] group-hover:bg-[#050505] transition-colors duration-700">
                 {/* 01: Hero / Brand Intro */}
-                <div className="flex-[1.6] relative rounded-2xl overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.5)] border border-white/10 group-hover:border-orange-500/30 transition-all duration-700 transform group-hover:translate-z-10 group-hover:rotate-y-[-5deg]">
+                <div className="flex-1 aspect-square relative rounded-xl overflow-hidden shadow-md border border-white/5 transition-all duration-700 group-hover:scale-[1.02]">
                   <img src={ex.images[0]} alt={`${ex.niche} Brand Story Hero Showcase`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
-
-                  {/* Search Icon Overlay */}
-                  <div className="absolute right-3 bottom-3 z-10 w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 backdrop-blur-md">
-                    <Search size={12} />
-                  </div>
-
-                  {/* Top Gloss */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
 
                 {/* 02: About / Story Card */}
-                <div className="flex-1 relative rounded-2xl overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] border border-white/5 transform translate-y-3 group-hover:translate-y-0 group-hover:translate-z-4 group-hover:rotate-y-[2deg] transition-all duration-700 delay-75 group-hover:border-white/10">
-                  <img src={ex.images[1]} alt={`${ex.niche} Brand Story Detail Module`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
-                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
+                <div className="flex-1 aspect-square relative rounded-xl overflow-hidden shadow-md border border-white/5 transition-all duration-700 group-hover:scale-[1.02]">
+                  <img src={ex.images[1]} alt={`${ex.niche} Brand Story Detail Module`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
 
                 {/* 03: Product / Detail Card */}
-                <div className="flex-1 relative rounded-2xl overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.4)] border border-white/5 transform translate-y-6 group-hover:translate-y-0 group-hover:translate-z-1 group-hover:rotate-y-[5deg] transition-all duration-700 delay-150 group-hover:border-white/10">
-                  <img src={ex.images[2]} alt={`${ex.niche} Brand Story Product Card`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-transparent transition-colors duration-500" />
-                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/80 to-transparent opacity-60" />
+                <div className="flex-[0.5] aspect-[1/2] relative rounded-xl overflow-hidden shadow-md border border-white/5 transition-all duration-700 group-hover:scale-[1.02]">
+                  <img src={ex.images[2]} alt={`${ex.niche} Brand Story Product Card`} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
                 </div>
 
                 {/* Animated Edge Light (Horizontal Scan) */}

@@ -6,6 +6,8 @@ import { ArrowRight, CheckCircle, AlertCircle, CheckCircle2 } from "lucide-react
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+import { getSavedUtmData } from "@/utils/utmTracker";
+
 export default function DesignLeadForm() {
   const router = useRouter();
   const [form, setForm] = useState({
@@ -22,20 +24,15 @@ export default function DesignLeadForm() {
   const [error, setError] = useState("");
   const lastSubmitRef = useRef(0);
   const [utmData, setUtmData] = useState({});
+  const [honeypot, setHoneypot] = useState("");
 
   // Capture UTM parameters on mount
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      setUtmData({
-        utm_source: params.get("utm_source") || "direct",
-        utm_medium: params.get("utm_medium") || "",
-        utm_campaign: params.get("utm_campaign") || "",
-        utm_content: params.get("utm_content") || "",
-        utm_term: params.get("utm_term") || "",
-        landingUrl: window.location.href,
-      });
+    const data = getSavedUtmData();
+    if (!data.utm_source) {
+      data.utm_source = "direct";
     }
+    setUtmData(data);
   }, []);
 
   const handleChange = (e) => {
@@ -87,6 +84,7 @@ export default function DesignLeadForm() {
           notes: form.pain || "Requesting Free Visual Redesign Audit",
           source: "Design & Creative Landing Page",
           brandName: null,
+          website_confirm: honeypot,
           ...utmData,
         }),
       });
@@ -145,6 +143,17 @@ export default function DesignLeadForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+      {/* Honeypot field for spam prevention */}
+      <input
+        type="text"
+        name="website_confirm"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        className="hidden"
+        tabIndex={-1}
+        autoComplete="off"
+      />
+
       {/* Inline error message */}
       {error && (
         <div className="flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3 text-red-400">
@@ -165,7 +174,7 @@ export default function DesignLeadForm() {
           value={form.name}
           onChange={handleChange}
           placeholder="Your name"
-          className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all font-light"
+          className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-base md:text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all font-light"
         />
       </div>
 
@@ -182,7 +191,7 @@ export default function DesignLeadForm() {
             value={form.email}
             onChange={handleChange}
             placeholder="you@brand.com"
-            className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all font-light"
+            className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-base md:text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all font-light"
           />
         </div>
 
@@ -197,7 +206,7 @@ export default function DesignLeadForm() {
             value={form.whatsapp}
             onChange={handleChange}
             placeholder="+1 (555) 000-0000"
-            className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all font-light"
+            className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-base md:text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all font-light"
           />
         </div>
       </div>
@@ -214,7 +223,7 @@ export default function DesignLeadForm() {
           value={form.asin}
           onChange={handleChange}
           placeholder="e.g., B07XXXXXXX or listing link"
-          className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-850 rounded-2xl text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all font-light border-dashed border-violet-500/35"
+          className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-850 rounded-2xl text-base md:text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all font-light border-dashed border-violet-500/35"
         />
         <p className="text-[10px] text-zinc-500 font-light mt-1 pl-1">Required to perform your custom visual audit.</p>
       </div>
@@ -230,7 +239,7 @@ export default function DesignLeadForm() {
               name="revenue"
               value={form.revenue}
               onChange={handleChange}
-              className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-[14px] text-white focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all appearance-none cursor-pointer font-light"
+              className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-base md:text-[14px] text-white focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all appearance-none cursor-pointer font-light"
             >
               <option value="" disabled>Select range...</option>
               <option value="New Seller / Under $10k">Under $10k/mo</option>
@@ -252,7 +261,7 @@ export default function DesignLeadForm() {
               name="pain"
               value={form.pain}
               onChange={handleChange}
-              className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-[14px] text-white focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all appearance-none cursor-pointer font-light"
+              className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-base md:text-[14px] text-white focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all appearance-none cursor-pointer font-light"
             >
               <option value="" disabled>Select main bottleneck...</option>
               <option value="Need 3D modeling / renders">Photorealistic 3D Renders</option>

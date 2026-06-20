@@ -5,7 +5,8 @@ import gsap from "gsap";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getSavedUtmData } from "@/utils/utmTracker";
 import { ArrowRight, Zap, TrendingUp } from "lucide-react";
 
 
@@ -15,6 +16,16 @@ export default function Footer() {
   /* ── Form state ── */
   const [form, setForm]       = useState({ name: "", email: "", service: "", message: "" });
   const [loading, setLoading] = useState(false);
+  const [utmData, setUtmData] = useState({});
+  const [honeypot, setHoneypot] = useState("");
+
+  useEffect(() => {
+    const data = getSavedUtmData();
+    if (!data.utm_source) {
+      data.utm_source = "direct";
+    }
+    setUtmData(data);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,6 +52,8 @@ export default function Footer() {
           requestedService: form.service,
           notes: form.message || "No message provided",
           source: "Footer Form",
+          website_confirm: honeypot,
+          ...utmData,
         }),
       });
 
@@ -49,6 +62,15 @@ export default function Footer() {
       }
 
       const resData = await response.json();
+
+      // Track Meta Pixel Lead event
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("track", "Lead", {
+          content_name: form.service || "Footer Form",
+          status: "new"
+        });
+      }
+
       const nameParam = encodeURIComponent(form.name);
       const emailParam = encodeURIComponent(form.email);
       router.push(`/get-started/book-meeting?leadId=${resData.id}&name=${nameParam}&email=${emailParam}`);
@@ -262,6 +284,16 @@ export default function Footer() {
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-4">
+                {/* Honeypot field for spam prevention */}
+                <input
+                  type="text"
+                  name="website_confirm"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                  className="hidden"
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
                 {/* Name */}
                 <div className="space-y-1.5">
                   <label htmlFor="footer-name" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
@@ -276,7 +308,7 @@ export default function Footer() {
                     placeholder="e.g. John Smith"
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all focus-visible:ring-2 focus-visible:ring-orange-500"
                   />
                 </div>
 
@@ -294,7 +326,7 @@ export default function Footer() {
                     placeholder="you@brand.com"
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all focus-visible:ring-2 focus-visible:ring-orange-500"
                   />
                 </div>
 
@@ -312,7 +344,7 @@ export default function Footer() {
                       onChange={handleChange}
                       onFocus={handleFocus}
                       onBlur={handleBlur}
-                      className={`w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-[14px] outline-none transition-all cursor-pointer appearance-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
+                      className={`w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] outline-none transition-all cursor-pointer appearance-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
                         !form.service ? "text-zinc-600" : "text-zinc-900"
                       }`}
                     >
@@ -344,7 +376,7 @@ export default function Footer() {
                     rows={3}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all resize-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all resize-none focus-visible:ring-2 focus-visible:ring-orange-500"
                   />
                 </div>
 

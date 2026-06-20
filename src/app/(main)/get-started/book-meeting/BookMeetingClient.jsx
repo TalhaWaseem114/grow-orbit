@@ -18,6 +18,7 @@ function BookMeetingContent() {
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [updatingDb, setUpdatingDb] = useState(false);
   const [error, setError] = useState("");
+  const [iframeLoading, setIframeLoading] = useState(true);
 
   // Construct prefilled Calendly URL — use env variable or fallback domain, NOT window.location.host on SSR
   const embedDomain = process.env.NEXT_PUBLIC_SITE_URL?.replace(/^https?:\/\//, '') || "grow-orbit.netlify.app";
@@ -213,12 +214,19 @@ function BookMeetingContent() {
                   <p className="text-[11px] font-bold uppercase tracking-widest text-zinc-400">Updating Command CRM...</p>
                 </div>
               )}
+              {iframeLoading && (
+                <div className="absolute inset-0 bg-[#0d0d0d] z-40 flex flex-col items-center justify-center gap-4 rounded-3xl">
+                  <RefreshCw className="text-orange-500 animate-spin" size={28} />
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Loading Calendar...</p>
+                </div>
+              )}
               <iframe
                 src={calendlySrc}
                 width="100%"
                 frameBorder="0"
                 className="w-full bg-transparent h-[920px] sm:h-[950px] md:h-[980px]"
                 title="Calendly Strategy Scheduler"
+                onLoad={() => setIframeLoading(false)}
               />
             </div>
           </div>

@@ -189,7 +189,7 @@ function PPCHero() {
           </div>
 
           {/* Right: PPC Ad Engine Dashboard */}
-          <div className="lg:col-span-5 relative block mt-0 lg:mt-[70px] scale-[0.95] sm:scale-100 origin-top lg:origin-center" ref={floatRef}>
+          <div className="lg:col-span-5 relative block mt-0 lg:mt-[60px] scale-[0.95] sm:scale-100 origin-top lg:origin-center self-start" ref={floatRef}>
             <style>{`
               @keyframes gauge-fill { from { stroke-dashoffset: 283; } }
               @keyframes pulse-line { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }

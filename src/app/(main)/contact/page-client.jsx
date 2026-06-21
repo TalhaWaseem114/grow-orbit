@@ -129,6 +129,15 @@ export default function ContactUs() {
       }
 
       const resData = await response.json();
+
+      // Track Meta Pixel Lead event
+      if (typeof window !== "undefined" && window.fbq) {
+        window.fbq("track", "Lead", {
+          content_name: form.service || "Contact Page Form",
+          status: "new"
+        });
+      }
+
       const nameParam = encodeURIComponent(form.name);
       const emailParam = encodeURIComponent(form.email);
       router.push(`/get-started/book-meeting?leadId=${resData.id}&name=${nameParam}&email=${emailParam}`);

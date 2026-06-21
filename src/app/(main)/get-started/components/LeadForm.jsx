@@ -41,6 +41,14 @@ export default function LeadForm({ theme = "light", compact = false }) {
     // Prevent duplicate submissions
     if (submitted || loading) return;
 
+    // Rate limiting — 5s cooldown
+    const now = Date.now();
+    if (now - lastSubmitRef.current < 5000) {
+      setError("Please wait a moment before resubmitting.");
+      return;
+    }
+    lastSubmitRef.current = now;
+
     // Validation
     if (!form.name.trim() || !form.email.trim()) {
       setError("Please fill in your name and email address.");
@@ -50,14 +58,6 @@ export default function LeadForm({ theme = "light", compact = false }) {
       setError("Please enter a valid email address.");
       return;
     }
-
-    // Rate limiting — 5s cooldown
-    const now = Date.now();
-    if (now - lastSubmitRef.current < 5000) {
-      setError("Please wait a moment before resubmitting.");
-      return;
-    }
-    lastSubmitRef.current = now;
 
     setError("");
     setLoading(true);

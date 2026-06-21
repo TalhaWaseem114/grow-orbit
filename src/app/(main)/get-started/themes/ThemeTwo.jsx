@@ -16,7 +16,6 @@ import OrbitTestimonialsSection from "@/components/sections/OrbitTestimonialsSec
 import OrbitProcessSection from "@/components/sections/OrbitProcessSection";
 import FAQSection from "../components/FAQSection";
 import StrategyMeetingCTA from "../components/StrategyMeetingCTA";
-import FormSectionThemeTwo from "../components/FormSectionThemeTwo";
 
 export default function ThemeTwo({ scrolled, activeSections = {} }) {
   const formRef = useRef(null);

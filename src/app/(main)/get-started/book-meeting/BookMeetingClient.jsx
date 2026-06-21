@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { Check, Calendar, ArrowRight, Zap, RefreshCw, Sparkles } from "lucide-react";
 import Link from "next/link";
 
@@ -9,11 +9,11 @@ import Link from "next/link";
 const MAX_RETRIES = 3;
 
 function BookMeetingContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const leadId = searchParams.get("leadId");
   const initialName = searchParams.get("name") || "";
   const initialEmail = searchParams.get("email") || "";
+  const hasLeadContext = Boolean(leadId && initialEmail);
 
   const [bookingConfirmed, setBookingConfirmed] = useState(false);
   const [updatingDb, setUpdatingDb] = useState(false);
@@ -22,7 +22,7 @@ function BookMeetingContent() {
 
   // Construct prefilled Calendly URL — use env variable or fallback domain, NOT window.location.host on SSR
   const embedDomain = process.env.NEXT_PUBLIC_SITE_URL?.replace(/^https?:\/\//, '') || "grow-orbit.netlify.app";
-  const calendlyBaseUrl = "https://calendly.com/talhawaseem512/new-meeting";
+  const calendlyBaseUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/talhawaseem512/new-meeting";
   const nameParam = encodeURIComponent(initialName);
   const emailParam = encodeURIComponent(initialEmail);
   const calendlySrc = `${calendlyBaseUrl}?embed_domain=${embedDomain}&embed_type=Inline&name=${nameParam}&email=${emailParam}&hide_gdpr_banner=1&background_color=0d0d0d&text_color=ffffff&primary_color=f97316`;
@@ -34,6 +34,7 @@ function BookMeetingContent() {
 
       if (e.data && e.data.event === "calendly.event_scheduled") {
         console.log("Calendly scheduled event detected:", e.data);
+        const calendlyPayload = e.data.payload || {};
         setUpdatingDb(true);
 
         // Track Meta Pixel Schedule event
@@ -61,6 +62,8 @@ function BookMeetingContent() {
                   leadId: leadId,
                   email: initialEmail,
                   meetingBooked: true,
+                  calendlyEventUri: calendlyPayload.event?.uri || "",
+                  calendlyInviteeUri: calendlyPayload.invitee?.uri || "",
                 }),
               });
               if (!response.ok) {
@@ -84,6 +87,8 @@ function BookMeetingContent() {
               localStorage.setItem(`booking_fallback_${leadId}`, JSON.stringify({
                 leadId,
                 email: initialEmail,
+                calendlyEventUri: calendlyPayload.event?.uri || "",
+                calendlyInviteeUri: calendlyPayload.invitee?.uri || "",
                 timestamp: Date.now()
               }));
             } catch (storageErr) {
@@ -101,6 +106,29 @@ function BookMeetingContent() {
     window.addEventListener("message", handleCalendlyMessage);
     return () => window.removeEventListener("message", handleCalendlyMessage);
   }, [leadId, initialEmail]);
+
+  if (!hasLeadContext) {
+    return (
+      <div className="min-h-screen bg-[#060606] text-white font-sans flex items-center justify-center px-5">
+        <div className="w-full max-w-md bg-[#0d0d0d] border border-zinc-900 rounded-3xl p-8 text-center shadow-2xl">
+          <div className="w-14 h-14 rounded-full bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mx-auto mb-5 text-orange-400">
+            <Calendar size={24} />
+          </div>
+          <h1 className="text-2xl font-black tracking-tight mb-3">Start With Your Brief</h1>
+          <p className="text-sm text-zinc-400 font-light leading-relaxed mb-7">
+            To keep your meeting tied to the CRM, submit the short intake first. Your calendar will open right after.
+          </p>
+          <Link
+            href="/get-started#lead-form"
+            className="w-full py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] text-white bg-orange-500 hover:bg-orange-600 transition-all duration-300 flex items-center justify-center gap-3"
+          >
+            Go To Get Started
+            <ArrowRight size={14} />
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#060606] text-white font-sans flex flex-col selection:bg-orange-500/30 overflow-x-hidden relative">

@@ -1,325 +1,500 @@
 import { NextResponse } from "next/server";
 import { db } from "@/firebase/firebaseConfig";
-import { 
-  collection, addDoc, doc, getDoc, getDocs, 
-  query, where, orderBy, updateDoc, arrayUnion, serverTimestamp 
+import {
+  addDoc,
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  updateDoc,
+  where,
 } from "firebase/firestore";
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const RATE_LIMIT_MAX_REQUESTS = 12;
+const DUPLICATE_WINDOW_MS = 15 * 60 * 1000;
+
+const rateLimitStore = globalThis.__growOrbitLeadRateLimitStore || new Map();
+globalThis.__growOrbitLeadRateLimitStore = rateLimitStore;
+
+function cleanString(value, fallback = "") {
+  if (typeof value !== "string") return fallback;
+  return value.trim();
+}
+
+function normalizeEmail(value) {
+  return cleanString(value).toLowerCase();
+}
+
+function getClientIp(request) {
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  if (forwardedFor) return forwardedFor.split(",")[0].trim();
+  return request.headers.get("x-real-ip") || "unknown";
+}
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const recent = (rateLimitStore.get(ip) || []).filter((timestamp) => now - timestamp < RATE_LIMIT_WINDOW_MS);
+  recent.push(now);
+  rateLimitStore.set(ip, recent);
+  return recent.length > RATE_LIMIT_MAX_REQUESTS;
+}
+
+function getCreatedAtMs(leadDoc) {
+  const createdAt = leadDoc.data().createdAt;
+  if (createdAt?.toDate) return createdAt.toDate().getTime();
+  if (createdAt) {
+    const parsed = new Date(createdAt).getTime();
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+  return 0;
+}
+
+function getNewestDoc(snapshot) {
+  if (snapshot.empty) return null;
+  return [...snapshot.docs].sort((a, b) => getCreatedAtMs(b) - getCreatedAtMs(a))[0];
+}
+
+function truncateForDiscord(value, maxLength = 900) {
+  const text = cleanString(value, "N/A") || "N/A";
+  if (text.length <= maxLength) return text;
+  return `${text.slice(0, maxLength - 3)}...`;
+}
+
+async function dispatchWebhook(webhookUrl, payload) {
+  const cleanWebhookUrl = webhookUrl?.trim();
+  if (!cleanWebhookUrl) return;
+
+  const response = await fetch(cleanWebhookUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Webhook failed with status ${response.status}`);
+  }
+}
+
+async function resolveWebhookUrl() {
+  let webhookUrl = process.env.LEAD_NOTIFICATION_WEBHOOK || "";
+  if (webhookUrl) return webhookUrl;
+
+  try {
+    const settingsRef = doc(db, "settings", "global");
+    const settingsSnap = await getDoc(settingsRef);
+    if (settingsSnap.exists()) {
+      webhookUrl = settingsSnap.data().leadNotificationWebhook || "";
+    }
+  } catch (error) {
+    console.warn("[API/Leads] Failed to fetch settings webhook:", error.message);
+  }
+
+  return webhookUrl;
+}
+
+async function findLeadById(leadId) {
+  if (!leadId) return null;
+
+  try {
+    const lowerRef = doc(db, "leads", leadId);
+    const lowerSnap = await getDoc(lowerRef);
+    if (lowerSnap.exists()) {
+      return { leadDoc: lowerSnap, leadId: lowerSnap.id, collectionName: "leads" };
+    }
+
+    const legacyRef = doc(db, "Leads", leadId);
+    const legacySnap = await getDoc(legacyRef);
+    if (legacySnap.exists()) {
+      return { leadDoc: legacySnap, leadId: legacySnap.id, collectionName: "Leads" };
+    }
+  } catch (error) {
+    console.warn("[API/Leads] Direct document lookup by ID failed:", error.message);
+  }
+
+  return null;
+}
+
+async function findLeadByEmail(email) {
+  if (!email) return null;
+
+  try {
+    const lowerQuery = query(collection(db, "leads"), where("email", "==", email));
+    const lowerSnap = await getDocs(lowerQuery);
+    const lowerDoc = getNewestDoc(lowerSnap);
+    if (lowerDoc) return { leadDoc: lowerDoc, leadId: lowerDoc.id, collectionName: "leads" };
+
+    const legacyQuery = query(collection(db, "Leads"), where("email", "==", email));
+    const legacySnap = await getDocs(legacyQuery);
+    const legacyDoc = getNewestDoc(legacySnap);
+    if (legacyDoc) return { leadDoc: legacyDoc, leadId: legacyDoc.id, collectionName: "Leads" };
+  } catch (error) {
+    console.warn("[API/Leads] Email lookup failed:", error.message);
+  }
+
+  return null;
+}
+
+async function findRecentDuplicateLead(email, source) {
+  if (!email) return null;
+
+  try {
+    const duplicateQuery = query(collection(db, "leads"), where("email", "==", email));
+    const snapshot = await getDocs(duplicateQuery);
+    const now = Date.now();
+
+    return snapshot.docs.find((leadDoc) => {
+      const data = leadDoc.data();
+      if (source && data.source && data.source !== source) return false;
+
+      const createdAt = getCreatedAtMs(leadDoc);
+      return createdAt && now - createdAt < DUPLICATE_WINDOW_MS;
+    });
+  } catch (error) {
+    console.warn("[API/Leads] Duplicate lookup failed:", error.message);
+    return null;
+  }
+}
+
+function createDiscordLeadPayload(leadDoc) {
+  const fields = [
+    { name: "Name", value: truncateForDiscord(leadDoc.fullName), inline: true },
+    { name: "Email", value: truncateForDiscord(leadDoc.email), inline: true },
+    { name: "WhatsApp", value: truncateForDiscord(leadDoc.whatsapp), inline: true },
+  ];
+
+  if (leadDoc.asinOrUrl) {
+    fields.push({ name: "ASIN / Product URL", value: truncateForDiscord(leadDoc.asinOrUrl), inline: false });
+  }
+
+  if (leadDoc.monthlyRevenue) {
+    fields.push({ name: "Est. Monthly Revenue", value: truncateForDiscord(leadDoc.monthlyRevenue), inline: true });
+  }
+
+  if (leadDoc.brandName) {
+    fields.push({ name: "Brand Name", value: truncateForDiscord(leadDoc.brandName), inline: true });
+  }
+
+  fields.push({ name: "Notes / Message", value: truncateForDiscord(leadDoc.notes), inline: false });
+
+  if (leadDoc.utm_source || leadDoc.utm_medium || leadDoc.utm_campaign || leadDoc.fbclid || leadDoc.gclid) {
+    fields.push({
+      name: "Attribution",
+      value: [
+        `Source: ${leadDoc.utm_source || "-"}`,
+        `Medium: ${leadDoc.utm_medium || "-"}`,
+        `Campaign: ${leadDoc.utm_campaign || "-"}`,
+        `fbclid: ${leadDoc.fbclid ? "captured" : "-"}`,
+        `gclid: ${leadDoc.gclid ? "captured" : "-"}`,
+      ].join(" | "),
+      inline: false,
+    });
+  }
+
+  return {
+    embeds: [
+      {
+        title: `New Lead: ${leadDoc.requestedService || "General Inquiry"}`,
+        description: `A new inquiry was submitted via ${leadDoc.source || "Website Form"}.`,
+        color: 16350229,
+        fields,
+        footer: {
+          text: `Grow Orbit Lead Alert System - ${new Date().toLocaleString()}`,
+        },
+      },
+    ],
+  };
+}
+
+function createDiscordBookingPayload(leadData, email) {
+  const fields = [
+    { name: "Name", value: truncateForDiscord(leadData.fullName), inline: true },
+    { name: "Email", value: truncateForDiscord(email || leadData.email), inline: true },
+    { name: "WhatsApp", value: truncateForDiscord(leadData.whatsapp), inline: true },
+    { name: "Requested Service", value: truncateForDiscord(leadData.requestedService || "Not specified"), inline: false },
+  ];
+
+  if (leadData.brandName) {
+    fields.push({ name: "Brand Name", value: truncateForDiscord(leadData.brandName), inline: true });
+  }
+
+  if (leadData.asinOrUrl) {
+    fields.push({ name: "ASIN / URL", value: truncateForDiscord(leadData.asinOrUrl), inline: true });
+  }
+
+  if (leadData.utm_source || leadData.utm_medium || leadData.utm_campaign || leadData.fbclid || leadData.gclid) {
+    fields.push({
+      name: "Attribution",
+      value: [
+        `Source: ${leadData.utm_source || "-"}`,
+        `Medium: ${leadData.utm_medium || "-"}`,
+        `Campaign: ${leadData.utm_campaign || "-"}`,
+        `fbclid: ${leadData.fbclid ? "captured" : "-"}`,
+        `gclid: ${leadData.gclid ? "captured" : "-"}`,
+      ].join(" | "),
+      inline: false,
+    });
+  }
+
+  return {
+    embeds: [
+      {
+        title: "Strategy Session Scheduled",
+        description: "A strategy call was booked via Calendly and the CRM lead was promoted to Hot.",
+        color: 3066993,
+        fields,
+        footer: {
+          text: `Grow Orbit Calendar Alert - ${new Date().toLocaleString()}`,
+        },
+      },
+    ],
+  };
+}
+
+function createDiscordOrphanBookingPayload(body, email) {
+  return {
+    embeds: [
+      {
+        title: "Strategy Session Scheduled - Unmatched Lead",
+        description: "A strategy call was booked via Calendly, but no matching lead was found in the CRM database.",
+        color: 16776960,
+        fields: [
+          { name: "Email", value: truncateForDiscord(email || "N/A"), inline: true },
+          { name: "Provided Lead ID", value: truncateForDiscord(body.leadId || "N/A"), inline: true },
+        ],
+        footer: {
+          text: `Grow Orbit Calendar Alert - ${new Date().toLocaleString()}`,
+        },
+      },
+    ],
+  };
+}
+
+async function notifyWebhook(webhookUrl, discordPayload, slackText) {
+  const cleanWebhookUrl = webhookUrl?.trim();
+  if (!cleanWebhookUrl) return;
+
+  if (cleanWebhookUrl.includes("discord.com/api/webhooks/")) {
+    await dispatchWebhook(cleanWebhookUrl, discordPayload);
+    return;
+  }
+
+  if (cleanWebhookUrl.includes("hooks.slack.com/services/")) {
+    await dispatchWebhook(cleanWebhookUrl, { text: slackText });
+  }
+}
+
+async function handleBookingConfirmation(body, webhookUrl) {
+  const email = normalizeEmail(body.email);
+  if (!body.leadId && !email) {
+    return NextResponse.json({ error: "Missing lead reference for booking confirmation" }, { status: 400 });
+  }
+
+  const match = (await findLeadById(cleanString(body.leadId))) || (await findLeadByEmail(email));
+
+  if (match) {
+    const leadData = match.leadDoc.data();
+    const alreadyBooked = leadData.meetingBooked === true;
+    const leadRef = doc(db, match.collectionName, match.leadId);
+    const bookingUpdate = {
+      meetingBooked: true,
+      status: "hot",
+      priority: "high",
+      calendlyEventUri: cleanString(body.calendlyEventUri),
+      calendlyInviteeUri: cleanString(body.calendlyInviteeUri),
+      updatedAt: serverTimestamp(),
+    };
+
+    if (!alreadyBooked) {
+      bookingUpdate.bookedAt = serverTimestamp();
+      bookingUpdate.timeline = arrayUnion({
+        text: "Meeting successfully scheduled on Calendly.",
+        timestamp: new Date(),
+        adminName: "System",
+        adminId: "system",
+      });
+    }
+
+    await updateDoc(leadRef, bookingUpdate);
+
+    if (!alreadyBooked) {
+      try {
+        await notifyWebhook(
+          webhookUrl,
+          createDiscordBookingPayload(leadData, email),
+          [
+            "*Strategy Call Scheduled!*",
+            `Name: ${leadData.fullName || "N/A"}`,
+            `Email: ${email || leadData.email || "N/A"}`,
+            `WhatsApp: ${leadData.whatsapp || "N/A"}`,
+            `Service: ${leadData.requestedService || "Not specified"}`,
+          ].join("\n")
+        );
+      } catch (error) {
+        console.error("[API/Leads] Webhook notification dispatch failed for booking:", error);
+      }
+    }
+
+    return NextResponse.json({ success: true, id: match.leadId, merged: true, alreadyBooked });
+  }
+
+  const confirmationDoc = {
+    fullName: "Calendly Booking",
+    email,
+    whatsapp: "N/A",
+    requestedService: "Booked meeting - lead not matched",
+    notes: `Calendly booking confirmation could not be matched to an existing lead. Provided leadId: ${body.leadId || "N/A"}`,
+    source: "Calendly Booking Confirmation",
+    type: "booking_confirmation_orphan",
+    status: "hot",
+    priority: "high",
+    leadId: cleanString(body.leadId) || null,
+    meetingBooked: true,
+    calendlyEventUri: cleanString(body.calendlyEventUri),
+    calendlyInviteeUri: cleanString(body.calendlyInviteeUri),
+    timeline: [
+      {
+        text: "Meeting booked in Calendly, but no matching lead record was found.",
+        timestamp: new Date(),
+        adminName: "System",
+        adminId: "system",
+      },
+    ],
+    createdAt: serverTimestamp(),
+  };
+
+  const docRef = await addDoc(collection(db, "leads"), confirmationDoc);
+
+  try {
+    await notifyWebhook(
+      webhookUrl,
+      createDiscordOrphanBookingPayload(body, email),
+      `Strategy call scheduled, but no matching lead was found. Email: ${email || "N/A"} Lead ID: ${body.leadId || "N/A"}`
+    );
+  } catch (error) {
+    console.error("[API/Leads] Webhook notification dispatch failed for orphaned booking:", error);
+  }
+
+  return NextResponse.json({ success: true, id: docRef.id, merged: false });
+}
+
+async function handleLeadIntake(body, webhookUrl) {
+  const normalizedFullName = cleanString(body.fullName);
+  const normalizedEmail = normalizeEmail(body.email);
+  const normalizedSource = cleanString(body.source, "API Request") || "API Request";
+
+  if (!normalizedFullName || !normalizedEmail) {
+    return NextResponse.json({ error: "Name and email are required" }, { status: 400 });
+  }
+
+  if (!EMAIL_REGEX.test(normalizedEmail)) {
+    return NextResponse.json({ error: "A valid email address is required" }, { status: 400 });
+  }
+
+  const duplicateLead = await findRecentDuplicateLead(normalizedEmail, normalizedSource);
+  if (duplicateLead) {
+    return NextResponse.json({ success: true, id: duplicateLead.id, duplicate: true });
+  }
+
+  const requestedService = cleanString(body.requestedService, "Not specified") || "Not specified";
+  const serviceLower = requestedService.toLowerCase();
+  const initialPriority = (
+    serviceLower.includes("full account management") ||
+    serviceLower.includes("ppc management") ||
+    serviceLower.includes("full/amazon-management") ||
+    serviceLower.includes("ppc-efficiency")
+  ) ? "high" : "low";
+
+  const leadDoc = {
+    fullName: normalizedFullName,
+    email: normalizedEmail,
+    whatsapp: cleanString(body.whatsapp, "N/A") || "N/A",
+    requestedService,
+    notes: cleanString(body.notes, "No message provided") || "No message provided",
+    source: normalizedSource,
+    status: "new",
+    priority: initialPriority,
+    createdAt: serverTimestamp(),
+    asinOrUrl: cleanString(body.asinOrUrl) || null,
+    monthlyRevenue: cleanString(body.monthlyRevenue) || null,
+    brandName: cleanString(body.brandName) || null,
+    utm_source: cleanString(body.utm_source),
+    utm_medium: cleanString(body.utm_medium),
+    utm_campaign: cleanString(body.utm_campaign),
+    utm_content: cleanString(body.utm_content),
+    utm_term: cleanString(body.utm_term),
+    gclid: cleanString(body.gclid),
+    fbclid: cleanString(body.fbclid),
+    landingUrl: cleanString(body.landingUrl),
+    currentUrl: cleanString(body.currentUrl),
+    referrer: cleanString(body.referrer),
+    utm_captured_at: cleanString(body.utm_captured_at),
+    timeline: [
+      {
+        text: `Lead submitted via ${normalizedSource}.`,
+        timestamp: new Date(),
+        adminName: "System",
+        adminId: "system",
+      },
+    ],
+  };
+
+  const docRef = await addDoc(collection(db, "leads"), leadDoc);
+
+  try {
+    await notifyWebhook(
+      webhookUrl,
+      createDiscordLeadPayload(leadDoc),
+      [
+        "*New Lead Received!*",
+        `Name: ${leadDoc.fullName}`,
+        `Email: ${leadDoc.email}`,
+        `WhatsApp: ${leadDoc.whatsapp}`,
+        `Service: ${leadDoc.requestedService}`,
+        `ASIN/URL: ${leadDoc.asinOrUrl || "N/A"}`,
+        `Revenue: ${leadDoc.monthlyRevenue || "N/A"}`,
+        `Notes: ${leadDoc.notes}`,
+        `Source: ${leadDoc.source}`,
+      ].join("\n")
+    );
+  } catch (error) {
+    console.error("[API/Leads] Webhook notification dispatch failed:", error);
+  }
+
+  return NextResponse.json({ success: true, id: docRef.id });
+}
 
 export async function POST(request) {
   try {
-    const body = await request.json();
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON payload" }, { status: 400 });
+    }
 
-    // 1. Spam Protection: Honeypot Validation
-    if (body.website_confirm && body.website_confirm.trim() !== "") {
+    if (body.website_confirm && cleanString(body.website_confirm) !== "") {
       console.warn("[API/Leads] Spam submission caught via honeypot:", body.email);
-      // Return a fake successful response to fool bot scripts
       return NextResponse.json({ success: true, id: "spam_filtered" });
     }
 
-    // Fetch Global Webhook Setting from Firestore (shared by both paths)
-    let webhookUrl = process.env.LEAD_NOTIFICATION_WEBHOOK || "";
-    if (!webhookUrl) {
-      try {
-        const settingsRef = doc(db, "settings", "global");
-        const settingsSnap = await getDoc(settingsRef);
-        if (settingsSnap.exists()) {
-          webhookUrl = settingsSnap.data().leadNotificationWebhook || "";
-        }
-      } catch (dbErr) {
-        console.warn("[API/Leads] Failed to fetch settings webhook:", dbErr.message);
-      }
+    const clientIp = getClientIp(request);
+    if (isRateLimited(clientIp)) {
+      console.warn("[API/Leads] Rate limit exceeded:", clientIp);
+      return NextResponse.json({ error: "Too many requests. Please try again shortly." }, { status: 429 });
     }
 
-    // 2. Handle Calendly Booking Confirmations
+    const webhookUrl = await resolveWebhookUrl();
+
     if (body.type === "booking_confirmation") {
-      let targetLeadDoc = null;
-      let targetLeadId = null;
-      let targetCollection = "leads"; // Try lowercase collection first
-
-      // A. Try matching by leadId
-      if (body.leadId) {
-        try {
-          const docRefLow = doc(db, "leads", body.leadId);
-          const snapLow = await getDoc(docRefLow);
-          if (snapLow.exists()) {
-            targetLeadDoc = snapLow;
-            targetLeadId = snapLow.id;
-            targetCollection = "leads";
-          } else {
-            const docRefCap = doc(db, "Leads", body.leadId);
-            const snapCap = await getDoc(docRefCap);
-            if (snapCap.exists()) {
-              targetLeadDoc = snapCap;
-              targetLeadId = snapCap.id;
-              targetCollection = "Leads";
-            }
-          }
-        } catch (e) {
-          console.warn("[API/Leads] Direct document lookup by ID failed:", e.message);
-        }
-      }
-
-      // B. Fallback: match by email (latest matching lead)
-      if (!targetLeadDoc && body.email) {
-        try {
-          const qLow = query(collection(db, "leads"), where("email", "==", body.email), orderBy("createdAt", "desc"));
-          const snapLow = await getDocs(qLow);
-          if (!snapLow.empty) {
-            targetLeadDoc = snapLow.docs[0];
-            targetLeadId = snapLow.docs[0].id;
-            targetCollection = "leads";
-          } else {
-            const qCap = query(collection(db, "Leads"), where("email", "==", body.email), orderBy("createdAt", "desc"));
-            const snapCap = await getDocs(qCap);
-            if (!snapCap.empty) {
-              targetLeadDoc = snapCap.docs[0];
-              targetLeadId = snapCap.docs[0].id;
-              targetCollection = "Leads";
-            }
-          }
-        } catch (e) {
-          console.warn("[API/Leads] Email query search failed:", e.message);
-        }
-      }
-
-      // C. Perform Lead Document Update if found
-      if (targetLeadDoc) {
-        const leadRef = doc(db, targetCollection, targetLeadId);
-        await updateDoc(leadRef, {
-          meetingBooked: true,
-          status: "hot", // Automatically mark as HOT when a meeting is booked
-          priority: "high", // Auto-set priority to HIGH when meeting is booked
-          timeline: arrayUnion({
-            text: "Meeting successfully scheduled on Calendly.",
-            timestamp: new Date(),
-            adminName: "System",
-            adminId: "system"
-          })
-        });
-
-        // Trigger detailed webhook notification with lead context
-        const leadData = targetLeadDoc.data();
-        if (webhookUrl && webhookUrl.trim()) {
-          try {
-            const cleanWebhookUrl = webhookUrl.trim();
-            if (cleanWebhookUrl.includes("discord.com/api/webhooks/")) {
-              const payload = {
-                embeds: [
-                  {
-                    title: "📅 Strategy Session Scheduled!",
-                    description: `A strategy call was successfully booked via Calendly, and the lead status was updated to **Hot (Booked)**.`,
-                    color: 3066993, // Green color `#2ecc71` in decimal
-                    fields: [
-                      { name: "Name", value: leadData.fullName || "N/A", inline: true },
-                      { name: "Email", value: body.email || leadData.email || "N/A", inline: true },
-                      { name: "WhatsApp", value: leadData.whatsapp || "N/A", inline: true },
-                      { name: "Requested Service", value: leadData.requestedService || "Not specified", inline: false }
-                    ]
-                  }
-                ]
-              };
-
-              if (leadData.brandName) {
-                payload.embeds[0].fields.push({ name: "Brand Name", value: leadData.brandName, inline: true });
-              }
-              if (leadData.asinOrUrl) {
-                payload.embeds[0].fields.push({ name: "ASIN / URL", value: leadData.asinOrUrl, inline: true });
-              }
-              if (leadData.utm_source || leadData.utm_medium || leadData.utm_campaign) {
-                const utmString = `**Source:** ${leadData.utm_source || "—"} | **Medium:** ${leadData.utm_medium || "—"} | **Campaign:** ${leadData.utm_campaign || "—"}`;
-                payload.embeds[0].fields.push({ name: "Attribution (UTM)", value: utmString, inline: false });
-              }
-
-              payload.embeds[0].footer = {
-                text: `Grow Orbit Calendar Alert • ${new Date().toLocaleString()}`
-              };
-
-              await fetch(cleanWebhookUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-              });
-            } else if (cleanWebhookUrl.includes("hooks.slack.com/services/")) {
-              const payload = {
-                text: `📅 *Strategy Call Scheduled!*\n*Name:* ${leadData.fullName || "N/A"}\n*Email:* ${body.email || "N/A"}\n*WhatsApp:* ${leadData.whatsapp || "N/A"}\n*Service:* ${leadData.requestedService || "Not specified"}`
-              };
-              await fetch(cleanWebhookUrl, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-              });
-            }
-          } catch (webhookErr) {
-            console.error("[API/Leads] Webhook notification dispatch failed for booking:", webhookErr);
-          }
-        }
-
-        return NextResponse.json({ success: true, id: targetLeadId, merged: true });
-      }
-
-      // D. Fallback if lead was not found (Orphaned Booking)
-      const confirmationDoc = {
-        type: "booking_confirmation",
-        leadId: body.leadId || null,
-        email: body.email || "",
-        meetingBooked: true,
-        createdAt: serverTimestamp()
-      };
-
-      const docRef = await addDoc(collection(db, "leads"), confirmationDoc);
-
-      if (webhookUrl && webhookUrl.trim()) {
-        try {
-          const cleanWebhookUrl = webhookUrl.trim();
-          if (cleanWebhookUrl.includes("discord.com/api/webhooks/")) {
-            const payload = {
-              embeds: [
-                {
-                  title: "⚠️ Strategy Session Scheduled (Orphaned Booking)",
-                  description: `A strategy call was booked via Calendly, but no matching lead was found in the CRM database.`,
-                  color: 16776960, // Yellow color `#f1c40f` in decimal
-                  fields: [
-                    { name: "Email", value: body.email || "N/A", inline: true },
-                    { name: "Provided Lead ID", value: body.leadId || "N/A", inline: true }
-                  ],
-                  footer: {
-                    text: `Grow Orbit Calendar Alert • ${new Date().toLocaleString()}`
-                  }
-                }
-              ]
-            };
-            
-            await fetch(cleanWebhookUrl, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(payload)
-            });
-          }
-        } catch (webhookErr) {
-          console.error("[API/Leads] Webhook notification dispatch failed for orphaned booking:", webhookErr);
-        }
-      }
-
-      return NextResponse.json({ success: true, id: docRef.id, merged: false });
+      return handleBookingConfirmation(body, webhookUrl);
     }
 
-    // 3. Save Lead Intake submissions
-    const {
-      fullName,
-      email,
-      whatsapp,
-      requestedService,
-      notes,
-      source,
-      asinOrUrl,
-      monthlyRevenue,
-      brandName,
-      utm_source,
-      utm_medium,
-      utm_campaign,
-      utm_content,
-      utm_term,
-      landingUrl
-    } = body;
-
-    const serviceLower = (requestedService || "").toLowerCase();
-    const initialPriority = (
-      serviceLower.includes("full account management") ||
-      serviceLower.includes("ppc management") ||
-      serviceLower.includes("full/amazon-management") ||
-      serviceLower.includes("ppc-efficiency")
-    ) ? "high" : "low";
-
-    const leadDoc = {
-      fullName: fullName || "N/A",
-      email: email || "",
-      whatsapp: whatsapp || "N/A",
-      requestedService: requestedService || "Not specified",
-      notes: notes || "No message provided",
-      source: source || "API Request",
-      status: "new",
-      priority: initialPriority,
-      createdAt: serverTimestamp(),
-      asinOrUrl: asinOrUrl || null,
-      monthlyRevenue: monthlyRevenue || null,
-      brandName: brandName || null,
-      utm_source: utm_source || "",
-      utm_medium: utm_medium || "",
-      utm_campaign: utm_campaign || "",
-      utm_content: utm_content || "",
-      utm_term: utm_term || "",
-      landingUrl: landingUrl || ""
-    };
-
-    const docRef = await addDoc(collection(db, "leads"), leadDoc);
-
-    // Trigger webhook notification for lead submission
-    if (webhookUrl && webhookUrl.trim()) {
-      try {
-        const cleanWebhookUrl = webhookUrl.trim();
-        
-        if (cleanWebhookUrl.includes("discord.com/api/webhooks/")) {
-          const payload = {
-            embeds: [
-              {
-                title: `🚀 New Lead: ${requestedService || "General Inquiry"}`,
-                description: `A new inquiry was submitted via **${source || "Website Form"}**.`,
-                color: 16350229, // Brand orange #f97316 in decimal
-                fields: [
-                  { name: "Name", value: fullName || "N/A", inline: true },
-                  { name: "Email", value: email || "N/A", inline: true },
-                  { name: "WhatsApp", value: whatsapp || "N/A", inline: true }
-                ]
-              }
-            ]
-          };
-
-          if (asinOrUrl) {
-            payload.embeds[0].fields.push({ name: "ASIN / Product URL", value: asinOrUrl, inline: false });
-          }
-
-          if (monthlyRevenue) {
-            payload.embeds[0].fields.push({ name: "Est. Monthly Revenue", value: monthlyRevenue, inline: true });
-          }
-
-          if (brandName) {
-            payload.embeds[0].fields.push({ name: "Brand Name", value: brandName, inline: true });
-          }
-
-          payload.embeds[0].fields.push({ name: "Notes / Message", value: notes || "No message provided.", inline: false });
-
-          if (utm_source || utm_medium || utm_campaign) {
-            const utmString = `**Source:** ${utm_source || "—"} | **Medium:** ${utm_medium || "—"} | **Campaign:** ${utm_campaign || "—"}`;
-            payload.embeds[0].fields.push({ name: "Attribution (UTM)", value: utmString, inline: false });
-          }
-
-          payload.embeds[0].footer = {
-            text: `Grow Orbit Lead Alert System • ${new Date().toLocaleString()}`
-          };
-
-          await fetch(cleanWebhookUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          });
-        } else if (cleanWebhookUrl.includes("hooks.slack.com/services/")) {
-          const payload = {
-            text: `🚀 *New Lead Received!*\n*Name:* ${fullName || "N/A"}\n*Email:* ${email || "N/A"}\n*WhatsApp:* ${whatsapp || "N/A"}\n*Service:* ${requestedService || "Not specified"}\n*ASIN/URL:* ${asinOrUrl || "N/A"}\n*Revenue:* ${monthlyRevenue || "N/A"}\n*Notes:* ${notes || "No message provided."}\n*Source:* ${source || "API"}`
-          };
-
-          await fetch(cleanWebhookUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          });
-        }
-      } catch (webhookErr) {
-        console.error("[API/Leads] Webhook notification dispatch failed:", webhookErr);
-      }
-    }
-
-    return NextResponse.json({ success: true, id: docRef.id });
-
+    return handleLeadIntake(body, webhookUrl);
   } catch (error) {
     console.error("[API/Leads] Handler crash:", error);
     return NextResponse.json({ error: "Failed to process lead submission" }, { status: 500 });

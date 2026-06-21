@@ -10,6 +10,12 @@ const UTM_KEYS = [
   "fbclid"
 ];
 
+const ATTRIBUTION_META_KEYS = [
+  "landingUrl",
+  "referrer",
+  "utm_captured_at"
+];
+
 /**
  * Initializes the UTM tracker. Checks the current URL search parameters
  * for UTM/click IDs and saves any found parameters to sessionStorage.
@@ -21,6 +27,13 @@ export function initializeUtmTracker() {
     const urlParams = new URLSearchParams(window.location.search);
     let hasNewUtms = false;
 
+    const hasStoredLandingUrl = !!sessionStorage.getItem("landingUrl");
+    if (!hasStoredLandingUrl) {
+      sessionStorage.setItem("landingUrl", window.location.href);
+      sessionStorage.setItem("referrer", document.referrer || "");
+      sessionStorage.setItem("utm_captured_at", new Date().toISOString());
+    }
+
     UTM_KEYS.forEach((key) => {
       const value = urlParams.get(key);
       if (value) {
@@ -30,6 +43,8 @@ export function initializeUtmTracker() {
     });
 
     if (hasNewUtms) {
+      sessionStorage.setItem("landingUrl", window.location.href);
+      sessionStorage.setItem("referrer", document.referrer || sessionStorage.getItem("referrer") || "");
       sessionStorage.setItem("utm_captured_at", new Date().toISOString());
     }
   } catch (err) {
@@ -57,8 +72,13 @@ export function getSavedUtmData() {
       }
     });
 
-    // Capture the original landing URL or the current URL
-    data.landingUrl = window.location.href;
+    ATTRIBUTION_META_KEYS.forEach((key) => {
+      const value = sessionStorage.getItem(key) || "";
+      if (value) data[key] = value;
+    });
+
+    data.landingUrl = data.landingUrl || window.location.href;
+    data.currentUrl = window.location.href;
   } catch (err) {
     console.warn("[UTM Tracker] Failed to retrieve UTM data:", err);
   }

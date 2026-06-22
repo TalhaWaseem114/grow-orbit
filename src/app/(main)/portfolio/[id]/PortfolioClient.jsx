@@ -392,7 +392,11 @@ function MainImageCTRDisplay({ details, onImageOpen }) {
             <div className="flex items-center gap-2 mb-3"><div className="w-2 h-2 rounded-full bg-red-400" /><span className="text-[9px] font-black uppercase tracking-widest text-red-500">Before · Original</span></div>
             <div className="relative bg-white rounded-xl overflow-hidden cursor-pointer group border-2 border-red-200 mb-3 aspect-square" style={{ aspectRatio: "1/1" }} onClick={() => before && onImageOpen(before)}>
               {before
-                ? <SmartImage src={before.src} alt="Original" className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
+                ? <SmartImage 
+                    src={before.src} 
+                    alt={before.label} 
+                    className={`w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ${before.isBeforeFilter ? "filter grayscale contrast-[0.7] brightness-[0.7] blur-[0.6px]" : ""}`} 
+                  />
                 : <div className="flex items-center justify-center w-full h-full bg-zinc-200"><Camera size={24} className="text-zinc-400" /></div>}
               <div className="absolute inset-0 bg-red-500/10 pointer-events-none" />
             </div>

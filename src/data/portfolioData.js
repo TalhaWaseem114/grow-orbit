@@ -17,13 +17,30 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+80% Sales",
     badge: { value: "+80%", label: "Sales Lift" },
     tags: ["7 Secondary Images", "Infographics", "Lifestyle"],
-    services: ["Listing Images"],
+    services: ["Listing Images", "Main Image CTR"],
     materials: ["Premium Ingredients"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg",
     isDark: false,
     timeline: "14 Days",
     challenge: "Lumina Bites had delicious, high-quality cookies, but their product images didn't convey the premium taste and texture. They needed visuals that highlighted the quality and crunch.",
     solution: "We created a full suite of listing images that showcased the cookies in lifestyle settings, highlighted the premium ingredients, and used engaging typography to emphasize the texture and taste. Optimized specifically for mobile browsing.",
+    serviceDetails: {
+      "Listing Images": {
+        description: "We created a full suite of listing images that showcased the cookies in lifestyle settings, highlighted the premium ingredients, and used engaging typography.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg", label: "Hero Image" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872004/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/2.jpg", label: "Hero Detail" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872005/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/3.jpg", label: "Ingredients" }
+        ]
+      },
+      "Main Image CTR": {
+        description: "Sleek, high-contrast cookies packaging render designed to stand out in the Amazon search grid and maximize CTR.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+        ]
+      }
+    },
     gallery: [
       { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872004/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/2.jpg", label: "Hero Image" },
       { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872005/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/3.jpg", label: "Ingredient Callout" },
@@ -54,7 +71,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "3.2x ROAS",
     badge: { value: "3.2x", label: "ROAS Lift" },
     tags: ["3D Exploded Views", "Technical Callouts", "Lifestyle"],
-    services: ["Listing Images", "A+ Content"],
+    services: ["Listing Images", "A+ Content", "Main Image CTR"],
     materials: ["Premium Alloy", "Rubber Seal"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872034/grow_orbit_portfolio/assets/portfolio/nexa_pouches/main_image.jpg",
     isDark: true,
@@ -86,6 +103,13 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872024/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-2.jpg", label: "Lifestyle Module" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872025/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-3.jpg", label: "Technical Comparison" },
         ],
+      },
+      "Main Image CTR": {
+        description: "Technical 3D render main image emphasizing premium alloys and capacity to maximize CTR.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872034/grow_orbit_portfolio/assets/portfolio/nexa_pouches/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "/images/before/nexa_before.png", label: "Original Photo (Before)" }
+        ]
       },
     },
     gallery: [
@@ -120,7 +144,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+90% Sales",
     badge: { value: "+90%", label: "Sales Lift" },
     tags: ["High-Tech Infographics", "Feature Callouts", "Action Shots"],
-    services: ["Listing Images", "A+ Content"],
+    services: ["Listing Images", "A+ Content", "Main Image CTR"],
     materials: ["Performance Motors", "Permanent Filters"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg",
     isDark: false,
@@ -152,6 +176,13 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872044/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-1.jpg", label: "90,000 RPM Motor Tech" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872052/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-7.jpg", label: "Compact Storage & Bag" },
         ],
+      },
+      "Main Image CTR": {
+        description: "Optimized high-suction action render designed to capture consumer attention and maximize CTR against competitors.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872054/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "/images/before/vacuum_before.png", label: "Original Photo (Before)" }
+        ]
       },
     },
     gallery: [
@@ -186,7 +217,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+105% Sales",
     badge: { value: "+105%", label: "Sales Lift" },
     tags: ["Cinematic Dark", "Feature Callouts", "Multi-Use Display"],
-    services: ["Listing Images", "A+ Content"],
+    services: ["Listing Images", "A+ Content", "Main Image CTR"],
     materials: ["Premium Aluminum", "LED Display"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg",
     isDark: true,
@@ -220,6 +251,13 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872064/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/aplus-10.jpg", label: "What's Included" },
         ],
       },
+      "Main Image CTR": {
+        description: "High-contrast render displaying multi-functional capability and smart LED settings to drive maximum CTR.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "/images/before/tire_before.png", label: "Original Photo (Before)" }
+        ]
+      },
     },
     gallery: [
       { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872075/grow_orbit_portfolio/assets/portfolio/kazvo_tire_inflator/main_image.jpg", label: "Hero Image" },
@@ -251,7 +289,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+75% Sales",
     badge: { value: "+75%", label: "Sales Lift" },
     tags: ["Technical Breakdowns", "Feature Highlights", "Dark Theme"],
-    services: ["Listing Images"],
+    services: ["Listing Images", "Main Image CTR"],
     materials: ["Precision Steel", "Aluminum Alloy"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872083/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/main_image.jpg",
     isDark: true,
@@ -269,6 +307,13 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872080/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/5.jpg", label: "Dual Power Control" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872081/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/6.jpg", label: "Precision Bits" },
         ],
+      },
+      "Main Image CTR": {
+        description: "Sleek 3D render neatly presenting all bits and tool highlights to instantly win clicks in search results.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872083/grow_orbit_portfolio/assets/portfolio/kazvo_screw_set_78/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "/images/before/screws_before.png", label: "Original Photo (Before)" }
+        ]
       },
     },
     gallery: [
@@ -300,7 +345,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+130% Sales",
     badge: { value: "+130%", label: "Sales Lift" },
     tags: ["3D Pill Renders", "Bio-Availability", "Scientific Breakdown"],
-    services: ["Listing Images"],
+    services: ["Listing Images", "Main Image CTR"],
     materials: ["Premium Formulations", "Science-Backed"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872097/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/main_image.jpg",
     isDark: false,
@@ -322,6 +367,13 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872095/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/9.jpg", label: "Scientific Authority" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872084/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/10.jpg", label: "Core Benefits" },
         ],
+      },
+      "Main Image CTR": {
+        description: "High-end 3D pill and bottle render emphasizing the active formula and scientific efficacy to boost CTR.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872097/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "/images/before/supplements_before.png", label: "Original Photo (Before)" }
+        ]
       },
     },
     gallery: [
@@ -352,7 +404,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+115% Sales",
     badge: { value: "+115%", label: "Sales Lift" },
     tags: ["Action Shots", "Technical Breakdown", "High Contrast"],
-    services: ["Listing Images", "A+ Content"],
+    services: ["Listing Images", "A+ Content", "Main Image CTR"],
     materials: ["Premium Metal", "Anti-Slip Coating"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872117/grow_orbit_portfolio/neogrid_hand_grip/main_image.jpg",
     isDark: true,
@@ -380,10 +432,17 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872109/grow_orbit_portfolio/neogrid_hand_grip/aplus-3.jpg", label: "Smart Tracking" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872110/grow_orbit_portfolio/neogrid_hand_grip/aplus-4.jpg", label: "Workout Guide" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872112/grow_orbit_portfolio/neogrid_hand_grip/aplus-5.jpg", label: "Grip Comparison" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872113/grow_orbit_portfolio/neogrid_hand_grip/aplus-6.jpg", label: "Material Breakdown" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872114/grow_orbit_portfolio/neogrid_hand_grip/aplus-7.jpg", label: "Action Shot" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872116/grow_orbit_portfolio/neogrid_hand_grip/aplus-8.jpg", label: "Product Summary" },
+          { src: "https://res.cloudinary.com/grow_orbit_portfolio/neogrid_hand_grip/aplus-6.jpg", label: "Material Breakdown" },
+          { src: "https://res.cloudinary.com/grow_orbit_portfolio/neogrid_hand_grip/aplus-7.jpg", label: "Action Shot" },
+          { src: "https://res.cloudinary.com/grow_orbit_portfolio/neogrid_hand_grip/aplus-8.jpg", label: "Product Summary" },
         ],
+      },
+      "Main Image CTR": {
+        description: "High-contrast product render highlighting the adjustable resistance mechanism to maximize search visibility and CTR.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872117/grow_orbit_portfolio/neogrid_hand_grip/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872117/grow_orbit_portfolio/neogrid_hand_grip/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+        ]
       },
     },
     gallery: [
@@ -418,7 +477,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+145% Sales",
     badge: { value: "+145%", label: "Sales Lift" },
     tags: ["Premium Aesthetic", "Feature Highlights", "Lifestyle"],
-    services: ["Listing Images", "A+ Content"],
+    services: ["Listing Images", "A+ Content", "Main Image CTR"],
     materials: ["Precision Blades", "Waterproof Body"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg",
     isDark: false,
@@ -451,6 +510,13 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872135/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-7.jpg", label: "Ultra-Quiet Performance" },
         ],
       },
+      "Main Image CTR": {
+        description: "Sleek vanity render presenting the 360-degree blade and premium materials to win the search click.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+        ]
+      },
     },
     gallery: [
       { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg", label: "Hero Image" },
@@ -482,7 +548,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+110% Sales",
     badge: { value: "+110%", label: "Sales Lift" },
     tags: ["Infographics", "Health Benefits", "Vet Approved"],
-    services: ["Listing Images"],
+    services: ["Listing Images", "Main Image CTR"],
     materials: ["Real Salmon", "No Artificial Fillers"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872148/grow_orbit_portfolio/meow_master/main_image.jpg",
     isDark: false,
@@ -501,6 +567,13 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872141/grow_orbit_portfolio/meow_master/Artboard_4_6.jpg", label: "Irresistible Kibble" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872140/grow_orbit_portfolio/meow_master/Artboard_3_6.jpg", label: "Visible Results" },
         ],
+      },
+      "Main Image CTR": {
+        description: "Vibrant packaging presentation emphasizing real salmon and high nutritional value to attract pet owners.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872148/grow_orbit_portfolio/meow_master/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872148/grow_orbit_portfolio/meow_master/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+        ]
       },
     },
     gallery: [
@@ -533,7 +606,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+135% Sales",
     badge: { value: "+135%", label: "Sales Lift" },
     tags: ["Lifestyle Focus", "Problem & Solution", "Waterless Routine"],
-    services: ["Listing Images"],
+    services: ["Listing Images", "Main Image CTR"],
     materials: ["Alojoba Complex", "Professional Foam"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872160/grow_orbit_portfolio/paw_fessional_shine/main_image.jpg",
     isDark: true,
@@ -552,6 +625,13 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872155/grow_orbit_portfolio/paw_fessional_shine/Artboard_6_5.jpg", label: "Protective Formula" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872156/grow_orbit_portfolio/paw_fessional_shine/Artboard_7_5.jpg", label: "Trusted By Pros" },
         ],
+      },
+      "Main Image CTR": {
+        description: "Clean, premium bottle render showcasing the waterless foam texture to capture search interest.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872160/grow_orbit_portfolio/paw_fessional_shine/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872160/grow_orbit_portfolio/paw_fessional_shine/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+        ]
       },
     },
     gallery: [
@@ -586,7 +666,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+160% Conversion",
     badge: { value: "+160%", label: "Conversion Lift" },
     tags: ["Appliance Visualization", "Lifestyle Context", "Feature Callouts"],
-    services: ["Listing Images"],
+    services: ["Listing Images", "Main Image CTR"],
     materials: ["Smart App Control", "Precision Temp Control", "Adjustable Brew Strength"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872170/grow_orbit_portfolio/assets/portfolio/luminos_coffee_maker/main_image.jpg",
     isDark: false,
@@ -604,6 +684,13 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872166/grow_orbit_portfolio/assets/portfolio/luminos_coffee_maker/Artboard_5_6.jpg", label: "Smart Features" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872165/grow_orbit_portfolio/assets/portfolio/luminos_coffee_maker/Artboard_4_6.jpg", label: "Perfect Cup Every Time" },
         ],
+      },
+      "Main Image CTR": {
+        description: "Elegant appliance render emphasizing smart controls and premium kitchen design to lift CTR.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872170/grow_orbit_portfolio/assets/portfolio/luminos_coffee_maker/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872170/grow_orbit_portfolio/assets/portfolio/luminos_coffee_maker/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+        ]
       },
     },
     gallery: [
@@ -637,7 +724,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+85% Sales",
     badge: { value: "+85%", label: "Sales Lift" },
     tags: ["High-End Infographics", "Material Callouts", "Lifestyle"],
-    services: ["Listing Images"],
+    services: ["Listing Images", "Main Image CTR"],
     materials: ["German Steel", "Walnut Wood"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872182/grow_orbit_portfolio/assets/portfolio/crown_knives/main_image.jpg",
     isDark: true,
@@ -658,7 +745,14 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872180/grow_orbit_portfolio/assets/portfolio/crown_knives/artboard_8_3.jpg", label: "Superior Control" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872181/grow_orbit_portfolio/assets/portfolio/crown_knives/artboard_9.jpg", label: "Elevate Your Dishes" },
         ]
-      }
+      },
+      "Main Image CTR": {
+        description: "Sleek render of German steel and walnut wood knives showcasing extreme sharpness and quality to drive clicks.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872182/grow_orbit_portfolio/assets/portfolio/crown_knives/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872182/grow_orbit_portfolio/assets/portfolio/crown_knives/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+        ]
+      },
     },
     gallery: [
       { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872182/grow_orbit_portfolio/assets/portfolio/crown_knives/main_image.jpg", label: "Hero Image" },
@@ -690,7 +784,7 @@ export const PORTFOLIO_ITEMS = [
     outcome: "+120% Conversion",
     badge: { value: "+120%", label: "Conversion Lift" },
     tags: ["Tech Aesthetics", "Ultrasonic Waves", "Smart Timer"],
-    services: ["Listing Images", "A+ Content"],
+    services: ["Listing Images", "A+ Content", "Main Image CTR"],
     materials: ["Stainless Steel Tank", "ABS Premium Shell"],
     src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872204/grow_orbit_portfolio/assets/portfolio/aethera/main_image.jpg",
     isDark: true,
@@ -724,7 +818,14 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872190/grow_orbit_portfolio/assets/portfolio/aethera/aplus_spacious_tank.jpg", label: "Spacious 750ml Capacity" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872185/grow_orbit_portfolio/assets/portfolio/aethera/aplus_lasting_shine.jpg", label: "Invest in Lasting Shine" },
         ]
-      }
+      },
+      "Main Image CTR": {
+        description: "Luxury vanity render highlighting the 45,000Hz ultrasonic wave capabilities to maximize CTR.",
+        images: [
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872204/grow_orbit_portfolio/assets/portfolio/aethera/main_image.jpg", label: "Optimised Hero (After)" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872204/grow_orbit_portfolio/assets/portfolio/aethera/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+        ]
+      },
     },
     gallery: [
       { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872204/grow_orbit_portfolio/assets/portfolio/aethera/main_image.jpg", label: "Hero Image" },

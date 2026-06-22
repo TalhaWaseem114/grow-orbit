@@ -33,67 +33,52 @@ const FILTERS = FILTERS_DATA.map(f => ({
    ═══════════════════════════════════════════════ */
 function PortfolioCard({ item }) {
   return (
-    <Link href={`/portfolio/${item.id}`} prefetch={false} className="portfolio-card group relative will-change-[transform,opacity,filter] no-underline block">
-      <div className={`relative rounded-[24px] sm:rounded-[28px] overflow-hidden flex flex-col transition-all duration-500
-        shadow-[0_15px_40px_-10px_rgba(0,0,0,0.06)] hover:shadow-[0_30px_70px_-15px_rgba(0,0,0,0.12)] hover:-translate-y-1
-        ${item.isDark
-          ? "bg-zinc-950 border border-white/[0.07]"
-          : "bg-white border border-zinc-100"
-        }`}
-      >
-        {/* Image */}
-        <div className="relative w-full overflow-hidden bg-zinc-100/50 flex items-center justify-center aspect-square">
-          <img
-            src={item.src}
-            alt={item.niche}
-            loading="lazy"
-            className="w-full h-full block group-hover:scale-105 transition-transform duration-700 ease-out object-contain"
-          />
+    <Link 
+      href={`/portfolio/${item.id}`} 
+      prefetch={false} 
+      className="portfolio-card group block relative overflow-hidden rounded-[20px] sm:rounded-[28px] border border-zinc-200/50 dark:border-zinc-800/80 transition-all duration-500 ease-out hover:-translate-y-2 hover:border-orange-500/30 hover:shadow-[0_20px_40px_rgba(249,115,22,0.1)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.55)]"
+    >
+      {/* Edge-to-Edge Image Container */}
+      <div className="relative w-full aspect-square bg-[#fafafa] dark:bg-zinc-950 overflow-hidden">
+        <img
+          src={item.src}
+          alt={item.outcome}
+          loading="lazy"
+          className="w-full h-full block object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
+        />
+        
+        {/* Dark subtle gradient overlay at the bottom of the image for text legibility */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent opacity-95 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" />
 
-          {/* Materials tag TR */}
-          <div className="absolute top-3 right-3 z-10 flex flex-col items-end gap-1.5">
-            {item.materials?.map((mat, i) => (
-              <span key={i} className="bg-black/40 backdrop-blur-md border border-white/20 text-white rounded-md px-1.5 py-0.5 text-[6px] font-bold uppercase tracking-widest shadow-sm">
-                {mat}
-              </span>
-            ))}
-          </div>
-          {/* Gradient overlay */}
-          <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-black/30 to-transparent" />
+        {/* Floating Tag - Top Left */}
+        <div className="absolute top-4 left-4 z-20">
+          <span className="bg-orange-500/90 backdrop-blur-sm text-white text-[7px] sm:text-[7.5px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-[0_2px_8px_rgba(249,115,22,0.3)] border border-orange-400/20">
+            {item.category}
+          </span>
         </div>
 
-        {/* Content */}
-        <div className={`p-4 sm:p-4 flex flex-col gap-1.5 ${item.isDark ? "" : ""}`}>
-          {/* Outcome — the hero number */}
-          <h4
-            className="text-orange-500 font-black text-xl sm:text-[22px] uppercase tracking-tighter leading-none"
+        {/* Immersive Overlay Info (Always visible, clean white/orange typography on dark overlay) */}
+        <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 z-20 flex flex-col gap-1 text-white pointer-events-auto">
+          {/* Brand Name & Niche */}
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[9px] sm:text-[9.5px] font-mono text-zinc-300 uppercase tracking-widest font-bold">
+              {item.brandName} · {item.niche}
+            </span>
+            <span className="text-[7.5px] font-mono text-zinc-400 uppercase tracking-wider">
+              {item.id}
+            </span>
+          </div>
+
+          {/* Outcome Metric */}
+          <h4 
+            className="text-base sm:text-[19px] font-black uppercase tracking-tight text-white group-hover:text-orange-400 transition-colors duration-300 flex items-center justify-between"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            {item.outcome}
+            <span>{item.outcome}</span>
+            <span className="w-7 h-7 rounded-full bg-white/15 border border-white/10 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:rotate-45 transition-all duration-500 shrink-0 shadow-sm">
+              <ArrowUpRight size={14} className="text-white" />
+            </span>
           </h4>
-
-          {/* Niche Subtitle */}
-          <div className="flex flex-col gap-0.5">
-            <p className={`text-[10px] sm:text-[10px] font-bold uppercase tracking-widest ${item.isDark ? "text-zinc-500" : "text-zinc-400"}`}>
-              {item.niche}
-            </p>
-          </div>
-
-          {/* Service Badges (Moved to bottom) */}
-          <div className="flex flex-wrap gap-1 mt-auto pt-1">
-            {item.services?.map((svc, i) => (
-              <span
-                key={i}
-                className={`text-[8px] sm:text-[9px] font-bold uppercase tracking-[0.12em] px-2 py-1 rounded-lg border whitespace-nowrap
-                  ${item.isDark
-                    ? "border-white/[0.08] text-zinc-500 hover:text-zinc-300 hover:border-white/20"
-                    : "border-zinc-200 text-zinc-400 hover:text-zinc-600 hover:border-zinc-400"
-                  } transition-all duration-300`}
-              >
-                {svc}
-              </span>
-            ))}
-          </div>
         </div>
       </div>
     </Link>

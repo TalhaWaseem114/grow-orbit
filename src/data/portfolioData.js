@@ -37,7 +37,7 @@ export const PORTFOLIO_ITEMS = [
         description: "Sleek, high-contrast cookies packaging render designed to stand out in the Amazon search grid and maximize CTR.",
         images: [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg", label: "Optimised Hero (After)" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+          { src: "/images/before/lumina_before.png", label: "Original Photo (Before)" }
         ]
       }
     },
@@ -441,7 +441,7 @@ export const PORTFOLIO_ITEMS = [
         description: "High-contrast product render highlighting the adjustable resistance mechanism to maximize search visibility and CTR.",
         images: [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872117/grow_orbit_portfolio/neogrid_hand_grip/main_image.jpg", label: "Optimised Hero (After)" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872117/grow_orbit_portfolio/neogrid_hand_grip/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+          { src: "/images/before/neogrid_before.png", label: "Original Photo (Before)" }
         ]
       },
     },
@@ -514,7 +514,7 @@ export const PORTFOLIO_ITEMS = [
         description: "Sleek vanity render presenting the 360-degree blade and premium materials to win the search click.",
         images: [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg", label: "Optimised Hero (After)" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+          { src: "/images/before/nose_trimmer_before.png", label: "Original Photo (Before)" }
         ]
       },
     },
@@ -572,7 +572,7 @@ export const PORTFOLIO_ITEMS = [
         description: "Vibrant packaging presentation emphasizing real salmon and high nutritional value to attract pet owners.",
         images: [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872148/grow_orbit_portfolio/meow_master/main_image.jpg", label: "Optimised Hero (After)" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872148/grow_orbit_portfolio/meow_master/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+          { src: "/images/before/meow_master_before.png", label: "Original Photo (Before)" }
         ]
       },
     },
@@ -630,7 +630,7 @@ export const PORTFOLIO_ITEMS = [
         description: "Clean, premium bottle render showcasing the waterless foam texture to capture search interest.",
         images: [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872160/grow_orbit_portfolio/paw_fessional_shine/main_image.jpg", label: "Optimised Hero (After)" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872160/grow_orbit_portfolio/paw_fessional_shine/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+          { src: "/images/before/paw_fessional_before.png", label: "Original Photo (Before)" }
         ]
       },
     },
@@ -689,7 +689,7 @@ export const PORTFOLIO_ITEMS = [
         description: "Elegant appliance render emphasizing smart controls and premium kitchen design to lift CTR.",
         images: [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872170/grow_orbit_portfolio/assets/portfolio/luminos_coffee_maker/main_image.jpg", label: "Optimised Hero (After)" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872170/grow_orbit_portfolio/assets/portfolio/luminos_coffee_maker/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+          { src: "/images/before/luminos_before.png", label: "Original Photo (Before)" }
         ]
       },
     },
@@ -750,7 +750,7 @@ export const PORTFOLIO_ITEMS = [
         description: "Sleek render of German steel and walnut wood knives showcasing extreme sharpness and quality to drive clicks.",
         images: [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872182/grow_orbit_portfolio/assets/portfolio/crown_knives/main_image.jpg", label: "Optimised Hero (After)" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872182/grow_orbit_portfolio/assets/portfolio/crown_knives/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+          { src: "/images/before/crown_knives_before.png", label: "Original Photo (Before)" }
         ]
       },
     },
@@ -823,7 +823,7 @@ export const PORTFOLIO_ITEMS = [
         description: "Luxury vanity render highlighting the 45,000Hz ultrasonic wave capabilities to maximize CTR.",
         images: [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872204/grow_orbit_portfolio/assets/portfolio/aethera/main_image.jpg", label: "Optimised Hero (After)" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872204/grow_orbit_portfolio/assets/portfolio/aethera/main_image.jpg", label: "Original Photo (Before)", isBeforeFilter: true }
+          { src: "/images/before/aethera_before.png", label: "Original Photo (Before)" }
         ]
       },
     },

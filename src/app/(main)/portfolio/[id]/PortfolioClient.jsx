@@ -135,13 +135,13 @@ function APlusDisplay({ details, onImageOpen }) {
   return (
     <div className="rounded-[24px] overflow-hidden border border-zinc-200 bg-white">
       {/* Fake browser bar */}
-      <div className="bg-zinc-50 border-b border-zinc-200 px-5 py-3 flex items-center gap-3">
-        <div className="flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /></div>
-        <div className="flex-1 bg-white rounded-lg px-4 py-1.5 border border-zinc-200 flex items-center gap-2">
-          <Search size={10} className="text-zinc-400" />
-          <span className="text-[10px] font-mono text-zinc-400">amazon.com › dp · A+ Content section</span>
+      <div className="bg-zinc-50 border-b border-zinc-200 px-3 sm:px-5 py-2 sm:py-3 flex items-center gap-2 sm:gap-3">
+        <div className="hidden sm:flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /></div>
+        <div className="flex-1 bg-white rounded-lg px-2 sm:px-4 py-1 sm:py-1.5 border border-zinc-200 flex items-center gap-1.5 sm:gap-2 min-w-0">
+          <Search size={10} className="text-zinc-400 shrink-0" />
+          <span className="text-[8px] sm:text-[10px] font-mono text-zinc-400 truncate">amazon.com › dp · A+ Content section</span>
         </div>
-        <span className="text-[8px] font-black text-violet-500 uppercase tracking-widest bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full">A+ Preview</span>
+        <span className="text-[7px] sm:text-[8px] font-black text-violet-500 uppercase tracking-widest bg-violet-50 border border-violet-100 px-2 py-0.5 rounded-full shrink-0">A+ Preview</span>
       </div>
       <div className="flex flex-col w-full">
         {imgs.map((img, i) => (
@@ -169,13 +169,13 @@ function BrandStoryDisplay({ details, onImageOpen }) {
 
   return (
     <div className="rounded-[24px] overflow-hidden border border-zinc-200 bg-white shadow-lg">
-      <div className="bg-zinc-50 border-b border-zinc-200 px-5 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /></div>
-          <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-tight">amazon.com › dp › brand-story-carousel</span>
+      <div className="bg-zinc-50 border-b border-zinc-200 px-3 sm:px-5 py-2 sm:py-3 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <div className="hidden sm:flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-300" /></div>
+          <span className="text-[8px] sm:text-[10px] font-mono text-zinc-400 uppercase tracking-tight truncate">amazon.com › dp › brand-story-carousel</span>
         </div>
-        <div className="flex items-center gap-2">
-           <span className="text-[8px] font-black text-rose-500 uppercase tracking-widest bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Authentic Amazon Module</span>
+        <div className="flex items-center gap-2 shrink-0">
+           <span className="text-[7px] sm:text-[8px] font-black text-rose-500 uppercase tracking-widest bg-rose-50 border border-rose-100 px-2 py-0.5 rounded-full">Authentic Amazon Module</span>
         </div>
       </div>
 
@@ -298,13 +298,13 @@ function BrandStoreDisplay({ details, onImageOpen }) {
   return (
     <div className="rounded-[24px] overflow-hidden border border-zinc-200 bg-white">
       {/* Amazon dark nav bar */}
-      <div className="bg-[#232F3E] px-5 py-3 flex items-center gap-3">
-        <div className="flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-zinc-600" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-600" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-600" /></div>
-        <div className="flex-1 bg-white/10 rounded-md px-4 py-1.5 flex items-center gap-2">
-          <Search size={10} className="text-zinc-400" />
-          <span className="text-[10px] font-mono text-zinc-400">amazon.com › stores › BrandName</span>
+      <div className="bg-[#232F3E] px-3 sm:px-5 py-2 sm:py-3 flex items-center gap-2 sm:gap-3">
+        <div className="hidden sm:flex gap-1.5"><div className="w-2.5 h-2.5 rounded-full bg-zinc-600" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-600" /><div className="w-2.5 h-2.5 rounded-full bg-zinc-600" /></div>
+        <div className="flex-1 bg-white/10 rounded-md px-2 sm:px-4 py-1 sm:py-1.5 flex items-center gap-1.5 sm:gap-2 min-w-0">
+          <Search size={10} className="text-zinc-400 shrink-0" />
+          <span className="text-[8px] sm:text-[10px] font-mono text-zinc-400 truncate">amazon.com › stores › BrandName</span>
         </div>
-        <span className="text-[8px] font-black text-teal-300 uppercase tracking-widest bg-teal-900/50 border border-teal-700 px-2 py-0.5 rounded-full">Store Preview</span>
+        <span className="text-[7px] sm:text-[8px] font-black text-teal-300 uppercase tracking-widest bg-teal-900/50 border border-teal-700 px-2 py-0.5 rounded-full shrink-0">Store Preview</span>
       </div>
 
       {/* Store header */}
@@ -380,13 +380,13 @@ function MainImageCTRDisplay({ details, onImageOpen }) {
       </div>
       {/* Simulated Amazon search results page */}
       <div className="rounded-[20px] border border-zinc-200 bg-white overflow-hidden mb-6">
-        <div className="bg-zinc-50 border-b border-zinc-200 px-5 py-3 flex items-center gap-3">
-          <div className="flex-1 bg-white rounded-lg px-4 py-1.5 border border-zinc-200 flex items-center gap-2">
-            <Search size={10} className="text-zinc-400" />
-            <span className="text-[10px] font-mono text-zinc-500">amazon.com › search · results · thumbnail comparison</span>
+        <div className="bg-zinc-50 border-b border-zinc-200 px-3 sm:px-5 py-2 sm:py-3 flex items-center gap-2 sm:gap-3">
+          <div className="flex-1 bg-white rounded-lg px-2 sm:px-4 py-1 sm:py-1.5 border border-zinc-200 flex items-center gap-1.5 sm:gap-2 min-w-0">
+            <Search size={10} className="text-zinc-400 shrink-0" />
+            <span className="text-[8px] sm:text-[10px] font-mono text-zinc-500 truncate">amazon.com › search · results · thumbnail comparison</span>
           </div>
         </div>
-        <div className="grid grid-cols-2 divide-x divide-zinc-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x divide-zinc-200">
           {/* BEFORE */}
           <div className="p-5">
             <div className="flex items-center gap-2 mb-3"><div className="w-2 h-2 rounded-full bg-red-400" /><span className="text-[9px] font-black uppercase tracking-widest text-red-500">Before · Original</span></div>

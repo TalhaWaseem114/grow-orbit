@@ -336,22 +336,27 @@ function PortfolioPageInner() {
           @keyframes spectrum-bar { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
           @keyframes creative-orbit { 0% { transform: rotate(0deg) translateX(110px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(110px) rotate(-360deg); } }
           @keyframes creative-orbit-inner { 0% { transform: rotate(0deg) translateX(70px) rotate(0deg); } 100% { transform: rotate(-360deg) translateX(70px) rotate(360deg); } }
-          @keyframes lab-breathe { 0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0.1); } 50% { box-shadow: 0 0 50px 15px rgba(249,115,22,0.06); } }
+          @keyframes lab-breathe { 0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0.08); } 50% { box-shadow: 0 0 50px 15px rgba(249,115,22,0.04); } }
           @keyframes tile-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
           @keyframes scan-portfolio { 0% { transform: translateY(-100%); opacity:0; } 10% { opacity:1; } 90% { opacity:1; } 100% { transform: translateY(100vh); opacity:0; } }
         `}</style>
 
-        {/* Advanced Layered Background */}
-        <div className="absolute inset-0 opacity-[0.1]" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "30px 30px" }} />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(249,115,22,0.12),transparent_70%)]" />
+        {/* Technical Blueprint Grid Accents */}
+        <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_30%,rgba(249,115,22,0.1),transparent_70%)]" />
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-orange-500/10 blur-[120px] rounded-full" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/40 to-transparent" />
-        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.03] to-transparent" style={{ animation: "scan-portfolio 12s linear infinite" }} />
+        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.02] to-transparent pointer-events-none" style={{ animation: "scan-portfolio 12s linear infinite" }} />
+        
+        {/* Fine engineering alignment lines */}
+        <div className="absolute top-0 bottom-0 left-[15%] w-[1px] bg-white/[0.03] pointer-events-none" />
+        <div className="absolute top-0 bottom-0 left-[45%] w-[1px] bg-white/[0.03] pointer-events-none" />
+        <div className="absolute top-0 bottom-0 right-[25%] w-[1px] bg-white/[0.03] pointer-events-none" />
 
         {/* PORTFOLIO watermark */}
         <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[10%] font-black text-[90px] sm:text-[160px] md:text-[260px] uppercase tracking-tighter pointer-events-none select-none opacity-[0.03] whitespace-nowrap"
-          style={{ fontFamily: "Arial, sans-serif", WebkitTextStroke: "1.5px #fff", color: "transparent" }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[10%] font-black text-[90px] sm:text-[160px] md:text-[260px] uppercase tracking-tighter pointer-events-none select-none opacity-[0.02] whitespace-nowrap"
+          style={{ fontFamily: "'Montserrat', sans-serif", WebkitTextStroke: "1px #fff", color: "transparent" }}
         >
           ENGINEERED
         </div>
@@ -369,7 +374,7 @@ function PortfolioPageInner() {
                 </span>
               </div>
               <h1
-                className="hero-el text-[34px] sm:text-7xl lg:text-[88px] font-black tracking-tighter uppercase leading-[0.9] sm:leading-[0.82] mb-6 sm:mb-8 text-white"
+                className="hero-el text-[36px] sm:text-7xl lg:text-[88px] font-black tracking-tighter uppercase leading-[0.9] sm:leading-[0.82] mb-6 sm:mb-8 text-white"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
                 Built for brands<br />
@@ -385,16 +390,16 @@ function PortfolioPageInner() {
                 </p>
               </div>
 
-              {/* Trust badges */}
+              {/* Trust badges - Styled to match current visual layout */}
               <div className="hero-el flex flex-wrap items-center gap-3 mb-10">
                 {[
                   { val: "50+", label: "Brands Scaled" },
                   { val: "+84%", label: "Avg CVR Lift" },
                   { val: "100%", label: "Delivery Rate" },
                 ].map((b, i) => (
-                  <div key={i} className="flex items-center gap-2.5 bg-white/[0.04] border border-white/[0.08] rounded-full px-4 py-2">
+                  <div key={i} className="flex items-center gap-2.5 bg-zinc-900/40 border border-zinc-800/60 rounded-full px-4 py-2 hover:border-orange-500/20 transition-all duration-300">
                     <span className="text-[13px] font-black text-orange-500 tracking-tighter" style={{ fontFamily: "'Montserrat', sans-serif" }}>{b.val}</span>
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-500">{b.label}</span>
+                    <span className="text-[9px] font-bold uppercase tracking-widest text-zinc-400">{b.label}</span>
                   </div>
                 ))}
               </div>
@@ -415,19 +420,19 @@ function PortfolioPageInner() {
             {/* Right: Creative Lab Dashboard */}
             <div className="lg:col-span-5 relative block mt-0 lg:mt-[70px] scale-[0.95] sm:scale-100 origin-top lg:origin-center">
 
-              {/* Floating metric card — top right */}
-              <div className="absolute -top-8 -right-2 lg:-right-4 bg-white rounded-[20px] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.08)] z-30 border border-zinc-100">
+              {/* Floating metric card — top right - Frosted Dark theme */}
+              <div className="absolute -top-8 -right-2 lg:-right-4 bg-[#0c0c0e]/90 backdrop-blur-md rounded-[20px] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-30 border border-zinc-800/80">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center text-white shadow-[0_8px_20px_rgba(249,115,22,0.3)]"><Sparkles size={18} /></div>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-amber-400 flex items-center justify-center text-white shadow-[0_8px_20px_rgba(249,115,22,0.35)]"><Sparkles size={18} /></div>
                   <div>
-                    <p className="text-[8px] font-mono text-zinc-400 uppercase tracking-widest">Output</p>
-                    <p className="text-lg font-black text-zinc-900 tracking-tighter leading-none">240+</p>
+                    <p className="text-[8px] font-mono text-zinc-500 uppercase tracking-widest">Output</p>
+                    <p className="text-lg font-black text-white tracking-tighter leading-none">240+</p>
                   </div>
                 </div>
               </div>
 
-              {/* Floating metric card — bottom left */}
-              <div className="absolute -left-4 lg:-left-10 bottom-[60px] bg-zinc-900 rounded-2xl px-5 py-4 z-30 shadow-[0_30px_60px_rgba(0,0,0,0.4)] border border-white/10">
+              {/* Floating metric card — bottom left - Frosted Dark theme */}
+              <div className="absolute -left-4 lg:-left-10 bottom-[60px] bg-[#0c0c0e]/95 backdrop-blur-md rounded-2xl px-5 py-4 z-30 shadow-[0_30px_60px_rgba(0,0,0,0.6)] border border-zinc-800/80">
                 <div className="flex items-center gap-3">
                   <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_rgba(34,197,94,0.6)]" />
                   <div>
@@ -437,8 +442,8 @@ function PortfolioPageInner() {
                 </div>
               </div>
 
-              {/* Main Dashboard */}
-              <div className="hero-stat-card bg-zinc-950 rounded-[32px] shadow-[0_60px_120px_rgba(0,0,0,0.4)] border border-white/[0.08] overflow-hidden relative" style={{ animation: "lab-breathe 6s ease-in-out infinite" }}>
+              {/* Main Dashboard - Frosted Card */}
+              <div className="hero-stat-card bg-[#0c0c0e]/95 backdrop-blur-md rounded-[32px] shadow-[0_60px_120px_rgba(0,0,0,0.6)] border border-zinc-800/80 overflow-hidden relative" style={{ animation: "lab-breathe 6s ease-in-out infinite" }}>
                 {/* Accent line */}
                 <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-orange-500 to-transparent" />
 
@@ -510,17 +515,17 @@ function PortfolioPageInner() {
                       { label: "A+ Content", count: "54", color: "text-amber-400" },
                       { label: "Brand Stores", count: "32", color: "text-emerald-400" },
                     ].map((svc, i) => (
-                      <div key={i} className="bg-white/[0.03] border border-white/[0.06] rounded-xl p-3 text-center hover:border-orange-500/20 transition-all" style={{ animation: `tile-enter 0.5s ease-out ${0.3 + i * 0.1}s both` }}>
+                      <div key={i} className="bg-zinc-900/30 border border-zinc-800/60 rounded-xl p-3 text-center hover:border-orange-500/20 transition-all" style={{ animation: `tile-enter 0.5s ease-out ${0.3 + i * 0.1}s both` }}>
                         <p className={`text-lg font-black tracking-tighter leading-none mb-1 ${svc.color}`}>{svc.count}</p>
-                        <p className="text-[7px] font-mono text-zinc-600 uppercase tracking-widest">{svc.label}</p>
+                        <p className="text-[7px] font-mono text-zinc-500 uppercase tracking-widest">{svc.label}</p>
                       </div>
                     ))}
                   </div>
 
                   {/* Recent output log */}
-                  <div className="bg-black/40 rounded-xl border border-white/[0.04] p-4">
+                  <div className="bg-[#08080a] rounded-xl border border-zinc-850 p-4">
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-[8px] font-mono text-zinc-600 uppercase tracking-widest">Recent Output</span>
+                      <span className="text-[8px] font-mono text-zinc-500 uppercase tracking-widest">Recent Output</span>
                       <div className="flex items-center gap-1.5">
                         <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
                         <span className="text-[7px] font-mono text-emerald-500/60 uppercase tracking-widest">Streaming</span>

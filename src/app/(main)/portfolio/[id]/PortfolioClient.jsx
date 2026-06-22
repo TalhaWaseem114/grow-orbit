@@ -828,22 +828,22 @@ export default function PortfolioDetailPage() {
               </div>
 
               {/* SECONDARY METRICS GRID */}
-              <div className="md:col-span-12 lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+              <div className="md:col-span-12 lg:col-span-7 grid grid-cols-2 gap-3 sm:gap-6">
                 {item.metrics.map((m, i) => {
                   const icons = [TrendingUp, Award, BarChart3, Star];
                   const Icon = icons[i % icons.length];
                   return (
-                    <div key={i} className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-[20px] sm:rounded-[28px] p-5 sm:p-8 flex flex-col justify-between group hover:bg-white/[0.06] transition-all duration-500">
+                    <div key={i} className="bg-white/[0.03] backdrop-blur-xl border border-white/[0.08] rounded-[20px] sm:rounded-[28px] p-4 sm:p-8 flex flex-col justify-between group hover:bg-white/[0.06] transition-all duration-500">
                       <div>
-                        <div className="flex items-center gap-3 mb-6">
-                           <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-orange-500/20 group-hover:border-orange-500/30 transition-all">
-                             <Icon size={18} className="text-zinc-500 group-hover:text-orange-500 transition-colors" />
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-3 sm:mb-6 min-w-0">
+                           <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-orange-500/20 group-hover:border-orange-500/30 transition-all shrink-0">
+                             <Icon className="text-zinc-500 group-hover:text-orange-500 transition-colors w-[14px] h-[14px] sm:w-[18px] sm:h-[18px]" />
                            </div>
-                           <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest leading-tight">{m.label}</span>
+                           <span className="text-[8px] sm:text-[9px] font-mono text-zinc-500 uppercase tracking-widest leading-tight truncate">{m.label}</span>
                         </div>
-                        <span className="text-3xl sm:text-4xl lg:text-5xl font-black text-white tracking-tighter block group-hover:text-orange-400 transition-colors">{m.value}</span>
+                        <span className="text-xl sm:text-4xl lg:text-5xl font-black text-white tracking-tighter block group-hover:text-orange-400 transition-colors">{m.value}</span>
                       </div>
-                      <div className="mt-6 flex items-center gap-2">
+                      <div className="mt-3 sm:mt-6 flex items-center gap-2">
                         <div className="flex-grow h-1 bg-white/5 rounded-full overflow-hidden truncate">
                           <div className={`h-full bg-gradient-to-r from-orange-600 to-orange-400 w-[${60 + (i * 10)}%] shadow-[0_0_10px_rgba(249,115,22,0.4)] transition-all`} />
                         </div>
@@ -853,7 +853,7 @@ export default function PortfolioDetailPage() {
                 })}
 
                 {/* PERFORMANCE TRAJECTORY SUB-CARD */}
-                <div className="sm:col-span-2 bg-gradient-to-br from-zinc-900 to-black border border-white/[0.08] rounded-[24px] sm:rounded-[32px] p-6 sm:p-8 mt-2 relative overflow-hidden group shadow-2xl">
+                <div className="col-span-2 bg-gradient-to-br from-zinc-900 to-black border border-white/[0.08] rounded-[24px] sm:rounded-[32px] p-4 sm:p-8 mt-2 relative overflow-hidden group shadow-2xl">
                   {/* Subtle background grid */}
                   <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
                   

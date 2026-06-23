@@ -32,55 +32,127 @@ const FILTERS = FILTERS_DATA.map(f => ({
    CARD COMPONENT
    ═══════════════════════════════════════════════ */
 function PortfolioCard({ item }) {
+  // Get all unique images for this project to use as thumbnail variants
+  const previewImages = [];
+  const seenSrcs = new Set();
+
+  if (item.src) {
+    seenSrcs.add(item.src);
+    previewImages.push({ src: item.src });
+  }
+
+  (item.gallery || []).forEach(img => {
+    if (img && img.src && !seenSrcs.has(img.src)) {
+      seenSrcs.add(img.src);
+      previewImages.push(img);
+    }
+  });
+
+  if (item.serviceDetails) {
+    Object.values(item.serviceDetails).forEach(svc => {
+      if (svc && Array.isArray(svc.images)) {
+        svc.images.forEach(img => {
+          if (img && img.src && !seenSrcs.has(img.src)) {
+            seenSrcs.add(img.src);
+            previewImages.push(img);
+          }
+        });
+      }
+    });
+  }
+
+  const [activeSrc, setActiveSrc] = useState(item.src);
+
+  // Sync state if item changes
+  useEffect(() => {
+    setActiveSrc(item.src);
+  }, [item]);
+
   return (
-    <Link 
-      href={`/portfolio/${item.id}`} 
-      prefetch={false} 
-      className="portfolio-card group block relative overflow-hidden rounded-[20px] sm:rounded-[28px] border border-zinc-200/50 dark:border-zinc-800/80 transition-all duration-500 ease-out hover:-translate-y-2 hover:border-orange-500/30 hover:shadow-[0_20px_40px_rgba(249,115,22,0.1)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.55)]"
+    <Link
+      href={`/portfolio/${item.id}`}
+      prefetch={false}
+      className="portfolio-card group block relative overflow-hidden rounded-[20px] sm:rounded-[28px] border border-zinc-200/50 dark:border-zinc-800/80 transition-all duration-500 ease-out hover:-translate-y-2 hover:border-orange-500/30 hover:shadow-[0_20px_40px_rgba(249,115,22,0.06)] dark:hover:shadow-[0_20px_40px_rgba(0,0,0,0.45)] bg-[#0c0c0e]"
     >
       {/* Edge-to-Edge Image Container */}
       <div className="relative w-full aspect-square bg-[#fafafa] dark:bg-zinc-950 overflow-hidden">
         <img
-          src={item.src}
+          src={activeSrc}
           alt={item.outcome}
           loading="lazy"
           className="w-full h-full block object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
         />
-        
-        {/* Dark subtle gradient overlay at the bottom of the image for text legibility */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent opacity-95 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none" />
 
-        {/* Floating Tag - Top Left */}
-        <div className="absolute top-4 left-4 z-20">
-          <span className="bg-orange-500/90 backdrop-blur-sm text-white text-[7px] sm:text-[7.5px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-[0_2px_8px_rgba(249,115,22,0.3)] border border-orange-400/20">
-            {item.category}
-          </span>
-        </div>
-
-        {/* Immersive Overlay Info (Always visible, clean white/orange typography on dark overlay) */}
-        <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 z-20 flex flex-col gap-1 text-white pointer-events-auto">
+        {/* Text Overlay - Clean white/orange typography on subtle dark gradient */}
+        <div className="absolute inset-x-0 bottom-0 pt-8 pb-3 px-3.5 sm:px-4 bg-gradient-to-t from-[#0c0c0e] via-[#0c0c0e]/50 to-transparent z-10 flex flex-col gap-0.5 text-white pointer-events-none">
           {/* Brand Name & Niche */}
           <div className="flex items-center justify-between gap-2">
-            <span className="text-[9px] sm:text-[9.5px] font-mono text-zinc-300 uppercase tracking-widest font-bold">
+            <span className="text-[7.5px] sm:text-[8px] font-mono text-zinc-300 uppercase tracking-widest font-bold">
               {item.brandName} · {item.niche}
             </span>
-            <span className="text-[7.5px] font-mono text-zinc-400 uppercase tracking-wider">
+            <span className="text-[6.5px] font-mono text-zinc-400 uppercase tracking-wider">
               {item.id}
             </span>
           </div>
 
           {/* Outcome Metric */}
-          <h4 
-            className="text-base sm:text-[19px] font-black uppercase tracking-tight text-white group-hover:text-orange-400 transition-colors duration-300 flex items-center justify-between"
+          <h4
+            className="text-[12.5px] sm:text-[13.5px] font-black uppercase tracking-tight text-white group-hover:text-orange-400 transition-colors duration-300 flex items-center justify-between pointer-events-auto"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             <span>{item.outcome}</span>
-            <span className="w-7 h-7 rounded-full bg-white/15 border border-white/10 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:rotate-45 transition-all duration-500 shrink-0 shadow-sm">
-              <ArrowUpRight size={14} className="text-white" />
+            <span className="w-5.5 h-5.5 rounded-full bg-white/15 border border-white/10 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:rotate-45 transition-all duration-500 shrink-0 shadow-sm">
+              <ArrowUpRight size={11} className="text-white" />
             </span>
           </h4>
         </div>
+
+        {/* Floating Tag - Top Left */}
+        <div className="absolute top-2 left-3 z-20">
+          <span className="bg-orange-500/95 backdrop-blur-sm text-white text-[7px] font-black uppercase tracking-widest px-2.5 py-0.5 rounded-full shadow-[0_2px_8px_rgba(249,115,22,0.3)] border border-orange-400/20">
+            {item.category}
+          </span>
+        </div>
       </div>
+
+      {/* Small dark card body at the bottom just to fit the variant thumbnails */}
+      {previewImages.length > 1 && (
+        <div className="px-2 pb-2.5 pt-0.5 sm:pb-3 sm:pt-1 flex items-center justify-center gap-1.5 flex-wrap z-20 relative">
+          {previewImages.slice(0, 5).map((img, idx) => {
+            const isSelected = activeSrc === img.src;
+            return (
+              <div
+                key={idx}
+                onMouseEnter={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveSrc(img.src);
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setActiveSrc(img.src);
+                }}
+                className={`w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] rounded-md overflow-hidden border transition-all duration-200 cursor-pointer shrink-0 bg-zinc-950
+                  ${isSelected ? "border-orange-500 scale-105 shadow-[0_0_8px_rgba(249,115,22,0.4)]" : "border-white/20 hover:border-white/50"}`}
+              >
+                <img
+                  src={img.src}
+                  alt=""
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            );
+          })}
+          {previewImages.length > 5 && (
+            <div className="w-[20px] h-[20px] sm:w-[24px] sm:h-[24px] rounded-md overflow-hidden border border-white/15 bg-zinc-900/60 backdrop-blur-sm flex items-center justify-center shrink-0">
+              <span className="text-[7.5px] sm:text-[9px] font-bold text-zinc-300">
+                +{previewImages.length - 5}
+              </span>
+            </div>
+          )}
+        </div>
+      )}
     </Link>
   );
 }
@@ -229,9 +301,9 @@ function FilterBar({ activeKey, onSelect }) {
             <span className={isActive ? "text-orange-400" : "text-zinc-400"}>{f.icon}</span>
             {f.label}
             {f.key === "Full Brand Package" && (
-              <span className="bg-orange-500 text-white text-[7px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-full ml-1">
-                Complete
-              </span>
+               <span className="bg-orange-500 text-white text-[7px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-full ml-1">
+                 Complete
+               </span>
             )}
           </button>
         );
@@ -347,7 +419,7 @@ function PortfolioPageInner() {
         <div className="absolute -top-24 -left-24 w-96 h-96 bg-orange-500/10 blur-[120px] rounded-full" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/40 to-transparent" />
         <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.02] to-transparent pointer-events-none" style={{ animation: "scan-portfolio 12s linear infinite" }} />
-        
+
         {/* Fine engineering alignment lines */}
         <div className="absolute top-0 bottom-0 left-[15%] w-[1px] bg-white/[0.03] pointer-events-none" />
         <div className="absolute top-0 bottom-0 left-[45%] w-[1px] bg-white/[0.03] pointer-events-none" />

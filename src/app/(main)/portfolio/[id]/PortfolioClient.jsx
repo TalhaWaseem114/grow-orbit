@@ -59,8 +59,8 @@ function SmartImage({ src, alt, className, style, onClick }) {
   return (
     <>
       {/* Blurred Placeholder Layer */}
-      <div 
-        className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ease-out ${loaded ? "opacity-0" : "opacity-100"}`} 
+      <div
+        className={`absolute inset-0 pointer-events-none transition-opacity duration-1000 ease-out ${loaded ? "opacity-0" : "opacity-100"}`}
         style={{ borderRadius: "inherit", zIndex: 1, overflow: "hidden" }}
       >
         {blurSrc ? (
@@ -71,7 +71,7 @@ function SmartImage({ src, alt, className, style, onClick }) {
           </div>
         )}
       </div>
-      
+
       {/* High-Res Image Layer */}
       <img
         ref={imgRef}
@@ -392,10 +392,10 @@ function MainImageCTRDisplay({ details, onImageOpen }) {
             <div className="flex items-center gap-2 mb-3"><div className="w-2 h-2 rounded-full bg-red-400" /><span className="text-[9px] font-black uppercase tracking-widest text-red-500">Before · Original</span></div>
             <div className="relative bg-white rounded-xl overflow-hidden cursor-pointer group border-2 border-red-200 mb-3 aspect-square" style={{ aspectRatio: "1/1" }} onClick={() => before && onImageOpen(before)}>
               {before
-                ? <SmartImage 
-                    src={before.src} 
-                    alt={before.label} 
-                    className={`w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ${before.isBeforeFilter ? "filter grayscale contrast-[0.7] brightness-[0.7] blur-[0.6px]" : ""}`} 
+                ? <SmartImage
+                    src={before.src}
+                    alt={before.label}
+                    className={`w-full h-full object-contain group-hover:scale-105 transition-transform duration-500 ${before.isBeforeFilter ? "filter grayscale contrast-[0.7] brightness-[0.7] blur-[0.6px]" : ""}`}
                   />
                 : <div className="flex items-center justify-center w-full h-full bg-zinc-200"><Camera size={24} className="text-zinc-400" /></div>}
               <div className="absolute inset-0 bg-red-500/10 pointer-events-none" />
@@ -509,35 +509,6 @@ export default function PortfolioDetailPage() {
   const heroGallery = item?.serviceDetails?.["Listing Images"]?.images?.length
     ? item.serviceDetails["Listing Images"].images
     : (item?.gallery || []);
-
-  // Collect all unique images from main src, gallery, and serviceDetails
-  const allProjectImages = [];
-  const seenSrcs = new Set();
-  
-  if (item.src) {
-    seenSrcs.add(item.src);
-    allProjectImages.push({ src: item.src, label: "Main Creative" });
-  }
-
-  (item.gallery || []).forEach(img => {
-    if (img && img.src && !seenSrcs.has(img.src)) {
-      seenSrcs.add(img.src);
-      allProjectImages.push(img);
-    }
-  });
-
-  if (item.serviceDetails) {
-    Object.values(item.serviceDetails).forEach(svc => {
-      if (svc && Array.isArray(svc.images)) {
-        svc.images.forEach(img => {
-          if (img && img.src && !seenSrcs.has(img.src)) {
-            seenSrcs.add(img.src);
-            allProjectImages.push(img);
-          }
-        });
-      }
-    });
-  }
 
   useLayoutEffect(() => {
     if (heroGallery.length) setActiveGalleryImg(heroGallery[0]);
@@ -678,8 +649,8 @@ export default function PortfolioDetailPage() {
                     const Icon = SERVICE_ICONS[svc] || Sparkles;
                     const gradient = SERVICE_GRADIENTS[svc] || "from-orange-500 to-amber-400";
                     return (
-                      <button 
-                        key={i} 
+                      <button
+                        key={i}
                         onClick={() => {
                           const el = document.getElementById(`service-${svc.replace(/\s+/g, '-').toLowerCase()}`);
                           if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -753,7 +724,7 @@ export default function PortfolioDetailPage() {
           const Icon     = SERVICE_ICONS[svc] || Sparkles;
           const gradient = SERVICE_GRADIENTS[svc] || "from-orange-500 to-amber-400";
           const bgAlt    = idx % 2 === 0 ? "bg-[#fafafa]" : "bg-white";
-          
+
           return (
             <section key={svc} id={`service-${svc.replace(/\s+/g, '-').toLowerCase()}`} className={`py-16 ${bgAlt} border-t border-zinc-100 pdp-scroll`}>
               <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
@@ -776,61 +747,6 @@ export default function PortfolioDetailPage() {
             </section>
           );
         })}
-
-        {/* COMPLETE GALLERY SHOWCASE / ASSET VAULT */}
-        {allProjectImages.length > 0 && (
-          <section className="py-16 bg-white border-t border-zinc-100 pdp-scroll">
-            <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-6 h-[2px] bg-orange-500" />
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">Asset Vault</span>
-              </div>
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
-                <div>
-                  <h2 className="text-2xl sm:text-3xl font-black tracking-tighter uppercase text-zinc-900">
-                    Campaign Deliverables<span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-300 lowercase tracking-normal ml-3">· full repository.</span>
-                  </h2>
-                  <p className="text-zinc-400 text-xs sm:text-sm font-light leading-relaxed mt-1 max-w-xl">
-                    Explore the complete register of images, 3D renders, and optimized layouts produced for this brand. Click any card to expand.
-                  </p>
-                </div>
-                <span className="text-zinc-400 text-[10px] font-mono uppercase bg-zinc-50 border border-zinc-100 px-3 py-1.5 rounded-full shrink-0">
-                  {allProjectImages.length} Creative Files
-                </span>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
-                {allProjectImages.map((img, i) => (
-                  <div 
-                    key={i} 
-                    onClick={() => setLightboxImage(img)}
-                    className="group relative cursor-pointer aspect-square rounded-[18px] sm:rounded-[24px] overflow-hidden border border-zinc-200/50 dark:border-zinc-800/20 bg-[#fafafa] dark:bg-zinc-900 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(0,0,0,0.08)] transition-all duration-500"
-                  >
-                    <SmartImage 
-                      src={img.src} 
-                      alt={img.label || `Gallery Image ${i + 1}`} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
-                    />
-                    
-                    {/* Hover expand overlay */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-3">
-                      <div className="flex flex-col items-center gap-1.5 text-center">
-                        <span className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
-                          <Search size={14} />
-                        </span>
-                        {img.label && (
-                          <span className="text-white text-[8px] font-mono uppercase tracking-widest max-w-[90%] truncate mt-1">
-                            {img.label}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        )}
 
 
         {/* RESULTS: MISSION CONTROL */}
@@ -869,11 +785,11 @@ export default function PortfolioDetailPage() {
                     </div>
                     <p className="text-zinc-400 text-sm font-light leading-relaxed max-w-sm mb-10">Systematic scale achieved through brand unification and conversion optimization across all verified ASINs.</p>
                   </div>
-                  
+
                   {/* ANIMATED MIDDLE GRAPHIC TO FILL SPACE */}
                   <div className="hidden lg:flex flex-grow items-center justify-center min-h-[220px] relative my-4 w-full">
                     <div className="absolute inset-0 flex items-center justify-center opacity-50 group-hover:opacity-100 transition-opacity duration-1000">
-                      
+
                       {/* Connecting Grid Lines */}
                       <div className="absolute w-[150%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent rotate-45" />
                       <div className="absolute w-[150%] h-px bg-gradient-to-r from-transparent via-white/10 to-transparent -rotate-45" />
@@ -885,7 +801,7 @@ export default function PortfolioDetailPage() {
                       <div className="absolute w-56 h-56 sm:w-64 sm:h-64 rounded-full border border-white/5 animate-spin" style={{ animationDuration: '25s', animationDirection: 'reverse' }}>
                         <div className="absolute -top-1.5 left-1/2 w-3 h-3 rounded-full bg-orange-500 shadow-[0_0_15px_rgba(249,115,22,1)]" />
                       </div>
-                      
+
                       {/* Middle Ring */}
                       <div className="absolute w-40 h-40 sm:w-48 sm:h-48 rounded-full border border-white/10 animate-spin" style={{ animationDuration: '15s' }}>
                          <div className="absolute top-1/2 -right-1 w-2 h-2 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,0.8)]" />
@@ -895,7 +811,7 @@ export default function PortfolioDetailPage() {
                       <div className="absolute w-28 h-28 sm:w-32 sm:h-32 rounded-full border border-dashed border-white/20 animate-spin" style={{ animationDuration: '10s', animationDirection: 'reverse' }}>
                         <div className="absolute bottom-2 right-2 w-1.5 h-1.5 rounded-full bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,1)]" />
                       </div>
-                      
+
                       {/* Core */}
                       <div className="absolute w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-amber-500 blur-md animate-pulse" style={{ animationDuration: '3s' }} />
                       <div className="absolute w-12 h-12 rounded-full bg-zinc-950 flex items-center justify-center border border-white/10 shadow-[0_0_30px_rgba(249,115,22,0.3)] z-10">
@@ -940,7 +856,7 @@ export default function PortfolioDetailPage() {
                 <div className="col-span-2 bg-gradient-to-br from-zinc-900 to-black border border-white/[0.08] rounded-[24px] sm:rounded-[32px] p-4 sm:p-8 mt-2 relative overflow-hidden group shadow-2xl">
                   {/* Subtle background grid */}
                   <div className="absolute inset-0 opacity-10 pointer-events-none" style={{ backgroundImage: "linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-                  
+
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-8 sm:mb-10 relative z-10">
                     <div>
                       <div className="flex items-center gap-2 mb-2">
@@ -974,19 +890,19 @@ export default function PortfolioDetailPage() {
                       const preLaunch = Array.from({length: 8}, (_, i) => 10 + ((seed + i * 17) % 20));
                       const postLaunch = [ 40 + (seed % 10), 60 + ((seed * 2) % 15), 80 + ((seed * 3) % 10), 100 ];
                       const trajectoryData = item.trajectory || [...preLaunch, ...postLaunch];
-                      
+
                       return trajectoryData.map((h, i) => {
                         const isPostLaunch = i >= 8;
                         const isPeak = h === 100;
                         return (
                       <div key={i} className="flex-grow relative group/bar h-full flex items-end">
                         <div className={`w-full rounded-t-sm transition-all duration-1000 ease-out hover:opacity-100
-                          ${isPostLaunch 
-                            ? "bg-gradient-to-t from-orange-600 to-amber-400 opacity-90 shadow-[0_0_15px_rgba(249,115,22,0.2)]" 
+                          ${isPostLaunch
+                            ? "bg-gradient-to-t from-orange-600 to-amber-400 opacity-90 shadow-[0_0_15px_rgba(249,115,22,0.2)]"
                             : "bg-gradient-to-t from-zinc-800 to-zinc-700 opacity-40"}
                           ${isPeak ? "ring-1 ring-white/20" : ""}
                         `}
-                          style={{ height: `${h}%` }} 
+                          style={{ height: `${h}%` }}
                         />
                         {/* Interactive tooltip */}
                         <div className="absolute bottom-[calc(100%+12px)] left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-xl border border-white/10 px-3 py-2 rounded-xl opacity-0 group-hover/bar:opacity-100 group-hover/bar:-translate-y-1 transition-all whitespace-nowrap z-30 pointer-events-none shadow-2xl flex flex-col items-center gap-1">
@@ -996,7 +912,7 @@ export default function PortfolioDetailPage() {
                       </div>
                     )})})()}
                   </div>
-                  
+
                   <div className="flex justify-between mt-5 pt-4 border-t border-white/[0.08] relative z-10">
                     <div className="flex items-center gap-2">
                        <div className="w-1.5 h-1.5 rounded-sm bg-zinc-600" />

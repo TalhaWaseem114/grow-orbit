@@ -510,6 +510,35 @@ export default function PortfolioDetailPage() {
     ? item.serviceDetails["Listing Images"].images
     : (item?.gallery || []);
 
+  // Collect all unique images from main src, gallery, and serviceDetails
+  const allProjectImages = [];
+  const seenSrcs = new Set();
+  
+  if (item.src) {
+    seenSrcs.add(item.src);
+    allProjectImages.push({ src: item.src, label: "Main Creative" });
+  }
+
+  (item.gallery || []).forEach(img => {
+    if (img && img.src && !seenSrcs.has(img.src)) {
+      seenSrcs.add(img.src);
+      allProjectImages.push(img);
+    }
+  });
+
+  if (item.serviceDetails) {
+    Object.values(item.serviceDetails).forEach(svc => {
+      if (svc && Array.isArray(svc.images)) {
+        svc.images.forEach(img => {
+          if (img && img.src && !seenSrcs.has(img.src)) {
+            seenSrcs.add(img.src);
+            allProjectImages.push(img);
+          }
+        });
+      }
+    });
+  }
+
   useLayoutEffect(() => {
     if (heroGallery.length) setActiveGalleryImg(heroGallery[0]);
   }, [item]);
@@ -747,6 +776,61 @@ export default function PortfolioDetailPage() {
             </section>
           );
         })}
+
+        {/* COMPLETE GALLERY SHOWCASE / ASSET VAULT */}
+        {allProjectImages.length > 0 && (
+          <section className="py-16 bg-white border-t border-zinc-100 pdp-scroll">
+            <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-6 h-[2px] bg-orange-500" />
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">Asset Vault</span>
+              </div>
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+                <div>
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tighter uppercase text-zinc-900">
+                    Campaign Deliverables<span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-300 lowercase tracking-normal ml-3">· full repository.</span>
+                  </h2>
+                  <p className="text-zinc-400 text-xs sm:text-sm font-light leading-relaxed mt-1 max-w-xl">
+                    Explore the complete register of images, 3D renders, and optimized layouts produced for this brand. Click any card to expand.
+                  </p>
+                </div>
+                <span className="text-zinc-400 text-[10px] font-mono uppercase bg-zinc-50 border border-zinc-100 px-3 py-1.5 rounded-full shrink-0">
+                  {allProjectImages.length} Creative Files
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 sm:gap-6">
+                {allProjectImages.map((img, i) => (
+                  <div 
+                    key={i} 
+                    onClick={() => setLightboxImage(img)}
+                    className="group relative cursor-pointer aspect-square rounded-[18px] sm:rounded-[24px] overflow-hidden border border-zinc-200/50 dark:border-zinc-800/20 bg-[#fafafa] dark:bg-zinc-900 hover:-translate-y-1 hover:shadow-[0_12px_28px_rgba(0,0,0,0.08)] transition-all duration-500"
+                  >
+                    <SmartImage 
+                      src={img.src} 
+                      alt={img.label || `Gallery Image ${i + 1}`} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" 
+                    />
+                    
+                    {/* Hover expand overlay */}
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-3">
+                      <div className="flex flex-col items-center gap-1.5 text-center">
+                        <span className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                          <Search size={14} />
+                        </span>
+                        {img.label && (
+                          <span className="text-white text-[8px] font-mono uppercase tracking-widest max-w-[90%] truncate mt-1">
+                            {img.label}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
 
 
         {/* RESULTS: MISSION CONTROL */}

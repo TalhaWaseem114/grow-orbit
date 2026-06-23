@@ -1,4 +1,4 @@
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
 
 export const DEFAULT_SEO = {
   title: "Grow Orbit | Amazon Seller Growth & Full-Service FBA Management Agency",

@@ -481,9 +481,13 @@ export default function Footer() {
             ))}
           </nav>
 
-          {/* Copyright */}
-          <div className="text-zinc-400 text-[10px] uppercase tracking-widest font-black font-mono shrink-0">
-            © 2010–2026 Grow Orbit.
+          {/* Copyright & Legal Links */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 text-zinc-500 text-[10px] uppercase tracking-widest font-black font-mono shrink-0">
+            <span>© 2010–2026 Grow Orbit.</span>
+            <span className="hidden sm:inline text-zinc-800">|</span>
+            <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors no-underline">Privacy Policy</Link>
+            <span className="hidden sm:inline text-zinc-800">|</span>
+            <Link href="/terms-of-service" className="hover:text-orange-500 transition-colors no-underline">Terms of Service</Link>
           </div>
         </div>
 

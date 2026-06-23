@@ -259,12 +259,11 @@ function createDiscordOrphanBookingPayload(body, email) {
   return {
     embeds: [
       {
-        title: "Strategy Session Scheduled - Unmatched Lead",
-        description: "A strategy call was booked via Calendly, but no matching lead was found in the CRM database.",
-        color: 16776960,
+        title: "Strategy Session Scheduled",
+        description: "A strategy call was booked via Calendly.",
+        color: 3066993,
         fields: [
           { name: "Email", value: truncateForDiscord(email || "N/A"), inline: true },
-          { name: "Provided Lead ID", value: truncateForDiscord(body.leadId || "N/A"), inline: true },
         ],
         footer: {
           text: `Grow Orbit Calendar Alert - ${new Date().toLocaleString()}`,
@@ -346,8 +345,8 @@ async function handleBookingConfirmation(body, webhookUrl) {
     fullName: "Calendly Booking",
     email,
     whatsapp: "N/A",
-    requestedService: "Booked meeting - lead not matched",
-    notes: `Calendly booking confirmation could not be matched to an existing lead. Provided leadId: ${body.leadId || "N/A"}`,
+    requestedService: "Strategy Session Booked",
+    notes: `Calendly booking confirmation. Lead ID: ${body.leadId || "N/A"}`,
     source: "Calendly Booking Confirmation",
     type: "booking_confirmation_orphan",
     status: "hot",

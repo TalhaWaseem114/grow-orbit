@@ -2,6 +2,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import { AUTHORS } from "@/data/authorData";
 import { GLOSSARY_TERMS } from "@/data/glossaryData";
+import { PORTFOLIO_ITEMS } from "@/data/portfolioData";
 
 export const revalidate = 3600; // Revalidate sitemap every hour
 
@@ -126,6 +127,13 @@ export default async function sitemap() {
     priority: 0.7,
   }));
 
+  const portfolioUrls = PORTFOLIO_ITEMS.map((item) => ({
+    url: `${baseUrl}/portfolio/${item.id}`,
+    lastModified: new Date('2026-06-15'),
+    changeFrequency: 'weekly',
+    priority: 0.8,
+  }));
+
   return [
     {
       url: baseUrl,
@@ -148,6 +156,7 @@ export default async function sitemap() {
     ...staticServiceUrls,
     ...caseStudyUrls,
     ...authorUrls,
+    ...portfolioUrls,
     {
       url: `${baseUrl}/contact`,
       lastModified: new Date('2026-06-15'),

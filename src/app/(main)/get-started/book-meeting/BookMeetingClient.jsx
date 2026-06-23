@@ -21,7 +21,7 @@ function BookMeetingContent() {
   const [iframeLoading, setIframeLoading] = useState(true);
 
   // Construct prefilled Calendly URL — use env variable or fallback domain, NOT window.location.host on SSR
-  const embedDomain = process.env.NEXT_PUBLIC_SITE_URL?.replace(/^https?:\/\//, '') || "grow-orbit.netlify.app";
+  const embedDomain = process.env.NEXT_PUBLIC_SITE_URL?.replace(/^https?:\/\//, '') || "groworbitofficial.com";
   const calendlyBaseUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/talhawaseem512/new-meeting";
   const nameParam = encodeURIComponent(initialName);
   const emailParam = encodeURIComponent(initialEmail);

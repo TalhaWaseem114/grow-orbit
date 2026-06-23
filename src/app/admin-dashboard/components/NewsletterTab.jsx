@@ -412,7 +412,7 @@ export default function NewsletterTab({ isMobile }) {
   const bodyTextareaRef = useRef(null);
 
   const compileHtml = useCallback((subj, headerImg, headText, bodyText) => {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://grow-orbit.netlify.app";
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
     const bodyHasHtml = bodyText.includes("<img") || bodyText.includes("<div") || bodyText.includes("<table") || bodyText.includes("<p");
     const formattedBody = bodyHasHtml ? bodyText : bodyText.replace(/\n/g, "<br />");
     let logoUrl = "/logo.png";

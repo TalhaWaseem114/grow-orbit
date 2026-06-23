@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 // Beautiful responsive HTML email template generator
 function generateEmailHtml({ subject, headerImage, headline, body }) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://grow-orbit.netlify.app";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
   
   // Format body text to preserve newlines as HTML line breaks
   const formattedBody = body.replace(/\n/g, "<br />");

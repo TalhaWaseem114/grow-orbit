@@ -182,13 +182,7 @@ export default function Portfolio() {
                     {/* Top Image Area */}
                     <div className="relative w-full overflow-hidden bg-zinc-100 aspect-[4/5] sm:aspect-auto">
                       <img
-                        src={`/.netlify/images?url=${encodeURIComponent(item.src)}&w=800&fm=avif&q=80`}
-                        srcSet={`
-                          /.netlify/images?url=${encodeURIComponent(item.src)}&w=400&fm=avif&q=80 400w,
-                          /.netlify/images?url=${encodeURIComponent(item.src)}&w=800&fm=avif&q=80 800w,
-                          /.netlify/images?url=${encodeURIComponent(item.src)}&w=1200&fm=avif&q=80 1200w
-                        `}
-                        sizes="(max-width: 768px) 100vw, 33vw"
+                        src={item.src}
                         alt={`Portfolio showcase for ${item.title} - ${item.category}`}
                         width={800}
                         height={1000}

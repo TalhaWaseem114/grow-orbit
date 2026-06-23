@@ -49,8 +49,19 @@ const nextConfig = {
       },
     ];
   },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self' https://*.facebook.com https://*.meta.com",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
-
-

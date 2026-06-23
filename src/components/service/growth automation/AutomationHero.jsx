@@ -19,10 +19,10 @@ export default function AutomationHero() {
     <section className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden bg-[#fafafa]">
       <style>{`
         @keyframes vertical-scan {
-          0% { transform: translateY(-100%); opacity: 0; }
+          0% { top: 0%; transform: translateY(-100%); opacity: 0; }
           10% { opacity: 1; }
           90% { opacity: 1; }
-          100% { transform: translateY(100vh); opacity: 0; }
+          100% { top: 100%; transform: translateY(0%); opacity: 0; }
         }
         @keyframes container-scan {
           0% { top: 0%; opacity: 0; }

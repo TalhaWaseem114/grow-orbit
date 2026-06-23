@@ -18,9 +18,9 @@ export default function Hero({ mode }) {
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: "power4.out", duration: isMobile ? 0.8 : 1.2 } });
 
-      // 1. Initial State
-      gsap.set(".progress-bar-fill", { width: 0 });
-      gsap.set(".target-bar-fill", { width: 0 });
+      // 1. Initial State - use strings with % to prevent unit resolution mismatch in Safari
+      gsap.set(".progress-bar-fill", { width: "0%" });
+      gsap.set(".target-bar-fill", { width: "0%" });
       gsap.set(".target-node-fill", { left: "0%" });
 
       // 2. Left side staggered entrance
@@ -37,7 +37,18 @@ export default function Hero({ mode }) {
         opacity: 0,
         duration: isMobile ? 0.8 : 1.0,
         ease: "power3.out",
-        clearProps: "transform,opacity"
+        clearProps: "opacity", // Clear only opacity so y/transform remains under GSAP control for continuous float
+        onComplete: () => {
+          if (!isMobile && engineRef.current) {
+            gsap.to(engineRef.current, {
+              y: -15,
+              duration: 4,
+              repeat: -1,
+              yoyo: true,
+              ease: "power1.inOut"
+            });
+          }
+        }
       }, "-=1.2");
 
       // 4. Target Line Animation (Bar & Node in Sync)
@@ -68,15 +79,6 @@ export default function Hero({ mode }) {
           stagger: 0.1,
           clearProps: "transform,opacity"
         }, "-=1.8");
-
-        // 7. Continuous Floating Motion
-        gsap.to(engineRef.current, {
-          y: -15,
-          duration: 4,
-          repeat: -1,
-          yoyo: true,
-          ease: "power1.inOut"
-        });
       } else {
          // Simpler mobile animations
          gsap.set(".progress-bar-fill", { width: (i, target) => target.dataset.width || "0%" });
@@ -94,9 +96,9 @@ export default function Hero({ mode }) {
     >
       <style>{`
         @keyframes scan-mgmt {
-          0%   { transform: translateY(-100%); opacity: 0; }
+          0%   { top: 0%; transform: translateY(-100%); opacity: 0; }
           10%  { opacity: 1; } 90% { opacity: 1; }
-          100% { transform: translateY(100vh); opacity: 0; }
+          100% { top: 100%; transform: translateY(0%); opacity: 0; }
         }
         @keyframes shimmer-btn {
           0% { transform: translateX(-100%); }

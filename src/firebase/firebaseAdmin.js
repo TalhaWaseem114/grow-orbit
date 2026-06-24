@@ -8,12 +8,17 @@ if (!admin.getApps().length) {
   if (serviceAccountJson) {
     try {
       const serviceAccount = JSON.parse(serviceAccountJson);
+      // Fix private_key newlines — Vercel often stores \n as literal \\n
+      if (serviceAccount.private_key) {
+        serviceAccount.private_key = serviceAccount.private_key.replace(/\\n/g, "\n");
+      }
       admin.initializeApp({
         credential: admin.credential.cert(serviceAccount),
       });
       console.log("[FirebaseAdmin] Initialized with Service Account JSON");
     } catch (err) {
       console.error("[FirebaseAdmin] Failed to parse service account JSON, falling back:", err.message);
+      console.error("[FirebaseAdmin] Full error:", err);
       admin.initializeApp();
     }
   } else {

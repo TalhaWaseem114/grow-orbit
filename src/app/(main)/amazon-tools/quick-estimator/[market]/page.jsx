@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const market = resolvedParams.market || "us";
   const marketUpper = market.toUpperCase();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
   
   return {
     title: `Quick Amazon Estimator (${marketUpper} Marketplace) | Grow Orbit`,
@@ -33,7 +33,7 @@ export default async function Page({ params }) {
   const resolvedParams = await params;
   const market = resolvedParams.market || "us";
   const marketUpper = market.toUpperCase();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

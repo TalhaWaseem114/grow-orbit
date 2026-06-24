@@ -12,13 +12,13 @@ export default function Page(props) {
     "@type": "ListItem",
     "position": 1,
     "name": "Home",
-    "item": "https://groworbit.com"
+    "item": "https://www.groworbitofficial.com"
   },
   {
     "@type": "ListItem",
     "position": 2,
     "name": "Case Study",
-    "item": "https://groworbit.com/case-study"
+    "item": "https://www.groworbitofficial.com/case-study"
   }
 ]
   };

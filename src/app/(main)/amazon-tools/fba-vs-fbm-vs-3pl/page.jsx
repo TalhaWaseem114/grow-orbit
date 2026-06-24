@@ -12,19 +12,19 @@ export default function Page(props) {
     "@type": "ListItem",
     "position": 1,
     "name": "Home",
-    "item": "https://groworbit.com"
+    "item": "https://www.groworbitofficial.com"
   },
   {
     "@type": "ListItem",
     "position": 2,
     "name": "Amazon Tools",
-    "item": "https://groworbit.com/amazon-tools"
+    "item": "https://www.groworbitofficial.com/amazon-tools"
   },
   {
     "@type": "ListItem",
     "position": 3,
     "name": "FBA vs FBM vs 3PL",
-    "item": "https://groworbit.com/amazon-tools/fba-vs-fbm-vs-3pl"
+    "item": "https://www.groworbitofficial.com/amazon-tools/fba-vs-fbm-vs-3pl"
   }
 ]
   };

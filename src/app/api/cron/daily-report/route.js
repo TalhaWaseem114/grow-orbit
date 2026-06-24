@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
-import { db, auth } from "@/firebase/firebaseConfig";
-import { collection, doc, getDoc, getDocs, query, where } from "firebase/firestore";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { adminDb } from "@/firebase/firebaseAdmin";
 
 export async function GET(request) {
   return handleDailyReport(request);
@@ -22,24 +20,12 @@ async function handleDailyReport(request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // 2. Authenticate as Admin if credentials are provided in env
-    const adminEmail = process.env.ADMIN_EMAIL;
-    const adminPassword = process.env.ADMIN_PASSWORD;
-    if (adminEmail && adminPassword) {
-      try {
-        await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
-      } catch (authErr) {
-        console.warn("[Cron/Daily-Report] Admin authentication failed:", authErr.message);
-      }
-    }
-
-    // 3. Fetch Discord Webhook URL from settings
+    // 2. Fetch Discord Webhook URL from settings
     let webhookUrl = process.env.LEAD_NOTIFICATION_WEBHOOK || "";
     if (!webhookUrl) {
       try {
-        const settingsRef = doc(db, "settings", "global");
-        const settingsSnap = await getDoc(settingsRef);
-        if (settingsSnap.exists()) {
+        const settingsSnap = await adminDb.collection("settings").doc("global").get();
+        if (settingsSnap.exists) {
           webhookUrl = settingsSnap.data().leadNotificationWebhook || "";
         }
       } catch (dbErr) {
@@ -52,7 +38,7 @@ async function handleDailyReport(request) {
       webhookUrl = "https://discord.com/api/webhooks/1516758228304789564/YTW0PNv2rNzCg-gyNWSr1bA_z8n7V35akqWchpnRT-O-hlDbgf2jBAthgsAYaUkHasmS";
     }
 
-    // 4. Define Swedish timezone formatted date (YYYY-MM-DD) in Pakistan/Karachi Local Time
+    // 3. Define Swedish timezone formatted date (YYYY-MM-DD) in Pakistan/Karachi Local Time
     const todayStr = new Date().toLocaleDateString("sv-SE", { timeZone: "Asia/Karachi" });
 
     // Boundaries for Today in Server time (UTC)
@@ -61,28 +47,23 @@ async function handleDailyReport(request) {
     const endOfToday = new Date();
     endOfToday.setHours(23, 59, 59, 999);
 
-    // 5. Fetch all documents from both possible collection casings ('leads' and 'Leads')
+    // 4. Fetch all documents from lowercase 'leads' collection
     const allLeadsMap = new Map();
     const queryErrors = [];
 
-    const fetchCollection = async (collectionName) => {
-      try {
-        const snap = await getDocs(collection(db, collectionName));
-        snap.docs.forEach(docSnap => {
-          allLeadsMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
-        });
-      } catch (err) {
-        console.warn(`[Cron/Daily-Report] Collection '${collectionName}' query failed:`, err.message);
-        queryErrors.push({ collection: collectionName, error: err.message, code: err.code });
-      }
-    };
-
-    await fetchCollection("leads");
-    await fetchCollection("Leads");
+    try {
+      const snap = await adminDb.collection("leads").get();
+      snap.docs.forEach(docSnap => {
+        allLeadsMap.set(docSnap.id, { id: docSnap.id, ...docSnap.data() });
+      });
+    } catch (err) {
+      console.warn(`[Cron/Daily-Report] Collection 'leads' query failed:`, err.message);
+      queryErrors.push({ collection: "leads", error: err.message });
+    }
 
     const allLeads = Array.from(allLeadsMap.values());
 
-    // 6. Filter and process leads for "Today" and "Follow-Ups"
+    // 5. Filter and process leads for "Today" and "Follow-Ups"
     let newLeadsCount = 0;
     let meetingsBookedCount = 0;
     const todayLeadsList = [];
@@ -160,7 +141,7 @@ async function handleDailyReport(request) {
       });
     }
 
-    // 7. Build the Discord Embed Payload
+    // 6. Build the Discord Embed Payload
     const formattedDate = new Date().toLocaleDateString("en-US", {
       weekday: "long",
       year: "numeric",
@@ -234,7 +215,7 @@ async function handleDailyReport(request) {
       );
     }
 
-    // 8. Add Weekly Performance Report Embed (on Mondays)
+    // 7. Add Weekly Performance Report Embed (on Mondays)
     if (isMonday) {
       const now = new Date();
       const startOfThisWeek = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
@@ -301,7 +282,7 @@ async function handleDailyReport(request) {
       text: `Grow Orbit Audit Reporter • ${new Date().toLocaleString("en-US", { timeZone: "Asia/Karachi" })}`,
     };
 
-    // 9. Dispatch Webhook
+    // 8. Dispatch Webhook
     if (webhookUrl && webhookUrl.trim()) {
       const cleanUrl = webhookUrl.trim();
       const res = await fetch(cleanUrl, {

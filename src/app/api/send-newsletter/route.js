@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { adminAuth, adminDb } from "@/firebase/firebaseAdmin";
 
 // Beautiful responsive HTML email template generator
 function generateEmailHtml({ subject, headerImage, headline, body }) {
@@ -155,6 +156,23 @@ function generateEmailHtml({ subject, headerImage, headline, body }) {
 
 export async function POST(request) {
   try {
+    // Verify admin authentication
+    const authHeader = request.headers.get("Authorization");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json({ error: "Unauthorized: Missing token" }, { status: 401 });
+    }
+    const token = authHeader.substring(7);
+    try {
+      const decodedToken = await adminAuth.verifyIdToken(token);
+      const userSnap = await adminDb.collection("users").doc(decodedToken.uid).get();
+      if (!userSnap.exists || userSnap.data()?.role !== "admin") {
+        return NextResponse.json({ error: "Forbidden: Admins only" }, { status: 403 });
+      }
+    } catch (authErr) {
+      console.error("Auth verification failed in send-newsletter:", authErr.message);
+      return NextResponse.json({ error: "Unauthorized: Invalid token" }, { status: 401 });
+    }
+
     const { subject, headerImage, headline, body, recipients } = await request.json();
 
     if (!subject || !body || !recipients || !Array.isArray(recipients) || recipients.length === 0) {

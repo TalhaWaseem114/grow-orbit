@@ -8,8 +8,8 @@ export default function Page(props) {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Grow Orbit",
-    "url": "https://groworbit.com",
-    "logo": "https://groworbit.com/logo.png",
+    "url": "https://www.groworbitofficial.com",
+    "logo": "https://www.groworbitofficial.com/logo.png",
     "sameAs": [
       "https://twitter.com/groworbit",
       "https://www.linkedin.com/company/groworbit"

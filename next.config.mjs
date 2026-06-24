@@ -6,6 +6,7 @@ const nextConfig = {
     buildActivity: false,
   },
   images: {
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",
@@ -57,6 +58,10 @@ const nextConfig = {
           {
             key: "Content-Security-Policy",
             value: "frame-ancestors 'self' https://*.facebook.com https://*.meta.com",
+          },
+          {
+            key: "X-Frame-Options",
+            value: "SAMEORIGIN",
           },
           {
             key: "X-Content-Type-Options",

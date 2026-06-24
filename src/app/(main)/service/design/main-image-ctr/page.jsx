@@ -12,25 +12,25 @@ export default function Page(props) {
     "@type": "ListItem",
     "position": 1,
     "name": "Home",
-    "item": "https://groworbit.com"
+    "item": "https://www.groworbitofficial.com"
   },
   {
     "@type": "ListItem",
     "position": 2,
     "name": "Service",
-    "item": "https://groworbit.com/service"
+    "item": "https://www.groworbitofficial.com/service"
   },
   {
     "@type": "ListItem",
     "position": 3,
     "name": "Design",
-    "item": "https://groworbit.com/service/design"
+    "item": "https://www.groworbitofficial.com/service/design"
   },
   {
     "@type": "ListItem",
     "position": 4,
     "name": "Main Image Ctr",
-    "item": "https://groworbit.com/service/design/main-image-ctr"
+    "item": "https://www.groworbitofficial.com/service/design/main-image-ctr"
   }
 ]
   };

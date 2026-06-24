@@ -17,7 +17,7 @@ export const AUTHORS = {
     socialLinks: {
       linkedin: "https://www.linkedin.com/in/ali",
       twitter: "https://twitter.com/ali",
-      website: "https://groworbit.com"
+      website: "https://www.groworbitofficial.com"
     }
   }
 };

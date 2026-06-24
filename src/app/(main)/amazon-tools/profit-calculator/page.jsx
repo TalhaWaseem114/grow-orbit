@@ -12,19 +12,19 @@ export default function Page(props) {
     "@type": "ListItem",
     "position": 1,
     "name": "Home",
-    "item": "https://groworbit.com"
+    "item": "https://www.groworbitofficial.com"
   },
   {
     "@type": "ListItem",
     "position": 2,
     "name": "Amazon Tools",
-    "item": "https://groworbit.com/amazon-tools"
+    "item": "https://www.groworbitofficial.com/amazon-tools"
   },
   {
     "@type": "ListItem",
     "position": 3,
     "name": "Profit Calculator",
-    "item": "https://groworbit.com/amazon-tools/profit-calculator"
+    "item": "https://www.groworbitofficial.com/amazon-tools/profit-calculator"
   }
 ]
   };

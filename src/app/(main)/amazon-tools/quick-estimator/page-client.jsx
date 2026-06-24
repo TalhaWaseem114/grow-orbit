@@ -44,7 +44,7 @@ export default function QuickEstimatorPage({ market }) {
     "@type": "FinancialCalculator",
     "name": `Grow Orbit Quick Amazon Estimator - ${inputs.marketplace}`,
     "description": "Calculate estimated margins, FBA size tiers, and ROI in 15 seconds.",
-    "url": "https://groworbit.com/amazon-tools/quick-estimator"
+    "url": "https://www.groworbitofficial.com/amazon-tools/quick-estimator"
   };
 
   return (

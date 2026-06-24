@@ -67,7 +67,7 @@ export default function ProfitCalculatorPage({ market }) {
     "@type": "FinancialCalculator",
     "name": `Grow Orbit Amazon Profit & ROI Calculator - ${inputs.marketplace}`,
     "description": "Calculate FBA unit economics, margins, ROI, and break-even ad spends with forward and reverse calculators.",
-    "url": "https://groworbit.com/amazon-tools/profit-calculator"
+    "url": "https://www.groworbitofficial.com/amazon-tools/profit-calculator"
   };
 
   return (

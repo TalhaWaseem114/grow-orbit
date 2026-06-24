@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const { slug } = resolvedParams;
   const author = getAuthorBySlug(slug);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
 
   return {
     title: `${author.name} | E-Commerce Expert & Author | Grow Orbit`,
@@ -45,7 +45,7 @@ export default async function AuthorPage({ params }) {
   const resolvedParams = await params;
   const { slug } = resolvedParams;
   const author = getAuthorBySlug(slug);
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
 
   // Fetch blogs written by this author
   let authorPosts = [];

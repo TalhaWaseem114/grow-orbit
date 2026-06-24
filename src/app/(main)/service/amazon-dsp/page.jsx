@@ -12,19 +12,19 @@ export default function Page(props) {
     "@type": "ListItem",
     "position": 1,
     "name": "Home",
-    "item": "https://groworbit.com"
+    "item": "https://www.groworbitofficial.com"
   },
   {
     "@type": "ListItem",
     "position": 2,
     "name": "Service",
-    "item": "https://groworbit.com/service"
+    "item": "https://www.groworbitofficial.com/service"
   },
   {
     "@type": "ListItem",
     "position": 3,
     "name": "Amazon DSP",
-    "item": "https://groworbit.com/service/amazon-dsp"
+    "item": "https://www.groworbitofficial.com/service/amazon-dsp"
   }
 ]
   };

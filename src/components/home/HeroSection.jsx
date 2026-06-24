@@ -171,7 +171,10 @@ export default function Hero({ mode }) {
                 <>
                   Scale your<br />
                   <span className="text-orange-500">Revenue.</span><br />
-                  <span className="italic font-light lowercase tracking-tight text-zinc-500" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="text-zinc-500 text-xs sm:text-sm tracking-[0.3em] font-black block mt-3 uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                    Amazon Growth Agency
+                  </span>
+                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2" style={{ fontFamily: "'Playfair Display', serif" }}>
                     zero guesswork.
                   </span>
                 </>

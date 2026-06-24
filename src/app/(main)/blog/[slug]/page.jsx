@@ -151,7 +151,7 @@ export default async function Page({ params }) {
             "@type": "BlogPosting",
             "mainEntityOfPage": {
               "@type": "WebPage",
-              "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com"}/blog/${post.slug || post.id}`
+              "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/blog/${post.slug || post.id}`
             },
             "headline": post.title,
             "image": [post.coverImage],
@@ -161,7 +161,7 @@ export default async function Page({ params }) {
               "@type": "Person",
               "name": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).name,
               "jobTitle": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).role,
-              "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com"}/blog/author/${getAuthorSlugByName(post.author?.name)}`,
+              "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/blog/author/${getAuthorSlugByName(post.author?.name)}`,
               "sameAs": Object.values(getAuthorBySlug(getAuthorSlugByName(post.author?.name)).socialLinks).filter(Boolean)
             },
             "publisher": {
@@ -169,7 +169,7 @@ export default async function Page({ params }) {
               "name": "Grow Orbit",
               "logo": {
                 "@type": "ImageObject",
-                "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com"}/logo.png`
+                "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/logo.png`
               }
             },
             "description": post.excerpt

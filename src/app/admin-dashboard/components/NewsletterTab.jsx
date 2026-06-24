@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { Mail, Image as ImageIcon, LayoutTemplate, UploadCloud, RotateCcw, Copy, Eye, Palette, ShoppingCart, BarChart3, Sparkles, Smartphone, Monitor } from "lucide-react";
+import { auth } from "@/firebase/firebaseConfig";
 
 // ─── Template Data ────────────────────────────────────────────
 const TEMPLATES = [
@@ -592,8 +593,13 @@ export default function NewsletterTab({ isMobile }) {
       const formData = new FormData();
       formData.append("file", file);
 
+      const token = await auth.currentUser?.getIdToken();
+
       const res = await fetch("/api/upload-image", {
         method: "POST",
+        headers: {
+          ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+        },
         body: formData,
       });
 

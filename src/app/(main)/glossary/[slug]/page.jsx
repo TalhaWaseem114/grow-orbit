@@ -16,7 +16,7 @@ export async function generateMetadata({ params }) {
   
   if (!termData) return {};
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
   
   return {
     title: `What is ${termData.term} (${termData.fullName})? | Grow Orbit Glossary`,
@@ -42,7 +42,7 @@ export default async function GlossaryTermPage({ params }) {
     notFound();
   }
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",

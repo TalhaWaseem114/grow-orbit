@@ -11,7 +11,7 @@ import { getSavedUtmData } from "@/utils/utmTracker";
 export default function LeadForm({ theme = "light", compact = false }) {
   const isDark = theme === "dark";
   const router = useRouter();
-  const [form, setForm] = useState({ name: "", email: "", whatsapp: "", service: "", pain: "" });
+  const [form, setForm] = useState({ name: "", email: "", whatsapp: "", service: "", pain: "", asinOrUrl: "", monthlyRevenue: "" });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -75,8 +75,8 @@ export default function LeadForm({ theme = "light", compact = false }) {
           requestedService: form.service || "Not specified",
           notes: form.pain || "No message provided",
           source: "Landing Page Form",
-          asinOrUrl: null,
-          monthlyRevenue: null,
+          asinOrUrl: form.asinOrUrl || null,
+          monthlyRevenue: form.monthlyRevenue || null,
           brandName: null,
           website_confirm: honeypot,
           ...utmData,
@@ -219,6 +219,58 @@ export default function LeadForm({ theme = "light", compact = false }) {
             <option value="A+ Content & Creative" className={isDark ? "bg-zinc-950 text-white" : ""}>A+ Content & Creative</option>
             <option value="Full Account Management" className={isDark ? "bg-zinc-950 text-white" : ""}>Full Account Management</option>
             <option value="I'm Not Sure Yet" className={isDark ? "bg-zinc-950 text-white" : ""}>I'm Not Sure Yet — Help Me Decide</option>
+          </select>
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none text-sm">↓</span>
+        </div>
+      </div>
+
+      {/* Optional ASIN / Product URL */}
+      <div>
+        <label htmlFor="lead-asin" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
+          isDark ? "text-zinc-400" : "text-zinc-500"
+        }`}>Amazon ASIN or Product URL (Optional)</label>
+        <input
+          id="lead-asin"
+          type="text"
+          name="asinOrUrl"
+          value={form.asinOrUrl || ""}
+          onChange={handleChange}
+          placeholder="e.g. B0XXXXXX or https://amazon.com/..."
+          className={`w-full border text-base md:text-[13px] transition-all font-light focus:outline-none focus:border-orange-500 ${
+            compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
+          } ${
+            isDark
+              ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
+              : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white"
+          }`}
+        />
+      </div>
+
+      {/* Optional Monthly Revenue */}
+      <div>
+        <label htmlFor="lead-revenue" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
+          isDark ? "text-zinc-400" : "text-zinc-500"
+        }`}>Estimated Monthly Revenue (Optional)</label>
+        <div className="relative">
+          <select
+            id="lead-revenue"
+            name="monthlyRevenue"
+            value={form.monthlyRevenue || ""}
+            onChange={handleChange}
+            className={`w-full border text-base md:text-[13px] transition-all appearance-none cursor-pointer font-light focus:outline-none focus:border-orange-500 ${
+              compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
+            } ${
+              isDark
+                ? "bg-white/[0.03] border-white/10 text-white focus:bg-zinc-950"
+                : "bg-zinc-50 border-zinc-200 text-zinc-900 focus:bg-white"
+            }`}
+          >
+            <option value="" className={isDark ? "bg-zinc-950 text-white" : ""}>Select monthly revenue...</option>
+            <option value="Under $5k" className={isDark ? "bg-zinc-950 text-white" : ""}>Under $5k</option>
+            <option value="$5k - $20k" className={isDark ? "bg-zinc-950 text-white" : ""}>$5k - $20k</option>
+            <option value="$20k - $50k" className={isDark ? "bg-zinc-950 text-white" : ""}>$20k - $50k</option>
+            <option value="$50k - $100k" className={isDark ? "bg-zinc-950 text-white" : ""}>$50k - $100k</option>
+            <option value="Over $100k" className={isDark ? "bg-zinc-950 text-white" : ""}>Over $100k</option>
           </select>
           <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none text-sm">↓</span>
         </div>

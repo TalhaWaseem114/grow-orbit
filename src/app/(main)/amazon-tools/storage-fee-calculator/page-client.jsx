@@ -54,7 +54,7 @@ export default function StorageFeeCalculatorPage({ market }) {
     "@type": "FinancialCalculator",
     "name": `Grow Orbit Amazon Storage Fee Forecast Calculator - ${inputs.marketplace}`,
     "description": "Forecast monthly, seasonal (including Q4 peak), and 365-day aged long-term storage fees for your inventory.",
-    "url": "https://groworbit.com/amazon-tools/storage-fee-calculator"
+    "url": "https://www.groworbitofficial.com/amazon-tools/storage-fee-calculator"
   };
 
   return (

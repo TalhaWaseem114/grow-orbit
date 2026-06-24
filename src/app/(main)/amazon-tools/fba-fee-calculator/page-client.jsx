@@ -41,7 +41,7 @@ export default function FbaFeeCalculatorPage({ market, initialCategory }) {
     "@type": "FinancialCalculator",
     "name": `Grow Orbit Amazon FBA Fee Calculator - ${inputs.marketplace}`,
     "description": "Determine your Amazon FBA size tier, fulfillment costs, storage fees, and referral commission fees.",
-    "url": "https://groworbit.com/amazon-tools/fba-fee-calculator"
+    "url": "https://www.groworbitofficial.com/amazon-tools/fba-fee-calculator"
   };
 
   return (

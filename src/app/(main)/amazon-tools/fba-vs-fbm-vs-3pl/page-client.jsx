@@ -43,7 +43,7 @@ export default function FbaVsfbmVs3plPage({ market }) {
     "@type": "FinancialCalculator",
     "name": `Grow Orbit FBA vs FBM vs 3PL Calculator - ${inputs.marketplace}`,
     "description": "Compare net profits and returns across Amazon FBA, FBM, and third-party logistics (3PL) side-by-side.",
-    "url": "https://groworbit.com/amazon-tools/fba-vs-fbm-vs-3pl"
+    "url": "https://www.groworbitofficial.com/amazon-tools/fba-vs-fbm-vs-3pl"
   };
 
   return (

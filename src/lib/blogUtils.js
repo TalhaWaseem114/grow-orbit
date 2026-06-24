@@ -25,7 +25,7 @@ export function parseMarkdownText(text) {
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-zinc-900">$1</strong>')
     .replace(/\[(.*?)\]\((.*?)\)/g, (match, anchor, url) => {
-      const isInternal = url.startsWith('/') || url.includes('groworbit.com');
+      const isInternal = url.startsWith('/') || url.includes('groworbit.com') || url.includes('groworbitofficial.com');
       const targetAttr = isInternal ? '' : ' target="_blank" rel="noopener noreferrer"';
       return `<a href="${url}"${targetAttr} class="text-orange-500 hover:text-orange-600 underline font-semibold transition-colors">${anchor}</a>`;
     });

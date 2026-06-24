@@ -72,7 +72,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [users, setUsers] = useState([]);
   const [leads, setLeads] = useState([]);
-  const [leadsCollectionName, setLeadsCollectionName] = useState("Leads");
+  const [leadsCollectionName, setLeadsCollectionName] = useState("leads");
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [authChecking, setAuthChecking] = useState(true);
@@ -170,10 +170,10 @@ export default function AdminDashboard() {
   /* Authentication Guard */
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
-      if (!user) { router.push("/"); return; }
+      if (!user) { router.push("/login"); return; }
       try {
         const snap = await getDoc(doc(db, "users", user.uid));
-        if (!snap.exists()) { router.push("/"); return; }
+        if (!snap.exists()) { router.push("/login"); return; }
         const role = snap.data().role?.trim() || "user";
         if (role === "admin") {
           setCurrentAdminData({ id: snap.id, ...snap.data() });
@@ -181,9 +181,9 @@ export default function AdminDashboard() {
         } else if (role === "user") {
           router.push("/client-dashboard");
         } else {
-          router.push("/");
+          router.push("/login");
         }
-      } catch { router.push("/"); }
+      } catch { router.push("/login"); }
     });
     return () => unsub();
   }, [router]);
@@ -210,30 +210,10 @@ export default function AdminDashboard() {
 
       // 2. Fetch Leads
       try {
-        let lSnap_cap = null;
-        try {
-          const lQ_cap = query(collection(db, "Leads"), orderBy("createdAt", "desc"));
-          lSnap_cap = await getDocs(lQ_cap);
-        } catch (capErr) {
-          console.warn("[AdminDashboard] Capitalized 'Leads' query failed or blocked:", capErr.message);
-        }
+        const lQ_low = query(collection(db, "leads"), orderBy("createdAt", "desc"));
+        const finalSnap = await getDocs(lQ_low);
+        setLeadsCollectionName("leads");
 
-        let lSnap_low = null;
-        try {
-          const lQ_low = query(collection(db, "leads"), orderBy("createdAt", "desc"));
-          lSnap_low = await getDocs(lQ_low);
-        } catch (lowErr) {
-          console.warn("[AdminDashboard] Lowercase 'leads' query failed or blocked:", lowErr.message);
-        }
-
-        // Determine which one succeeded and has documents
-        const lowCount = lSnap_low ? lSnap_low.docs.length : 0;
-        const capCount = lSnap_cap ? lSnap_cap.docs.length : 0;
-
-        const chosenCollection = lowCount > 0 ? "leads" : (capCount > 0 ? "Leads" : (lSnap_low ? "leads" : "Leads"));
-        setLeadsCollectionName(chosenCollection);
-
-        const finalSnap = lowCount > 0 ? lSnap_low : (capCount > 0 ? lSnap_cap : (lSnap_low || lSnap_cap));
         if (finalSnap) {
           const fetchedLeads = finalSnap.docs.map(d => {
             const data = d.data();
@@ -249,7 +229,7 @@ export default function AdminDashboard() {
           });
           setLeads(fetchedLeads);
         } else {
-          console.warn("[AdminDashboard] Both leads queries were blocked or returned null.");
+          console.warn("[AdminDashboard] Lowercase leads query returned no documents.");
         }
       } catch (e) {
         console.warn("Leads fetch restricted by permissions:", e.message);

@@ -16,7 +16,7 @@ const isMarket = (slug) => ["us", "uk", "de"].includes(slug?.toLowerCase());
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug || "us";
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
   
   if (isMarket(slug)) {
     const marketUpper = slug.toUpperCase();
@@ -55,7 +55,7 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
   const resolvedParams = await params;
   const slug = resolvedParams.slug || "us";
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
 
   let market = "US";
   let category = "";

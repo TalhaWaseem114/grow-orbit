@@ -45,6 +45,7 @@ export const metadata = {
 import PWARegister from "@/components/PWARegister";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 export default function RootLayout({ children }) {
   return (
@@ -56,7 +57,7 @@ export default function RootLayout({ children }) {
         {/* Meta Pixel Code - hardcoded for reliable detection */}
         <Script
           id="meta-pixel"
-          strategy="beforeInteractive"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               !function(f,b,e,v,n,t,s)
@@ -88,6 +89,9 @@ export default function RootLayout({ children }) {
         <Analytics />
         <SpeedInsights />
         <ClientSideFeatures />
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
+        )}
       </body>
     </html>
   );

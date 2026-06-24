@@ -12,19 +12,19 @@ export default function Page(props) {
     "@type": "ListItem",
     "position": 1,
     "name": "Home",
-    "item": "https://groworbit.com"
+    "item": "https://www.groworbitofficial.com"
   },
   {
     "@type": "ListItem",
     "position": 2,
     "name": "Service",
-    "item": "https://groworbit.com/service"
+    "item": "https://www.groworbitofficial.com/service"
   },
   {
     "@type": "ListItem",
     "position": 3,
     "name": "Listing Optimization",
-    "item": "https://groworbit.com/service/listing-optimization"
+    "item": "https://www.groworbitofficial.com/service/listing-optimization"
   }
 ]
   };

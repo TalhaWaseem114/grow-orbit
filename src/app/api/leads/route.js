@@ -1,17 +1,5 @@
 import { NextResponse } from "next/server";
-import { db } from "@/firebase/firebaseConfig";
-import {
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  serverTimestamp,
-  updateDoc,
-  where,
-} from "firebase/firestore";
+import { adminDb, FieldValue } from "@/firebase/firebaseAdmin";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
@@ -85,9 +73,8 @@ async function resolveWebhookUrl() {
   if (webhookUrl) return webhookUrl;
 
   try {
-    const settingsRef = doc(db, "settings", "global");
-    const settingsSnap = await getDoc(settingsRef);
-    if (settingsSnap.exists()) {
+    const settingsSnap = await adminDb.collection("settings").doc("global").get();
+    if (settingsSnap.exists) {
       webhookUrl = settingsSnap.data().leadNotificationWebhook || "";
     }
   } catch (error) {
@@ -101,16 +88,9 @@ async function findLeadById(leadId) {
   if (!leadId) return null;
 
   try {
-    const lowerRef = doc(db, "leads", leadId);
-    const lowerSnap = await getDoc(lowerRef);
-    if (lowerSnap.exists()) {
-      return { leadDoc: lowerSnap, leadId: lowerSnap.id, collectionName: "leads" };
-    }
-
-    const legacyRef = doc(db, "Leads", leadId);
-    const legacySnap = await getDoc(legacyRef);
-    if (legacySnap.exists()) {
-      return { leadDoc: legacySnap, leadId: legacySnap.id, collectionName: "Leads" };
+    const snap = await adminDb.collection("leads").doc(leadId).get();
+    if (snap.exists) {
+      return { leadDoc: snap, leadId: snap.id };
     }
   } catch (error) {
     console.warn("[API/Leads] Direct document lookup by ID failed:", error.message);
@@ -123,15 +103,9 @@ async function findLeadByEmail(email) {
   if (!email) return null;
 
   try {
-    const lowerQuery = query(collection(db, "leads"), where("email", "==", email));
-    const lowerSnap = await getDocs(lowerQuery);
-    const lowerDoc = getNewestDoc(lowerSnap);
-    if (lowerDoc) return { leadDoc: lowerDoc, leadId: lowerDoc.id, collectionName: "leads" };
-
-    const legacyQuery = query(collection(db, "Leads"), where("email", "==", email));
-    const legacySnap = await getDocs(legacyQuery);
-    const legacyDoc = getNewestDoc(legacySnap);
-    if (legacyDoc) return { leadDoc: legacyDoc, leadId: legacyDoc.id, collectionName: "Leads" };
+    const snap = await adminDb.collection("leads").where("email", "==", email).get();
+    const docSnap = getNewestDoc(snap);
+    if (docSnap) return { leadDoc: docSnap, leadId: docSnap.id };
   } catch (error) {
     console.warn("[API/Leads] Email lookup failed:", error.message);
   }
@@ -143,8 +117,7 @@ async function findRecentDuplicateLead(email, source) {
   if (!email) return null;
 
   try {
-    const duplicateQuery = query(collection(db, "leads"), where("email", "==", email));
-    const snapshot = await getDocs(duplicateQuery);
+    const snapshot = await adminDb.collection("leads").where("email", "==", email).get();
     const now = Date.now();
 
     return snapshot.docs.find((leadDoc) => {
@@ -298,19 +271,19 @@ async function handleBookingConfirmation(body, webhookUrl) {
   if (match) {
     const leadData = match.leadDoc.data();
     const alreadyBooked = leadData.meetingBooked === true;
-    const leadRef = doc(db, match.collectionName, match.leadId);
+    const leadRef = adminDb.collection("leads").doc(match.leadId);
     const bookingUpdate = {
       meetingBooked: true,
       status: "hot",
       priority: "high",
       calendlyEventUri: cleanString(body.calendlyEventUri),
       calendlyInviteeUri: cleanString(body.calendlyInviteeUri),
-      updatedAt: serverTimestamp(),
+      updatedAt: FieldValue.serverTimestamp(),
     };
 
     if (!alreadyBooked) {
-      bookingUpdate.bookedAt = serverTimestamp();
-      bookingUpdate.timeline = arrayUnion({
+      bookingUpdate.bookedAt = FieldValue.serverTimestamp();
+      bookingUpdate.timeline = FieldValue.arrayUnion({
         text: "Meeting successfully scheduled on Calendly.",
         timestamp: new Date(),
         adminName: "System",
@@ -318,7 +291,7 @@ async function handleBookingConfirmation(body, webhookUrl) {
       });
     }
 
-    await updateDoc(leadRef, bookingUpdate);
+    await leadRef.update(bookingUpdate);
 
     if (!alreadyBooked) {
       try {
@@ -363,10 +336,10 @@ async function handleBookingConfirmation(body, webhookUrl) {
         adminId: "system",
       },
     ],
-    createdAt: serverTimestamp(),
+    createdAt: FieldValue.serverTimestamp(),
   };
 
-  const docRef = await addDoc(collection(db, "leads"), confirmationDoc);
+  const docRef = await adminDb.collection("leads").add(confirmationDoc);
 
   try {
     await notifyWebhook(
@@ -417,7 +390,7 @@ async function handleLeadIntake(body, webhookUrl) {
     source: normalizedSource,
     status: "new",
     priority: initialPriority,
-    createdAt: serverTimestamp(),
+    createdAt: FieldValue.serverTimestamp(),
     asinOrUrl: cleanString(body.asinOrUrl) || null,
     monthlyRevenue: cleanString(body.monthlyRevenue) || null,
     brandName: cleanString(body.brandName) || null,
@@ -442,7 +415,7 @@ async function handleLeadIntake(body, webhookUrl) {
     ],
   };
 
-  const docRef = await addDoc(collection(db, "leads"), leadDoc);
+  const docRef = await adminDb.collection("leads").add(leadDoc);
 
   try {
     await notifyWebhook(

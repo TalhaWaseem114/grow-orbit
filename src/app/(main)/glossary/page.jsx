@@ -7,7 +7,7 @@ export const metadata = {
   title: "Amazon FBA Glossary & Terminology | Grow Orbit",
   description: "Master Amazon FBA acronyms and terminology. From ACOS to BSR, explore our comprehensive glossary of ecommerce terms.",
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://groworbit.com"}/glossary`,
+    canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/glossary`,
   }
 };
 

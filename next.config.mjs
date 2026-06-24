@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  serverExternalPackages: ["firebase-admin"],
   trailingSlash: true,
   devIndicators: {
     appIsrStatus: false,

@@ -14,8 +14,6 @@ export default function DesignLeadForm() {
     name: "",
     email: "",
     whatsapp: "",
-    asin: "",
-    revenue: "",
     pain: "",
   });
   const [loading, setLoading] = useState(false);
@@ -56,8 +54,8 @@ export default function DesignLeadForm() {
     lastSubmitRef.current = now;
 
     // Validation
-    if (!form.name.trim() || !form.email.trim() || !form.asin.trim()) {
-      setError("Please fill in all required fields (Name, Email, and Amazon URL/ASIN).");
+    if (!form.name.trim() || !form.email.trim()) {
+      setError("Please fill in all required fields (Name and Email).");
       return;
     }
     if (!EMAIL_REGEX.test(form.email)) {
@@ -78,8 +76,6 @@ export default function DesignLeadForm() {
           fullName: form.name,
           email: form.email,
           whatsapp: form.whatsapp || "N/A",
-          asinOrUrl: form.asin,
-          monthlyRevenue: form.revenue || "N/A",
           requestedService: "Visual Design & Creative",
           notes: form.pain || "Requesting Free Visual Redesign Audit",
           source: "Design & Creative Landing Page",
@@ -212,66 +208,25 @@ export default function DesignLeadForm() {
       </div>
 
       <div>
-        <label htmlFor="design-lead-asin" className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-1.5 pl-1">
-          Amazon Listing URL or ASIN *
+        <label htmlFor="design-lead-pain" className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-1.5 pl-1">
+          Primary Visual Focus
         </label>
-        <input
-          id="design-lead-asin"
-          type="text"
-          required
-          name="asin"
-          value={form.asin}
-          onChange={handleChange}
-          placeholder="e.g., B07XXXXXXX or listing link"
-          className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-850 rounded-2xl text-base md:text-[14px] text-white placeholder-zinc-500 focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all font-light border-dashed border-violet-500/35"
-        />
-        <p className="text-[10px] text-zinc-500 font-light mt-1 pl-1">Required to perform your custom visual audit.</p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label htmlFor="design-lead-revenue" className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-1.5 pl-1">
-            Current Monthly Revenue
-          </label>
-          <div className="relative">
-            <select
-              id="design-lead-revenue"
-              name="revenue"
-              value={form.revenue}
-              onChange={handleChange}
-              className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-base md:text-[14px] text-white focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all appearance-none cursor-pointer font-light"
-            >
-              <option value="" disabled>Select range...</option>
-              <option value="New Seller / Under $10k">Under $10k/mo</option>
-              <option value="$10k - $50k">$10k - $50k/mo</option>
-              <option value="$50k - $150k">$50k - $150k/mo</option>
-              <option value="Over $150k">Over $150k/mo</option>
-            </select>
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none text-xs">↓</span>
-          </div>
-        </div>
-
-        <div>
-          <label htmlFor="design-lead-pain" className="block text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 mb-1.5 pl-1">
-            Primary Visual Focus
-          </label>
-          <div className="relative">
-            <select
-              id="design-lead-pain"
-              name="pain"
-              value={form.pain}
-              onChange={handleChange}
-              className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-base md:text-[14px] text-white focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all appearance-none cursor-pointer font-light"
-            >
-              <option value="" disabled>Select main bottleneck...</option>
-              <option value="Need 3D modeling / renders">Photorealistic 3D Renders</option>
-              <option value="Need listing infographics">Listing Image Redesign</option>
-              <option value="Need A+ Content & Brand Story">A+ Content & Brand Story</option>
-              <option value="Need Storefront overhaul">Amazon Storefront Design</option>
-              <option value="Full Creative overhaul">Complete Creative Redesign</option>
-            </select>
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none text-xs">↓</span>
-          </div>
+        <div className="relative">
+          <select
+            id="design-lead-pain"
+            name="pain"
+            value={form.pain}
+            onChange={handleChange}
+            className="w-full px-5 py-3.5 bg-zinc-900/50 border border-zinc-800 rounded-2xl text-base md:text-[14px] text-white focus:outline-none focus:border-violet-500 focus:bg-zinc-900 transition-all appearance-none cursor-pointer font-light"
+          >
+            <option value="" disabled>Select main bottleneck...</option>
+            <option value="Need 3D modeling / renders">Photorealistic 3D Renders</option>
+            <option value="Need listing infographics">Listing Image Redesign</option>
+            <option value="Need A+ Content & Brand Story">A+ Content & Brand Story</option>
+            <option value="Need Storefront overhaul">Amazon Storefront Design</option>
+            <option value="Full Creative overhaul">Complete Creative Redesign</option>
+          </select>
+          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none text-xs">↓</span>
         </div>
       </div>
 

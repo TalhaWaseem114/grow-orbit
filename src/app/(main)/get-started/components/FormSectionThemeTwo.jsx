@@ -121,7 +121,7 @@ const FormSectionThemeTwo = forwardRef(function FormSectionThemeTwo(_, ref) {
                   className="text-xl font-black tracking-tight text-zinc-900 uppercase"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
-                  Tell us your ASIN. <span className="text-orange-500">We'll tell you exactly what's holding it back.</span>
+                  Tell us about your brand. <span className="text-orange-500">We'll show you exactly how to scale it.</span>
                 </h3>
               </div>
 

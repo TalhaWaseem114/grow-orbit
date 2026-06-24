@@ -237,7 +237,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
                 className="text-lg sm:text-xl font-black tracking-tight text-white uppercase leading-snug"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                Tell us your ASIN. <span className="text-orange-500">We'll tell you exactly what's holding it back.</span>
+                Tell us about your brand. <span className="text-orange-500">We'll show you exactly how to scale it.</span>
               </h3>
             </div>
 

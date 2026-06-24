@@ -64,7 +64,7 @@ const trust = [
 ───────────────────────────────────────────── */
 export default function ContactUs() {
   const router = useRouter();
-  const [form, setForm]       = useState({ name:"", email:"", whatsapp:"", service:"", message:"", asinOrUrl: "", monthlyRevenue: "" });
+  const [form, setForm]       = useState({ name:"", email:"", whatsapp:"", service:"", message:"" });
   const [loading, setLoading] = useState(false);
   const [utmData, setUtmData] = useState({});
   const [honeypot, setHoneypot] = useState("");
@@ -117,8 +117,6 @@ export default function ContactUs() {
           email: form.email,
           whatsapp: form.whatsapp || "N/A",
           requestedService: form.service || "Not specified",
-          asinOrUrl: form.asinOrUrl || null,
-          monthlyRevenue: form.monthlyRevenue || null,
           notes: form.message || "No message provided",
           source: "Contact Page Form",
           website_confirm: honeypot,
@@ -371,46 +369,6 @@ export default function ContactUs() {
                       <option value="Full Account Management">Full Account Management</option>
                       <option value="Trademark & Brand Registry">Trademark & Brand Registry</option>
                       <option value="Not Sure / Need Advice">Not Sure Yet — Help Me Decide</option>
-                    </select>
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" aria-hidden="true">↓</span>
-                  </div>
-                </div>
-
-                {/* Optional ASIN / Product URL */}
-                <div className="space-y-1.5">
-                  <label htmlFor="contact-asin" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 pl-1">
-                    Amazon ASIN or Product URL (Optional)
-                  </label>
-                  <input
-                    id="contact-asin"
-                    type="text"
-                    name="asinOrUrl"
-                    value={form.asinOrUrl || ""}
-                    onChange={handleChange}
-                    placeholder="e.g. B0XXXXXX or https://amazon.com/..."
-                    className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light focus-visible:ring-2 focus-visible:ring-orange-500"
-                  />
-                </div>
-
-                {/* Optional Monthly Revenue */}
-                <div className="space-y-1.5">
-                  <label htmlFor="contact-revenue" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-400 pl-1">
-                    Estimated Monthly Revenue (Optional)
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="contact-revenue"
-                      name="monthlyRevenue"
-                      value={form.monthlyRevenue || ""}
-                      onChange={handleChange}
-                      className={`w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-base md:text-[14px] focus:outline-none focus:border-orange-500 focus:bg-white transition-all appearance-none cursor-pointer font-light focus-visible:ring-2 focus-visible:ring-orange-500 ${!form.monthlyRevenue ? "text-zinc-400" : "text-zinc-900"}`}
-                    >
-                      <option value="">Select monthly revenue...</option>
-                      <option value="Under $5k">Under $5k</option>
-                      <option value="$5k - $20k">$5k - $20k</option>
-                      <option value="$20k - $50k">$20k - $50k</option>
-                      <option value="$50k - $100k">$50k - $100k</option>
-                      <option value="Over $100k">Over $100k</option>
                     </select>
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" aria-hidden="true">↓</span>
                   </div>

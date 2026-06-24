@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 import { adminDb, FieldValue } from "@/firebase/firebaseAdmin";
+import { db as clientDb } from "@/firebase/firebaseConfig";
+import { collection, addDoc, doc, updateDoc, getDoc, getDocs, query, where } from "firebase/firestore";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
@@ -93,7 +95,15 @@ async function findLeadById(leadId) {
       return { leadDoc: snap, leadId: snap.id };
     }
   } catch (error) {
-    console.warn("[API/Leads] Direct document lookup by ID failed:", error.message);
+    console.warn("[API/Leads] Direct document lookup by ID via adminDb failed, trying clientDb:", error.message);
+    try {
+      const snap = await getDoc(doc(clientDb, "leads", leadId));
+      if (snap.exists()) {
+        return { leadDoc: snap, leadId: snap.id };
+      }
+    } catch (clientError) {
+      console.error("[API/Leads] clientDb findById failed:", clientError);
+    }
   }
 
   return null;
@@ -107,7 +117,17 @@ async function findLeadByEmail(email) {
     const docSnap = getNewestDoc(snap);
     if (docSnap) return { leadDoc: docSnap, leadId: docSnap.id };
   } catch (error) {
-    console.warn("[API/Leads] Email lookup failed:", error.message);
+    console.warn("[API/Leads] Email lookup via adminDb failed, trying clientDb:", error.message);
+    try {
+      const q = query(collection(clientDb, "leads"), where("email", "==", email));
+      const snap = await getDocs(q);
+      if (!snap.empty) {
+        const sortedDocs = [...snap.docs].sort((a, b) => getCreatedAtMs(b) - getCreatedAtMs(a));
+        return { leadDoc: sortedDocs[0], leadId: sortedDocs[0].id };
+      }
+    } catch (clientError) {
+      console.error("[API/Leads] clientDb findByEmail failed:", clientError);
+    }
   }
 
   return null;
@@ -128,8 +148,22 @@ async function findRecentDuplicateLead(email, source) {
       return createdAt && now - createdAt < DUPLICATE_WINDOW_MS;
     });
   } catch (error) {
-    console.warn("[API/Leads] Duplicate lookup failed:", error.message);
-    return null;
+    console.warn("[API/Leads] Duplicate lookup via adminDb failed, trying clientDb:", error.message);
+    try {
+      const q = query(collection(clientDb, "leads"), where("email", "==", email));
+      const snapshot = await getDocs(q);
+      const now = Date.now();
+      return snapshot.docs.find((leadDoc) => {
+        const data = leadDoc.data();
+        if (source && data.source && data.source !== source) return false;
+
+        const createdAt = getCreatedAtMs(leadDoc);
+        return createdAt && now - createdAt < DUPLICATE_WINDOW_MS;
+      });
+    } catch (clientError) {
+      console.error("[API/Leads] clientDb findRecentDuplicateLead failed:", clientError);
+      return null;
+    }
   }
 }
 
@@ -140,13 +174,7 @@ function createDiscordLeadPayload(leadDoc) {
     { name: "WhatsApp", value: truncateForDiscord(leadDoc.whatsapp), inline: true },
   ];
 
-  if (leadDoc.asinOrUrl) {
-    fields.push({ name: "ASIN / Product URL", value: truncateForDiscord(leadDoc.asinOrUrl), inline: false });
-  }
 
-  if (leadDoc.monthlyRevenue) {
-    fields.push({ name: "Est. Monthly Revenue", value: truncateForDiscord(leadDoc.monthlyRevenue), inline: true });
-  }
 
   if (leadDoc.brandName) {
     fields.push({ name: "Brand Name", value: truncateForDiscord(leadDoc.brandName), inline: true });
@@ -195,9 +223,7 @@ function createDiscordBookingPayload(leadData, email) {
     fields.push({ name: "Brand Name", value: truncateForDiscord(leadData.brandName), inline: true });
   }
 
-  if (leadData.asinOrUrl) {
-    fields.push({ name: "ASIN / URL", value: truncateForDiscord(leadData.asinOrUrl), inline: true });
-  }
+
 
   if (leadData.utm_source || leadData.utm_medium || leadData.utm_campaign || leadData.fbclid || leadData.gclid) {
     fields.push({
@@ -271,7 +297,6 @@ async function handleBookingConfirmation(body, webhookUrl) {
   if (match) {
     const leadData = match.leadDoc.data();
     const alreadyBooked = leadData.meetingBooked === true;
-    const leadRef = adminDb.collection("leads").doc(match.leadId);
     const bookingUpdate = {
       meetingBooked: true,
       status: "hot",
@@ -291,7 +316,36 @@ async function handleBookingConfirmation(body, webhookUrl) {
       });
     }
 
-    await leadRef.update(bookingUpdate);
+    try {
+      const leadRef = adminDb.collection("leads").doc(match.leadId);
+      await leadRef.update(bookingUpdate);
+    } catch (adminError) {
+      console.warn("[API/Leads] adminDb lead update failed, trying clientDb fallback:", adminError.message);
+      try {
+        const { arrayUnion } = require("firebase/firestore");
+        const clientBookingUpdate = {
+          meetingBooked: true,
+          status: "hot",
+          priority: "high",
+          calendlyEventUri: bookingUpdate.calendlyEventUri,
+          calendlyInviteeUri: bookingUpdate.calendlyInviteeUri,
+          updatedAt: new Date(),
+        };
+        if (bookingUpdate.bookedAt) {
+          clientBookingUpdate.bookedAt = new Date();
+          clientBookingUpdate.timeline = arrayUnion({
+            text: "Meeting successfully scheduled on Calendly.",
+            timestamp: new Date(),
+            adminName: "System",
+            adminId: "system",
+          });
+        }
+        await updateDoc(doc(clientDb, "leads", match.leadId), clientBookingUpdate);
+      } catch (clientError) {
+        console.error("[API/Leads] Both adminDb and clientDb lead updates failed:", clientError);
+        throw adminError;
+      }
+    }
 
     if (!alreadyBooked) {
       try {
@@ -339,7 +393,22 @@ async function handleBookingConfirmation(body, webhookUrl) {
     createdAt: FieldValue.serverTimestamp(),
   };
 
-  const docRef = await adminDb.collection("leads").add(confirmationDoc);
+  let docRef;
+  try {
+    docRef = await adminDb.collection("leads").add(confirmationDoc);
+  } catch (adminError) {
+    console.warn("[API/Leads] adminDb add orphan booking failed, trying clientDb fallback:", adminError.message);
+    try {
+      const clientDocRef = await addDoc(collection(clientDb, "leads"), {
+        ...confirmationDoc,
+        createdAt: new Date(),
+      });
+      docRef = { id: clientDocRef.id };
+    } catch (clientError) {
+      console.error("[API/Leads] Both adminDb and clientDb orphan booking writes failed:", clientError);
+      throw adminError;
+    }
+  }
 
   try {
     await notifyWebhook(
@@ -391,8 +460,6 @@ async function handleLeadIntake(body, webhookUrl) {
     status: "new",
     priority: initialPriority,
     createdAt: FieldValue.serverTimestamp(),
-    asinOrUrl: cleanString(body.asinOrUrl) || null,
-    monthlyRevenue: cleanString(body.monthlyRevenue) || null,
     brandName: cleanString(body.brandName) || null,
     utm_source: cleanString(body.utm_source),
     utm_medium: cleanString(body.utm_medium),
@@ -415,7 +482,22 @@ async function handleLeadIntake(body, webhookUrl) {
     ],
   };
 
-  const docRef = await adminDb.collection("leads").add(leadDoc);
+  let docRef;
+  try {
+    docRef = await adminDb.collection("leads").add(leadDoc);
+  } catch (adminError) {
+    console.warn("[API/Leads] adminDb lead intake failed, trying clientDb fallback:", adminError.message);
+    try {
+      const clientDocRef = await addDoc(collection(clientDb, "leads"), {
+        ...leadDoc,
+        createdAt: new Date(),
+      });
+      docRef = { id: clientDocRef.id };
+    } catch (clientError) {
+      console.error("[API/Leads] Both adminDb and clientDb lead intake writes failed:", clientError);
+      throw adminError;
+    }
+  }
 
   try {
     await notifyWebhook(
@@ -427,8 +509,6 @@ async function handleLeadIntake(body, webhookUrl) {
         `Email: ${leadDoc.email}`,
         `WhatsApp: ${leadDoc.whatsapp}`,
         `Service: ${leadDoc.requestedService}`,
-        `ASIN/URL: ${leadDoc.asinOrUrl || "N/A"}`,
-        `Revenue: ${leadDoc.monthlyRevenue || "N/A"}`,
         `Notes: ${leadDoc.notes}`,
         `Source: ${leadDoc.source}`,
       ].join("\n")

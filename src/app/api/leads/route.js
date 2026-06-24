@@ -1,7 +1,27 @@
 import { NextResponse } from "next/server";
-import { adminDb, FieldValue } from "@/firebase/firebaseAdmin";
 import { db as clientDb } from "@/firebase/firebaseConfig";
 import { collection, addDoc, doc, updateDoc, getDoc, getDocs, query, where } from "firebase/firestore";
+
+// Lazy-load firebase-admin to prevent route crash if module fails to load on Vercel
+let _adminDb = null;
+let _FieldValue = null;
+let _adminLoaded = false;
+
+async function getAdmin() {
+  if (_adminLoaded) return { adminDb: _adminDb, FieldValue: _FieldValue };
+  _adminLoaded = true;
+  try {
+    const mod = await import("@/firebase/firebaseAdmin");
+    _adminDb = mod.adminDb;
+    _FieldValue = mod.FieldValue;
+    console.log("[API/Leads] firebase-admin loaded successfully");
+  } catch (err) {
+    console.warn("[API/Leads] firebase-admin failed to load, using client SDK only:", err.message);
+    _adminDb = null;
+    _FieldValue = null;
+  }
+  return { adminDb: _adminDb, FieldValue: _FieldValue };
+}
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const RATE_LIMIT_WINDOW_MS = 60 * 1000;
@@ -74,13 +94,16 @@ async function resolveWebhookUrl() {
   let webhookUrl = process.env.LEAD_NOTIFICATION_WEBHOOK || "";
   if (webhookUrl) return webhookUrl;
 
-  try {
-    const settingsSnap = await adminDb.collection("settings").doc("global").get();
-    if (settingsSnap.exists) {
-      webhookUrl = settingsSnap.data().leadNotificationWebhook || "";
+  const { adminDb } = await getAdmin();
+  if (adminDb) {
+    try {
+      const settingsSnap = await adminDb.collection("settings").doc("global").get();
+      if (settingsSnap.exists) {
+        webhookUrl = settingsSnap.data().leadNotificationWebhook || "";
+      }
+    } catch (error) {
+      console.warn("[API/Leads] Failed to fetch settings webhook:", error.message);
     }
-  } catch (error) {
-    console.warn("[API/Leads] Failed to fetch settings webhook:", error.message);
   }
 
   return webhookUrl;
@@ -89,21 +112,25 @@ async function resolveWebhookUrl() {
 async function findLeadById(leadId) {
   if (!leadId) return null;
 
-  try {
-    const snap = await adminDb.collection("leads").doc(leadId).get();
-    if (snap.exists) {
-      return { leadDoc: snap, leadId: snap.id };
-    }
-  } catch (error) {
-    console.warn("[API/Leads] Direct document lookup by ID via adminDb failed, trying clientDb:", error.message);
+  const { adminDb } = await getAdmin();
+  if (adminDb) {
     try {
-      const snap = await getDoc(doc(clientDb, "leads", leadId));
-      if (snap.exists()) {
+      const snap = await adminDb.collection("leads").doc(leadId).get();
+      if (snap.exists) {
         return { leadDoc: snap, leadId: snap.id };
       }
-    } catch (clientError) {
-      console.error("[API/Leads] clientDb findById failed:", clientError);
+    } catch (error) {
+      console.warn("[API/Leads] Direct document lookup by ID via adminDb failed, trying clientDb:", error.message);
     }
+  }
+
+  try {
+    const snap = await getDoc(doc(clientDb, "leads", leadId));
+    if (snap.exists()) {
+      return { leadDoc: snap, leadId: snap.id };
+    }
+  } catch (clientError) {
+    console.error("[API/Leads] clientDb findById failed:", clientError);
   }
 
   return null;
@@ -112,22 +139,26 @@ async function findLeadById(leadId) {
 async function findLeadByEmail(email) {
   if (!email) return null;
 
-  try {
-    const snap = await adminDb.collection("leads").where("email", "==", email).get();
-    const docSnap = getNewestDoc(snap);
-    if (docSnap) return { leadDoc: docSnap, leadId: docSnap.id };
-  } catch (error) {
-    console.warn("[API/Leads] Email lookup via adminDb failed, trying clientDb:", error.message);
+  const { adminDb } = await getAdmin();
+  if (adminDb) {
     try {
-      const q = query(collection(clientDb, "leads"), where("email", "==", email));
-      const snap = await getDocs(q);
-      if (!snap.empty) {
-        const sortedDocs = [...snap.docs].sort((a, b) => getCreatedAtMs(b) - getCreatedAtMs(a));
-        return { leadDoc: sortedDocs[0], leadId: sortedDocs[0].id };
-      }
-    } catch (clientError) {
-      console.error("[API/Leads] clientDb findByEmail failed:", clientError);
+      const snap = await adminDb.collection("leads").where("email", "==", email).get();
+      const docSnap = getNewestDoc(snap);
+      if (docSnap) return { leadDoc: docSnap, leadId: docSnap.id };
+    } catch (error) {
+      console.warn("[API/Leads] Email lookup via adminDb failed, trying clientDb:", error.message);
     }
+  }
+
+  try {
+    const q = query(collection(clientDb, "leads"), where("email", "==", email));
+    const snap = await getDocs(q);
+    if (!snap.empty) {
+      const sortedDocs = [...snap.docs].sort((a, b) => getCreatedAtMs(b) - getCreatedAtMs(a));
+      return { leadDoc: sortedDocs[0], leadId: sortedDocs[0].id };
+    }
+  } catch (clientError) {
+    console.error("[API/Leads] clientDb findByEmail failed:", clientError);
   }
 
   return null;
@@ -136,34 +167,36 @@ async function findLeadByEmail(email) {
 async function findRecentDuplicateLead(email, source) {
   if (!email) return null;
 
-  try {
-    const snapshot = await adminDb.collection("leads").where("email", "==", email).get();
-    const now = Date.now();
-
-    return snapshot.docs.find((leadDoc) => {
-      const data = leadDoc.data();
-      if (source && data.source && data.source !== source) return false;
-
-      const createdAt = getCreatedAtMs(leadDoc);
-      return createdAt && now - createdAt < DUPLICATE_WINDOW_MS;
-    });
-  } catch (error) {
-    console.warn("[API/Leads] Duplicate lookup via adminDb failed, trying clientDb:", error.message);
+  const { adminDb } = await getAdmin();
+  if (adminDb) {
     try {
-      const q = query(collection(clientDb, "leads"), where("email", "==", email));
-      const snapshot = await getDocs(q);
+      const snapshot = await adminDb.collection("leads").where("email", "==", email).get();
       const now = Date.now();
-      return snapshot.docs.find((leadDoc) => {
+      const found = snapshot.docs.find((leadDoc) => {
         const data = leadDoc.data();
         if (source && data.source && data.source !== source) return false;
-
         const createdAt = getCreatedAtMs(leadDoc);
         return createdAt && now - createdAt < DUPLICATE_WINDOW_MS;
       });
-    } catch (clientError) {
-      console.error("[API/Leads] clientDb findRecentDuplicateLead failed:", clientError);
-      return null;
+      if (found) return found;
+    } catch (error) {
+      console.warn("[API/Leads] Duplicate lookup via adminDb failed, trying clientDb:", error.message);
     }
+  }
+
+  try {
+    const q = query(collection(clientDb, "leads"), where("email", "==", email));
+    const snapshot = await getDocs(q);
+    const now = Date.now();
+    return snapshot.docs.find((leadDoc) => {
+      const data = leadDoc.data();
+      if (source && data.source && data.source !== source) return false;
+      const createdAt = getCreatedAtMs(leadDoc);
+      return createdAt && now - createdAt < DUPLICATE_WINDOW_MS;
+    }) || null;
+  } catch (clientError) {
+    console.error("[API/Leads] clientDb findRecentDuplicateLead failed:", clientError);
+    return null;
   }
 }
 
@@ -292,59 +325,43 @@ async function handleBookingConfirmation(body, webhookUrl) {
     return NextResponse.json({ error: "Missing lead reference for booking confirmation" }, { status: 400 });
   }
 
+  const { adminDb, FieldValue } = await getAdmin();
   const match = (await findLeadById(cleanString(body.leadId))) || (await findLeadByEmail(email));
 
   if (match) {
     const leadData = match.leadDoc.data();
     const alreadyBooked = leadData.meetingBooked === true;
-    const bookingUpdate = {
-      meetingBooked: true,
-      status: "hot",
-      priority: "high",
-      calendlyEventUri: cleanString(body.calendlyEventUri),
-      calendlyInviteeUri: cleanString(body.calendlyInviteeUri),
-      updatedAt: FieldValue.serverTimestamp(),
-    };
 
-    if (!alreadyBooked) {
-      bookingUpdate.bookedAt = FieldValue.serverTimestamp();
-      bookingUpdate.timeline = FieldValue.arrayUnion({
-        text: "Meeting successfully scheduled on Calendly.",
-        timestamp: new Date(),
-        adminName: "System",
-        adminId: "system",
-      });
-    }
-
-    try {
-      const leadRef = adminDb.collection("leads").doc(match.leadId);
-      await leadRef.update(bookingUpdate);
-    } catch (adminError) {
-      console.warn("[API/Leads] adminDb lead update failed, trying clientDb fallback:", adminError.message);
-      try {
-        const { arrayUnion } = require("firebase/firestore");
-        const clientBookingUpdate = {
-          meetingBooked: true,
-          status: "hot",
-          priority: "high",
-          calendlyEventUri: bookingUpdate.calendlyEventUri,
-          calendlyInviteeUri: bookingUpdate.calendlyInviteeUri,
-          updatedAt: new Date(),
-        };
-        if (bookingUpdate.bookedAt) {
-          clientBookingUpdate.bookedAt = new Date();
-          clientBookingUpdate.timeline = arrayUnion({
-            text: "Meeting successfully scheduled on Calendly.",
-            timestamp: new Date(),
-            adminName: "System",
-            adminId: "system",
-          });
-        }
-        await updateDoc(doc(clientDb, "leads", match.leadId), clientBookingUpdate);
-      } catch (clientError) {
-        console.error("[API/Leads] Both adminDb and clientDb lead updates failed:", clientError);
-        throw adminError;
+    // Try admin SDK first
+    if (adminDb && FieldValue) {
+      const bookingUpdate = {
+        meetingBooked: true,
+        status: "hot",
+        priority: "high",
+        calendlyEventUri: cleanString(body.calendlyEventUri),
+        calendlyInviteeUri: cleanString(body.calendlyInviteeUri),
+        updatedAt: FieldValue.serverTimestamp(),
+      };
+      if (!alreadyBooked) {
+        bookingUpdate.bookedAt = FieldValue.serverTimestamp();
+        bookingUpdate.timeline = FieldValue.arrayUnion({
+          text: "Meeting successfully scheduled on Calendly.",
+          timestamp: new Date(),
+          adminName: "System",
+          adminId: "system",
+        });
       }
+      try {
+        const leadRef = adminDb.collection("leads").doc(match.leadId);
+        await leadRef.update(bookingUpdate);
+      } catch (adminError) {
+        console.warn("[API/Leads] adminDb lead update failed, trying clientDb fallback:", adminError.message);
+        // Fall through to client SDK below
+        await updateBookingWithClientSdk(match.leadId, body, alreadyBooked);
+      }
+    } else {
+      // No admin SDK available, use client SDK directly
+      await updateBookingWithClientSdk(match.leadId, body, alreadyBooked);
     }
 
     if (!alreadyBooked) {
@@ -368,6 +385,7 @@ async function handleBookingConfirmation(body, webhookUrl) {
     return NextResponse.json({ success: true, id: match.leadId, merged: true, alreadyBooked });
   }
 
+  // Orphan booking - no existing lead found
   const confirmationDoc = {
     fullName: "Calendly Booking",
     email,
@@ -390,23 +408,24 @@ async function handleBookingConfirmation(body, webhookUrl) {
         adminId: "system",
       },
     ],
-    createdAt: FieldValue.serverTimestamp(),
+    createdAt: new Date(),
   };
 
   let docRef;
-  try {
-    docRef = await adminDb.collection("leads").add(confirmationDoc);
-  } catch (adminError) {
-    console.warn("[API/Leads] adminDb add orphan booking failed, trying clientDb fallback:", adminError.message);
+  if (adminDb && FieldValue) {
     try {
-      const clientDocRef = await addDoc(collection(clientDb, "leads"), {
-        ...confirmationDoc,
-        createdAt: new Date(),
-      });
+      docRef = await adminDb.collection("leads").add({ ...confirmationDoc, createdAt: FieldValue.serverTimestamp() });
+    } catch (adminError) {
+      console.warn("[API/Leads] adminDb add orphan booking failed, trying clientDb fallback:", adminError.message);
+    }
+  }
+  if (!docRef) {
+    try {
+      const clientDocRef = await addDoc(collection(clientDb, "leads"), confirmationDoc);
       docRef = { id: clientDocRef.id };
     } catch (clientError) {
-      console.error("[API/Leads] Both adminDb and clientDb orphan booking writes failed:", clientError);
-      throw adminError;
+      console.error("[API/Leads] clientDb orphan booking write failed:", clientError);
+      return NextResponse.json({ error: "Failed to save booking" }, { status: 500 });
     }
   }
 
@@ -421,6 +440,28 @@ async function handleBookingConfirmation(body, webhookUrl) {
   }
 
   return NextResponse.json({ success: true, id: docRef.id, merged: false });
+}
+
+async function updateBookingWithClientSdk(leadId, body, alreadyBooked) {
+  const { arrayUnion } = await import("firebase/firestore");
+  const clientBookingUpdate = {
+    meetingBooked: true,
+    status: "hot",
+    priority: "high",
+    calendlyEventUri: cleanString(body.calendlyEventUri),
+    calendlyInviteeUri: cleanString(body.calendlyInviteeUri),
+    updatedAt: new Date(),
+  };
+  if (!alreadyBooked) {
+    clientBookingUpdate.bookedAt = new Date();
+    clientBookingUpdate.timeline = arrayUnion({
+      text: "Meeting successfully scheduled on Calendly.",
+      timestamp: new Date(),
+      adminName: "System",
+      adminId: "system",
+    });
+  }
+  await updateDoc(doc(clientDb, "leads", leadId), clientBookingUpdate);
 }
 
 async function handleLeadIntake(body, webhookUrl) {
@@ -441,6 +482,8 @@ async function handleLeadIntake(body, webhookUrl) {
     return NextResponse.json({ success: true, id: duplicateLead.id, duplicate: true });
   }
 
+  const { adminDb, FieldValue } = await getAdmin();
+
   const requestedService = cleanString(body.requestedService, "Not specified") || "Not specified";
   const serviceLower = requestedService.toLowerCase();
   const initialPriority = (
@@ -459,7 +502,7 @@ async function handleLeadIntake(body, webhookUrl) {
     source: normalizedSource,
     status: "new",
     priority: initialPriority,
-    createdAt: FieldValue.serverTimestamp(),
+    createdAt: new Date(),
     brandName: cleanString(body.brandName) || null,
     utm_source: cleanString(body.utm_source),
     utm_medium: cleanString(body.utm_medium),
@@ -483,19 +526,24 @@ async function handleLeadIntake(body, webhookUrl) {
   };
 
   let docRef;
-  try {
-    docRef = await adminDb.collection("leads").add(leadDoc);
-  } catch (adminError) {
-    console.warn("[API/Leads] adminDb lead intake failed, trying clientDb fallback:", adminError.message);
+
+  // Try admin SDK first
+  if (adminDb && FieldValue) {
     try {
-      const clientDocRef = await addDoc(collection(clientDb, "leads"), {
-        ...leadDoc,
-        createdAt: new Date(),
-      });
+      docRef = await adminDb.collection("leads").add({ ...leadDoc, createdAt: FieldValue.serverTimestamp() });
+    } catch (adminError) {
+      console.warn("[API/Leads] adminDb lead intake failed, trying clientDb fallback:", adminError.message);
+    }
+  }
+
+  // Fallback to client SDK
+  if (!docRef) {
+    try {
+      const clientDocRef = await addDoc(collection(clientDb, "leads"), leadDoc);
       docRef = { id: clientDocRef.id };
     } catch (clientError) {
-      console.error("[API/Leads] Both adminDb and clientDb lead intake writes failed:", clientError);
-      throw adminError;
+      console.error("[API/Leads] clientDb lead intake write failed:", clientError);
+      return NextResponse.json({ error: "Failed to save lead" }, { status: 500 });
     }
   }
 

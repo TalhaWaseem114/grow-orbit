@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Star, Quote, ArrowRight, Zap, Clock, Target, LineChart, Percent, Flame, Users, ShieldCheck } from "lucide-react";
 import { caseStudyTestimonials } from "@/data/testimonials";
 
@@ -27,12 +28,12 @@ export default function OrbitTestimonialsSection() {
     <section className="py-32 bg-white border-t border-zinc-100 relative overflow-hidden">
       {/* Background Graphic */}
       <div className="absolute top-0 right-0 w-[320px] h-[320px] sm:w-[600px] sm:h-[600px] pointer-events-none translate-x-[20%] translate-y-[0%] sm:-translate-y-[10%] opacity-60 sm:opacity-100 blur-[0.5px]">
-        <img
+        <Image
           src="/assets/orbit-testimonials-bg.png"
           alt="Orbit Testimonials Background"
-          loading="lazy"
-          decoding="async"
-          className="w-full h-full object-contain"
+          fill
+          sizes="(max-width: 640px) 320px, 600px"
+          className="object-contain"
         />
       </div>
 
@@ -160,8 +161,16 @@ export default function OrbitTestimonialsSection() {
               {/* Footer */}
               <div className="relative z-10 mt-auto flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md grayscale hover:grayscale-0 transition-all duration-500">
-                    <img src={t.image} alt={t.name} loading="lazy" decoding="async" className="w-full h-full object-cover" />
+                  <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md grayscale hover:grayscale-0 transition-all duration-500 relative shrink-0">
+                    <Image
+                      src={t.image}
+                      alt={t.name}
+                      fill
+                      sizes="56px"
+                      className="object-cover"
+                      placeholder={typeof t.image === 'string' && t.image.includes('cloudinary.com/') ? "blur" : "empty"}
+                      blurDataURL={typeof t.image === 'string' && t.image.includes('cloudinary.com/') ? t.image.replace('/upload/', '/upload/w_100,e_blur:1000,q_1,f_auto/') : undefined}
+                    />
                   </div>
                   <div>
                     <span className="font-black text-[12px] uppercase tracking-tight text-zinc-900 block leading-tight">

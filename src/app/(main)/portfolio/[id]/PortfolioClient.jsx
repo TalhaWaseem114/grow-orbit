@@ -36,7 +36,7 @@ const SERVICE_GRADIENTS = {
 };
 
 /* ─── SMART IMAGE COMPONENT ─── */
-function SmartImage({ src, alt, className, style, onClick }) {
+function SmartImage({ src, alt, className, style, onClick, priority = false }) {
   const [loaded, setLoaded] = React.useState(false);
   const imgRef = React.useRef(null);
 
@@ -50,10 +50,11 @@ function SmartImage({ src, alt, className, style, onClick }) {
   let optimizedSrc = src;
   let blurSrc = null;
   if (src && src.includes('cloudinary.com/')) {
-    // 1. Force modern compression (WebP/AVIF) and dynamic quality compression
-    optimizedSrc = src.replace('/upload/', '/upload/f_auto,q_auto/');
+    // 1. Force modern compression (WebP/AVIF), dynamic quality, AND cap width at 1200px
+    // Capping width prevents downloading massive 4K originals on standard screens
+    optimizedSrc = src.replace('/upload/', '/upload/w_1200,f_auto,q_auto/');
     // 2. Generate an instant micro-sized highly-blurred preview
-    blurSrc = src.replace('/upload/', '/upload/w_100,e_blur:1000,q_1,f_auto/');
+    blurSrc = src.replace('/upload/', '/upload/w_50,e_blur:1000,q_1,f_auto/');
   }
 
   return (
@@ -77,6 +78,8 @@ function SmartImage({ src, alt, className, style, onClick }) {
         ref={imgRef}
         src={optimizedSrc}
         alt={alt || ""}
+        loading={priority ? "eager" : "lazy"}
+        decoding="async"
         className={`${className || ""} ${(!className || !className.includes('absolute')) ? 'relative' : ''} z-10`}
         style={style}
         onClick={onClick}

@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 
 export default function TeamSection() {
   const team = [
@@ -50,12 +50,14 @@ export default function TeamSection() {
               key={i}
               className="aspect-square bg-gray-50 rounded-[28px] overflow-hidden relative group"
             >
-              <img
+              <Image
                 src={m.img}
                 alt={m.name}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105"
+                fill
+                sizes="(max-width: 640px) 100vw, 50vw"
+                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 ease-out group-hover:scale-105"
+                placeholder={typeof m.img === 'string' && m.img.includes('cloudinary.com/') ? "blur" : "empty"}
+                blurDataURL={typeof m.img === 'string' && m.img.includes('cloudinary.com/') ? m.img.replace('/upload/', '/upload/w_100,e_blur:1000,q_1,f_auto/') : undefined}
               />
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-end p-6">

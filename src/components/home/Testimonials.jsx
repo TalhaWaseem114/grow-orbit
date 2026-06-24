@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Star, ArrowRight } from "lucide-react";
@@ -89,11 +90,17 @@ export default function TestimonialSection() {
               <div>
                 {/* Author */}
                 <div className="flex items-center gap-5 mb-6">
-                  <img
-                    src={t.image}
-                    alt={t.name}
-                    className="w-14 h-14 rounded-2xl object-cover grayscale brightness-110"
-                  />
+                  <div className="w-14 h-14 rounded-2xl overflow-hidden relative grayscale brightness-110 shrink-0">
+                    <Image
+                      src={t.image}
+                      alt={t.name}
+                      fill
+                      sizes="56px"
+                      className="object-cover"
+                      placeholder={typeof t.image === 'string' && t.image.includes('cloudinary.com/') ? "blur" : "empty"}
+                      blurDataURL={typeof t.image === 'string' && t.image.includes('cloudinary.com/') ? t.image.replace('/upload/', '/upload/w_50,e_blur:1000,q_1,f_auto/') : undefined}
+                    />
+                  </div>
                   <div>
                     <h4 className="font-bold text-black text-xl leading-tight">
                       {t.name}

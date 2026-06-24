@@ -20,7 +20,9 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [mobileServiceExpanded, setMobileServiceExpanded] = useState(false);
+  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const headerRef = useRef(null);
+  const userDropdownRef = useRef(null);
 
   const lightPages = ["service", "contact", "case-study", "blog", "portfolio", "amazon-tools"];
   const darkThemedPages = [
@@ -53,6 +55,7 @@ export default function Navbar() {
   useEffect(() => {
     setMegaMenuOpen(false);
     setMobileMenuOpen(false);
+    setUserDropdownOpen(false);
   }, [pathname]);
 
   useEffect(() => {
@@ -72,6 +75,9 @@ export default function Navbar() {
     const handleClickOutside = (event) => {
       if (headerRef.current && !headerRef.current.contains(event.target)) {
         setMegaMenuOpen(false);
+      }
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target)) {
+        setUserDropdownOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -207,8 +213,11 @@ export default function Navbar() {
                 <Link href="/login" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
                   Sign In
                 </Link>
+                <Link href="/register" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
+                  Register
+                </Link>
                 <Link
-                  href="/register"
+                  href="/get-started"
                   prefetch={false}
                   className={`relative overflow-hidden px-6 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
                     ${isDarkTextNeeded
@@ -220,30 +229,24 @@ export default function Navbar() {
                 </Link>
               </>
             ) : (
-              <div className={`flex items-center gap-4 pl-5 border-l ${isDarkTextNeeded ? "border-gray-200" : "border-white/20"}`}>
-                
-                {role === "admin" ? (
-                  <Link
-                    href="/admin-dashboard"
-                    prefetch={false}
-                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all no-underline border focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none ${isDarkTextNeeded ? "border-orange-500 text-orange-600 hover:bg-orange-50" : "border-orange-500/50 text-orange-400 hover:bg-orange-500/10"}`}
-                  >
-                    <LayoutDashboard size={12} />
-                    Admin Panel
-                  </Link>
-                ) : (
-                  <Link
-                    href="/client-dashboard"
-                    prefetch={false}
-                    className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all no-underline border focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none ${isDarkTextNeeded ? "border-orange-500 text-orange-600 hover:bg-orange-50" : "border-orange-500/50 text-orange-400 hover:bg-orange-500/10"}`}
-                  >
-                    <LayoutDashboard size={12} />
-                    Client Panel
-                  </Link>
-                )}
-
-                <div className="flex items-center gap-3">
-                  <div className="h-9 w-9 rounded-full overflow-hidden border border-white/20 relative">
+              <div className="flex items-center gap-3 lg:gap-4">
+                <Link
+                  href="/get-started"
+                  prefetch={false}
+                  className={`relative overflow-hidden px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
+                    ${isDarkTextNeeded
+                      ? "bg-black text-white hover:bg-orange-600 shadow-lg hover:shadow-orange-500/25"
+                      : "bg-white text-black hover:bg-orange-500 hover:text-white shadow-lg hover:shadow-orange-500/25"
+                    }`}
+                >
+                  Get Started
+                </Link>
+              <div className="relative" ref={userDropdownRef}>
+                <button
+                  onClick={() => setUserDropdownOpen(prev => !prev)}
+                  className={`flex items-center gap-2.5 cursor-pointer bg-transparent border-none outline-none transition-opacity hover:opacity-80 ${textColorClass}`}
+                >
+                  <div className="h-9 w-9 rounded-full overflow-hidden border border-white/20 relative shrink-0">
                     {user.photoURL ? (
                       <Image src={user.photoURL} alt="User" fill sizes="36px" className="object-cover" referrerPolicy="no-referrer" />
                     ) : (
@@ -252,18 +255,45 @@ export default function Navbar() {
                       </div>
                     )}
                   </div>
-                  <div className="hidden lg:block text-xs">
-                    <p className={`font-semibold leading-none ${textColorClass}`}>
+                  <div className="hidden lg:block text-left">
+                    <p className={`text-xs font-semibold leading-none ${textColorClass}`}>
                       {user.displayName || "User"}
                     </p>
-                    <p className="text-gray-400 font-medium scale-90 origin-left mt-0.5">
+                    <p className="text-gray-400 text-[10px] font-medium mt-0.5">
                       {role === "admin" ? "Admin" : "Online"}
                     </p>
                   </div>
-                </div>
-                <button onClick={handleLogout} className={`p-2 transition-colors ${isDarkTextNeeded ? "text-gray-400 hover:text-red-500" : "text-gray-300 hover:text-white"}`} title="Sign Out">
-                  <LogOut size={18} />
+                  <ChevronDown size={14} className={`hidden lg:block transition-transform duration-200 ${userDropdownOpen ? "rotate-180" : ""} ${isDarkTextNeeded ? "text-gray-400" : "text-gray-400"}`} />
                 </button>
+
+                {/* User Dropdown */}
+                {userDropdownOpen && (
+                  <div className={`absolute right-0 top-[calc(100%+10px)] w-52 rounded-xl border shadow-xl overflow-hidden z-[100] ${isDarkTextNeeded ? "bg-white border-zinc-200" : "bg-zinc-900 border-white/10"}`}>
+                    <div className={`px-4 py-3 border-b ${isDarkTextNeeded ? "border-zinc-100" : "border-white/10"}`}>
+                      <p className={`text-xs font-bold truncate ${isDarkTextNeeded ? "text-zinc-800" : "text-white"}`}>{user.displayName || user.email}</p>
+                      <p className={`text-[10px] mt-0.5 truncate ${isDarkTextNeeded ? "text-zinc-400" : "text-zinc-500"}`}>{user.email}</p>
+                    </div>
+                    <div className="py-1">
+                      <Link
+                        href={role === "admin" ? "/admin-dashboard" : "/client-dashboard"}
+                        prefetch={false}
+                        onClick={() => setUserDropdownOpen(false)}
+                        className={`flex items-center gap-2.5 w-full px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider no-underline transition-colors ${isDarkTextNeeded ? "text-zinc-700 hover:bg-zinc-50 hover:text-orange-600" : "text-zinc-300 hover:bg-white/5 hover:text-orange-400"}`}
+                      >
+                        <LayoutDashboard size={14} />
+                        {role === "admin" ? "Admin Panel" : "Client Panel"}
+                      </Link>
+                      <button
+                        onClick={() => { setUserDropdownOpen(false); handleLogout(); }}
+                        className={`flex items-center gap-2.5 w-full px-4 py-2.5 text-[11px] font-bold uppercase tracking-wider border-none bg-transparent cursor-pointer transition-colors ${isDarkTextNeeded ? "text-zinc-700 hover:bg-red-50 hover:text-red-600" : "text-zinc-300 hover:bg-white/5 hover:text-red-400"}`}
+                      >
+                        <LogOut size={14} />
+                        Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
               </div>
             )}
           </div>
@@ -345,11 +375,14 @@ export default function Navbar() {
           <div className="pt-3 mt-3 border-t border-gray-100 space-y-2">
             {!user ? (
               <>
-                <Link href="/login" prefetch={false} className="block px-4 py-3 rounded-xl text-[15px] font-medium text-gray-700 hover:bg-gray-50 no-underline focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" onClick={closeMobileMenu}>
+                <Link href="/login" prefetch={false} className="block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest text-gray-700 hover:bg-gray-50 no-underline focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" onClick={closeMobileMenu}>
                   Sign In
                 </Link>
+                <Link href="/register" prefetch={false} className="block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest text-gray-700 hover:bg-gray-50 no-underline focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" onClick={closeMobileMenu}>
+                  Register
+                </Link>
                 <Link
-                  href="/register"
+                  href="/get-started"
                   prefetch={false}
                   className="block text-center px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest bg-black text-white hover:bg-orange-600 no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
                   onClick={closeMobileMenu}
@@ -359,29 +392,25 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                {role === "admin" ? (
-                  <Link
-                    href="/admin-dashboard"
-                    prefetch={false}
-                    onClick={closeMobileMenu}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[15px] font-bold transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
-                  >
-                    <LayoutDashboard size={18} />
-                    Admin Dashboard
-                  </Link>
-                ) : (
-                  <Link
-                    href="/client-dashboard"
-                    prefetch={false}
-                    onClick={closeMobileMenu}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[15px] font-bold transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
-                  >
-                    <LayoutDashboard size={18} />
-                    Client Dashboard
-                  </Link>
-                )}
-                <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-[15px] font-medium transition-colors">
-                  <LogOut size={18} />
+                <Link
+                  href="/get-started"
+                  prefetch={false}
+                  className="block text-center px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest bg-black text-white hover:bg-orange-600 no-underline transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                  onClick={closeMobileMenu}
+                >
+                  Get Started
+                </Link>
+                <Link
+                  href={role === "admin" ? "/admin-dashboard" : "/client-dashboard"}
+                  prefetch={false}
+                  onClick={closeMobileMenu}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[13px] font-bold uppercase tracking-widest transition-colors no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                >
+                  <LayoutDashboard size={16} />
+                  {role === "admin" ? "Admin Panel" : "Client Panel"}
+                </Link>
+                <button onClick={() => { closeMobileMenu(); handleLogout(); }} className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-red-500 hover:bg-red-50 text-[13px] font-bold uppercase tracking-widest transition-colors">
+                  <LogOut size={16} />
                   Sign Out
                 </button>
               </>

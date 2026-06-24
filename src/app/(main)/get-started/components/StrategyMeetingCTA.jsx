@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowRight, PhoneCall, Clock, Search, Target, Lightbulb, ClipboardList, CheckCircle2 } from "lucide-react";
+import Image from "next/image";
 
 export default function StrategyMeetingCTA({ scrollToForm }) {
   const currentMonth = new Date().toLocaleString('default', { month: 'long' });
@@ -25,16 +26,18 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
         `}</style>
 
         <div
-          className="group relative rounded-3xl sm:rounded-[40px] overflow-hidden transition-all duration-500 hover:shadow-2xl"
-          style={{ animation: "free-glow 3s ease-in-out infinite" }}
+          className="group relative rounded-3xl sm:rounded-[40px] overflow-hidden shadow-[0_0_20px_rgba(249,115,22,0.15),0_0_60px_rgba(249,115,22,0.05)] hover:shadow-2xl transition-shadow duration-500"
         >
           <div className="h-1.5 w-full bg-linear-to-r from-orange-500 via-orange-400 to-amber-400" />
           <div className="relative border border-t-0 border-orange-500/20 rounded-b-3xl sm:rounded-b-[40px] p-5 sm:p-6 lg:p-8 overflow-hidden bg-zinc-950">
             {/* Background Image */}
-            <img
+            <Image
               src="/assets/orbital-cta-bg.png"
               alt="Orbital CTA Background"
-              className="absolute inset-y-0 right-[25%] w-[40%] h-full object-contain opacity-70 pointer-events-none mix-blend-screen"
+              fill
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              className="object-contain opacity-70 pointer-events-none mix-blend-screen scale-x-[-1] right-[25%] absolute"
+              style={{ objectPosition: "right center", left: "auto" }}
             />
 
             {/* Shimmer effect */}
@@ -43,8 +46,8 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
             </div>
 
             {/* Ambient glow */}
-            <div className="absolute -top-20 -right-20 w-60 h-60 bg-orange-500/10 rounded-full blur-[100px] pointer-events-none" />
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-orange-500/5 rounded-full blur-[80px] pointer-events-none" />
+            <div className="absolute -top-20 -right-20 w-60 h-60 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.1) 0%, transparent 70%)" }} />
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.05) 0%, transparent 70%)" }} />
 
             <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
 

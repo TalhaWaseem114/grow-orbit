@@ -13,10 +13,20 @@ export default function CampaignPage() {
   const [activeSections, setActiveSections] = useState(ACTIVE_SECTIONS);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          setScrolled(prev => {
+            const next = window.scrollY > 100;
+            return prev === next ? prev : next;
+          });
+          ticking = false;
+        });
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 

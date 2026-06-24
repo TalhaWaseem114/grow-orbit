@@ -92,7 +92,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           <div className="relative z-10 max-w-2xl fade-up lg:mt-2">
             <div className="relative mb-6 sm:mb-12 -ml-[20px] sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[5px] sm:translate-y-[20px]">
               <div className="flex items-center gap-2 sm:gap-4">
-                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.6)] animate-pulse" />
+                <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.6)]" />
                 <div className="w-8 sm:w-12 h-px bg-orange-500/30" />
                 <div className="flex items-center gap-2 sm:gap-3">
                   <span className="text-orange-500 font-mono text-[9px] sm:text-[11px] font-black tracking-[0.3em] sm:tracking-[0.4em] uppercase whitespace-nowrap">01 / System</span>
@@ -101,15 +101,13 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
                 </div>
               </div>
               {/* Vertical Drop Line with Glow — Optimized for Mobile */}
-              <div className="absolute left-[4px] sm:left-[5px] top-6 sm:top-7 w-px h-32 sm:h-48 bg-gradient-to-b from-orange-500 via-orange-500/50 to-transparent opacity-40">
-                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 sm:w-4 sm:h-4 bg-orange-500/20 blur-xl rounded-full" />
-              </div>
+              <div className="absolute left-[4px] sm:left-[5px] top-6 sm:top-7 w-px h-32 sm:h-48 bg-gradient-to-b from-orange-500 via-orange-500/50 to-transparent opacity-40" />
             </div>
 
 
             {/* Scarcity Pill */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6 sm:mb-8 whitespace-nowrap">
-              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
               <span className="text-[9px] sm:text-[10px] font-bold text-orange-400 uppercase tracking-[0.2em] whitespace-nowrap">
                 Currently Accepting 3-4 Brands &middot; Apply Now
               </span>
@@ -206,10 +204,13 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
         <div className="relative flex-none w-full lg:w-[42%] xl:w-[38%] 2xl:w-[35%] flex items-start justify-center px-6 pb-6 pt-12 sm:px-8 sm:pb-8 sm:pt-16 lg:px-10 lg:pb-10 lg:pt-[85px] xl:px-12 xl:pb-12 xl:pt-[85px] z-20 overflow-hidden bg-zinc-950">
           {/* Background image with overlay */}
           <div className="absolute inset-0">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
               alt="Amazon growth strategy session"
-              className="w-full h-full object-cover object-center opacity-[0.22]"
+              fill
+              sizes="(max-width: 1024px) 100vw, 42vw"
+              className="object-cover object-center opacity-[0.22]"
+              priority={false}
             />
             {/* Dark overlays for high contrast */}
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/75 to-zinc-950" />
@@ -217,16 +218,16 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
             {/* Cool bluish tint overlay on the background */}
             <div className="absolute inset-0 bg-blue-950/4 mix-blend-color pointer-events-none" />
             {/* Extremely subtle ambient bluish/indigo glows that move behind the glass card */}
-            <div className="absolute top-[25%] left-[20%] w-72 h-72 rounded-full bg-blue-500/4 blur-[65px] animate-float-one pointer-events-none" />
-            <div className="absolute bottom-[20%] right-[15%] w-64 h-64 rounded-full bg-indigo-500/3 blur-[60px] animate-float-two pointer-events-none" />
+            <div className="absolute top-[25%] left-[20%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 70%)" }} />
+            <div className="absolute bottom-[20%] right-[15%] w-64 h-64 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(99,102,241,0.03) 0%, transparent 70%)" }} />
           </div>
 
           <div
             ref={formRef}
             id="lead-form"
-            className="relative z-10 w-full max-w-[440px] border border-white/8 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.95),inset_0_1px_1px_rgba(255,255,255,0.07)] px-5 py-6 sm:p-8 rounded-3xl animate-subtle-form backdrop-blur-xl overflow-hidden"
+            className="relative z-10 w-full max-w-[440px] border border-white/8 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.95),inset_0_1px_1px_rgba(255,255,255,0.07)] px-5 py-6 sm:p-8 rounded-3xl animate-subtle-form overflow-hidden"
             style={{
-              background: `linear-gradient(to bottom, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005)), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E"), rgba(9, 9, 11, 0.45)`
+              background: `linear-gradient(to bottom, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005)), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E"), rgba(9, 9, 11, 0.85)`
             }}
           >
             <div className="mb-5">

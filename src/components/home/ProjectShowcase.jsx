@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 const portfolioItems = [
   {
@@ -181,13 +182,14 @@ export default function Portfolio() {
 
                     {/* Top Image Area */}
                     <div className="relative w-full overflow-hidden bg-zinc-100 aspect-[4/5] sm:aspect-auto">
-                      <img
+                      <Image
                         src={item.src}
                         alt={`Portfolio showcase for ${item.title} - ${item.category}`}
-                        width={800}
-                        height={1000}
-                        loading="lazy"
-                        className="w-full h-full object-cover transform scale-100 group-hover:scale-105 transition-transform duration-700 ease-in-out sm:max-h-[500px]"
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover transform scale-100 group-hover:scale-105 transition-transform duration-700 ease-in-out sm:max-h-[500px]"
+                        placeholder={typeof item.src === 'string' && item.src.includes('cloudinary.com/') ? "blur" : "empty"}
+                        blurDataURL={typeof item.src === 'string' && item.src.includes('cloudinary.com/') ? item.src.replace('/upload/', '/upload/w_100,e_blur:1000,q_1,f_auto/') : undefined}
                       />
 
                       {/* Materials Badges (Top Right) */}

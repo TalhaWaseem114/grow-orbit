@@ -93,28 +93,9 @@ export default function Hero({ mode }) {
     <section
       ref={containerRef}
       className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-zinc-950"
+      style={{ contain: "layout style paint" }}
     >
       <style>{`
-        @keyframes scan-mgmt {
-          0%   { top: 0%; transform: translateY(-100%); opacity: 0; }
-          10%  { opacity: 1; } 90% { opacity: 1; }
-          100% { top: 100%; transform: translateY(0%); opacity: 0; }
-        }
-        @keyframes shimmer-btn {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(200%); }
-        }
-        @keyframes pulse-ring {
-          0% { transform: scale(0.8); opacity: 0.5; }
-          100% { transform: scale(1.5); opacity: 0; }
-        }
-        @keyframes bounce-slow {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-15px); }
-        }
-        .animate-bounce-slow {
-          animation: bounce-slow 4s ease-in-out infinite;
-        }
         @keyframes dash {
           to { stroke-dashoffset: 0; }
         }
@@ -122,7 +103,7 @@ export default function Hero({ mode }) {
 
       {/* Atmospheric Background */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.04] to-transparent animate-[scan-mgmt_9s_linear_infinite]" />
+        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.04] to-transparent" />
         <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
           <pattern id="mgmt-grid" width="80" height="80" patternUnits="userSpaceOnUse">
             <circle cx="1" cy="1" r="1" fill="#fff" />
@@ -138,7 +119,7 @@ export default function Hero({ mode }) {
           {/* LEFT: FULL BUSINESS CONTENT */}
           <div className="lg:col-span-7 animate-content text-center lg:text-left">
             <div className="flex items-center justify-center lg:justify-start gap-3 mb-8">
-              <div className="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse" />
+              <div className="w-1.5 h-1.5 bg-orange-500 rounded-full" />
               <div className="w-6 h-[1px] bg-orange-500/50" />
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">
                 {mode === "amazon-services" ? "Amazon Operations & PPC Management" :
@@ -195,7 +176,7 @@ export default function Hero({ mode }) {
                 </p>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-6 font-mono text-[9px] text-zinc-600 uppercase tracking-widest">
                    <div className="flex items-center gap-2">
-                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
                      <span>Infrastructure_Live</span>
                    </div>
                    <div className="flex items-center gap-2">
@@ -208,7 +189,7 @@ export default function Hero({ mode }) {
 
 
             <div className="flex items-center justify-center lg:justify-start gap-2 mb-4 px-1">
-              <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+              <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
               <p className="text-[9px] sm:text-[11px] font-bold text-zinc-400 uppercase tracking-[0.1em] sm:tracking-[0.2em]">
                 Currently Accepting 3-4 Brands <span className="mx-1 opacity-30">··</span> Apply Now
               </p>
@@ -324,27 +305,27 @@ export default function Hero({ mode }) {
   {/* Outer Floating Accent (Top-Left) */}
   <div className="absolute -top-4 -left-4 lg:-top-10 lg:-left-10 w-24 h-24 border-t-2 border-l-2 border-orange-500/20 rounded-tl-[40px] pointer-events-none" />
 
-  {/* Hyper-realistic Glow Background */}
-  <div className="absolute -inset-10 bg-orange-600/10 blur-[120px] rounded-full opacity-50" />
+  {/* Glow Background */}
+  <div className="absolute -inset-10 rounded-full opacity-50 pointer-events-none" style={{ background: "radial-gradient(circle, rgba(234,88,12,0.1) 0%, transparent 70%)" }} />
 
-  <div className="relative bg-white/[0.03] backdrop-blur-3xl border border-white/10 rounded-[45px] p-2 shadow-2xl overflow-hidden group/shell">
+  <div className="relative bg-white/[0.04] border border-white/10 rounded-[45px] p-2 shadow-2xl overflow-hidden group/shell">
     {/* High-end Gloss Refraction */}
     <div className="absolute inset-0 bg-gradient-to-tr from-white/5 via-transparent to-white/5 opacity-40" />
 
-    <div className="bg-[#050505]/80 backdrop-blur-2xl rounded-[38px] p-8 border border-white/5 relative overflow-hidden">
+    <div className="bg-[#050505]/95 rounded-[38px] p-8 border border-white/5 relative overflow-hidden">
 
       {/* Top Console Bar */}
       <div className="flex justify-between items-center mb-3">
         <div className="flex items-center gap-2.5">
           <div className="flex gap-1">
-            <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+            <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
             <div className="w-1.5 h-1.5 rounded-full bg-orange-500/40" />
             <div className="w-1.5 h-1.5 rounded-full bg-orange-500/20" />
           </div>
           <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-[0.3em]">Live_Feed_Active</span>
         </div>
         <div className="px-3 py-1 bg-emerald-500/5 border border-emerald-500/20 rounded-full flex items-center gap-2">
-          <div className="w-1 h-1 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="w-1 h-1 rounded-full bg-emerald-500" />
           <span className="text-emerald-500 text-[8px] font-black uppercase tracking-tighter">Sync: 9ms</span>
         </div>
       </div>
@@ -383,11 +364,8 @@ export default function Hero({ mode }) {
             stroke="#f97316"
             strokeWidth="3"
             strokeLinecap="round"
-            className="animate-[dash_4s_linear_infinite]"
             style={{
-              strokeDasharray: '1000',
-              strokeDashoffset: '1000',
-              filter: 'drop-shadow(0 0 8px rgba(249,115,22,0.6))'
+              strokeDasharray: '0',
             }}
           />
           <defs>
@@ -418,7 +396,7 @@ export default function Hero({ mode }) {
         <div className="relative w-full h-1.5 bg-black/50 rounded-full border border-white/5">
           <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-700 via-orange-500 to-yellow-400 rounded-full shadow-[0_0_12px_rgba(249,115,22,0.6)] target-bar-fill" />
           {/* Node positioned exactly at the end of the 85% width */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-[85%] -translate-x-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_white] animate-pulse border-2 border-orange-500 z-10 target-node-fill" />
+          <div className="absolute top-1/2 -translate-y-1/2 left-[85%] -translate-x-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_white] border-2 border-orange-500 z-10 target-node-fill" />
         </div>
       </div>
 
@@ -429,7 +407,7 @@ export default function Hero({ mode }) {
           { name: "PPC", status: "8.4x ROAS", icon: <Zap size={10} />, progress: "75%", gradient: "from-orange-500 to-orange-400", colSpan: 1 },
           { name: "Inventory Log", status: "In-Stock", icon: <Box size={10} />, progress: "100%", gradient: "from-blue-500 to-blue-400", colSpan: 2 }
         ].map((service, i) => (
-          <div key={i} className={`flex flex-col px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-all duration-300 ${service.colSpan === 2 ? 'col-span-2' : 'col-span-1'}`}>
+          <div key={i} className={`flex flex-col px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors duration-300 ${service.colSpan === 2 ? 'col-span-2' : 'col-span-1'}`}>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <div className="w-5 h-5 rounded-lg bg-white/5 flex items-center justify-center text-zinc-400 shrink-0">
@@ -454,7 +432,7 @@ export default function Hero({ mode }) {
       {/* Account Health Ticker */}
       <div className="flex items-center justify-between px-3 py-2 bg-white/[0.02] border border-white/5 rounded-xl">
         <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
           <span className="text-[8px] font-mono font-bold text-zinc-500 uppercase tracking-widest">Account Health</span>
         </div>
         <div className="flex items-center gap-3">

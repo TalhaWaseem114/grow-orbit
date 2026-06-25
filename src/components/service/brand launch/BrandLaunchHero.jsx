@@ -107,9 +107,9 @@ const BrandLaunchHero = () => {
 
       {/* --- REFINED TECH BACKGROUND --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.03] to-transparent animate-[vertical-scan_8s_linear_infinite]"></div>
-        <div className="absolute top-0 left-0 h-full w-[2px] bg-orange-500/[0.05] animate-[horizontal-scan_12s_linear_infinite]"></div>
-        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,rgba(249,115,22,0.04)_0deg,transparent_60deg,transparent_360deg)] animate-[spin_20s_linear_infinite]"></div>
+        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.03] to-transparent"></div>
+        <div className="absolute top-0 left-0 h-full w-[2px] bg-orange-500/[0.05]"></div>
+        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,rgba(249,115,22,0.04)_0deg,transparent_60deg,transparent_360deg)]"></div>
 
         <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
           <pattern id="tech-pattern" width="120" height="120" patternUnits="userSpaceOnUse">
@@ -130,7 +130,7 @@ const BrandLaunchHero = () => {
           {/* Left: Content Architecture */}
           <div className="lg:col-span-7 relative text-left">
             <div className="absolute -inset-10 z-0 pointer-events-none border-l border-t border-zinc-200/50 rounded-tl-[100px] opacity-40">
-               <div className="absolute top-0 left-0 w-[1px] h-full bg-orange-500/20 animate-[horizontal-scan_10s_linear_infinite]"></div>
+               <div className="absolute top-0 left-0 w-[1px] h-full bg-orange-500/20"></div>
                <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-orange-500 rounded-tl-xl translate-x-[-1px] translate-y-[-1px]"></div>
                <div className="absolute top-0 right-0 w-2 h-2 bg-zinc-200 rounded-full translate-x-1 translate-y-[-4px]"></div>
             </div>
@@ -154,7 +154,7 @@ const BrandLaunchHero = () => {
                       </span>
                       <div className="absolute bottom-full left-0 mb-4 w-72 p-1 opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-50">
                         <div className="relative bg-zinc-950 rounded-2xl p-5 shadow-2xl border border-zinc-800 overflow-hidden">
-                          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-50 animate-[tooltip-scan_2s_linear_infinite]"></div>
+                          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-orange-500 to-transparent opacity-50"></div>
                           <div className="flex items-center gap-2 mb-3 text-orange-500">
                             <Target size={14} />
                             <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">Protocol_Launch_X1</span>
@@ -228,7 +228,7 @@ const BrandLaunchHero = () => {
           {/* Right: The Engine Visual (Updated with no rocket and bigger text) */}
           <div className="lg:col-span-5 relative hidden lg:block max-h-[600px]" ref={engineRef}>
             <div className="relative bg-zinc-950 rounded-[40px] p-1 border border-white/10 shadow-[0_80px_100px_-30px_rgba(0,0,0,0.5)] overflow-hidden">
-              <div className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-orange-500/40 to-transparent z-20 pointer-events-none animate-[container-scan_4s_linear_infinite]"></div>
+              <div className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-orange-500/40 to-transparent z-20 pointer-events-none"></div>
 
               <div className="bg-zinc-900/50 rounded-[38px] p-8 backdrop-blur-3xl border border-white/5 text-left">
                 <div className="flex justify-between items-center mb-5 pb-3.5 border-b border-white/5">
@@ -252,7 +252,7 @@ const BrandLaunchHero = () => {
 
                      {/* HUD Planet - Outer (DATA_FEED) */}
                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                       <div className="absolute w-16 h-16 animate-[hud-orbit-outer_20s_linear_infinite] flex items-center justify-center">
+                       <div className="absolute w-16 h-16 flex items-center justify-center">
                          <div className="relative w-full h-full rounded-full bg-zinc-950/80 backdrop-blur-xl border border-orange-500/30 flex flex-col items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.5)]">
                            {/* HUD Brackets Decor */}
                            <div className="absolute top-1 left-1 w-1.5 h-1.5 border-t border-l border-white/20"></div>
@@ -276,7 +276,7 @@ const BrandLaunchHero = () => {
 
                      {/* HUD Planet - Inner (ASSET_SYNC) */}
                      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                       <div className="absolute w-14 h-14 animate-[hud-orbit-inner_12s_linear_infinite] flex items-center justify-center">
+                       <div className="absolute w-14 h-14 flex items-center justify-center">
                          <div className="relative w-full h-full rounded-full bg-zinc-950/80 backdrop-blur-xl border border-white/10 flex flex-col items-center justify-center overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.4)]">
                            {/* HUD Brackets Decor */}
                            <div className="absolute top-1 left-1 w-1.5 h-1.5 border-t border-l border-white/20"></div>
@@ -288,10 +288,9 @@ const BrandLaunchHero = () => {
                        </div>
                      </div>
 
-                    {/* Central Core Sphere - Dynamic Pulse */}
-                    <div className="relative w-24 h-24 rounded-full bg-gradient-to-tr from-zinc-950 to-zinc-800 border border-white/10 flex flex-col items-center justify-center group overflow-hidden animate-[core-pulse_4s_ease-in-out_infinite] shadow-[0_0_50px_rgba(249,115,22,0.25),inset_0_0_20px_rgba(249,115,22,0.1)]">
+                    <div className="relative w-24 h-24 rounded-full bg-gradient-to-tr from-zinc-950 to-zinc-800 border border-white/10 flex flex-col items-center justify-center group overflow-hidden shadow-[0_0_50px_rgba(249,115,22,0.25),inset_0_0_20px_rgba(249,115,22,0.1)]">
                        {/* Core Internal Glow */}
-                       <div className="absolute inset-0 animate-[glow-pulse_3s_ease-in-out_infinite] blur-2xl"></div>
+                       <div className="absolute inset-0 blur-2xl opacity-60"></div>
 
                       <div className="relative z-10 flex flex-col items-center justify-center mt-2">
                         <div className="text-center">

@@ -44,6 +44,16 @@ export default function GrowOrbitCursor() {
     let speed    = 0;
     let isMoving = false;
     let moveTimer;
+    let sleeping  = false;   // sleep-mode flag
+    let idleFrames = 0;      // counts frames since last activity
+
+    const wake = () => {
+      if (sleeping) {
+        sleeping = false;
+        idleFrames = 0;
+        raf = requestAnimationFrame(render);
+      }
+    };
 
     const onMove = (e) => {
       const dx = e.clientX - mouse.x;
@@ -54,6 +64,7 @@ export default function GrowOrbitCursor() {
       isMoving = true;
       clearTimeout(moveTimer);
       moveTimer = setTimeout(() => { isMoving = false; }, 140);
+      wake();
     };
     window.addEventListener("mousemove", onMove);
 
@@ -122,6 +133,26 @@ export default function GrowOrbitCursor() {
 
     // ── Render ─────────────────────────────────────────────────────
     let raf;
+
+    // ── Sleep-mode helpers ────────────────────────────────────
+    const hasActiveParticles = () => {
+      for (let i = 0; i < POOL_SIZE; i++) if (pool[i].active) return true;
+      return false;
+    };
+
+    const shouldKeepAnimating = () => {
+      // Still moving?
+      if (isMoving || speed > 0.3) return true;
+      // Planet still lerping to mouse?
+      const dx = mouse.x - planet.x;
+      const dy = mouse.y - planet.y;
+      if (dx * dx + dy * dy > 0.25) return true;
+      // Glow still fading?
+      if (glowIntensity > 0.01) return true;
+      // Any active trail particles?
+      if (hasActiveParticles()) return true;
+      return false;
+    };
 
     const render = () => {
       ctx.clearRect(0, 0, W, H);
@@ -308,7 +339,19 @@ export default function GrowOrbitCursor() {
       ctx.lineWidth   = 1;
       ctx.stroke();
 
-      raf = requestAnimationFrame(render);
+      // ── Sleep check ─────────────────────────────────────────
+      if (shouldKeepAnimating()) {
+        idleFrames = 0;
+        raf = requestAnimationFrame(render);
+      } else {
+        idleFrames++;
+        // Wait 30 idle frames (~0.5s) before sleeping to avoid flicker
+        if (idleFrames > 30) {
+          sleeping = true;  // loop stops; wake() re-starts it
+        } else {
+          raf = requestAnimationFrame(render);
+        }
+      }
     };
 
     render();

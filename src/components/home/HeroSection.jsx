@@ -24,17 +24,23 @@ export default function Hero({ mode }) {
       gsap.set(".target-node-fill", { left: "0%" });
 
       // 2. Left side staggered entrance
-      tl.from(".animate-content > *", {
+      tl.fromTo(".animate-content > *", {
         y: isMobile ? 20 : 40,
         opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
         stagger: 0.1,
         clearProps: "transform,opacity"
       }, "+=0.2");
 
       // 3. Right side - Fast & dynamic Entrance
-      tl.from(engineRef.current, {
+      tl.fromTo(engineRef.current, {
         y: 30,
         opacity: 0,
+      }, {
+        y: 0,
+        opacity: 1,
         duration: isMobile ? 0.8 : 1.0,
         ease: "power3.out",
         clearProps: "opacity", // Clear only opacity so y/transform remains under GSAP control for continuous float
@@ -73,9 +79,12 @@ export default function Hero({ mode }) {
         }, "-=1.0");
 
         // 6. Mini Stats (Bottom)
-        tl.from(".animate-stats > *", {
+        tl.fromTo(".animate-stats > *", {
           y: 30,
           opacity: 0,
+        }, {
+          y: 0,
+          opacity: 1,
           stagger: 0.1,
           clearProps: "transform,opacity"
         }, "-=1.8");
@@ -96,6 +105,9 @@ export default function Hero({ mode }) {
       style={{ contain: "layout style paint" }}
     >
       <style>{`
+        /* Ensure content is visible by default (fallback for slow JS) */
+        .animate-content > *, .hero-engine, .animate-stats > * { opacity: 1; transform: translateY(0); }
+        
         @keyframes dash {
           to { stroke-dashoffset: 0; }
         }

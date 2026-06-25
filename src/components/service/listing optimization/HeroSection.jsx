@@ -57,40 +57,22 @@ const ListingOptimizationHero = () => {
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden bg-[#fafafa]">
       <style>{`
-        @keyframes vertical-scan {
-          0% { transform: translateY(-100%); opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { transform: translateY(100vh); opacity: 0; }
-        }
         @keyframes tooltip-scan {
           0% { transform: translateY(0); opacity: 0.5; }
           100% { transform: translateY(180px); opacity: 0; }
-        }
-        @keyframes container-scan {
-          0% { top: 0%; opacity: 0; }
-          20% { opacity: 0.5; }
-          80% { opacity: 0.5; }
-          100% { top: 100%; opacity: 0; }
-        }
-        @keyframes system-progress {
-          0% { width: 0%; opacity: 0; }
-          5% { opacity: 1; }
-          95% { opacity: 1; }
-          100% { width: 100%; opacity: 0; }
         }
       `}</style>
 
       {/* --- TOP PROGRESS BAR --- */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-orange-500/10 z-50 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-0 h-full bg-orange-500 animate-[system-progress_10s_linear_infinite]"></div>
+        <div className="absolute top-0 left-0 h-full bg-orange-500 opacity-50"></div>
       </div>
 
       {/* --- REFINED TECH BACKGROUND --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.03] to-transparent animate-[vertical-scan_8s_linear_infinite]"></div>
-        <div className="absolute top-0 left-0 h-full w-[2px] bg-orange-500/[0.05] animate-[horizontal-scan_12s_linear_infinite]"></div>
-        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,rgba(249,115,22,0.04)_0deg,transparent_60deg,transparent_360deg)] animate-[spin_20s_linear_infinite]"></div>
+        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.03] to-transparent"></div>
+        <div className="absolute top-0 left-0 h-full w-[2px] bg-orange-500/[0.05]"></div>
+        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,rgba(249,115,22,0.04)_0deg,transparent_60deg,transparent_360deg)] opacity-50"></div>
 
         <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
           <pattern id="tech-pattern" width="120" height="120" patternUnits="userSpaceOnUse">
@@ -112,7 +94,7 @@ const ListingOptimizationHero = () => {
           <div className="lg:col-span-7 relative">
             {/* Science/Radar Box Overlay */}
             <div className="absolute -inset-10 z-0 pointer-events-none border-l border-t border-zinc-200/50 rounded-tl-[100px] opacity-40">
-               <div className="absolute top-0 left-0 w-[1px] h-full bg-orange-500/20 animate-[horizontal-scan_10s_linear_infinite]"></div>
+               <div className="absolute top-0 left-0 w-[1px] h-full bg-orange-500/20"></div>
                <div className="absolute top-0 left-0 w-4 h-4 border-l-2 border-t-2 border-orange-500 rounded-tl-xl translate-x-[-1px] translate-y-[-1px]"></div>
                <div className="absolute top-0 right-0 w-2 h-2 bg-zinc-200 rounded-full translate-x-1 translate-y-[-4px]"></div>
             </div>
@@ -247,8 +229,6 @@ const ListingOptimizationHero = () => {
           {/* Right: Search Matrix Dashboard */}
           <div className="lg:col-span-5 relative block mt-0 lg:mt-[70px] scale-[0.95] sm:scale-100 origin-top lg:origin-center" ref={engineRef}>
             <style>{`
-              @keyframes keyword-orbit { 0% { transform: rotate(0deg) translateX(85px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(85px) rotate(-360deg); } }
-              @keyframes index-breathe { 0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.1); } 50% { box-shadow: 0 0 35px 12px rgba(245,158,11,0.08); } }
               @keyframes rank-fill { from { width: 0; } }
               @keyframes crawl-enter { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }
             `}</style>
@@ -321,17 +301,17 @@ const ListingOptimizationHero = () => {
                   <div className="absolute w-[100px] h-[100px] rounded-full border border-white/[0.08]" />
 
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div style={{ animation: "keyword-orbit 12s linear infinite" }}>
+                    <div style={{ transform: "rotate(45deg) translateX(85px) rotate(-45deg)" }}>
                       <div className="w-3 h-3 rounded-full bg-amber-500 shadow-[0_0_16px_rgba(245,158,11,0.8),0_0_40px_rgba(245,158,11,0.3)]" />
                     </div>
                   </div>
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div style={{ animation: "keyword-orbit 8s linear infinite reverse" }}>
+                    <div style={{ transform: "rotate(-135deg) translateX(85px) rotate(135deg)" }}>
                       <div className="w-2 h-2 rounded-full bg-yellow-400 shadow-[0_0_12px_rgba(250,204,21,0.8)]" />
                     </div>
                   </div>
 
-                  <div className="relative w-[80px] h-[80px] rounded-full flex flex-col items-center justify-center z-10" style={{ animation: "index-breathe 3s ease-in-out infinite", background: "radial-gradient(circle at 40% 35%, rgba(245,158,11,0.15), rgba(24,24,27,1) 70%)", border: "1px solid rgba(245,158,11,0.2)" }}>
+                  <div className="relative w-[80px] h-[80px] rounded-full flex flex-col items-center justify-center z-10" style={{ background: "radial-gradient(circle at 40% 35%, rgba(245,158,11,0.15), rgba(24,24,27,1) 70%)", border: "1px solid rgba(245,158,11,0.2)" }}>
                     <Search size={18} className="text-amber-400 mb-1" />
                     <p className="text-[7px] font-mono text-amber-500/80 font-black uppercase tracking-widest">INDEX</p>
                     <p className="text-[13px] font-black text-white uppercase tracking-tighter leading-none">100%</p>

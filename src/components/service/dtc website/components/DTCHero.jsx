@@ -35,12 +35,7 @@ export default function DTCHero() {
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden bg-[#fafafa]">
       <style>{`
-        @keyframes vertical-scan {
-          0% { transform: translateY(-100%); opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { transform: translateY(100vh); opacity: 0; }
-        }
+
         @keyframes container-scan {
           0% { top: 0%; opacity: 0; }
           20% { opacity: 1; }
@@ -51,7 +46,7 @@ export default function DTCHero() {
 
       {/* --- TECH BACKGROUND --- */}
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.03] to-transparent animate-[vertical-scan_8s_linear_infinite]"></div>
+        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.03] to-transparent"></div>
         <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
           <pattern id="dtc-pattern" width="120" height="120" patternUnits="userSpaceOnUse">
             <circle cx="2" cy="2" r="1" fill="currentColor" />
@@ -304,7 +299,7 @@ export default function DTCHero() {
             </div>
 
             {/* Bottom Floating Badge - Stylized */}
-            <div className="absolute -bottom-6 sm:-bottom-10 left-4 sm:-left-6 bg-white/95 backdrop-blur-xl rounded-3xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.15)] border border-zinc-200 flex items-center gap-4 z-40 animate-[float_6s_ease-in-out_infinite] hover:scale-105 transition-transform duration-300">
+            <div className="absolute -bottom-6 sm:-bottom-10 left-4 sm:-left-6 bg-white/95 backdrop-blur-xl rounded-3xl p-5 shadow-[0_30px_60px_rgba(0,0,0,0.15)] border border-zinc-200 flex items-center gap-4 z-40 hover:scale-105 transition-transform duration-300">
                <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center border border-emerald-100 shadow-inner">
                   <Terminal size={18} className="text-emerald-600" />
                </div>

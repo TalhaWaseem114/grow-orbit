@@ -18,12 +18,6 @@ export default function AutomationHero() {
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden bg-[#fafafa]">
       <style>{`
-        @keyframes vertical-scan {
-          0% { top: 0%; transform: translateY(-100%); opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { top: 100%; transform: translateY(0%); opacity: 0; }
-        }
         @keyframes container-scan {
           0% { top: 0%; opacity: 0; }
           20% { opacity: 1; }
@@ -33,7 +27,7 @@ export default function AutomationHero() {
       `}</style>
 
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-[400px] bg-linear-to-b from-transparent via-orange-500/[0.03] to-transparent animate-[vertical-scan_8s_linear_infinite]"></div>
+        <div className="absolute top-0 left-0 w-full h-[400px] bg-linear-to-b from-transparent via-orange-500/[0.03] to-transparent"></div>
         <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
           <pattern id="auto-pattern" width="120" height="120" patternUnits="userSpaceOnUse">
             <circle cx="2" cy="2" r="1" fill="currentColor" />
@@ -158,9 +152,6 @@ export default function AutomationHero() {
           {/* Right: Automation Neural Grid */}
           <div className="lg:col-span-5 relative block mt-0 lg:mt-[70px] scale-[0.95] sm:scale-100 origin-top lg:origin-center" ref={engineRef}>
             <style>{`
-              @keyframes node-pulse { 0%, 100% { transform: scale(1); opacity: 0.6; } 50% { transform: scale(1.4); opacity: 1; } }
-              @keyframes data-flow { 0% { transform: translateX(-100%); opacity: 0; } 50% { opacity: 1; } 100% { transform: translateX(100%); opacity: 0; } }
-              @keyframes hex-breathe { 0%, 100% { box-shadow: 0 0 0 0 rgba(249,115,22,0.1); } 50% { box-shadow: 0 0 40px 12px rgba(249,115,22,0.08); } }
               @keyframes pipeline-fill { from { width: 0; } }
               @keyframes workflow-enter { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
             `}</style>
@@ -232,7 +223,7 @@ export default function AutomationHero() {
 
                   {/* Node: Input */}
                   <div className="absolute left-[12%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5">
-                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center" style={{ animation: "hex-breathe 3s ease-in-out infinite" }}>
+                    <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
                       <Layers size={18} className="text-orange-500" />
                     </div>
                     <span className="text-[7px] font-mono text-zinc-600 uppercase tracking-widest">Input</span>
@@ -240,7 +231,7 @@ export default function AutomationHero() {
 
                   {/* Node: Process Top */}
                   <div className="absolute left-[42%] top-[10%] flex flex-col items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center" style={{ animation: "hex-breathe 3s ease-in-out 0.5s infinite" }}>
+                    <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
                       <Cpu size={16} className="text-violet-400" />
                     </div>
                     <span className="text-[7px] font-mono text-zinc-600 uppercase tracking-widest">PPC</span>
@@ -248,7 +239,7 @@ export default function AutomationHero() {
 
                   {/* Node: Process Bottom */}
                   <div className="absolute left-[42%] bottom-[10%] flex flex-col items-center gap-1.5">
-                    <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center" style={{ animation: "hex-breathe 3s ease-in-out 1s infinite" }}>
+                    <div className="w-10 h-10 rounded-xl bg-violet-500/10 border border-violet-500/20 flex items-center justify-center">
                       <Box size={16} className="text-violet-400" />
                     </div>
                     <span className="text-[7px] font-mono text-zinc-600 uppercase tracking-widest">Inventory</span>
@@ -256,18 +247,13 @@ export default function AutomationHero() {
 
                   {/* Node: Output */}
                   <div className="absolute right-[12%] top-1/2 -translate-y-1/2 flex flex-col items-center gap-1.5">
-                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center" style={{ animation: "hex-breathe 3s ease-in-out 1.5s infinite" }}>
+                    <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
                       <Gauge size={18} className="text-emerald-400" />
                     </div>
                     <span className="text-[7px] font-mono text-zinc-600 uppercase tracking-widest">Output</span>
                   </div>
 
-                  {/* Animated data particles */}
-                  {[0, 1, 2].map((i) => (
-                    <div key={i} className="absolute left-[20%] top-1/2 -translate-y-1/2 pointer-events-none" style={{ animation: `data-flow 3s ease-in-out ${i * 1}s infinite` }}>
-                      <div className="w-1.5 h-1.5 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(139,92,246,0.8)]" />
-                    </div>
-                  ))}
+
                 </div>
 
                 {/* Active Workflow Pipeline */}
@@ -287,7 +273,7 @@ export default function AutomationHero() {
                       { name: "P&L Report Gen", progress: "100%", status: "Complete", color: "from-emerald-600 to-emerald-400" },
                     ].map((w, i) => (
                       <div key={i} className="flex items-center gap-3" style={{ animation: `workflow-enter 0.4s ease-out ${i * 0.1}s both` }}>
-                        <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${w.status === "Running" ? "bg-violet-500 shadow-[0_0_6px_rgba(139,92,246,0.6)]" : "bg-emerald-500"}`} style={w.status === "Running" ? { animation: `node-pulse 2s ease-in-out ${i * 0.3}s infinite` } : {}} />
+                        <div className={`w-1.5 h-1.5 rounded-full shrink-0 ${w.status === "Running" ? "bg-violet-500 shadow-[0_0_6px_rgba(139,92,246,0.6)]" : "bg-emerald-500"}`} />
                         <span className="text-[9px] font-mono text-zinc-400 w-24 shrink-0 truncate">{w.name}</span>
                         <div className="h-1.5 flex-1 bg-white/[0.04] rounded-full overflow-hidden">
                           <div className={`h-full bg-gradient-to-r ${w.color} rounded-full`} style={{ width: w.progress, animation: `pipeline-fill 1.5s ease-out ${i * 0.2}s both` }} />

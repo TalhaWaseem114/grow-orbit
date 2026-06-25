@@ -44,49 +44,49 @@ export default function DeliverablesSection() {
 <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
 
   {/* Core Glow (Sun Pulse) */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-orange-500/5 rounded-full blur-[100px] animate-pulse"></div>
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-orange-500/5 rounded-full blur-[100px]"></div>
 
-  {/* 0. Hyper Inner Orbit (500px) - FASTEST (8s) */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border border-zinc-100/50 rounded-full animate-[spin_8s_linear_infinite]">
+  {/* 0. Hyper Inner Orbit (500px) */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] border border-zinc-100/50 rounded-full">
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-zinc-200 rounded-full shadow-[0_0_8px_rgba(0,0,0,0.1)]"></div>
   </div>
 
-  {/* 1. Inner Orbit (800px) - FAST (15s) */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-zinc-100 rounded-full animate-[spin_15s_linear_infinite]">
+  {/* 1. Inner Orbit (800px) */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-zinc-100 rounded-full">
       <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-2 border-zinc-100 rounded-full shadow-sm"></div>
   </div>
 
-  {/* 2. Middle Orbit (1100px) - ACTIVE (25s) */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[1100px] border border-zinc-50 rounded-full animate-[spin_25s_linear_infinite_reverse]">
+  {/* 2. Middle Orbit (1100px) */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1100px] h-[1100px] border border-zinc-50 rounded-full">
       <div className="absolute top-1/2 -right-4 -translate-y-1/2 group">
           <div className="w-8 h-8 bg-orange-50/50 rounded-full flex items-center justify-center border border-orange-100">
-              <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
           </div>
-          {/* Moon orbiting the planet - SPEEDED UP (3s) */}
-          <div className="absolute inset-0 w-12 h-12 -m-2 border border-zinc-100 rounded-full animate-[spin_3s_linear_infinite]">
+          {/* Moon orbiting the planet */}
+          <div className="absolute inset-0 w-12 h-12 -m-2 border border-zinc-100 rounded-full">
               <div className="absolute top-0 left-1/2 w-1.5 h-1.5 bg-zinc-300 rounded-full"></div>
           </div>
       </div>
   </div>
 
-  {/* 3. Deep Orbit (1500px) - STEADY (40s) */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1500px] h-[1500px] border border-zinc-50/40 rounded-full animate-[spin_40s_linear_infinite]">
+  {/* 3. Deep Orbit (1500px) */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1500px] h-[1500px] border border-zinc-50/40 rounded-full">
        <div className="absolute bottom-1/3 left-20 w-10 h-10 bg-zinc-50/40 border border-zinc-100/30 rounded-full backdrop-blur-[1px]"></div>
   </div>
 
-  {/* 4. Massive Outer Orbit (2000px) - (60s) */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2000px] h-[2000px] border border-zinc-50/20 rounded-full animate-[spin_60s_linear_infinite_reverse]">
+  {/* 4. Massive Outer Orbit (2000px) */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2000px] h-[2000px] border border-zinc-50/20 rounded-full">
        <div className="absolute top-1/4 right-40 w-14 h-14 bg-zinc-50/20 border border-zinc-100/10 rounded-full backdrop-blur-[2px]"></div>
   </div>
 
-  {/* 5. Horizon Orbit (2600px) - (90s) */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2600px] h-[2600px] border border-zinc-50/10 rounded-full animate-[spin_90s_linear_infinite]">
+  {/* 5. Horizon Orbit (2600px) */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2600px] h-[2600px] border border-zinc-50/10 rounded-full">
        <div className="absolute top-1/2 left-0 w-20 h-20 bg-zinc-50/10 border border-zinc-100/5 rounded-full"></div>
   </div>
 
-  {/* 6. Far-Field Nebula Orbit (3200px) - (150s) */}
-  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[3200px] h-[3200px] border border-zinc-50/5 rounded-full animate-[spin_150s_linear_infinite_reverse]">
-       <div className="absolute bottom-1/2 right-1/4 w-32 h-32 bg-zinc-50/3 border border-zinc-100/2 rounded-full blur-sm"></div>
+  {/* 6. Far-Field Nebula Orbit (3200px) */}
+  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[3200px] h-[3200px] border border-zinc-50/5 rounded-full">
+       <div className="absolute bottom-1/2 right-1/4 w-32 h-32 bg-zinc-50/3 border border-zinc-100/2 rounded-full"></div>
   </div>
 
   {/* Background Large Text */}

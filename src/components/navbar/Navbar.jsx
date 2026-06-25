@@ -1,13 +1,12 @@
 "use client";
 
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore";
+
 import { ChevronDown, LayoutDashboard, LogOut, Menu, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { auth, db } from "../../firebase/firebaseConfig";
+
 import MegaMenu from "./MegaMenu";
 import "./Navbar.css";
 
@@ -59,16 +58,31 @@ export default function Navbar() {
   }, [pathname]);
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
-        const userDoc = await getDoc(doc(db, "users", currentUser.uid));
-        if (userDoc.exists()) setRole(userDoc.data().role?.trim() || "user");
-      } else {
-        setRole("user");
+    let unsub;
+    const initAuth = async () => {
+      try {
+        const { auth, db } = await import("../../firebase/firebaseConfig");
+        const { onAuthStateChanged } = await import("firebase/auth");
+        const { doc, getDoc } = await import("firebase/firestore");
+
+        unsub = onAuthStateChanged(auth, async (currentUser) => {
+          setUser(currentUser);
+          if (currentUser) {
+            const userDoc = await getDoc(doc(db, "users", currentUser.uid));
+            if (userDoc.exists()) setRole(userDoc.data().role?.trim() || "user");
+          } else {
+            setRole("user");
+          }
+        });
+      } catch (error) {
+        console.error("Failed to load Firebase Auth", error);
       }
-    });
-    return () => unsub();
+    };
+    initAuth();
+    
+    return () => {
+      if (unsub) unsub();
+    };
   }, []);
 
   useEffect(() => {
@@ -86,6 +100,8 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
+      const { auth } = await import("../../firebase/firebaseConfig");
+      const { signOut } = await import("firebase/auth");
       await signOut(auth);
       router.push("/");
     } catch (e) {

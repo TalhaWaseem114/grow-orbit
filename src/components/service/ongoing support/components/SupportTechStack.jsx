@@ -37,18 +37,11 @@ export default function SupportTechStack() {
           <div className="absolute top-1/4 -left-20 w-96 h-96 bg-orange-500/10 rounded-full blur-[120px] pointer-events-none" />
 
           <style>{`
-            @keyframes terminal-blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
-            @keyframes data-flow { 0% { height: 20%; } 50% { height: 80%; } 100% { height: 20%; } }
-            @keyframes scanline-radar {
-              0% { bottom: 100%; }
-              100% { bottom: 0%; }
-            }
           `}</style>
 
-          {/* New Element: The Scanning Radar Line */}
+          {/* New Element: The Scanning Radar Line (Optimized static variant) */}
           <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
-            <div className="absolute w-full h-[1.5px] bg-orange-500/15 shadow-[0_0_15px_rgba(249,115,22,0.4)]"
-                 style={{ animation: "scanline-radar 8s linear infinite" }} />
+            <div className="absolute w-full h-[1.5px] bg-orange-500/15 shadow-[0_0_15px_rgba(249,115,22,0.4)] top-1/2" />
           </div>
 
           <div className="relative z-10 w-full max-w-3xl">
@@ -76,8 +69,8 @@ export default function SupportTechStack() {
                     <span className="text-zinc-200 text-xs sm:text-[13px] flex-1 group-hover:text-orange-400 transition-colors tracking-tight font-medium uppercase truncate">{t.name}</span>
 
                     <div className="hidden md:flex items-end gap-1 h-3 w-10 opacity-20 group-hover:opacity-60">
-                        {[1,2,3,4].map(b => (
-                            <div key={b} className="w-1 bg-orange-500" style={{ animation: `data-flow ${1 + Math.random()}s ease-in-out infinite` }} />
+                        {[20, 60, 40, 80].map((h, idx) => (
+                            <div key={idx} className="w-1 bg-orange-500" style={{ height: `${h}%` }} />
                         ))}
                     </div>
 
@@ -95,7 +88,7 @@ export default function SupportTechStack() {
               <div className="mt-8 pt-6 border-t border-white/5">
                 <p className="text-orange-500/80 flex items-center gap-3">
                   <span className="text-zinc-500 uppercase tracking-widest text-[8px] sm:text-[9px]">$ initialize_global_sync...</span>
-                  <span className="w-2 h-4 bg-orange-500/40 inline-block" style={{ animation: "terminal-blink 1s step-end infinite" }} />
+                  <span className="w-2 h-4 bg-orange-500/80 inline-block" />
                 </p>
               </div>
             </div>

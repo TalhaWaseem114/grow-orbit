@@ -20,16 +20,11 @@ export default function SupportHero() {
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-12 overflow-hidden bg-[#fafafa]">
       <style>{`
-        @keyframes vertical-scan-support {
-          0%   { transform: translateY(-100%); opacity: 0; }
-          10%  { opacity: 1; }
-          90%  { opacity: 1; }
-          100% { transform: translateY(100vh); opacity: 0; }
-        }
+
       `}</style>
 
       <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.03] to-transparent animate-[vertical-scan-support_8s_linear_infinite]" />
+        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.03] to-transparent" />
         <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
           <pattern id="support-pattern" width="120" height="120" patternUnits="userSpaceOnUse">
             <circle cx="2" cy="2" r="1" fill="currentColor" />
@@ -146,10 +141,10 @@ export default function SupportHero() {
           <div className="lg:col-span-5 relative block mt-0 lg:mt-[70px] scale-[0.95] lg:scale-100 origin-top lg:origin-center" ref={widgetRef}>
             <style>{`
               @keyframes pulse-wave { 0% { transform: scaleX(0); opacity: 1; } 100% { transform: scaleX(1); opacity: 0; } }
-              @keyframes heartbeat { 0%, 100% { transform: scale(1); } 25% { transform: scale(1.1); } 50% { transform: scale(1); } 75% { transform: scale(1.05); } }
+
               @keyframes sprint-enter { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
               @keyframes growth-fill { from { width: 0; } }
-              @keyframes cycle-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
             `}</style>
 
             {/* Floating card - top right: Growth Yield */}
@@ -232,7 +227,6 @@ export default function SupportHero() {
                   <div
                     className="relative z-10 w-[80px] h-[80px] rounded-full flex flex-col items-center justify-center"
                     style={{
-                      animation: "heartbeat 2s ease-in-out infinite",
                       background: "radial-gradient(circle at 40% 35%, rgba(244,63,94,0.15), rgba(24,24,27,1) 70%)",
                       border: "1px solid rgba(244,63,94,0.25)"
                     }}
@@ -257,7 +251,7 @@ export default function SupportHero() {
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-[8px] font-mono text-zinc-500 uppercase tracking-widest font-bold">Sprint Timeline</span>
                     <div className="flex items-center gap-1.5">
-                      <RefreshCw size={10} className="text-rose-500/60" style={{ animation: "cycle-spin 4s linear infinite" }} />
+                      <RefreshCw size={10} className="text-rose-500/60" />
                       <span className="text-[7px] font-mono text-rose-500/80 uppercase tracking-widest">ITERATING</span>
                     </div>
                   </div>

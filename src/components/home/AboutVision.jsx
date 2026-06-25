@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Search, BarChart3, Camera, TrendingUp, Zap, Target, Shield, Rocket, Star, Package } from "lucide-react";
 
 /* ─────────────────────────────────────────────
@@ -286,6 +287,8 @@ export default function OrbitSection() {
   const tls = useRef([]);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
     const ctx = gsap.context(() => {
       tls.current = [];
       ORBITS.forEach((o, i) => {
@@ -296,9 +299,25 @@ export default function OrbitSection() {
           gsap.to(`.db-${i}`, { rotation: "+=360", duration: o.dur * 1.05, repeat: -1, ease: "none", transformOrigin: "center center" }),
         );
       });
-      gsap.to(".c-inner", { scale: 1.07, duration: 2.6, repeat: -1, yoyo: true, ease: "sine.inOut" });
-      gsap.to(".c-glow",  { scale: 1.18, opacity: .75, duration: 3.1, repeat: -1, yoyo: true, ease: "sine.inOut" });
-      gsap.to(".o-ring",  { opacity: .48, duration: 3.5, repeat: -1, yoyo: true, ease: "sine.inOut", stagger: .65 });
+      tls.current.push(
+        gsap.to(".c-inner", { scale: 1.07, duration: 2.6, repeat: -1, yoyo: true, ease: "sine.inOut" }),
+        gsap.to(".c-glow",  { scale: 1.18, opacity: .75, duration: 3.1, repeat: -1, yoyo: true, ease: "sine.inOut" }),
+        gsap.to(".o-ring",  { opacity: .48, duration: 3.5, repeat: -1, yoyo: true, ease: "sine.inOut", stagger: .65 }),
+      );
+
+      // Pause all tweens immediately — ScrollTrigger will play them on entry
+      tls.current.forEach(t => t.pause());
+
+      // Viewport-gated: play when section enters, pause when it leaves
+      ScrollTrigger.create({
+        trigger: ref.current,
+        start: "top bottom",
+        end: "bottom top",
+        onEnter:     () => tls.current.forEach(t => t.resume()),
+        onEnterBack: () => tls.current.forEach(t => t.resume()),
+        onLeave:     () => tls.current.forEach(t => t.pause()),
+        onLeaveBack: () => tls.current.forEach(t => t.pause()),
+      });
     }, ref);
     return () => ctx.revert();
   }, []);
@@ -325,8 +344,8 @@ export default function OrbitSection() {
     >
       <style>{`
         @keyframes twinkle {
-          0%,100% { opacity: var(--op); }
-          50%      { opacity: calc(var(--op) * 0.12); }
+          0%,100% { opacity: 0.45; }
+          50%      { opacity: 0.06; }
         }
         @keyframes pulse-r {
           0%   { transform: scale(.8);  opacity: .8; }
@@ -419,13 +438,16 @@ export default function OrbitSection() {
 
           {/* ── STAR FIELD ── */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 1000 430" preserveAspectRatio="xMidYMid slice">
-            {STARS.map((s, i) => (
-              <circle key={i} cx={s.cx} cy={s.cy} r={s.r} fill="white"
-                style={{ "--op": s.op, opacity: s.op, animation: `twinkle ${s.dur}s ease-in-out ${s.del}s infinite` }} />
-            ))}
+            {STARS.map((s, i) => {
+              const shouldTwinkle = i % 8 === 0;
+              return (
+                <circle key={i} cx={s.cx} cy={s.cy} r={s.r} fill="white"
+                  style={{ opacity: s.op, ...(shouldTwinkle ? { animation: `twinkle ${s.dur}s ease-in-out ${s.del}s infinite` } : {}) }} />
+              );
+            })}
             {/* Bright cross-stars at corners / highlights */}
             {[[80,55],[920,330],[490,28],[740,390],[155,345],[820,80]].map(([cx,cy],i) => (
-              <g key={i} style={{ "--op": .52, opacity: .52, animation: `twinkle ${3+i*.7}s ease-in-out ${i*.9}s infinite` }}>
+              <g key={i} style={{ opacity: .52, animation: `twinkle ${3+i*.7}s ease-in-out ${i*.9}s infinite` }}>
                 <circle cx={cx} cy={cy} r="2.0" fill="white" />
                 <line x1={cx-6} y1={cy} x2={cx+6} y2={cy} stroke="white" strokeWidth=".55" opacity=".32" />
                 <line x1={cx} y1={cy-6} x2={cx} y2={cy+6} stroke="white" strokeWidth=".55" opacity=".32" />

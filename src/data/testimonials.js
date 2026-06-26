@@ -10,51 +10,54 @@
 
 export const caseStudyTestimonials = [
   {
-    status: "NEW LAUNCH",
-    category: "HOME & KITCHEN",
+    status: "SCALING PHASE",
+    category: "FOOD & BEVERAGE",
     rating: 5.0,
-    headline: ["$0 → $52K/mo", "in 90 Days"],
-    paragraph: "Launched from scratch with zero reviews. Hit page 1 in 58 days and scaled to $52K/mo with 8.2x ROAS.",
+    headline: ["61K Units Sold", "112% Growth"],
+    paragraph: "We revamped their listings and optimized PPC. Within 12 months, they hit 742K units sold with consistent monthly growth.",
     stats: [
-      { type: "roas", val: "8.2x", label: "ROAS" },
-      { type: "days", val: "58 Days", label: "to Page 1" },
-      { type: "revenue", val: "$52K/mo", label: "Revenue" }
+      { type: "growth", val: "+112%", label: "MoM Growth" },
+      { type: "units", val: "742K", label: "Yearly Units" },
+      { type: "revenue", val: "$6K+/day", label: "Daily Sales" }
     ],
-    name: "GRAFFIXX BRAND",
-    role: "Founder, Art Supplies",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "SARAH J.",
+    role: "Founder, Lumina Bites",
+    image: "https://randomuser.me/api/portraits/women/68.jpg",
     caseStudyLink: "/case-study/li-01",
+    sellerCentralImage: "/images/saler centeral screens/1.jpg"
   },
   {
-    status: "EXISTING BRAND",
-    category: "ELECTRONICS",
-    rating: 4.9,
-    headline: ["ACoS 52% → 18%", "in 60 Days"],
-    paragraph: "We restructured their PPC and listings to reduce ACoS by 34% while increasing overall profit by 2.7x.",
+    status: "PREMIUM LAUNCH",
+    category: "LIFESTYLE & GEAR",
+    rating: 5.0,
+    headline: ["1.15M Units Sold", "102% Yearly Growth"],
+    paragraph: "Through technical 3D renders and premium A+ content, we completely transformed their conversion rates, leading to outstanding performance.",
     stats: [
-      { type: "acos", val: "52% → 18%", label: "ACoS" },
-      { type: "profit", val: "2.7x", label: "Profit Increase" },
-      { type: "growth", val: "+312%", label: "Sales Growth" }
+      { type: "growth", val: "+135%", label: "MoM Growth" },
+      { type: "units", val: "1.15M", label: "Yearly Units" },
+      { type: "revenue", val: "$9.8K/day", label: "Daily Sales" }
     ],
-    name: "KAZVOO ELECTRONICS",
-    role: "Founder, Consumer Electronics",
+    name: "MARCUS C.",
+    role: "Founder, Nexa",
     image: "https://randomuser.me/api/portraits/men/44.jpg",
     caseStudyLink: "/case-study/li-02",
+    sellerCentralImage: "/images/saler centeral screens/2.jpg"
   },
   {
-    status: "REBRAND",
-    category: "HEALTH & WELLNESS",
+    status: "REBRAND & SCALE",
+    category: "HOME & AUTO",
     rating: 5.0,
-    headline: ["Revenue +340%", "After Rebrand"],
-    paragraph: "We rebuilt their brand, listings, and creatives. Revenue grew 3.4x in 75 days with improved organic ranking and lower ad spend.",
+    headline: ["812K Units Sold", "96% MoM Growth"],
+    paragraph: "We rebuilt their brand, listings, and creatives. Revenue grew consistently with thriving business metrics and top seller status.",
     stats: [
-      { type: "revenue", val: "+340%", label: "Revenue" },
-      { type: "rank", val: "Top 3", label: "Organic Rank" },
-      { type: "spend", val: "-28%", label: "Ad Spend" }
+      { type: "growth", val: "+96%", label: "MoM Growth" },
+      { type: "units", val: "812K", label: "Yearly Units" },
+      { type: "revenue", val: "$7.6K/day", label: "Daily Sales" }
     ],
-    name: "DUNOVA SLEEP CO.",
-    role: "Founder, Home & Sleep",
-    image: "https://randomuser.me/api/portraits/women/68.jpg",
+    name: "DAVID R.",
+    role: "Founder, Kazvo",
+    image: "https://randomuser.me/api/portraits/men/75.jpg",
     caseStudyLink: "/case-study/li-03",
+    sellerCentralImage: "/images/saler centeral screens/3.jpg"
   },
 ];

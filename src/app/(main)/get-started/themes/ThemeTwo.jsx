@@ -8,6 +8,7 @@ import ServicesMarquee from "@/components/ui/ServicesMarquee";
 import StickyNavbar from "../components/StickyNavbar";
 import HeroSectionThemeTwo from "../components/HeroSectionThemeTwo";
 import DiagnosesSection from "../components/DiagnosesSection";
+import SellerCentralShowcase from "../components/SellerCentralShowcase";
 import OrbitBridgeCTA from "@/components/sections/OrbitBridgeCTA";
 import ProofNumbers from "../components/ProofNumbers";
 
@@ -65,6 +66,7 @@ export default function ThemeTwo({ scrolled, activeSections = {} }) {
       {activeSections.Navbar !== false && <StickyNavbar scrolled={scrolled} scrollToForm={scrollToForm} />}
       {activeSections.Hero !== false && <HeroSectionThemeTwo scrollToForm={scrollToForm} formRef={formRef} />}
       {activeSections.Diagnoses !== false && <DiagnosesSection />}
+      <SellerCentralShowcase />
       {activeSections.Marquee !== false && <ServicesMarquee />}
       {activeSections.Proof !== false && <ProofNumbers />}
 

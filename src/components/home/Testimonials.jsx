@@ -59,14 +59,14 @@ export default function TestimonialSection() {
                     />
                   ))}
                 </div>
-                <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-900 mb-8">
-                  &ldquo;{t.quote}&rdquo;
+                <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-900 mb-8 line-clamp-4">
+                  &ldquo;{t.paragraph}&rdquo;
                 </p>
 
                 {/* Key Stat */}
-                <div className="flex items-center gap-4 mb-8 bg-zinc-950 rounded-2xl px-5 py-4">
+                <div className="flex flex-wrap items-center gap-4 mb-8 bg-zinc-950 rounded-2xl px-5 py-4">
                   <span className="text-[11px] font-black uppercase tracking-widest text-orange-500">
-                    {t.badge}
+                    {t.headline[0]} {t.headline[1] && <span className="text-white ml-2">| {t.headline[1]}</span>}
                   </span>
                 </div>
               </div>

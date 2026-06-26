@@ -5,9 +5,9 @@ import Link from "next/link";
 import {
   ArrowRight, ArrowLeft, TrendingUp, Search, Zap,
   BarChart3, CheckCircle2, Layers, ExternalLink,
-  XCircle, Star, Award, Layout,
-  MousePointerClick, ShoppingCart, Moon, Shield, Package,
+  XCircle, Star, Award, Heart, Play, MousePointerClick, Shield, Package,
 } from "lucide-react";
+import SellerCentralShowcase from "../../get-started/components/SellerCentralShowcase";
 
 const SectionLabel = ({ children, light = false }) => (
   <div className="flex items-center gap-3 mb-6">
@@ -689,10 +689,13 @@ export default function CaseStudyDunova() {
                 <p className="text-[70px] sm:text-[100px] md:text-[140px] font-black text-violet-500 tracking-tighter leading-none" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                   9.1<span className="text-[42px] sm:text-[60px] md:text-[90px]">x</span>
                 </p>
-                <p className="text-[11px] font-mono text-zinc-400 uppercase tracking-[0.3em] mt-2">Peak ROAS · Day 85</p>
-                <div className="mt-8 flex items-center justify-center xl:justify-end gap-2">
+                <p className="text-[11px] font-mono text-zinc-400 uppercase tracking-[0.3em] mt-2 mb-8">Peak ROAS · Day 85</p>
+                <div className="rounded-2xl overflow-hidden border border-zinc-200 shadow-xl max-w-[240px] mx-auto xl:ml-auto">
+                   <img src="/images/saler centeral screens/3.jpg" alt="Seller Central Results" className="w-full h-auto" />
+                </div>
+                <div className="mt-6 flex items-center justify-center xl:justify-end gap-2">
                    <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                   <span className="text-[10px] font-black text-zinc-900 uppercase tracking-widest">Verified Scaling</span>
+                   <span className="text-[10px] font-black text-zinc-900 uppercase tracking-widest">Verified Seller Central Data</span>
                 </div>
               </div>
             </div>
@@ -766,6 +769,7 @@ export default function CaseStudyDunova() {
           </div>
         </div>
       </div>
+      <SellerCentralShowcase />
     </main>
   );
 }

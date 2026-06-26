@@ -2,15 +2,12 @@
 
 import { useState, useEffect } from "react";
 import ThemeTwo from "./themes/ThemeTwo";
-import { subscribeToExperimentConfig } from "@/lib/experimentService";
 
-import { ACTIVE_THEME, ACTIVE_SECTIONS } from "@/lib/activeLandingConfig";
+import { ACTIVE_SECTIONS } from "@/lib/activeLandingConfig";
 
 export default function CampaignPage() {
   const [scrolled, setScrolled] = useState(false);
-  const [loading, setLoading] = useState(false); // Instantly loaded
-  const [activeTheme, setActiveTheme] = useState(ACTIVE_THEME);
-  const [activeSections, setActiveSections] = useState(ACTIVE_SECTIONS);
+  const activeSections = ACTIVE_SECTIONS;
 
   useEffect(() => {
     let ticking = false;
@@ -33,24 +30,6 @@ export default function CampaignPage() {
   useEffect(() => {
     if (typeof window !== "undefined") window.scrollTo(0, 0);
   }, []);
-
-  // Firebase subscription temporarily disabled for page speed optimization
-  // useEffect(() => {
-  //   const unsubscribe = subscribeToExperimentConfig((config) => {
-  //     setActiveTheme(config.layoutId);
-  //     setActiveSections(config.activeSections || {});
-  //     setLoading(false);
-  //   });
-  //   return () => unsubscribe();
-  // }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-[#fafafa] flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-      </div>
-    );
-  }
 
   return (
     <main

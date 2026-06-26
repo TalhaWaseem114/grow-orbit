@@ -1,7 +1,5 @@
-import ChatBot from "../../components/chatBot/ChatBot";
 import Footer from "../../components/footer/Footer";
-import Navbar from "../../components/navbar/Navbar";
-import OrbitMobileStickyCTA from "../../components/sections/OrbitMobileStickyCTA";
+import MainRouteChrome from "../../components/MainRouteChrome";
 
 export default function MainLayout({ children }) {
   return (
@@ -38,11 +36,9 @@ export default function MainLayout({ children }) {
           ])
         }}
       />
-      <Navbar />
+      <MainRouteChrome />
       {children}
       <Footer />
-      <ChatBot />
-      <OrbitMobileStickyCTA />
     </>
   );
 }

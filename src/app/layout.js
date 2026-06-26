@@ -1,6 +1,6 @@
 import { Inter, Montserrat, Zen_Dots, Playfair_Display } from "next/font/google";
 import ClientSideFeatures from "@/components/ClientSideFeatures";
-import Script from "next/script";
+import DeferredTracking from "@/components/DeferredTracking";
 import "./globals.css";
 
 const inter = Inter({
@@ -45,7 +45,6 @@ export const metadata = {
 import PWARegister from "@/components/PWARegister";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
 export default function RootLayout({ children }) {
   return (
@@ -54,25 +53,6 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
-        {/* Meta Pixel Code - hardcoded for reliable detection */}
-        <Script
-          id="meta-pixel"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '1743928903460669');
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
         <noscript>
           <img
             height="1"
@@ -82,21 +62,6 @@ export default function RootLayout({ children }) {
             alt=""
           />
         </noscript>
-        {process.env.NEXT_PUBLIC_CLARITY_ID && (
-          <Script
-            id="microsoft-clarity"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
-                (function(c,l,a,r,i,t,y){
-                    c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-                    t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-                    y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-                })(window,document,"clarity","script","${process.env.NEXT_PUBLIC_CLARITY_ID}");
-              `,
-            }}
-          />
-        )}
       </head>
       <body className="antialiased font-sans" suppressHydrationWarning>
         <PWARegister />
@@ -104,9 +69,10 @@ export default function RootLayout({ children }) {
         <Analytics />
         <SpeedInsights />
         <ClientSideFeatures />
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID} />
-        )}
+        <DeferredTracking
+          clarityId={process.env.NEXT_PUBLIC_CLARITY_ID}
+          gaId={process.env.NEXT_PUBLIC_GA_ID}
+        />
       </body>
     </html>
   );

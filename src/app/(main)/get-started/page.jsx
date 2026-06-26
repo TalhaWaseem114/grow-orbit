@@ -3,7 +3,7 @@ import { getPageMetadata } from "@/config/seo";
 
 export const metadata = getPageMetadata("/get-started");
 
-export default function Page(props) {
+export default function Page() {
   const breadcrumbSchema = {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -29,7 +29,7 @@ export default function Page(props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <ClientPage {...props} />
+      <ClientPage />
     </>
   );
 }

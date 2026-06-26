@@ -3,7 +3,7 @@ import { getPageMetadata } from "@/config/seo";
 
 export const metadata = getPageMetadata("/");
 
-export default function Page(props) {
+export default function Page() {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -30,7 +30,7 @@ export default function Page(props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
       />
-      <ClientPage {...props} />
+      <ClientPage />
     </>
   );
 }

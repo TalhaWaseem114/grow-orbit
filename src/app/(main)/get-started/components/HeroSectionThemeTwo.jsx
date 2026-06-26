@@ -210,7 +210,8 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
               fill
               sizes="(max-width: 1024px) 100vw, 42vw"
               className="object-cover object-center opacity-[0.22]"
-              priority={false}
+              priority
+              fetchPriority="high"
             />
             {/* Dark overlays for high contrast */}
             <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/75 to-zinc-950" />

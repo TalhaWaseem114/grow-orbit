@@ -1,7 +1,6 @@
 "use client";
 
 
-import gsap from "gsap";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
@@ -83,12 +82,6 @@ export default function Footer() {
   };
 
   /* ── GSAP input focus ── */
-  const handleFocus = (e) =>
-    gsap.to(e.target, { paddingLeft: "24px", borderColor: "#F97316", duration: 0.3, ease: "power2.out" });
-
-  const handleBlur = (e) =>
-    gsap.to(e.target, { paddingLeft: "20px", borderColor: "#E5E7EB", duration: 0.3, ease: "power2.in" });
-
   /* ── Nav data ── */
   const navLinks = [
     { name: "Home",       url: "/"          },
@@ -306,9 +299,7 @@ export default function Footer() {
                     value={form.name}
                     onChange={handleChange}
                     placeholder="e.g. John Smith"
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-300 focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500"
                   />
                 </div>
 
@@ -324,9 +315,7 @@ export default function Footer() {
                     value={form.email}
                     onChange={handleChange}
                     placeholder="you@brand.com"
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-300 focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500"
                   />
                 </div>
 
@@ -342,9 +331,7 @@ export default function Footer() {
                       aria-label="Service Required"
                       value={form.service}
                       onChange={handleChange}
-                      onFocus={handleFocus}
-                      onBlur={handleBlur}
-                      className={`w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] outline-none transition-all cursor-pointer appearance-none focus-visible:ring-2 focus-visible:ring-orange-500 ${
+                      className={`w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] outline-none transition-all duration-300 cursor-pointer appearance-none focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500 ${
                         !form.service ? "text-zinc-600" : "text-zinc-900"
                       }`}
                     >
@@ -374,9 +361,7 @@ export default function Footer() {
                     onChange={handleChange}
                     placeholder="Tell us about your brand and biggest challenge..."
                     rows={3}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all resize-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-300 resize-none focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500"
                   />
                 </div>
 

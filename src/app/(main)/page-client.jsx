@@ -18,7 +18,6 @@ const OrbitProcessSection = dynamic(() => import("@/components/sections/OrbitPro
 const ClientLogosMarquee = dynamic(() => import("@/components/ui/ClientLogosMarquee"), { ssr: false });
 const TeamSection = dynamic(() => import("@/components/home/TeamSection"), { ssr: false });
 const WhoItsFor = dynamic(() => import("@/components/home/WhoItsFor"), { ssr: false });
-const AboutVision = dynamic(() => import("@/components/home/AboutVision"), { ssr: false });
 const FAQSection = dynamic(() => import("@/components/home/FAQSection"), { ssr: false });
 
 export default function Home() {
@@ -42,7 +41,6 @@ export default function Home() {
       <ClientLogosMarquee isDark={false} bgClass="bg-white" borderClass="border-y border-zinc-100" />
       <TeamSection />
       <WhoItsFor />
-      <AboutVision />
       <FAQSection scrollToForm={scrollToForm} />
 
     </main>

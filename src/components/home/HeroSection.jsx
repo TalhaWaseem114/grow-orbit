@@ -14,88 +14,7 @@ export default function Hero({ mode }) {
   const engineRef = useRef(null);
 
   useEffect(() => {
-    const isMobile = window.innerWidth < 768;
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ defaults: { ease: "power4.out", duration: isMobile ? 0.8 : 1.2 } });
-
-      // 1. Initial State - use strings with % to prevent unit resolution mismatch in Safari
-      gsap.set(".progress-bar-fill", { width: "0%" });
-      gsap.set(".target-bar-fill", { width: "0%" });
-      gsap.set(".target-node-fill", { left: "0%" });
-
-      // 2. Left side staggered entrance
-      tl.fromTo(".animate-content > *", {
-        y: isMobile ? 20 : 40,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        stagger: 0.1,
-        clearProps: "transform,opacity"
-      }, "+=0.2");
-
-      // 3. Right side - Fast & dynamic Entrance
-      tl.fromTo(engineRef.current, {
-        y: 30,
-        opacity: 0,
-      }, {
-        y: 0,
-        opacity: 1,
-        duration: isMobile ? 0.8 : 1.0,
-        ease: "power3.out",
-        clearProps: "opacity", // Clear only opacity so y/transform remains under GSAP control for continuous float
-        onComplete: () => {
-          if (!isMobile && engineRef.current) {
-            gsap.to(engineRef.current, {
-              y: -15,
-              duration: 4,
-              repeat: -1,
-              yoyo: true,
-              ease: "power1.inOut"
-            });
-          }
-        }
-      }, "-=1.2");
-
-      // 4. Target Line Animation (Bar & Node in Sync)
-      tl.to(".target-bar-fill", {
-        width: "85%",
-        duration: isMobile ? 1.0 : 1.2,
-        ease: "expo.out"
-      }, "-=1.0");
-      tl.to(".target-node-fill", {
-        left: "85%",
-        duration: isMobile ? 1.0 : 1.2,
-        ease: "expo.out"
-      }, "<");
-
-      if (!isMobile) {
-        // 5. Service Bars filling animation
-        tl.to(".progress-bar-fill", {
-          width: (i, target) => target.dataset.width || "0%",
-          duration: 1.2,
-          stagger: 0.1,
-          ease: "expo.out"
-        }, "-=1.0");
-
-        // 6. Mini Stats (Bottom)
-        tl.fromTo(".animate-stats > *", {
-          y: 30,
-          opacity: 0,
-        }, {
-          y: 0,
-          opacity: 1,
-          stagger: 0.1,
-          clearProps: "transform,opacity"
-        }, "-=1.8");
-      } else {
-         // Simpler mobile animations
-         gsap.set(".progress-bar-fill", { width: (i, target) => target.dataset.width || "0%" });
-      }
-
-    }, containerRef);
-
-    return () => ctx.revert();
+    // GSAP animations removed for maximum performance optimization
   }, []);
 
   return (
@@ -406,9 +325,8 @@ export default function Hero({ mode }) {
           <span className="text-[9px] font-black text-white uppercase tracking-tighter bg-white/10 px-2 py-0.5 rounded">124% to Goal</span>
         </div>
         <div className="relative w-full h-1.5 bg-black/50 rounded-full border border-white/5">
-          <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-700 via-orange-500 to-yellow-400 rounded-full shadow-[0_0_12px_rgba(249,115,22,0.6)] target-bar-fill" />
-          {/* Node positioned exactly at the end of the 85% width */}
-          <div className="absolute top-1/2 -translate-y-1/2 left-[85%] -translate-x-1/2 w-3 h-3 bg-white rounded-full shadow-[0_0_10px_white] border-2 border-orange-500 z-10 target-node-fill" />
+          <div className="absolute top-0 left-0 h-full bg-orange-500 target-bar-fill" style={{ width: "85%" }} />
+          <div className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white rounded-full border-[3px] border-orange-500 shadow-[0_0_15px_rgba(249,115,22,0.6)] target-node-fill" style={{ left: "85%" }} />
         </div>
       </div>
 
@@ -432,10 +350,7 @@ export default function Hero({ mode }) {
               </div>
             </div>
             <div className="w-full h-[2px] bg-zinc-900/80 rounded-full overflow-hidden relative mt-auto">
-              <div
-                className={`absolute top-0 left-0 h-full bg-gradient-to-r ${service.gradient} progress-bar-fill`}
-                data-width={service.progress}
-              />
+              <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-600 to-orange-400 progress-bar-fill" style={{ width: service.progress }} data-width={service.progress} />
             </div>
           </div>
         ))}

@@ -17,20 +17,7 @@ export default function WhyChooseUs() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window === "undefined" || !sectionRef.current) return;
-    const ctx = gsap.context(() => {
-      /* stagger reveal every cell */
-      gsap.fromTo(".bento-cell", {
-        opacity: 0, y: 40,
-      }, {
-        opacity: 1, y: 0,
-        duration: 0.65,
-        stagger: 0.08,
-        ease: "power3.out",
-        scrollTrigger: { trigger: sectionRef.current, start: "top 75%" },
-      });
-    }, sectionRef);
-    return () => ctx.revert();
+    // GSAP animations removed for maximum performance optimization
   }, []);
 
   return (

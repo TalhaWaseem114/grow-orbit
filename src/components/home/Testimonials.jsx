@@ -14,23 +14,7 @@ export default function TestimonialSection() {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    const cards = containerRef.current.querySelectorAll(".testimonial-card");
-
-    gsap.fromTo(
-      cards,
-      { opacity: 0, x: 50 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: "top 80%",
-        },
-      }
-    );
+    // GSAP animations removed for maximum performance optimization
   }, []);
 
   return (

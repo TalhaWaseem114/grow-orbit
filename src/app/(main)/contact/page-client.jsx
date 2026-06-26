@@ -194,7 +194,7 @@ export default function ContactUs() {
             </div>
 
             {/* Quick contact */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-6 pb-8 border-b border-zinc-100">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-6 pb-8 border-b border-zinc-100 flex-wrap">
               <div className="flex items-center gap-4">
                 <div className="w-11 h-11 rounded-2xl bg-zinc-900 flex items-center justify-center shrink-0">
                   <Clock size={16} className="text-white" />
@@ -211,9 +211,23 @@ export default function ContactUs() {
                 </div>
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-900">Email</p>
-                  <a href="mailto:hello@groworbit.com"
+                  <a href="mailto:support@groworbit.com"
                      className="text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors">
-                    hello@groworbit.com
+                    support@groworbit.com
+                  </a>
+                </div>
+              </div>
+              <div className="hidden sm:block w-px h-10 bg-zinc-200" />
+              <div className="flex items-center gap-4">
+                <a href="https://wa.me/4372126458" target="_blank" rel="noreferrer"
+                   className="w-11 h-11 rounded-2xl bg-[#25D366] flex items-center justify-center shrink-0 hover:scale-105 transition-transform">
+                  <MessageCircle size={16} className="text-white" />
+                </a>
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-900">WhatsApp</p>
+                  <a href="https://wa.me/4372126458" target="_blank" rel="noreferrer"
+                     className="text-sm font-medium text-[#25D366] hover:text-[#1da851] transition-colors">
+                    437-212-6458
                   </a>
                 </div>
               </div>
@@ -403,7 +417,7 @@ export default function ContactUs() {
 
                 {/* WhatsApp */}
                 <a
-                  href="https://wa.me/19293847565"
+                  href="https://wa.me/4372126458"
                   target="_blank" rel="noreferrer"
                   className="group/wa w-full py-5 rounded-2xl border border-zinc-200 hover:border-[#25D366] hover:bg-[#25D366]/5 text-zinc-900 font-bold text-[10px] uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-3 bg-white shadow-[0_8px_30px_-12px_rgba(0,0,0,0.05)]"
                 >
@@ -497,8 +511,8 @@ export default function ContactUs() {
                 Agency HQ
               </h3>
               <p className="text-zinc-500 font-light leading-relaxed text-[13px]">
-                123 Growth Boulevard, Suite 400<br />
-                Toronto, ON, Canada
+                2583 Lundigan Dr<br />
+                Mississauga, ON L5J 3W2, Canada
               </p>
             </div>
           </div>
@@ -507,7 +521,7 @@ export default function ContactUs() {
           <div className="flex-1 w-full h-[520px] md:h-[380px] rounded-[24px] sm:rounded-[32px] overflow-hidden border border-zinc-100 relative group bg-zinc-50">
             {/* Open in Maps Button */}
             <a
-              href="https://maps.google.com/?q=Toronto+ON+Canada"
+              href="https://maps.google.com/?q=2583+Lundigan+Dr+Mississauga+ON+L5J+3W2+Canada"
               target="_blank"
               rel="noreferrer"
               className="absolute top-6 left-6 z-10 bg-white/95 backdrop-blur-md border border-zinc-200 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest text-zinc-900 shadow-xl hover:bg-orange-500 hover:text-white hover:border-orange-500 transition-all duration-300 flex items-center gap-2"
@@ -518,7 +532,7 @@ export default function ContactUs() {
 
             <div className="absolute inset-0 bg-orange-500/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-0" />
             <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d184551.8085834!2d-79.5181405!3d43.7181557!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4cb90d7c69ba5%3A0xe4872fac4f08518b!2sToronto%2C%20ON%2C%20Canada!5e0!3m2!1sen!2sus!4v1713632800000!5m2!1sen!2sus"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2890.5!2d-79.6297!3d43.4668!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x882b41!2s2583+Lundigan+Dr%2C+Mississauga%2C+ON+L5J+3W2%2C+Canada!5e0!3m2!1sen!2sca!4v1713632800000!5m2!1sen!2sca"
               width="100%"
               height="100%"
               style={{ border: 0, filter: "grayscale(0.1) contrast(1.05)" }}

@@ -109,9 +109,7 @@ export default function Footer() {
   ];
 
   const socialLinks = [
-    { name: "LinkedIn",  url: "https://www.linkedin.com/company/groworbit" },
-    { name: "TikTok",    url: "https://www.tiktok.com/@groworbit" },
-    { name: "Instagram", url: "https://www.instagram.com/groworbit" },
+    { name: "Instagram", url: "https://www.instagram.com/groworbitofficial/" },
   ];
 
   if (pathname === "/thank-you" || pathname.includes("/book-meeting")) return null;
@@ -155,13 +153,13 @@ export default function Footer() {
       <div className="absolute inset-0 pointer-events-none z-0 hidden lg:block">
         {/* Top Left Quadrant */}
         <div className="absolute top-0 left-0 w-[55%] bg-[#0A0A0B] bg-gradient-to-br from-white/[0.05] to-transparent" style={{ bottom: '700px' }} />
-        
+
         {/* Top Right Quadrant */}
         <div className="absolute top-0 right-0 w-[45%] bg-[#040404] bg-gradient-to-bl from-white/[0.02] to-transparent" style={{ bottom: '700px' }} />
-        
+
         {/* Bottom Left Quadrant (Gradient from bottom-right towards top-left) */}
         <div className="absolute bottom-0 left-0 w-[55%] h-[700px] bg-[#050505] bg-gradient-to-tl from-white/[0.04] to-transparent" />
-        
+
         {/* Bottom Right Quadrant (Gradient from bottom-left towards top-right) */}
         <div className="absolute bottom-0 right-0 w-[45%] h-[700px] bg-[#000000] bg-gradient-to-tr from-white/[0.02] to-transparent" />
       </div>
@@ -229,8 +227,8 @@ export default function Footer() {
               ))}
             </div>
 
-            {/* Social + tagline row */}
-            <div className="flex items-start justify-between border-t border-white/8 pt-10">
+            {/* Social + contact info row */}
+            <div className="flex items-start justify-between gap-8 border-t border-white/8 pt-10 flex-wrap">
               <div>
                 <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-4">Follow Us</p>
                 <div className="flex flex-col gap-2">
@@ -238,6 +236,8 @@ export default function Footer() {
                     <Link
                       key={s.name}
                       href={s.url}
+                      target="_blank"
+                      rel="noreferrer"
                       aria-label={`Follow us on ${s.name}`}
                       className="text-zinc-400 text-sm font-medium hover:text-orange-500 transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
                     >
@@ -248,13 +248,23 @@ export default function Footer() {
               </div>
 
               <div className="text-right">
-                <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-4">Response Time</p>
-                <p className="text-zinc-300 text-sm font-light leading-relaxed">
-                  Within 24 hours<br />
-                  <span className="text-zinc-400 text-xs">Mon–Sat · No automated replies</span>
-                </p>
+                <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-4">Contact Us</p>
+                <div className="flex flex-col gap-1 items-end">
+                  <a href="mailto:support@groworbit.com" className="text-zinc-300 text-[12px] font-medium hover:text-orange-500 transition-colors">
+                    support@groworbit.com
+                  </a>
+                  <a href="https://wa.me/4372126458" target="_blank" rel="noreferrer" className="text-zinc-400 text-[12px] font-light hover:text-orange-500 transition-colors">
+                    437-212-6458
+                  </a>
+                  <p className="text-zinc-500 text-[11px] font-light leading-relaxed mt-1">
+                    2583 Lundigan Dr<br />
+                    Mississauga, ON L5J 3W2<br />
+                    Canada
+                  </p>
+                </div>
               </div>
             </div>
+
           </div>
 
           {/* Right — white form card */}
@@ -418,8 +428,8 @@ export default function Footer() {
             GIANT WATERMARK TEXT
         ══════════════════════════════════════ */}
         <div className="w-full flex justify-center items-center py-12 md:py-16 border-t border-b border-white/5 my-8 select-none overflow-hidden relative z-10">
-          <h2 
-            className="font-black uppercase text-white/[0.08] leading-none whitespace-nowrap tracking-tighter" 
+          <h2
+            className="font-black uppercase text-white/[0.08] leading-none whitespace-nowrap tracking-tighter"
             style={{ fontSize: "clamp(2rem, 11vw, 15rem)", fontFamily: "'Montserrat', sans-serif" }}
           >
             GROW ORBIT

@@ -657,7 +657,7 @@ function ShowcaseSection() {
               <div className="p-6 space-y-4">
                 {/* Hero banner */}
                 <div className="relative rounded-2xl overflow-hidden bg-zinc-800 h-24">
-                  <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781872045/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-2.jpg" className="absolute inset-0 w-full h-full object-cover opacity-40" alt="" />
+                  <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781872045/grow_orbit_portfolio/assets/portfolio/kazvo_vacume_cleaner/aplus-2.jpg" className="absolute inset-0 w-full h-full object-cover opacity-40" alt="Kazvo Vacuum Cleaner Banner" />
                   <div className="absolute inset-0 bg-gradient-to-r from-orange-500/40 to-transparent" />
                   <div className="absolute inset-3 flex items-end justify-between gap-3">
                     <div className="space-y-1.5 flex-1 relative z-10">
@@ -688,7 +688,7 @@ function ShowcaseSection() {
                    ].map((tile, i) => (
                      <div key={i} className={`rounded-lg border overflow-hidden transition-all duration-500 hover:scale-105 ${tile.highlight ? "border-orange-500/30 bg-orange-500/5" : "border-white/5 bg-white/3"}`}>
                        <div className="aspect-square bg-white relative">
-                         <img src={tile.src} alt="" className="w-full h-full object-contain p-1.5" />
+                         <img src={tile.src} alt="Brand Store Navigation Tile" className="w-full h-full object-contain p-1.5" />
                          {tile.highlight && <div className="absolute top-0.5 left-0.5 bg-orange-500 text-white text-[4px] font-black px-1 py-0.5 rounded-full uppercase">HOT</div>}
                        </div>
                        <div className="p-1 px-1.5 bg-zinc-950/20">
@@ -832,7 +832,7 @@ function ExamplesGallery() {
 
                  {/* 02: Hero Banner Module */}
                  <div className="h-28 relative rounded-xl overflow-hidden border border-white/50 group-hover:border-orange-500/30 transition-all duration-700 transform group-hover:translate-z-10 mb-2 shadow-sm">
-                   <img src={store.heroImage} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[3s]" />
+                   <img src={store.heroImage} alt="Brand Store Hero Image Showcase" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[3s]" />
                    <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent opacity-60" />
                    {/* Reference Badge Removed */}
                  </div>
@@ -845,7 +845,7 @@ function ExamplesGallery() {
                      }`}>
                         <img
                          src={prod.src}
-                         alt=""
+                         alt="Brand Store Secondary Showcase"
                          className="w-full h-full object-cover opacity-80 group-hover/mod:opacity-100 transition-opacity"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />

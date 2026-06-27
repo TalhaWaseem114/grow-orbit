@@ -112,7 +112,7 @@ export default function ClientDashboard() {
       <header style={{ height: 70, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", borderBottom: "1px solid rgba(255,255,255,0.04)", background: "rgba(6,6,6,0.8)", backdropFilter: "blur(12px)", sticky: "top", zIndex: 100 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <div style={{ width: 32, height: 32, borderRadius: 8, background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-            <img src="/logo.png" alt="Logo" style={{ width: 24, height: 24, objectFit: "contain" }} />
+            <img src="/logo.png" alt="Grow Orbit Logo" style={{ width: 24, height: 24, objectFit: "contain" }} />
           </div>
           <div>
             <div style={{ fontSize: 13, fontWeight: 900, color: "#fff", letterSpacing: "-0.02em", lineHeight: 1 }}>GROW ORBIT</div>

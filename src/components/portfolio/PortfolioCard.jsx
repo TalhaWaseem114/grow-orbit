@@ -117,7 +117,7 @@ export default function PortfolioCard({ item, priority = false }) {
               >
                 <Image
                   src={img.src}
-                  alt=""
+                  alt="Portfolio Thumbnail"
                   fill
                   sizes="(max-width: 640px) 34px, 42px"
                   className="object-cover"

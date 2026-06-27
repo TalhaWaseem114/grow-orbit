@@ -697,7 +697,7 @@ export default function AdminDashboard() {
             style={{ display: "flex", alignItems: "center", gap: 12, background: "none", border: "none", cursor: "pointer", padding: 0, marginBottom: 32, width: "100%", justifyContent: isSidebarCollapsed ? "center" : "flex-start" }}
           >
             <div style={{ width: 36, height: 36, borderRadius: 10, background: "white", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 0 20px rgba(0,0,0,0.1)", flexShrink: 0, overflow: "hidden" }}>
-              <img src="/logo.png" alt="Logo" style={{ width: 28, height: 28, objectFit: "contain" }} />
+              <img src="/logo.png" alt="Grow Orbit Logo" style={{ width: 28, height: 28, objectFit: "contain" }} />
             </div>
             {!isSidebarCollapsed && (
               <div style={{ textAlign: "left" }}>
@@ -837,7 +837,7 @@ export default function AdminDashboard() {
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {isMobile && (
               <div style={{ width: 28, height: 28, borderRadius: 8, background: "white", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", marginRight: 4, flexShrink: 0 }}>
-                <img src="/logo.png" alt="Logo" style={{ width: 20, height: 20, objectFit: "contain" }} />
+                <img src="/logo.png" alt="Grow Orbit Logo" style={{ width: 20, height: 20, objectFit: "contain" }} />
               </div>
             )}
             {!isMobile && <span style={{ fontSize: 10, fontWeight: 700, color: "#f97316", letterSpacing: "0.3em", textTransform: "uppercase" }}>Orbit OS</span>}

@@ -933,7 +933,7 @@ function BeforeAfterComparison() {
               <div className="rounded-3xl border border-white/5 bg-[#111] overflow-hidden mb-8">
                 {/* Hero banner module */}
                 <div className="aspect-[16/6] relative overflow-hidden">
-                  <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271681/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-1.png" alt="" className="w-full h-full object-cover opacity-70" />
+                  <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271681/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-1.png" alt="Nexa Pouches A+ Content" className="w-full h-full object-cover opacity-70" />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent" />
                   <div className="absolute bottom-4 left-5 right-5">
                     <div className="h-3 w-2/3 bg-white/20 rounded-full mb-2" />
@@ -1113,9 +1113,9 @@ function Portfolio() {
 
               {/* Image stack layout - Full uncropped view */}
               <div className="relative rounded-2xl overflow-hidden flex flex-col gap-0 bg-white/90 backdrop-blur-md border border-white/50 shadow-[0_8px_32px_rgba(0,0,0,0.03)] h-[400px] overflow-y-auto no-scrollbar group-hover:shadow-[0_12px_40px_rgba(0,0,0,0.06)] transition-all duration-700">
-                <img src={ex.images[0]} alt="" className="w-full h-auto block" />
-                <img src={ex.images[1]} alt="" className="w-full h-auto block" />
-                <img src={ex.images[2]} alt="" className="w-full h-auto block" />
+                <img src={ex.images[0]} alt={`${ex.niche} A+ Content Header`} className="w-full h-auto block" />
+                <img src={ex.images[1]} alt={`${ex.niche} A+ Content Module`} className="w-full h-auto block" />
+                <img src={ex.images[2]} alt={`${ex.niche} A+ Content Footer`} className="w-full h-auto block" />
               </div>
 
               {/* Card info */}

@@ -69,7 +69,7 @@ export default function ExperimentsPage() {
                 <div className="relative w-7 h-7">
                   <Image
                     src="/logo.png"
-                    alt="Logo"
+                    alt="Grow Orbit Logo"
                     width={28}
                     height={28}
                     className="object-contain"

@@ -144,7 +144,7 @@ function BookMeetingContent() {
       <header className="relative z-10 w-full max-w-7xl mx-auto px-4 py-5 sm:px-6 sm:py-7 flex items-center justify-between border-b border-zinc-900/40 backdrop-blur-[2px]">
         <Link href="/" className="flex items-center gap-3 group">
           <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.1)] transition-all group-hover:scale-105 group-hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]">
-            <img src="/logo.png" alt="Logo" className="w-6 h-6 object-contain" />
+            <img src="/logo.png" alt="Grow Orbit Logo" className="w-6 h-6 object-contain" />
           </div>
           <div>
             <div className="text-[14px] font-black tracking-tight text-white transition-colors group-hover:text-orange-400">GROW ORBIT</div>

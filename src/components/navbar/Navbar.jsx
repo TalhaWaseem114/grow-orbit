@@ -59,6 +59,7 @@ export default function Navbar() {
 
   useEffect(() => {
     let unsub;
+    let timeoutId;
     const initAuth = async () => {
       try {
         const { auth, db } = await import("../../firebase/firebaseConfig");
@@ -78,9 +79,10 @@ export default function Navbar() {
         console.error("Failed to load Firebase Auth", error);
       }
     };
-    initAuth();
+    timeoutId = setTimeout(initAuth, 2500);
     
     return () => {
+      if (timeoutId) clearTimeout(timeoutId);
       if (unsub) unsub();
     };
   }, []);

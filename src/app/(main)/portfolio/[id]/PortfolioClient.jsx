@@ -65,7 +65,7 @@ function SmartImage({ src, alt, className, style, onClick, priority = false }) {
         style={{ borderRadius: "inherit", zIndex: 1, overflow: "hidden" }}
       >
         {blurSrc ? (
-          <img src={blurSrc} alt="" className="w-full h-full object-cover scale-110" />
+          <img src={blurSrc} alt="Portfolio Detail Blurred Background" className="w-full h-full object-cover scale-110" />
         ) : (
           <div className="w-full h-full bg-zinc-100/80 animate-pulse flex items-center justify-center border border-zinc-200/50" style={{ borderRadius: "inherit" }}>
             <Camera size={24} className="text-zinc-300/50" />
@@ -190,7 +190,7 @@ function BrandStoryDisplay({ details, onImageOpen }) {
       <div className="relative bg-zinc-900 overflow-hidden" style={{ minHeight: "380px" }}>
         {imgs[0] && (
           <div className="absolute inset-0">
-            <SmartImage src={imgs[0].src} alt="" className="w-full h-full object-cover scale-110 blur-md opacity-30" />
+            <SmartImage src={imgs[0].src} alt="Portfolio Item Blur Background" className="w-full h-full object-cover scale-110 blur-md opacity-30" />
             <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/40 to-zinc-950" />
           </div>
         )}

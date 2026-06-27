@@ -389,12 +389,12 @@ export default function CaseStudyGraffixx() {
             <div className="lg:col-span-1 hidden lg:flex flex-col gap-3">
               {visualProof.listingImages.map((img, i) => (
                 <button key={i} onClick={() => setActiveListingImg(i)} className={`aspect-square rounded-xl overflow-hidden border-2 transition-all ${activeListingImg === i ? "border-orange-500" : "border-zinc-200 hover:border-zinc-400"}`}>
-                  <img src={img.src} className="w-full h-full object-cover" alt="" />
+                  <img src={img.src} className="w-full h-full object-cover" alt="Case Study Thumbnail" />
                 </button>
               ))}
             </div>
             <div className="lg:col-span-6 relative aspect-square rounded-[28px] overflow-hidden bg-zinc-50 border border-zinc-100 cursor-pointer group" onClick={() => setLightboxImage(visualProof.listingImages[activeListingImg])}>
-              <img src={visualProof.listingImages[activeListingImg].src} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="" />
+              <img src={visualProof.listingImages[activeListingImg].src} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Case Study Final Image Proof" />
               <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <ExternalLink size={10} /> Expand
               </div>

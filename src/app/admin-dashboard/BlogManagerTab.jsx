@@ -1763,7 +1763,7 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
                 {/* Cover thumbnail */}
                 {!isMobile && (
                   <div style={{ width: 72, height: 48, borderRadius: 10, overflow: "hidden", flexShrink: 0, background: "rgba(255,255,255,0.04)" }}>
-                    <img src={post.coverImage} alt="" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                    <img src={post.coverImage} alt="Blog Post Cover Image Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                   </div>
                 )}
 

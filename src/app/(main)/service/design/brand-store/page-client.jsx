@@ -11,8 +11,6 @@ import {
   Link as LinkIcon, Image as ImageIcon,
   Store, MousePointer2, ShoppingBag, Search, Fingerprint
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroButton from "@/components/ui/HeroButton";
 
 // --- Sub-component: The Primary Gradient Button ---
@@ -130,7 +128,7 @@ function BrandStoreCTA() {
   );
 }
 
-gsap.registerPlugin(ScrollTrigger);
+
 
 /* ─────────────────────────────────────────────
    SHARED
@@ -157,14 +155,6 @@ const CheckItem = ({ children, light = false }) => (
    01 — HERO
    ═══════════════════════════════════════════════ */
 function BrandStoreHero() {
-  const floatRef = useRef(null);
-
-  useEffect(() => {
-    if (!floatRef.current) return;
-    gsap.to(floatRef.current, {
-      y: -14, duration: 4.5, repeat: -1, yoyo: true, ease: "power1.inOut",
-    });
-  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center pt-16 md:pt-32 pb-16 md:pb-24 overflow-hidden bg-[#fafafa]">
@@ -299,7 +289,7 @@ function BrandStoreHero() {
           </div>
 
           {/* ── Right: Brand Store Mockup ── */}
-          <div className="lg:col-span-5 relative mt-[-20px] lg:mt-[60px] self-start" ref={floatRef}>
+          <div className="lg:col-span-5 relative mt-[-20px] lg:mt-[60px] self-start animate-float">
             <div className="absolute -top-4 -right-4 bg-white rounded-[20px] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.1)] z-30 flex gap-2.5">
               <div className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center text-white"><Monitor size={16} /></div>
               <div className="w-8 h-8 rounded-lg bg-zinc-900 flex items-center justify-center text-white"><LayoutGrid size={16} /></div>
@@ -927,24 +917,19 @@ function WhoItsFor() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.utils.toArray(".signal-block").forEach((block, i) => {
-        gsap.fromTo(block,
-          { opacity: 0, y: 60 },
-          {
-            opacity: 1, y: 0,
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: block,
-              start: "top 85%",
-              toggleActions: "play none none none",
-            },
-          }
-        );
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("revealed");
+          observer.unobserve(entry.target);
+        }
       });
-    }, sectionRef);
-    return () => ctx.revert();
+    }, { threshold: 0.15 });
+
+    const blocks = document.querySelectorAll(".signal-block");
+    blocks.forEach(block => observer.observe(block));
+
+    return () => observer.disconnect();
   }, []);
 
   const signals = [
@@ -1001,6 +986,17 @@ function WhoItsFor() {
 
   return (
     <section ref={sectionRef} className="py-16 lg:py-32 bg-white relative overflow-hidden">
+      <style>{`
+        .signal-block {
+          opacity: 0;
+          transform: translateY(40px);
+          transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .signal-block.revealed {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
       <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-zinc-200 to-transparent" />
 
       <div className="max-w-[1400px] mx-auto px-5 lg:px-12 relative z-10">

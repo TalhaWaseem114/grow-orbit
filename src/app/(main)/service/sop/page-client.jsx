@@ -10,7 +10,7 @@ import {
   RefreshCw, AlertTriangle, Package, Search,
   CheckCheck, XCircle, Plus, Minus,
 } from "lucide-react";
-import gsap from "gsap";
+
 import HeroButton from "@/components/ui/HeroButton";
 
 /* ─────────────────────────────────────────────
@@ -29,12 +29,6 @@ const SectionLabel = ({ children, light = false }) => (
    01 — HERO
    ═══════════════════════════════════════════════ */
 function SOPHero() {
-  const floatRef = useRef(null);
-
-  useEffect(() => {
-    if (!floatRef.current) return;
-    gsap.to(floatRef.current, { y: -12, duration: 4.5, repeat: -1, yoyo: true, ease: "power1.inOut" });
-  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-[#fafafa]">
@@ -148,7 +142,7 @@ function SOPHero() {
           </div>
 
           {/* Right: Systems Orchestrator Widget */}
-          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px]" ref={floatRef}>
+          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px] animate-float">
             <style>{`
               @keyframes dash-flow {
                 to { stroke-dashoffset: -20; }

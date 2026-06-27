@@ -4,19 +4,13 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { CheckCircle2, Home, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import gsap from "gsap";
+
 
 export default function ThankYouPage() {
   const [countdown, setCountdown] = useState(15);
   const router = useRouter();
 
   useEffect(() => {
-    // Entrance Animation
-    gsap.fromTo(".thank-you-content",
-      { opacity: 0, y: 30 },
-      { opacity: 1, y: 0, duration: 1, ease: "power3.out" }
-    );
-
     // 10 Second Countdown Timer
     const timer = setInterval(() => {
       setCountdown((prev) => {
@@ -44,7 +38,7 @@ export default function ThankYouPage() {
         <div className="absolute w-[600px] h-[600px] bg-orange-500/5 rounded-full blur-[160px]" />
       </div>
 
-      <div className="thank-you-content relative z-10 max-w-2xl px-6 flex flex-col items-center">
+      <div className="thank-you-content animate-fade-up relative z-10 max-w-2xl px-6 flex flex-col items-center">
 
         {/* Success Icon */}
         <div className="w-16 h-16 md:w-24 md:h-24 bg-green-500/10 border border-green-500/20 rounded-full flex items-center justify-center mb-6 md:mb-8 shadow-[0_0_50px_rgba(34,197,94,0.2)]">

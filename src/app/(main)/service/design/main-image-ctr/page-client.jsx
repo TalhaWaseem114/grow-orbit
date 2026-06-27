@@ -10,12 +10,7 @@ import {
   Camera, Maximize2, MousePointerClick, Search, Frame,
   AlertTriangle, Quote, Focus, Users, LayoutGrid, FileText
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroButton from "@/components/ui/HeroButton";
-
-gsap.registerPlugin(ScrollTrigger);
-
 /* ─────────────────────────────────────────────
    SHARED
 ───────────────────────────────────────────── */
@@ -44,15 +39,10 @@ const CheckItem = ({ children, light = false }) => (
    ═══════════════════════════════════════════════ */
 function MainImageHero() {
 
-  const floatRef = useRef(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    if (!floatRef.current) return;
-    gsap.to(floatRef.current, {
-      y: -14, duration: 4.5, repeat: -1, yoyo: true, ease: "power1.inOut",
-    });
   }, []);
 
   const searchGrid = [
@@ -245,7 +235,7 @@ function MainImageHero() {
           </div>
 
           {/* ── Right: CTR Design Studio ── */}
-          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px]" ref={floatRef}>
+          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px] animate-float">
 
             {/* Deep ambient glow */}
             <div className="absolute -inset-20 pointer-events-none">
@@ -981,27 +971,19 @@ function WhoItsFor() {
   const sectionRef = useRef(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const blocks = gsap.utils.toArray(".signal-block");
-      const ctx = gsap.context(() => {
-        blocks.forEach((block) => {
-          gsap.fromTo(block,
-            { opacity: 0, y: 60 },
-            {
-              opacity: 1, y: 0,
-              duration: 0.8,
-              ease: "power3.out",
-              scrollTrigger: {
-                trigger: block,
-                start: "top 85%",
-                toggleActions: "play none none none",
-              },
-            }
-          );
-        });
-      }, sectionRef);
-      return () => ctx.revert();
-    }
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("revealed");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    const blocks = document.querySelectorAll(".signal-block");
+    blocks.forEach(block => observer.observe(block));
+
+    return () => observer.disconnect();
   }, []);
 
   const signals = [
@@ -1058,6 +1040,17 @@ function WhoItsFor() {
 
   return (
     <section ref={sectionRef} className="py-16 lg:py-32 bg-[#fafafa] relative overflow-hidden">
+      <style>{`
+        .signal-block {
+          opacity: 0;
+          transform: translateY(40px);
+          transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .signal-block.revealed {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
       <div className="max-w-[1400px] mx-auto px-5 lg:px-12 relative z-10">
         <div className="mb-12 lg:mb-20">
           <SectionLabel>CTR Diagnostic</SectionLabel>

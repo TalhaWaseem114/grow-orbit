@@ -10,13 +10,7 @@ import {
   Lock, Flag, Users, BadgeCheck, Calendar, SearchCode, TrendingDown,
   Truck, Settings, DollarSign, Layers, Package
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroButton from "@/components/ui/HeroButton";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 const SectionLabel = ({ children, light = false }) => (
   <div className="flex items-center gap-3 mb-6">
@@ -31,12 +25,6 @@ const SectionLabel = ({ children, light = false }) => (
    01 — HERO
    ═══════════════════════════════════════════════ */
 function ProductHuntingHero() {
-  const floatRef = useRef(null);
-
-  useEffect(() => {
-    if (!floatRef.current) return;
-    gsap.to(floatRef.current, { y: -12, duration: 4.5, repeat: -1, yoyo: true, ease: "power1.inOut" });
-  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-[#fafafa]">
@@ -145,7 +133,7 @@ function ProductHuntingHero() {
           </div>
 
           {/* Right: Sourcing Intelligence Panel */}
-          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px] perspective-1000" ref={floatRef}>
+          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px] perspective-1000 animate-float">
             
             {/* Ambient Lighting */}
             <div className="absolute -inset-16 bg-gradient-to-br from-orange-500/30 via-transparent to-indigo-500/20 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />

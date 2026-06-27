@@ -9,7 +9,7 @@ import {
   Sparkles, Wand2, Monitor, Zap, Frame, Layout, MousePointer2,
   Focus
 } from "lucide-react";
-import gsap from "gsap";
+
 import HeroButton from "@/components/ui/HeroButton";
 
 /* ─────────────────────────────────────────────
@@ -28,19 +28,6 @@ const SectionLabel = ({ children, light = false }) => (
    01 — HERO
    ═══════════════════════════════════════════════ */
 function DesignHero() {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    if (!canvasRef.current) return;
-    // Elegant floating animation
-    gsap.to(canvasRef.current, {
-      y: -12,
-      duration: 4.5,
-      repeat: -1,
-      yoyo: true,
-      ease: "power1.inOut"
-    });
-  }, []);
 
   return (
     <section className="relative min-h-screen flex items-center pt-24 pb-16 overflow-hidden bg-zinc-950">
@@ -142,7 +129,7 @@ function DesignHero() {
           </div>
 
           {/* Right: Creative Pipeline Visual */}
-          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px]" ref={canvasRef}>
+          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px] animate-float">
             {/* Floating Palette Badge */}
             <div className="absolute -top-4 -left-6 bg-zinc-900 rounded-[20px] p-4 shadow-[0_20px_50px_rgba(0,0,0,0.5)] z-30 border border-white/5">
               <div className="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center text-white">

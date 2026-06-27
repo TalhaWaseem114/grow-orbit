@@ -9,15 +9,8 @@ import {
   AlertTriangle, DollarSign, Settings, RefreshCw, Eye,
   LayoutGrid, PenTool, LineChart, Award, Package, MousePointerClick,
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroButton from "@/components/ui/HeroButton";
 import PPCEfficiencyCTA from "./components/PPCEfficiencyCTA";
-
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 /* ─────────────────────────────────────────────
    SHARED
@@ -35,12 +28,9 @@ const SectionLabel = ({ children, light = false }) => (
    01 — HERO
    ═══════════════════════════════════════════════ */
 function PPCHero() {
-  const floatRef = useRef(null);
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
-    if (!floatRef.current) return;
-    gsap.to(floatRef.current, { y: -14, duration: 4.5, repeat: -1, yoyo: true, ease: "power1.inOut" });
     const t = setInterval(() => setTick(p => p + 1), 2000);
     return () => clearInterval(t);
   }, []);
@@ -189,7 +179,7 @@ function PPCHero() {
           </div>
 
           {/* Right: PPC Ad Engine Dashboard */}
-          <div className="lg:col-span-5 relative block mt-0 lg:mt-[60px] scale-[0.95] sm:scale-100 origin-top lg:origin-center self-start" ref={floatRef}>
+          <div className="lg:col-span-5 relative block mt-0 lg:mt-[70px] scale-[0.95] sm:scale-100 origin-top lg:origin-center self-start animate-float">
             <style>{`
               @keyframes gauge-fill { from { stroke-dashoffset: 283; } }
               @keyframes pulse-line { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
@@ -841,17 +831,20 @@ function PPCDoesNot() {
 function MetricsThatScale() {
   const sectionRef = useRef(null);
 
+  const [isVisible, setIsVisible] = useState(false);
+
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".ppc-outcome-card",
-        { y: 40, opacity: 0 },
-        { y: 0, opacity: 1, duration: 0.9, ease: "power3.out", stagger: 0.12,
-          scrollTrigger: { trigger: ".ppc-outcome-card", start: "top 88%" }
-        }
-      );
-    }, sectionRef);
-    return () => ctx.revert();
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.1 });
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    return () => observer.disconnect();
   }, []);
 
   const outcomes = [
@@ -881,7 +874,12 @@ function MetricsThatScale() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-5">
           {/* Featured dark card */}
-          <div className="ppc-outcome-card lg:col-span-3 group relative bg-zinc-950 rounded-[40px] p-10 overflow-hidden text-white transition-all duration-500 hover:shadow-2xl hover:shadow-orange-500/10">
+          <div
+            className={`ppc-outcome-card lg:col-span-3 group relative bg-zinc-950 rounded-[40px] p-10 overflow-hidden text-white transition-all duration-[800ms] ease-out hover:shadow-2xl hover:shadow-orange-500/10 ${
+              isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[40px]"
+            }`}
+            style={{ transitionDelay: "120ms" }}
+          >
             <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-orange-500/5 blur-[80px] group-hover:bg-orange-500/15 transition-all duration-700 pointer-events-none" />
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-8">
@@ -898,9 +896,17 @@ function MetricsThatScale() {
 
           {/* Other outcome cards */}
           {[outcomes[0], ...outcomes.slice(2)].map((o, i) => (
-            <div key={i} className={`ppc-outcome-card group relative rounded-[40px] p-8 overflow-hidden border transition-all duration-500 hover:shadow-xl hover:shadow-zinc-200/50 flex flex-col ${i === 0 ? "lg:col-span-3" : "lg:col-span-2"} bg-white border-zinc-100 hover:border-orange-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.06)]`}>
+            <div
+              key={i}
+              className={`ppc-outcome-card group relative rounded-[40px] p-8 overflow-hidden border transition-all duration-[800ms] ease-out hover:shadow-xl hover:shadow-zinc-200/50 flex flex-col ${
+                i === 0 ? "lg:col-span-3" : "lg:col-span-2"
+              } bg-white border-zinc-100 hover:border-orange-500/20 shadow-[0_10px_40px_rgba(0,0,0,0.06)] ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[40px]"
+              }`}
+              style={{ transitionDelay: `${i === 0 ? 0 : (i + 1) * 120}ms` }}
+            >
               <div className="flex items-start justify-between mb-6">
-                <div className="w-11 h-11 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-500">
+                <div className="w-11 h-11 rounded-xl bg-orange-550 border border-orange-100 flex items-center justify-center text-orange-500 group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-500">
                   {o.icon}
                 </div>
                 <div className="text-right">

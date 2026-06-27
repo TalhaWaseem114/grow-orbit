@@ -7,15 +7,9 @@ import {
   ChevronRight, Zap, TrendingUp, Star, Box, Search,
   Rocket, Shield, Heart
 } from "lucide-react";
-import gsap from "gsap";
-
 export default function Hero({ mode }) {
   const containerRef = useRef(null);
   const engineRef = useRef(null);
-
-  useEffect(() => {
-    // GSAP animations removed for maximum performance optimization
-  }, []);
 
   return (
     <section

@@ -1,9 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TrendingUp, ShieldCheck, Fingerprint } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
 
 const SectionLabel = ({ children }) => (
   <div className="flex items-center gap-3 mb-6">
@@ -16,15 +12,20 @@ const SectionLabel = ({ children }) => (
 
 export default function ExpectedOutcomes() {
   const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.fromTo(".outcome-hero-card",
-        { y: 60, opacity: 0 },
-        { y: 0, opacity: 1, duration: 1, ease: "power3.out", stagger: 0.15, scrollTrigger: { trigger: ".outcome-hero-card", start: "top 85%" } }
-      );
-    }, sectionRef);
-    return () => ctx.revert();
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setIsVisible(true);
+        observer.disconnect();
+      }
+    }, { threshold: 0.15 });
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+    return () => observer.disconnect();
   }, []);
 
   const stats = [
@@ -57,7 +58,13 @@ export default function ExpectedOutcomes() {
         {/* Row 1 */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-5">
           {stats.map((s, i) => (
-            <div key={i} className="outcome-hero-card group relative bg-zinc-950 rounded-[28px] md:rounded-[40px] p-8 md:p-10 overflow-hidden text-white transition-all duration-500 hover:shadow-2xl hover:shadow-orange-500/10">
+            <div
+              key={i}
+              className={`outcome-hero-card group relative bg-zinc-950 rounded-[28px] md:rounded-[40px] p-8 md:p-10 overflow-hidden text-white transition-all duration-[800ms] ease-out hover:shadow-2xl hover:shadow-orange-500/10 ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[40px]"
+              }`}
+              style={{ transitionDelay: `${i * 150}ms` }}
+            >
               <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-orange-500/5 blur-[80px] group-hover:bg-orange-500/15 transition-all duration-700 pointer-events-none" />
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-8">
@@ -79,7 +86,13 @@ export default function ExpectedOutcomes() {
         {/* Row 2 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {secondRow.map((s, i) => (
-            <div key={i} className="outcome-hero-card group relative bg-[#fafafa] rounded-[28px] md:rounded-[40px] p-8 md:p-10 overflow-hidden border border-zinc-100 shadow-[0_10px_20px_rgba(0,0,0,0.06)] hover:border-orange-500/20 transition-all duration-500 hover:shadow-xl hover:shadow-orange-500/5">
+            <div
+              key={i}
+              className={`outcome-hero-card group relative bg-[#fafafa] rounded-[28px] md:rounded-[40px] p-8 md:p-10 overflow-hidden border border-zinc-100 shadow-[0_10px_20px_rgba(0,0,0,0.06)] hover:border-orange-500/20 transition-all duration-[800ms] ease-out hover:shadow-xl hover:shadow-orange-500/5 ${
+                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-[40px]"
+              }`}
+              style={{ transitionDelay: `${(i + 3) * 150}ms` }}
+            >
               <div className="absolute inset-0 rounded-[32px] md:rounded-[40px] opacity-0 group-hover:opacity-[0.02] transition-opacity pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #f97316 1px, transparent 1px)", backgroundSize: "10px 10px" }} />
               <div className="relative z-10 flex flex-col md:flex-row md:items-center gap-8">
                 <div className="shrink-0">

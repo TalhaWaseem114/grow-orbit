@@ -15,7 +15,7 @@ import {
   ArrowRight,
   ChevronRight
 } from "lucide-react";
-import gsap from 'gsap';
+
 import HeroButton from "@/components/ui/HeroButton";
 
 const SectionLabel = ({ children }) => (
@@ -31,7 +31,6 @@ const SectionLabel = ({ children }) => (
 );
 
 const ListingOptimizationHero = () => {
-  const engineRef = useRef(null);
   const [logIndex, setLogIndex] = React.useState(0);
 
   useEffect(() => {
@@ -41,17 +40,6 @@ const ListingOptimizationHero = () => {
     }, 2500);
 
     return () => clearInterval(logInterval);
-  }, []);
-
-  useEffect(() => {
-    // Premium floating effect for the right-side engine
-    gsap.to(engineRef.current, {
-      y: -8,
-      duration: 4,
-      repeat: -1,
-      yoyo: true,
-      ease: "power1.inOut"
-    });
   }, []);
 
   return (
@@ -227,7 +215,7 @@ const ListingOptimizationHero = () => {
           </div>
 
           {/* Right: Search Matrix Dashboard */}
-          <div className="lg:col-span-5 relative block mt-0 lg:mt-[70px] scale-[0.95] sm:scale-100 origin-top lg:origin-center" ref={engineRef}>
+          <div className="lg:col-span-5 relative block mt-0 lg:mt-[70px] scale-[0.95] sm:scale-100 origin-top lg:origin-center animate-float-small">
             <style>{`
               @keyframes rank-fill { from { width: 0; } }
               @keyframes crawl-enter { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: translateX(0); } }

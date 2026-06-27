@@ -10,10 +10,7 @@ import {
   Globe, Radio, Gavel, Package, HeartHandshake, X, Check,
   AlertTriangle, Monitor, Heart, Rocket,
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-gsap.registerPlugin(ScrollTrigger);
 
 /* ─────────────────────────────────────────────
    SHARED
@@ -167,12 +164,6 @@ const serviceGroups = [
    01 — HERO
    ═══════════════════════════════════════════════ */
 function ManagementHero() {
-  const termRef = useRef(null);
-
-  useEffect(() => {
-    if (!termRef.current) return;
-    gsap.to(termRef.current, { y: -12, duration: 4.5, repeat: -1, yoyo: true, ease: "power1.inOut" });
-  }, []);
 
   return (
     <section className="relative min-h-[100svh] lg:min-h-screen flex items-center pt-32 pb-16 lg:pt-24 lg:pb-16 overflow-hidden bg-zinc-950">
@@ -289,7 +280,7 @@ function ManagementHero() {
           </div>
 
           {/* Right: Premium Operations Command Center */}
-          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px] perspective-1000" ref={termRef}>
+          <div className="lg:col-span-5 relative hidden lg:block self-start lg:mt-[60px] perspective-1000 animate-float">
             
             {/* Ambient Lighting - Deep Growth Orange & Purple Glow */}
             <div className="absolute -inset-16 bg-gradient-to-br from-orange-500/30 via-transparent to-violet-500/20 blur-[100px] rounded-full pointer-events-none mix-blend-screen" />

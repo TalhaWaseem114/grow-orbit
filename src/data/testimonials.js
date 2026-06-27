@@ -11,24 +11,24 @@
 export const caseStudyTestimonials = [
   {
     status: "SCALING PHASE",
-    category: "FOOD & BEVERAGE",
+    category: "ART SUPPLIES",
     rating: 5.0,
-    headline: ["61K Units Sold", "112% Growth"],
-    paragraph: "We revamped their listings and optimized PPC. Within 12 months, they hit 742K units sold with consistent monthly growth.",
+    headline: ["61.18K Units Sold", "112% Growth"],
+    paragraph: "We revamped their listings and optimized PPC. Within 12 months, they hit 742.9K units sold with consistent monthly growth.",
     stats: [
       { type: "growth", val: "+112%", label: "MoM Growth" },
-      { type: "units", val: "742K", label: "Yearly Units" },
-      { type: "revenue", val: "$6K+/day", label: "Daily Sales" }
+      { type: "units", val: "742.9K", label: "Yearly Units" },
+      { type: "revenue", val: "$6.7K/day", label: "Daily Sales" }
     ],
-    name: "SARAH J.",
-    role: "Founder, Lumina Bites",
-    image: "https://randomuser.me/api/portraits/women/68.jpg",
+    name: "MARCUS T.",
+    role: "Founder, Graffixx",
+    image: "https://randomuser.me/api/portraits/men/75.jpg",
     caseStudyLink: "/case-study/li-01",
     sellerCentralImage: "/images/saler centeral screens/1.jpg"
   },
   {
     status: "PREMIUM LAUNCH",
-    category: "LIFESTYLE & GEAR",
+    category: "CONSUMER ELECTRONICS",
     rating: 5.0,
     headline: ["1.15M Units Sold", "102% Yearly Growth"],
     paragraph: "Through technical 3D renders and premium A+ content, we completely transformed their conversion rates, leading to outstanding performance.",
@@ -37,26 +37,26 @@ export const caseStudyTestimonials = [
       { type: "units", val: "1.15M", label: "Yearly Units" },
       { type: "revenue", val: "$9.8K/day", label: "Daily Sales" }
     ],
-    name: "MARCUS C.",
-    role: "Founder, Nexa",
+    name: "DAVID R.",
+    role: "Founder, Kazvoo",
     image: "https://randomuser.me/api/portraits/men/44.jpg",
     caseStudyLink: "/case-study/li-02",
     sellerCentralImage: "/images/saler centeral screens/2.jpg"
   },
   {
     status: "REBRAND & SCALE",
-    category: "HOME & AUTO",
+    category: "HOME & SLEEP",
     rating: 5.0,
-    headline: ["812K Units Sold", "96% MoM Growth"],
+    headline: ["812.7K Units Sold", "96% MoM Growth"],
     paragraph: "We rebuilt their brand, listings, and creatives. Revenue grew consistently with thriving business metrics and top seller status.",
     stats: [
       { type: "growth", val: "+96%", label: "MoM Growth" },
-      { type: "units", val: "812K", label: "Yearly Units" },
+      { type: "units", val: "812.7K", label: "Yearly Units" },
       { type: "revenue", val: "$7.6K/day", label: "Daily Sales" }
     ],
-    name: "DAVID R.",
-    role: "Founder, Kazvo",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
+    name: "SARAH J.",
+    role: "Founder, Dunova",
+    image: "https://randomuser.me/api/portraits/women/68.jpg",
     caseStudyLink: "/case-study/li-03",
     sellerCentralImage: "/images/saler centeral screens/3.jpg"
   },

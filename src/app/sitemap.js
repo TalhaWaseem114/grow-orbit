@@ -51,8 +51,7 @@ export default async function sitemap() {
     '/service/ppc-efficiency',
     '/service/listing-optimization',
     '/service/design-creative',
-    '/get-started/amazon-services-landing',
-    '/get-started/design-creative-landing',
+
     '/service/account-ops',
     '/service/amazon-dsp',
     '/service/growth-automation',

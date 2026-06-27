@@ -24,7 +24,9 @@ const projects = [
     title: "$28K/month in 60 days. Zero history. Zero reviews.",
     growth: "$28K/mo",
     metric: "Revenue at Day 60",
-    image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop",
+    unitsSold12mo: "742.9K",
+    image: "/newUpload/main images.jpg",
+    sellerCentralImage: "/images/saler centeral screens/1.jpg",
     niche: "Alcohol Markers · Art & Hobby",
     accentColor: "#f97316",
     icon: <Palette size={14} />,
@@ -57,7 +59,9 @@ const projects = [
     title: "Beating Philips with zero reviews. ACoS 52% to 18%.",
     growth: "$47K/mo",
     metric: "Revenue at Day 90",
-    image: "https://images.unsplash.com/photo-1560807707-8cc77767d783?q=80&w=800&auto=format&fit=crop",
+    unitsSold12mo: "1.15M",
+    image: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg",
+    sellerCentralImage: "/images/saler centeral screens/2.jpg",
     niche: "Nose Trimmer · Grooming Electronics",
     accentColor: "#22d3ee",
     icon: <Activity size={14} />,
@@ -85,35 +89,37 @@ const projects = [
   },
   {
     id: "li-03",
-    brand: "Dunova",
-    category: "Home & Sleep · Weighted Blanket",
-    title: "Outselling Gravity Blanket. $52K/month in 85 days.",
-    growth: "$52K/mo",
-    metric: "Revenue at Day 85",
-    image: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=800&auto=format&fit=crop",
-    niche: "Weighted Blanket · Sleep & Wellness",
-    accentColor: "#a78bfa",
-    icon: <Moon size={14} />,
-    problem: "Gravity Blanket owns the category with a $15 million marketing budget and the patent on the category name. A new brand at $69 can't compete on recognition — it has to compete on proof.",
-    solution: "We couldn't let buyers feel the weight. So we showed them everything else — the science behind Deep Pressure Stimulation, bead-fill cross-sections, cortisol reduction diagrams, and a lifestyle hero that made buyers see themselves in the product.",
-    hook: "Everyone Shot the Blanket. We Shot the Moment.",
-    hookDesc: "In a search row of 8 flat product shots, a single human moment — soft bedroom light, a person fully wrapped and at peace — is the only thumbnail that creates an emotional response. That's not design preference. It's why CTR hit 4.6% in a category where 1.8% was the baseline.",
+    brand: "Lumina Bites",
+    category: "Grocery & Gourmet · Snacks",
+    title: "112% MoM Growth. 742K Units Sold.",
+    growth: "+112%",
+    metric: "MoM Growth",
+    unitsSold12mo: "742K",
+    image: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg",
+    sellerCentralImage: "/images/saler centeral screens/3.jpg",
+    niche: "Premium Cookies · Grocery",
+    accentColor: "#f59e0b",
+    icon: <Layers size={14} />,
+    problem: "Lumina Bites had delicious, high-quality cookies, but their product images didn't convey the premium taste and texture. They needed visuals that highlighted the quality and crunch.",
+    solution: "We created a full suite of listing images that showcased the cookies in lifestyle settings, highlighted the premium ingredients, and used engaging typography to emphasize the texture and taste. Optimized specifically for mobile browsing.",
+    hook: "Taste Through the Screen",
+    hookDesc: "We used high-contrast lighting and extreme close-ups of the ingredients to make the cookies look irresistible, instantly raising the perceived value and conversion rate.",
     stats: [
-      { label: "Timeline",       val: "85 Days",    icon: <Zap size={14} className="text-violet-400" /> },
-      { label: "Peak ROAS",      val: "9.1x",       icon: <Award size={14} className="text-violet-400" /> },
-      { label: "Subscribe Rate", val: "41%",        icon: <CheckCircle2 size={14} className="text-violet-400" /> },
+      { label: "Timeline",       val: "14 Days",    icon: <Zap size={14} className="text-amber-500" /> },
+      { label: "Daily Sales",    val: "$6K+",       icon: <Award size={14} className="text-amber-500" /> },
+      { label: "Buy Box",        val: "99%",        icon: <CheckCircle2 size={14} className="text-amber-500" /> },
     ],
     analytics: {
-      growth:    "$52.4K",
-      peakRoas:  "9.1x",
-      ctrLift:   "+156%",
-      acos:      "13%",
+      growth:    "+112%",
+      peakRoas:  "5.8x",
+      ctrLift:   "+85%",
+      acos:      "15%",
       dataScale: [0, 1, 6, 17, 36, 58, 72, 88, 96, 100],
     },
     drivers: [
-      { t: "Lifestyle CTR",     d: "Human lifestyle hero — +156% CTR vs flat product shots. Only emotional image in search." },
-      { t: "Tactile A+",        d: "Bead-fill cross-sections, sleep science diagrams. CVR 3.4% → 10.2% — tripled in 11 days." },
-      { t: "Gift PPC Clusters", d: "Sleep intent + gifting campaigns. ACoS 47% → 13%. 41% of buyers on Subscribe & Save." },
+      { t: "Ingredient Visuals",  d: "Close-up shots of premium ingredients to justify a higher price point." },
+      { t: "Texture Highlights",  d: "Lighting optimized to show crunch and freshness." },
+      { t: "Mobile Optimization", d: "Large typography and clear messaging designed for small screens." },
     ],
   },
 ];
@@ -158,40 +164,70 @@ export default function CaseStudyIndex() {
 
       {/* ── PROJECT GRID ── */}
       <section className="px-6 mb-28">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="max-w-[1100px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
           {projects.map((project) => (
             <Link href={`/case-study/${project.id}`} key={project.id} className="group cursor-pointer block no-underline">
-              <div className="relative rounded-[32px] sm:rounded-[40px] overflow-hidden shadow-[0_20px_50px_-10px_rgba(0,0,0,0.06)] border border-zinc-100 bg-white transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 aspect-square sm:aspect-[4/5]">
-                <Image
-                  src={project.image}
-                  alt={project.brand}
-                  fill
-                  className="object-cover transition-transform duration-1000 group-hover:scale-110 group-hover:rotate-1"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+              <div className="relative rounded-[32px] sm:rounded-[40px] overflow-hidden shadow-[0_20px_50px_-10px_rgba(0,0,0,0.06)] border border-zinc-100 bg-white transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 aspect-[2/3] sm:aspect-[5/8] flex flex-col">
+
+                {/* Upper part: Product Image */}
+                <div className="relative w-full h-1/2 overflow-hidden border-b border-zinc-100">
+                  <Image
+                    src={project.image}
+                    alt={project.brand}
+                    fill
+                    className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+                </div>
+
+                {/* Bottom part: Seller Central Image */}
+                <div className="relative w-full flex-1 overflow-hidden rounded-t-[24px] sm:rounded-t-[32px] z-10 -mt-6 sm:-mt-8 border-t border-white/10 shadow-[0_-10px_30px_rgba(0,0,0,0.15)]">
+                  <Image
+                    src={project.sellerCentralImage}
+                    alt={`${project.brand} Seller Central`}
+                    fill
+                    className="object-cover object-top transition-transform duration-1000 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                  {/* Very light overlay to keep screenshot extremely clear and bright */}
+                  <div className="absolute inset-0 bg-black/[0.04] group-hover:bg-transparent transition-colors duration-500" />
+                </div>
 
                 {/* Category badge */}
-                <div className="absolute top-5 left-5">
-                  <div className="flex items-center gap-1.5 bg-black/40 backdrop-blur-md border border-white/10 rounded-full px-3 py-1.5">
-                    <span style={{ color: project.accentColor }}>{project.icon}</span>
-                    <span className="text-[9px] font-bold uppercase tracking-widest text-white/80">{project.category}</span>
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 z-20">
+                  <div className="flex items-center justify-center gap-1.5 bg-black/70 backdrop-blur-xl border border-white/10 border-t-0 rounded-b-[20px] px-5 py-1.5 shadow-xl">
+                    <span style={{ color: project.accentColor }} className="shrink-0">{project.icon}</span>
+                    <span className="text-[8px] font-bold uppercase tracking-widest text-white/90 whitespace-nowrap">{project.category}</span>
                   </div>
                 </div>
 
-                <div className="absolute bottom-8 left-8 right-8 text-white">
-                  <h3 className="text-xl font-black leading-tight mb-5 tracking-tight uppercase">{project.title}</h3>
-                  <div className="flex items-center justify-between pt-5 border-t border-white/10">
-                    <div>
-                      <span className="text-2xl font-black tracking-tighter" style={{ color: project.accentColor }}>{project.growth}</span>
-                      <p className="text-[9px] uppercase tracking-widest text-white/50 mt-1 font-mono">{project.metric}</p>
+                {/* Redesigned Floating Info Overlay Card (Glassmorphic) */}
+                <div className="absolute bottom-4 left-4 right-4 bg-zinc-950/90 backdrop-blur-md border border-white/10 p-4 sm:p-5 rounded-[24px] text-white z-20 flex flex-col shadow-[0_15px_40px_rgba(0,0,0,0.5)]">
+                  <div className="mb-1 flex items-center gap-2">
+                    <span className="text-[9px] font-black uppercase tracking-widest" style={{ color: project.accentColor }}>{project.brand}</span>
+                    <span className="text-[8px] font-bold uppercase tracking-widest text-white/50">{project.niche.split(' · ')[0]}</span>
+                  </div>
+                  <h3 className="text-xs sm:text-[13px] font-bold leading-snug mb-3 tracking-tight text-white/90 group-hover:text-white transition-colors line-clamp-2">
+                    {project.title}
+                  </h3>
+                  <div className="flex items-center justify-between pt-2.5 border-t border-white/15">
+                    <div className="flex gap-5">
+                      <div>
+                        <span className="text-lg sm:text-xl font-black tracking-tighter text-white">{project.growth}</span>
+                        <p className="text-[7px] uppercase tracking-widest text-white/50 mt-0.5 font-mono">{project.metric}</p>
+                      </div>
+                      <div>
+                        <span className="text-lg sm:text-xl font-black tracking-tighter" style={{ color: project.accentColor }}>{project.unitsSold12mo}</span>
+                        <p className="text-[7px] uppercase tracking-widest text-white/50 mt-0.5 font-mono">Units Sold (12mo)</p>
+                      </div>
                     </div>
-                    <div className="w-11 h-11 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-all"
-                      style={{ border: `1px solid ${project.accentColor}40` }}>
-                      <ArrowUpRight size={18} className="text-white" />
+                    <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center group-hover:scale-110 transition-all border border-white/20 group-hover:bg-white/20">
+                      <ArrowUpRight size={14} className="text-white" />
                     </div>
                   </div>
                 </div>
+
               </div>
             </Link>
           ))}

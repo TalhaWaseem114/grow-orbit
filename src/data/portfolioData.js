@@ -849,6 +849,81 @@ export const PORTFOLIO_ITEMS = [
       role: "Brand Manager, Aethera",
     },
   },
+  /* ─── LISTING IMAGES & A+ (GRAFFIXX) ─── */
+  {
+    id: "li-14",
+    category: "Listing Images",
+    niche: "Art Supplies",
+    brandName: "Graffixx",
+    outcome: "#1 Best Seller",
+    badge: { value: "#1", label: "Best Seller" },
+    tags: ["Infographics", "Color Charts", "Lifestyle"],
+    services: ["Listing Images", "A+ Content", "Main Image CTR"],
+    materials: ["Alcohol Markers"],
+    src: "/newUpload/main images.jpg",
+    isDark: false,
+    timeline: "10 Days",
+    challenge: "Graffixx created high-quality alcohol markers, but their Amazon listings lacked the visual appeal to stand out against established brands. Customers needed to see the color vibrancy, blending capabilities, and what was included in the set.",
+    solution: "We designed a vibrant, comprehensive set of listing images and A+ content. We included detailed color charts, blending tutorials, lifestyle shots of artists using the markers, and clear 'what's included' graphics to build trust and drive conversions.",
+    serviceDetails: {
+      "Listing Images": {
+        description: "A bright, informative set of listing images emphasizing color versatility, blending techniques, and the dual-tip design.",
+        images: [
+          { src: "/newUpload/main images.jpg", label: "Hero Image" },
+          { src: "/newUpload/whats included.jpg", label: "What's Included" },
+          { src: "/newUpload/shades.jpg", label: "Color Shades" },
+          { src: "/newUpload/tips.jpg", label: "Dual Tips" },
+          { src: "/newUpload/image versatality.jpg", label: "Versatility" },
+          { src: "/newUpload/lifestyle cartoon.jpg", label: "Lifestyle Art" },
+          { src: "/newUpload/collage.jpg", label: "Art Collage" },
+        ],
+      },
+      "A+ Content": {
+        description: "Premium A+ Content modules that walk the customer through every artistic possibility, from smooth gradients to fine details.",
+        images: [
+          { src: "/newUpload/new banner.jpg", label: "Brand Header" },
+          { src: "/newUpload/Artboard 1 copy.jpg", label: "Blending Tutorial" },
+          { src: "/newUpload/Artboard 2 (1).jpg", label: "Artist Lifestyle" },
+          { src: "/newUpload/Artboard 3 (1).jpg", label: "Butterfly Art" },
+          { src: "/newUpload/Artboard 4 (1).jpg", label: "Leaves Art" },
+          { src: "/newUpload/Artboard 5 (1).jpg", label: "Pomegranate Art" },
+          { src: "/newUpload/Artboard 6 (1).jpg", label: "Violet Art" },
+          { src: "/newUpload/Artboard 7 (1).jpg", label: "Ocean Glass Art" },
+          { src: "/newUpload/Artboard 1 copy 12-1.jpg", label: "Ocean Glass Detail" },
+          { src: "/newUpload/Artboard 1 copy 12.jpg", label: "Artist Details" },
+          { src: "/newUpload/Artboard 1 copy 4.jpg", label: "Swatches" },
+          { src: "/newUpload/Artboard 1 copy 5.jpg", label: "Comparison" },
+        ],
+      },
+      "Main Image CTR": {
+        description: "Optimized high-contrast hero image showing the full set and carrying case to capture consumer attention and maximize CTR against competitors.",
+        images: [
+          { src: "/newUpload/main images.jpg", label: "Optimised Hero (After)" }
+        ]
+      },
+    },
+    gallery: [
+      { src: "/newUpload/main images.jpg", label: "Hero Image" },
+      { src: "/newUpload/whats included.jpg", label: "What's Included" },
+      { src: "/newUpload/shades.jpg", label: "Color Shades" },
+      { src: "/newUpload/tips.jpg", label: "Dual Tips" },
+      { src: "/newUpload/image versatality.jpg", label: "Versatility" },
+      { src: "/newUpload/lifestyle cartoon.jpg", label: "Lifestyle Art" },
+      { src: "/newUpload/collage.jpg", label: "Art Collage" },
+      { src: "/newUpload/new banner.jpg", label: "Brand Banner" },
+    ],
+    metrics: [
+      { label: "MoM Growth", value: "+145%" },
+      { label: "Category Rank", value: "#1" },
+      { label: "Review Rate", value: "4.8★" },
+      { label: "Buy Box", value: "99%" },
+    ],
+    testimonial: {
+      quote: "The new visuals completely transformed our brand perception. We quickly became a top seller in the highly competitive art supplies category.",
+      author: "Alex G.",
+      role: "Founder, Graffixx",
+    },
+  },
 ];
 
 /* ═══════════════════════════════════════════════

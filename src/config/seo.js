@@ -186,14 +186,6 @@ export const METADATA_MAP = {
     title: 'FBA vs FBM vs 3PL Calculator & Comparison | Grow Orbit',
     description: 'Determine whether to fulfill via Amazon (FBA), in-house (FBM), or using a third-party logistics provider (3PL).'
   },
-  '/get-started/amazon-services-landing': {
-    title: 'Scale Amazon Operations & PPC | Grow Orbit',
-    description: 'We run your Amazon PPC advertising, organic ranking SEO, and product sourcing operations so you can focus on scale instead of management. Book a strategy call.'
-  },
-  '/get-started/design-creative-landing': {
-    title: 'Amazon Design & Visual Engineering | Grow Orbit',
-    description: 'We design scroll-stopping listing images, premium A+ Content modules, and custom storefronts built specifically to increase your conversion rate.'
-  },
   '/thank-you': {
     title: 'Thank You for Reaching Out | Grow Orbit',
     description: 'Thank you for booking your strategy audit. We\'ve received your details and will be in touch shortly.'

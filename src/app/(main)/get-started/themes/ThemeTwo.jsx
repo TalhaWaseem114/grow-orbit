@@ -10,7 +10,6 @@ import HeroSectionThemeTwo from "../components/HeroSectionThemeTwo";
 import DiagnosesSection from "../components/DiagnosesSection";
 import SellerCentralShowcase from "../components/SellerCentralShowcase";
 import OrbitBridgeCTA from "@/components/sections/OrbitBridgeCTA";
-import ProofNumbers from "../components/ProofNumbers";
 
 // Below-the-fold — lazy-loaded to reduce initial bundle
 const ServicesSectionThemeTwo = dynamic(() => import("../components/ServicesSectionThemeTwo"), { ssr: false });
@@ -68,7 +67,6 @@ export default function ThemeTwo({ scrolled, activeSections = {} }) {
       {activeSections.Diagnoses !== false && <DiagnosesSection />}
       <SellerCentralShowcase />
       {activeSections.Marquee !== false && <ServicesMarquee />}
-      {activeSections.Proof !== false && <ProofNumbers />}
 
       <OrbitBridgeCTA scrollToForm={scrollToForm} />
 

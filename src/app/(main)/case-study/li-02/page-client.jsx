@@ -154,9 +154,9 @@ function PhasePerformanceDashboard() {
 
                 {/* Content (Title + Desc) */}
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-black text-base uppercase tracking-tight mb-2 text-white group-hover:text-cyan-400 transition-colors duration-300">
+                  <h3 className="font-black text-base uppercase tracking-tight mb-2 text-white group-hover:text-cyan-400 transition-colors duration-300">
                     {p.label}
-                  </h4>
+                  </h3>
                   <p className="text-[13px] font-light leading-relaxed text-zinc-400">
                     {p.action}
                   </p>
@@ -262,18 +262,27 @@ function PhasePerformanceDashboard() {
 /* ─── VISUAL DATA ─── */
 const visualProof = {
   listingImages: [
-    { src: "https://images.unsplash.com/photo-1560807707-8cc77767d783?q=80&w=800&auto=format&fit=crop",   label: "Dark BG Hero — Category First" },
-    { src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=800&auto=format&fit=crop",   label: "Blade Precision Close-Up" },
-    { src: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop", label: "Spec Infographic — IPX7 / Battery" },
-    { src: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=800&auto=format&fit=crop",   label: "Grooming Lifestyle Scene" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872137/grow_orbit_portfolio/kazvo_nose_trimmer/main_image.jpg", label: "Hero Image" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872118/grow_orbit_portfolio/kazvo_nose_trimmer/2.jpg", label: "Precision Breakdown" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872120/grow_orbit_portfolio/kazvo_nose_trimmer/3.jpg", label: "Lifestyle Integration" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872121/grow_orbit_portfolio/kazvo_nose_trimmer/4.jpg", label: "Ultra-Quiet Motor" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872122/grow_orbit_portfolio/kazvo_nose_trimmer/5.jpg", label: "USB-C Charging" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872124/grow_orbit_portfolio/kazvo_nose_trimmer/6.jpg", label: "360 Blade System" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872125/grow_orbit_portfolio/kazvo_nose_trimmer/7.jpg", label: "Hassle-Free Maintenance" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872126/grow_orbit_portfolio/kazvo_nose_trimmer/8.jpg", label: "Accessories Suite" },
   ],
   aPlus: [
-    { src: "https://images.unsplash.com/photo-1560807707-8cc77767d783?q=80&w=800&auto=format&fit=crop", label: "Precision Trimming Hero" },
-    { src: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=800&auto=format&fit=crop", label: "IPX7 Waterproof Module" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872128/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-1.jpg", label: "Brand Header" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872129/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-2.jpg", label: "Elegance & Detail" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872130/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-3.jpg", label: "Total Hygiene" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872131/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-4.jpg", label: "High-Speed Precision" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872133/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-5.jpg", label: "Ergonomic Design" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872134/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-6.jpg", label: "Powerful Battery" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872135/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-7.jpg", label: "Ultra-Quiet Performance" },
   ],
   brandStory: [
-    { src: "https://images.unsplash.com/photo-1546435770-a3e426bf472b?q=80&w=800&auto=format&fit=crop",   label: "The Precision Standard" },
-    { src: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop", label: "Engineered for Daily Use" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872133/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-5.jpg", label: "Ergonomic Design" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872135/grow_orbit_portfolio/kazvo_nose_trimmer/aplus-7.jpg", label: "Ultra-Quiet Performance" },
   ],
 };
 
@@ -353,9 +362,9 @@ export default function CaseStudyKazvoo() {
           <div className="bg-white rounded-[24px] sm:rounded-[32px] border border-zinc-100 p-6 sm:p-10 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
             <div className="absolute top-0 left-0 w-1.5 h-full bg-zinc-900 rounded-l-[24px] sm:rounded-l-[32px]" />
             <SectionLabel>The Problem</SectionLabel>
-            <h3 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">
+            <h2 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">
               A market where buyers trust brand names, not products.
-            </h3>
+            </h2>
             <p className="text-zinc-500 text-base font-light leading-relaxed">
               The grooming electronics category defaults to brand recognition. Philips Norelco has 80,000 reviews. A new brand at $24.99 with zero history has one opening move: make the specs undeniable before the buyer ever reaches the review count. Most new brands try to compete on price. That's a race to zero.
             </p>
@@ -363,9 +372,9 @@ export default function CaseStudyKazvoo() {
           <div className="bg-white rounded-[24px] sm:rounded-[32px] border border-zinc-100 p-6 sm:p-10 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
             <div className="absolute top-0 left-0 w-1.5 h-full bg-cyan-500 rounded-l-[24px] sm:rounded-l-[32px]" />
             <SectionLabel>Our Answer</SectionLabel>
-            <h3 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">
+            <h2 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">
               Compete on specifications.<br />Make them impossible to ignore.
-            </h3>
+            </h2>
             <p className="text-zinc-700 text-base font-light leading-relaxed">
               IPX7 waterproofing. 90-minute runtime. USB-C fast charging. These specs beat most $40 trimmers on paper. Our job was to make those specs the very first thing a buyer sees — not the seventh bullet point. Visual architecture, not price cuts, is how you win against brand equity.
             </p>
@@ -377,9 +386,9 @@ export default function CaseStudyKazvoo() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(34,211,238,0.08),transparent_55%)]" />
           <div className="relative z-10 max-w-xl">
             <p className="text-cyan-400 font-mono text-[10px] uppercase tracking-[0.3em] mb-2">Launching in electronics or grooming?</p>
-            <h4 className="text-white text-3xl font-black tracking-tighter uppercase mb-2 leading-tight">
+            <h2 className="text-white text-3xl font-black tracking-tighter uppercase mb-2 leading-tight">
               Your specs can win.<br />If shoppers can actually see them.
-            </h4>
+            </h2>
             <p className="text-zinc-400 text-sm font-light leading-relaxed">
               If your CTR is below 3% or your ACoS above 25%, the problem isn't your product. It's the system around it. We'll audit your listing in 15 minutes and show you exactly what's bleeding revenue.
             </p>
@@ -392,13 +401,13 @@ export default function CaseStudyKazvoo() {
         {/* Before vs After */}
         <div className="bg-zinc-950 rounded-[24px] sm:rounded-[40px] p-6 sm:p-10 md:p-14 border border-white/5 relative overflow-hidden">
           <SectionLabel light>Day 1 vs Day 90</SectionLabel>
-          <h3 className="text-white text-2xl sm:text-3xl font-black uppercase tracking-tight mb-10 -mt-2">The exact numbers that changed.</h3>
+          <h2 className="text-white text-2xl sm:text-3xl font-black uppercase tracking-tight mb-10 -mt-2">The exact numbers that changed.</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div>
-              <h4 className="text-red-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
+              <h3 className="text-red-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
                 <span className="w-4 h-4 rounded-full bg-red-500/20 flex items-center justify-center text-[9px] text-red-400">✕</span>
                 Day 1 State
-              </h4>
+              </h3>
               <ul className="space-y-3">
                 {[
                   ["CTR",          "2.3%",    "identical to 400 white-background competitors"],
@@ -418,12 +427,12 @@ export default function CaseStudyKazvoo() {
               </ul>
             </div>
             <div>
-              <h4 className="text-emerald-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
+              <h3 className="text-emerald-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
                 <span className="w-4 h-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
                   <CheckCircle2 size={9} className="text-emerald-400" />
                 </span>
                 Day 90 State
-              </h4>
+              </h3>
               <ul className="space-y-3">
                 {[
                   ["CTR",          "5.6%",       "+142% — dark BG image stops scroll cold"],
@@ -450,10 +459,10 @@ export default function CaseStudyKazvoo() {
           <SectionLabel>The Image That Disrupted the Category</SectionLabel>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-white p-8 md:p-10 rounded-[40px] border border-zinc-100 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
             {/* Vertical thumbs */}
-            <div className="lg:col-span-1 hidden lg:flex flex-col gap-3">
+            <div className="lg:col-span-1 hidden lg:flex flex-col gap-3 overflow-y-auto no-scrollbar max-h-[500px] pr-1">
               {visualProof.listingImages.map((img, i) => (
                 <button key={i} onClick={() => setActiveListingImg(i)}
-                  className={`aspect-square rounded-xl overflow-hidden border-2 transition-all ${activeListingImg === i ? "border-cyan-500" : "border-zinc-200 hover:border-zinc-400"}`}>
+                  className={`aspect-square rounded-xl overflow-hidden border-2 transition-all shrink-0 ${activeListingImg === i ? "border-cyan-500" : "border-zinc-200 hover:border-zinc-400"}`}>
                   <img src={img.src} className="w-full h-full object-cover" alt="" />
                 </button>
               ))}
@@ -472,9 +481,9 @@ export default function CaseStudyKazvoo() {
 
             {/* Copy */}
             <div className="lg:col-span-5 flex flex-col justify-center">
-              <h3 className="text-2xl font-black tracking-tighter uppercase mb-3 leading-tight">
+              <h2 className="text-2xl font-black tracking-tighter uppercase mb-3 leading-tight">
                 Everyone used white.<br />We used black.
-              </h3>
+              </h2>
               <p className="text-zinc-500 text-sm font-light leading-relaxed mb-6">
                 It sounds simple. It is. In a search row of 8 identical white-background trimmers, a single dark matte image is the only thing the eye stops on. That one formatting decision drove 142% more clicks before a single keyword or bid was changed.
               </p>
@@ -517,97 +526,15 @@ export default function CaseStudyKazvoo() {
               <span className="text-[9px] font-black text-violet-500 uppercase tracking-widest bg-violet-50 border border-violet-100 px-3 py-1 rounded-full">A+ Preview</span>
             </div>
 
-            <div className="divide-y divide-zinc-100">
-              {/* Hero banner */}
-              <div className="relative cursor-pointer group overflow-hidden" style={{ height: "260px" }} onClick={() => setLightboxImage(visualProof.aPlus[0])}>
-                <img src={visualProof.aPlus[0].src} className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700" alt="" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute inset-0 flex items-end p-5 sm:p-10">
-                  <div className="text-white">
-                    <p className="text-[10px] font-mono text-violet-300 uppercase tracking-[0.3em] mb-2">Module 01 · Hero Banner</p>
-                    <h4 className="text-xl sm:text-2xl font-black uppercase tracking-tight">Precision. Waterproof. Professional.</h4>
-                  </div>
-                  <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm text-white text-[8px] font-bold uppercase px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
+            <div className="flex flex-col gap-[1px] bg-zinc-100 pb-[1px]">
+              {visualProof.aPlus.map((img, i) => (
+                <div key={i} className="relative cursor-pointer group overflow-hidden bg-white" onClick={() => setLightboxImage(img)}>
+                  <img src={img.src} className="w-full object-cover group-hover:opacity-95 transition-opacity" alt={img.label} />
+                  <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white text-[8px] font-bold uppercase px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
                     <ExternalLink size={9} /> Expand
                   </div>
                 </div>
-              </div>
-
-              {/* Split module */}
-              <div className="grid grid-cols-1 md:grid-cols-2">
-                <div className="p-6 sm:p-10 flex flex-col justify-center">
-                  <p className="text-[9px] font-mono text-violet-500 uppercase tracking-widest mb-2">Module 02 · Spec Visualisation</p>
-                  <h4 className="text-xl font-black uppercase tracking-tight mb-4 text-zinc-900">
-                    Specs that sell themselves —<br />when you can actually see them.
-                  </h4>
-                  <p className="text-zinc-500 text-sm font-light leading-relaxed mb-6">
-                    IPX7 waterproofing is a real competitive edge at this price point. Most sub-$30 trimmers are splash-resistant at best. But buried in bullet points, no buyer notices it exists. We visualised the waterproofing certification, 90-minute runtime, and USB-C fast charging in a single module that answered the 3 most common pre-purchase questions before buyers could click away.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {["IPX7 Certified", "90-Min Battery", "USB-C Fast Charge"].map((t, i) => (
-                      <span key={i} className="text-[9px] font-bold uppercase tracking-widest border border-zinc-200 px-3 py-1 rounded-lg text-zinc-400">{t}</span>
-                    ))}
-                  </div>
-                </div>
-                <div className="relative cursor-pointer group overflow-hidden" style={{ minHeight: "240px" }} onClick={() => setLightboxImage(visualProof.aPlus[1])}>
-                  <img src={visualProof.aPlus[1].src} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="" />
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-violet-500 text-white p-4 text-center text-[10px] font-bold uppercase tracking-widest">
-              5 additional comparison, lifestyle, and certification modules on the live listing
-            </div>
-          </div>
-        </div>
-
-        {/* ─── BRAND STORY ─── */}
-        <div>
-          <SectionLabel>Brand Story · Positioning Over Price</SectionLabel>
-          <div className="bg-zinc-950 rounded-[40px] p-10 lg:p-14 border border-white/5 relative overflow-hidden">
-            <div className="absolute inset-0 opacity-[0.18]">
-              <img src={visualProof.brandStory[0].src} className="w-full h-full object-cover blur-3xl" alt="" />
-            </div>
-            <div className="absolute inset-0 bg-zinc-950/65" />
-            <div className="relative z-10 flex flex-col lg:flex-row items-start gap-12">
-              <div className="max-w-lg">
-                <div className="w-14 h-14 rounded-full bg-cyan-500 flex items-center justify-center mb-8 shadow-2xl">
-                  <Activity size={26} className="text-white" />
-                </div>
-                <h3 className="text-white text-4xl lg:text-5xl font-black tracking-tighter uppercase mb-4 leading-none">
-                  Kazvoo.<br />
-                  <span className="text-cyan-500">Grooming built</span><br />
-                  <span className="italic font-light text-zinc-400 lowercase" style={{ fontFamily: "'Playfair Display', serif" }}>for precision.</span>
-                </h3>
-                <p className="text-zinc-400 text-base font-light italic leading-relaxed mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  "We positioned Kazvoo not as the cheap alternative to Philips — but as a deliberate professional choice. That shift in positioning is the reason our return rate stayed below 4% from month one. Buyers who choose with conviction don't regret the purchase."
-                </p>
-                <Link href="/contact" className="bg-white text-zinc-900 px-7 py-3.5 rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-cyan-500 hover:text-white transition-all no-underline shadow-xl inline-block">
-                  Build My Brand Positioning
-                </Link>
-              </div>
-              <div className="flex-1 w-full flex flex-col gap-4">
-                <div className="flex items-center justify-between lg:hidden px-1">
-                  <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                    Brand Assets <span className="w-8 h-px bg-white/10" />
-                  </p>
-                  <p className="text-[10px] font-mono text-cyan-400 uppercase tracking-widest animate-pulse">
-                    Slide to next →
-                  </p>
-                </div>
-                <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 w-full snap-x snap-mandatory">
-                  {visualProof.brandStory.map((img, i) => (
-                    <div key={i} className="shrink-0 w-[85%] sm:w-64 lg:flex-1 rounded-2xl overflow-hidden border border-white/10 relative group cursor-pointer snap-center" style={{ height: "360px" }} onClick={() => setLightboxImage(img)}>
-                      <img src={img.src} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                      <div className="absolute bottom-5 left-5 right-5">
-                        <p className="text-[8px] font-bold uppercase tracking-[0.3em] text-cyan-400 mb-1">Asset 0{i + 1}</p>
-                        <h4 className="text-white font-black text-sm uppercase tracking-tight">{img.label}</h4>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -646,7 +573,7 @@ export default function CaseStudyKazvoo() {
           <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-12">
             <div className="max-w-3xl">
               <SectionLabel>Client Voice</SectionLabel>
-              
+
               <div className="space-y-12">
                 {/* Primary Testimonial */}
                 <div>
@@ -656,13 +583,13 @@ export default function CaseStudyKazvoo() {
                   <p className="text-zinc-700 text-2xl md:text-[32px] font-light italic leading-tight mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
                     "Entering electronics on Amazon is brutal — you're competing against brands with 50,000 reviews and massive ad budgets. Grow Orbit found us a positioning angle that made Kazvoo's specs impossible to ignore. Our ACoS went from hemorrhaging to profitable in under 90 days."
                   </p>
-                  
+
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md grayscale hover:grayscale-0 transition-all duration-500 flex-shrink-0">
-                      <img 
-                        src="https://randomuser.me/api/portraits/men/44.jpg" 
-                        alt="Julian Vane" 
-                        className="w-full h-full object-cover" 
+                      <img
+                        src="https://randomuser.me/api/portraits/men/44.jpg"
+                        alt="Julian Vane"
+                        className="w-full h-full object-cover"
                       />
                     </div>
                     <div>
@@ -782,7 +709,12 @@ export default function CaseStudyKazvoo() {
           </div>
         </div>
       </div>
-      <SellerCentralShowcase />
+      <SellerCentralShowcase
+        unitsSold12mo="1.15M"
+        growthVsLastYear="135%"
+        buyBoxRate="99%"
+        highlightIndex={1}
+      />
     </main>
   );
 }

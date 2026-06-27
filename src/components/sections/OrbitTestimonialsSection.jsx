@@ -208,10 +208,7 @@ export default function OrbitTestimonialsSection() {
         {/* Global Stats Bar */}
         <div className="mt-20 relative z-10">
           <div
-            className="bg-zinc-50 border border-zinc-100 rounded-3xl py-10 px-4 md:px-10 md:py-8 grid grid-cols-2 md:flex md:flex-nowrap items-center justify-between gap-x-2 gap-y-10 md:gap-4"
-            style={{
-              boxShadow: "none"
-            }}
+            className="bg-white border border-zinc-100/80 rounded-[24px] py-7 px-6 md:px-8 lg:px-10 grid grid-cols-2 md:grid-cols-5 gap-y-8 gap-x-4 md:gap-x-2 lg:gap-x-6 shadow-[0_12px_40px_rgba(0,0,0,0.015)]"
           >
             {[
               { icon: Users,      val: "80+",   label: "Brands Scaled"      },
@@ -222,28 +219,23 @@ export default function OrbitTestimonialsSection() {
             ].map((stat, idx) => (
               <div 
                 key={idx} 
-                className={`flex items-center gap-3 sm:gap-4 relative group ${idx === 4 ? "col-span-2 justify-center md:col-span-1 md:justify-start" : ""}`}
+                className={`flex items-center gap-3 relative group ${
+                  idx === 4 ? "col-span-2 md:col-span-1 justify-center md:justify-start" : ""
+                }`}
               >
-                {/* Icon */}
-                <div className={`rounded-full bg-zinc-900 flex items-center justify-center shrink-0 shadow-lg group-hover:scale-110 transition-transform duration-300 ${idx === 4 ? "w-11 h-11 sm:w-12 sm:h-12" : "w-10 h-10 sm:w-12 sm:h-12"}`}>
-                  <stat.icon size={idx === 4 ? 18 : 16} className="text-orange-500" />
+                {/* Icon (No shadow, soft pill BG) */}
+                <div className="w-10 h-10 rounded-xl bg-orange-500/[0.07] flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:bg-orange-500/[0.12]">
+                  <stat.icon size={16} className="text-orange-500" />
                 </div>
                 {/* Text */}
                 <div className="flex flex-col">
-                  <span className={`${idx === 4 ? "text-[18px] sm:text-[20px]" : "text-[16px] sm:text-[18px]"} md:text-[22px] font-black text-zinc-900 leading-tight uppercase`}>
+                  <span className="text-lg md:text-xl font-extrabold text-zinc-900 leading-none tracking-tight group-hover:text-orange-500 transition-colors">
                     {stat.val}
                   </span>
-                  <span className={`${idx === 4 ? "text-[9px] sm:text-[10px]" : "text-[8px] sm:text-[9px]"} md:text-[10px] font-bold text-zinc-400 uppercase tracking-widest whitespace-nowrap`}>
+                  <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mt-1 group-hover:text-zinc-500 transition-colors">
                     {stat.label}
                   </span>
                 </div>
-                {/* Divider */}
-                {idx < 4 && idx % 2 === 0 && (
-                  <div className="hidden sm:block md:hidden absolute -right-2 top-1/2 -translate-y-1/2 w-px h-10 bg-orange-500/10" />
-                )}
-                {idx < 4 && (
-                  <div className="hidden md:block absolute -right-2 top-1/2 -translate-y-1/2 w-px h-10 bg-orange-500/10" />
-                )}
               </div>
             ))}
           </div>

@@ -111,9 +111,9 @@ function PhasePerformanceDashboard() {
 
                 {/* Content (Title + Desc) */}
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-black text-base uppercase tracking-tight mb-2 text-white group-hover:text-orange-400 transition-colors duration-300">
+                  <h3 className="font-black text-base uppercase tracking-tight mb-2 text-white group-hover:text-orange-400 transition-colors duration-300">
                     {p.label}
-                  </h4>
+                  </h3>
                   <p className="text-[13px] font-light leading-relaxed text-zinc-400">
                     {p.action}
                   </p>
@@ -222,18 +222,26 @@ function PhasePerformanceDashboard() {
 /* ─── VISUAL DATA ─── */
 const visualProof = {
   listingImages: [
-    { src: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop", label: "Color Fan Hero Shot" },
-    { src: "https://images.unsplash.com/photo-1596568786082-27d5ec28e5f0?q=80&w=800&auto=format&fit=crop", label: "Nib Detail & Ink Flow" },
-    { src: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=800&auto=format&fit=crop", label: "Color Swatch Sheet" },
-    { src: "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?q=80&w=800&auto=format&fit=crop", label: "Artist Lifestyle" },
+    { src: "/newUpload/main images.jpg", label: "Hero Image" },
+    { src: "/newUpload/whats included.jpg", label: "What's Included" },
+    { src: "/newUpload/shades.jpg", label: "Color Shades" },
+    { src: "/newUpload/tips.jpg", label: "Dual Tips" },
+    { src: "/newUpload/image versatality.jpg", label: "Versatility" },
+    { src: "/newUpload/lifestyle cartoon.jpg", label: "Lifestyle Art" },
+    { src: "/newUpload/collage.jpg", label: "Art Collage" },
   ],
   aPlus: [
-    { src: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop", label: "Hero Banner Module" },
-    { src: "https://images.unsplash.com/photo-1596568786082-27d5ec28e5f0?q=80&w=800&auto=format&fit=crop", label: "Dual Tip Feature" },
+    { src: "/newUpload/new banner.jpg", label: "Brand Header" },
+    { src: "/newUpload/Artboard 1 copy.jpg", label: "Blending Tutorial" },
+    { src: "/newUpload/Artboard 2 (1).jpg", label: "Artist Lifestyle" },
+    { src: "/newUpload/Artboard 3 (1).jpg", label: "Butterfly Art" },
+    { src: "/newUpload/Artboard 4 (1).jpg", label: "Leaves Art" },
+    { src: "/newUpload/Artboard 5 (1).jpg", label: "Pomegranate Art" },
   ],
   brandStory: [
-    { src: "https://images.unsplash.com/photo-1509021436665-8f07dbf5bf1d?q=80&w=800&auto=format&fit=crop", label: "The Artist's Tool" },
-    { src: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?q=80&w=800&auto=format&fit=crop", label: "Built For Precision" },
+    { src: "/newUpload/Artboard 6 (1).jpg", label: "Violet Art" },
+    { src: "/newUpload/Artboard 7 (1).jpg", label: "Ocean Glass Art" },
+    { src: "/newUpload/Artboard 1 copy 4.jpg", label: "Swatches" },
   ],
 };
 
@@ -306,7 +314,7 @@ export default function CaseStudyGraffixx() {
           <div className="bg-white rounded-[24px] sm:rounded-[32px] border border-zinc-100 p-6 sm:p-10 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
             <div className="absolute top-0 left-0 w-1.5 h-full bg-zinc-900 rounded-l-[24px] sm:rounded-l-[32px]" />
             <SectionLabel>The Problem</SectionLabel>
-            <h3 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">200 competitors.<br />All looking identical.</h3>
+            <h2 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">200 competitors.<br />All looking identical.</h2>
             <p className="text-zinc-500 text-base font-light leading-relaxed">
               The alcohol markers category is a visual commodity trap. Every listing shows the same white background, the same "48 colors, dual tip" headline. Buyers can't tell products apart — so they default to whoever has the most reviews. A new brand entering that environment has exactly one weapon: a better visual system than everyone else.
             </p>
@@ -314,7 +322,7 @@ export default function CaseStudyGraffixx() {
           <div className="bg-white rounded-[24px] sm:rounded-[32px] border border-zinc-100 p-6 sm:p-10 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
             <div className="absolute top-0 left-0 w-1.5 h-full bg-orange-500 rounded-l-[24px] sm:rounded-l-[32px]" />
             <SectionLabel>Our Answer</SectionLabel>
-            <h3 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">Build the system<br />that forces the click.</h3>
+            <h2 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">Build the system<br />that forces the click.</h2>
             <p className="text-zinc-700 text-base font-light leading-relaxed">
               We rebuilt the listing around one insight: the buyer decides in 0.3 seconds whether to click, and 8 seconds whether to buy. We engineered every pixel around those two moments — a CTR-optimized hero that stops the scroll, and A+ Content that removes every purchase objection before the buyer can articulate it.
             </p>
@@ -326,7 +334,7 @@ export default function CaseStudyGraffixx() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(249,115,22,0.08),transparent_55%)]" />
           <div className="relative z-10 max-w-xl">
             <p className="text-orange-400 font-mono text-[10px] uppercase tracking-[0.3em] mb-2">Sound familiar?</p>
-            <h4 className="text-white text-3xl font-black tracking-tighter uppercase mb-2 leading-tight">Is your listing invisible in search?</h4>
+            <h2 className="text-white text-3xl font-black tracking-tighter uppercase mb-2 leading-tight">Is your listing invisible in search?</h2>
             <p className="text-zinc-400 text-sm font-light leading-relaxed">If your CTR is below 3% or ACoS above 25%, the problem isn't your product. It's the system around it. We'll audit your listing in 15 minutes and show you exactly what's bleeding revenue.</p>
           </div>
           <Link href="/contact" className="relative z-10 shrink-0 bg-orange-500 text-white px-8 py-4 rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-white hover:text-zinc-900 transition-all shadow-xl no-underline whitespace-nowrap">
@@ -337,12 +345,12 @@ export default function CaseStudyGraffixx() {
         {/* Before vs After */}
         <div className="bg-zinc-950 rounded-[24px] sm:rounded-[40px] p-6 sm:p-10 md:p-14 border border-white/5 relative overflow-hidden">
           <SectionLabel light>Day 1 vs Day 60</SectionLabel>
-          <h3 className="text-white text-2xl sm:text-3xl font-black uppercase tracking-tight mb-10 -mt-2">The exact numbers that changed.</h3>
+          <h2 className="text-white text-2xl sm:text-3xl font-black uppercase tracking-tight mb-10 -mt-2">The exact numbers that changed.</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
             <div>
-              <h4 className="text-red-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
+              <h3 className="text-red-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
                 <span className="w-4 h-4 rounded-full bg-red-500/20 flex items-center justify-center text-[9px] text-red-400">✕</span> Day 1 State
-              </h4>
+              </h3>
               <ul className="space-y-3">
                 {[["CTR","2.1%","below category average"],["CVR","4.2%","losing to brands with 1,000+ reviews"],["ACoS","38%","burning launch budget"],["Organic Rank","Page 8+","zero indexation"],["Revenue","$0","pure ad dependency"]].map(([label,val,note],i) => (
                   <li key={i} className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 bg-white/[0.03] rounded-xl px-4 py-3 border border-white/[0.04]">
@@ -356,9 +364,9 @@ export default function CaseStudyGraffixx() {
               </ul>
             </div>
             <div>
-              <h4 className="text-emerald-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
+              <h3 className="text-emerald-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
                 <span className="w-4 h-4 rounded-full bg-emerald-500/20 flex items-center justify-center"><CheckCircle2 size={9} className="text-emerald-400" /></span> Day 60 State
-              </h4>
+              </h3>
               <ul className="space-y-3">
                 {[["CTR","5.6%","+168% — color fan image stops the scroll"],["CVR","8.7%","+107% — A+ answers every objection"],["ACoS","11%","−71% — 4-tier PPC at full profit"],["Organic Rank","Page 1","3 of 5 top category terms"],["Revenue","$28.4K/mo","8.2x ROAS, sustainable engine"]].map(([label,val,note],i) => (
                   <li key={i} className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 bg-white/[0.03] rounded-xl px-4 py-3 border border-white/[0.04]">
@@ -393,7 +401,7 @@ export default function CaseStudyGraffixx() {
               <div className="absolute bottom-4 left-4 bg-orange-500 text-white text-[9px] font-black uppercase px-3 py-1 rounded-lg">{visualProof.listingImages[activeListingImg].label}</div>
             </div>
             <div className="lg:col-span-5 flex flex-col justify-center">
-              <h3 className="text-2xl font-black tracking-tighter uppercase mb-3 leading-tight">Every competitor<br />used white. We didn't.</h3>
+              <h2 className="text-2xl font-black tracking-tighter uppercase mb-3 leading-tight">Every competitor<br />used white. We didn't.</h2>
               <p className="text-zinc-500 text-sm font-light leading-relaxed mb-6">
                 In a search row of 8 identical white product squares, one warm, color-rich image captures 100% of eye movement. That single visual decision drove 168% more clicks — before a single keyword was changed.
               </p>
@@ -423,82 +431,15 @@ export default function CaseStudyGraffixx() {
               </div>
               <span className="text-[9px] font-black text-violet-500 uppercase tracking-widest bg-violet-50 border border-violet-100 px-3 py-1 rounded-full">A+ Preview</span>
             </div>
-            <div className="divide-y divide-zinc-100">
-              <div className="relative cursor-pointer group overflow-hidden" style={{ height: "260px" }} onClick={() => setLightboxImage(visualProof.aPlus[0])}>
-                <img src={visualProof.aPlus[0].src} className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700" alt="" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute inset-0 flex items-end p-5 sm:p-10">
-                  <div className="text-white">
-                    <p className="text-[10px] font-mono text-violet-300 uppercase tracking-[0.3em] mb-2">Module 01 · Hero Banner</p>
-                    <h4 className="text-xl sm:text-2xl font-black uppercase tracking-tight">48 Colors. Zero Compromise.</h4>
-                  </div>
-                  <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm text-white text-[8px] font-bold uppercase px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5"><ExternalLink size={9} /> Expand</div>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2">
-                <div className="p-6 sm:p-10 flex flex-col justify-center">
-                  <p className="text-[9px] font-mono text-violet-500 uppercase tracking-widest mb-2">Module 02 · Doubt Removal Layer</p>
-                  <h4 className="text-xl font-black uppercase tracking-tight mb-4 text-zinc-900">The buyer is interested.<br />We made them certain.</h4>
-                  <p className="text-zinc-500 text-sm font-light leading-relaxed mb-6">
-                    A buyer reaching A+ Content is 80% sold. The remaining 20% is doubt — "will these bleed?", "are the colors really this vibrant?", "can I refill them?". We answered every question visually, not with text walls. That pushed CVR from 4.2% to 8.7%.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {["Bleed-Resistant","Refillable System","Lightfast Pigment"].map((t,i) => (
-                      <span key={i} className="text-[9px] font-bold uppercase tracking-widest border border-zinc-200 px-3 py-1 rounded-lg text-zinc-400">{t}</span>
-                    ))}
+            <div className="flex flex-col gap-[1px] bg-zinc-100 pb-[1px]">
+              {visualProof.aPlus.map((img, i) => (
+                <div key={i} className="relative cursor-pointer group overflow-hidden bg-white" onClick={() => setLightboxImage(img)}>
+                  <img src={img.src} className="w-full object-cover group-hover:opacity-95 transition-opacity" alt={img.label} />
+                  <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white text-[8px] font-bold uppercase px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
+                    <ExternalLink size={9} /> Expand
                   </div>
                 </div>
-                <div className="relative cursor-pointer group overflow-hidden" style={{ minHeight: "240px" }} onClick={() => setLightboxImage(visualProof.aPlus[1])}>
-                  <img src={visualProof.aPlus[1].src} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="bg-violet-500 text-white p-4 text-center text-[10px] font-bold uppercase tracking-widest">5 additional modules on the live listing — comparison charts, paper types, lifestyle</div>
-          </div>
-        </div>
-
-        {/* Brand Story */}
-        <div>
-          <SectionLabel>Brand Story · The Trust Multiplier</SectionLabel>
-          <div className="bg-zinc-950 rounded-[40px] p-10 lg:p-14 border border-white/5 relative overflow-hidden">
-            <div className="absolute inset-0 opacity-[0.18]"><img src={visualProof.brandStory[0].src} className="w-full h-full object-cover blur-3xl" alt="" /></div>
-            <div className="absolute inset-0 bg-zinc-950/65" />
-            <div className="relative z-10 flex flex-col lg:flex-row items-start gap-12">
-              <div className="max-w-lg">
-                <div className="w-14 h-14 rounded-full bg-orange-500 flex items-center justify-center mb-8 shadow-2xl"><Palette size={26} className="text-white" /></div>
-                <h3 className="text-white text-4xl lg:text-5xl font-black tracking-tighter uppercase mb-4 leading-none">
-                  Graffixx.<br /><span className="text-orange-500">Authority</span><br />
-                  <span className="italic font-light text-zinc-400 lowercase" style={{ fontFamily: "'Playfair Display', serif" }}>by design.</span>
-                </h3>
-                <p className="text-zinc-400 text-base font-light italic leading-relaxed mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  "Brand Story repositioned Graffixx from 'another marker set' to 'the professional's everyday tool.' That shift in positioning delivered a permanent 15% conversion lift — without changing a single product spec."
-                </p>
-                <Link href="/contact" className="bg-white text-zinc-900 px-7 py-3.5 rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-orange-500 hover:text-white transition-all no-underline shadow-xl inline-block">
-                  Build My Brand Authority
-                </Link>
-              </div>
-              <div className="flex-1 w-full flex flex-col gap-4">
-                <div className="flex items-center justify-between lg:hidden px-1">
-                  <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                    Brand Assets <span className="w-8 h-px bg-white/10" />
-                  </p>
-                  <p className="text-[10px] font-mono text-orange-400 uppercase tracking-widest animate-pulse">
-                    Slide to next →
-                  </p>
-                </div>
-                <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 w-full snap-x snap-mandatory">
-                  {visualProof.brandStory.map((img, i) => (
-                    <div key={i} className="shrink-0 w-[85%] sm:w-64 lg:flex-1 rounded-2xl overflow-hidden border border-white/10 relative group cursor-pointer snap-center" style={{ height: "360px" }} onClick={() => setLightboxImage(img)}>
-                      <img src={img.src} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                      <div className="absolute bottom-5 left-5 right-5">
-                        <p className="text-[8px] font-bold uppercase tracking-[0.3em] text-orange-400 mb-1">Asset 0{i+1}</p>
-                        <h4 className="text-white font-black text-sm uppercase tracking-tight">{img.label}</h4>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -610,9 +551,9 @@ export default function CaseStudyGraffixx() {
                   Interactive Profit Planning
                 </span>
               </div>
-              <h3 className="text-xl sm:text-2xl font-black uppercase text-zinc-900 tracking-tight leading-tight">
+              <h2 className="text-xl sm:text-2xl font-black uppercase text-zinc-900 tracking-tight leading-tight">
                 Evaluate Your Own Amazon Margins
-              </h3>
+              </h2>
               <p className="text-zinc-500 text-sm font-light mt-1.5 leading-relaxed">
                 The scaling strategy used for Graffixx started with precise margin modeling. Run your own numbers using our free, interactive Amazon seller calculators.
               </p>
@@ -630,21 +571,21 @@ export default function CaseStudyGraffixx() {
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 shrink-0 mt-0.5"><TrendingUp size={14} /></div>
               <div>
-                <h5 className="font-black text-[11px] uppercase tracking-tight text-zinc-900 leading-tight mb-0.5">Model True Margins</h5>
+                <h3 className="font-black text-[11px] uppercase tracking-tight text-zinc-900 leading-tight mb-0.5">Model True Margins</h3>
                 <p className="text-[10px] text-zinc-400 font-light leading-snug">Factor in CPC, dynamic FBA fulfillment fees, and referral cuts.</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 shrink-0 mt-0.5"><Zap size={14} /></div>
               <div>
-                <h5 className="font-black text-[11px] uppercase tracking-tight text-zinc-900 leading-tight mb-0.5">Predict Breakeven ACoS</h5>
+                <h3 className="font-black text-[11px] uppercase tracking-tight text-zinc-900 leading-tight mb-0.5">Predict Breakeven ACoS</h3>
                 <p className="text-[10px] text-zinc-400 font-light leading-snug">Determine exactly how high your ad spend can go before bleeding cash.</p>
               </div>
             </div>
             <div className="flex items-start gap-3">
               <div className="w-8 h-8 rounded-xl bg-orange-50 flex items-center justify-center text-orange-500 shrink-0 mt-0.5"><Package size={14} /></div>
               <div>
-                <h5 className="font-black text-[11px] uppercase tracking-tight text-zinc-900 leading-tight mb-0.5">Optimize FBA Tiering</h5>
+                <h3 className="font-black text-[11px] uppercase tracking-tight text-zinc-900 leading-tight mb-0.5">Optimize FBA Tiering</h3>
                 <p className="text-[10px] text-zinc-400 font-light leading-snug">Minimize shipping fees by designing package dimensions strategically.</p>
               </div>
             </div>
@@ -664,7 +605,12 @@ export default function CaseStudyGraffixx() {
           </div>
         </div>
       </div>
-      <SellerCentralShowcase />
+      <SellerCentralShowcase
+        unitsSold12mo="742.9K"
+        growthVsLastYear="112%"
+        buyBoxRate="99%"
+        highlightIndex={0}
+      />
     </main>
   );
 }

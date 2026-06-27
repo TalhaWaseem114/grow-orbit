@@ -205,17 +205,17 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           {/* Background image with overlay */}
           <div className="absolute inset-0">
             <Image
-              src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80"
+              src="/newUpload/strategy_meeting.png"
               alt="Amazon growth strategy session"
               fill
               sizes="(max-width: 1024px) 100vw, 42vw"
-              className="object-cover object-center opacity-[0.22]"
+              className="object-cover object-center opacity-[0.55]"
               priority
               fetchPriority="high"
             />
             {/* Dark overlays for high contrast */}
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/75 to-zinc-950" />
-            <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/45 to-transparent hidden lg:block" />
+            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-zinc-950" />
+            <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/30 to-transparent hidden lg:block" />
             {/* Cool bluish tint overlay on the background */}
             <div className="absolute inset-0 bg-blue-950/4 mix-blend-color pointer-events-none" />
             {/* Extremely subtle ambient bluish/indigo glows that move behind the glass card */}
@@ -226,9 +226,9 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           <div
             ref={formRef}
             id="lead-form"
-            className="relative z-10 w-full max-w-[440px] border border-white/8 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.95),inset_0_1px_1px_rgba(255,255,255,0.07)] px-5 py-6 sm:p-8 rounded-3xl animate-subtle-form overflow-hidden"
+            className="relative z-10 w-full max-w-[440px] border border-white/10 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] px-5 py-6 sm:p-8 rounded-3xl animate-subtle-form overflow-hidden backdrop-blur-md"
             style={{
-              background: `linear-gradient(to bottom, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.005)), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E"), rgba(9, 9, 11, 0.85)`
+              background: `linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E"), rgba(9, 9, 11, 0.4)`
             }}
           >
             <div className="mb-5">

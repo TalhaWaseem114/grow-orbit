@@ -5,14 +5,14 @@ import Link from "next/link";
 import {
   ArrowRight, ArrowLeft, TrendingUp, Search, Zap,
   BarChart3, CheckCircle2, Layers, ExternalLink,
-  XCircle, Star, Award, Heart, Play, MousePointerClick, Shield, Package,
+  XCircle, Star, Award, Heart, Play, MousePointerClick, Shield, Package, ShoppingCart
 } from "lucide-react";
 import SellerCentralShowcase from "../../get-started/components/SellerCentralShowcase";
 
 const SectionLabel = ({ children, light = false }) => (
   <div className="flex items-center gap-3 mb-6">
-    <div className="w-6 h-[2px] bg-violet-500" />
-    <span className={`font-mono text-[10px] font-bold uppercase tracking-[0.4em] ${light ? "text-violet-400" : "text-violet-500/80"}`}>
+    <div className="w-6 h-[2px] bg-amber-500" />
+    <span className={`font-mono text-[10px] font-bold uppercase tracking-[0.4em] ${light ? "text-amber-400" : "text-amber-500/80"}`}>
       {children}
     </span>
   </div>
@@ -42,13 +42,13 @@ const phaseData = [
   {
     phase: "01",
     week: "Wk 1–2",
-    label: "Price-Gap Intelligence & Positioning Architecture",
-    action: "Gravity Blanket owns the $249 premium slot. Generic imports flood the $25–$35 range. At $69 with verified glass bead fill and a 15-year warranty, Dunova occupied a 'premium-without-absurd-pricing' position that nobody was communicating properly. We built every decision around that gap.",
-    metric: "Market Position",
-    before: "Unknown brand",
-    after: "$69 premium anchor",
+    label: "Texture-Forward Visual Architecture",
+    action: "Lumina Bites had incredible cookies, but their flat product shots made them look generic. We engineered a visual system highlighting the crunch, the premium ingredients, and the artisanal baking process. The goal was to make the buyer 'taste' the product through the screen.",
+    metric: "Visual Quality",
+    before: "Generic Pack Shots",
+    after: "Premium Lifestyle",
     kpi: "0 → 1",
-    kpiLabel: "positioning defined",
+    kpiLabel: "visual identity established",
     barPct: 16,
     icon: <Search size={16} />,
     color: "from-zinc-700 to-zinc-600",
@@ -56,40 +56,40 @@ const phaseData = [
   {
     phase: "02",
     week: "Wk 3–4",
-    label: "Lifestyle-First Main Image CTR System",
-    action: "Every weighted blanket competitor shot the product flat on a bed. We photographed a woman wrapped in the blanket — soft bedroom light, peaceful expression, warm tones. In search results, 7 flat product shots and one human moment. CTR lifted 156% in 9 days. The category had never seen a lifestyle-led main image.",
+    label: "High-Contrast Main Image CTR System",
+    action: "We replaced the standard white-background packaging shot with a sleek, high-contrast render that popped in the search grid. By adding close-ups of the chocolate chunks and using warm lighting, CTR jumped 85% within a week.",
     metric: "Click-Through Rate",
-    before: "1.8% CTR",
-    after: "4.6% CTR",
-    kpi: "+156%",
-    kpiLabel: "lifestyle vs flat product",
+    before: "2.1% CTR",
+    after: "3.9% CTR",
+    kpi: "+85%",
+    kpiLabel: "appetite appeal vs flat",
     barPct: 40,
     icon: <MousePointerClick size={16} />,
-    color: "from-violet-600 to-violet-500",
+    color: "from-amber-600 to-amber-500",
   },
   {
     phase: "03",
     week: "Wk 5–6",
-    label: "Tactile Trust A+ Content Build",
-    action: "Weighted blankets have a core trust problem: buyers can't feel the weight through a screen. We built 8 A+ modules around the sensory experience — bead-fill density cross-sections, GSM comparison charts, temperature regulation diagrams, and a sleep phase graphic linking deep pressure stimulation to cortisol reduction. CVR tripled in 11 days.",
+    label: "Lifestyle Context Integration",
+    action: "Food buyers care about context. We added lifestyle visuals that showed the cookies in everyday snacking scenarios — office breaks, road trips, and late-night cravings. This contextualization raised the perceived value, increasing CVR significantly.",
     metric: "Conversion Rate",
-    before: "3.4% CVR",
-    after: "10.2% CVR",
-    kpi: "+200%",
-    kpiLabel: "tactile education converts",
+    before: "5.4% CVR",
+    after: "11.2% CVR",
+    kpi: "+107%",
+    kpiLabel: "trust elements added",
     barPct: 62,
     icon: <ShoppingCart size={16} />,
-    color: "from-violet-600 to-violet-500",
+    color: "from-amber-600 to-amber-500",
   },
   {
     phase: "04",
     week: "Wk 7–9",
-    label: "Sleep & Anxiety PPC Keyword Architecture",
-    action: "Built 5-tier PPC stack: high-intent sleep terms, anxiety relief terms, gift occasion terms (Mother's Day / Christmas clusters), competitor conquest against Gravity and YnM, and a separate retargeting campaign for 'weighted blanket adults 15lb' — the exact phrase Gravity owns organically. ACoS dropped from 47% to 13% by week 9.",
+    label: "Snack-Time Keyword Targeting",
+    action: "We shifted PPC away from broad 'cookies' terms (where Nabisco dominates) to specific intent clusters: 'premium office snacks', 'artisanal chocolate chip', and 'gourmet cookie gifts'. This targeted approach slashed wasted ad spend and brought ACoS down to 15%.",
     metric: "Advertising Cost of Sales",
-    before: "47% ACoS",
-    after: "13% ACoS",
-    kpi: "−72%",
+    before: "42% ACoS",
+    after: "15% ACoS",
+    kpi: "−64%",
     kpiLabel: "ad waste eliminated",
     barPct: 80,
     icon: <BarChart3 size={16} />,
@@ -98,16 +98,16 @@ const phaseData = [
   {
     phase: "05",
     week: "Wk 10–12",
-    label: "Page 1 Organic Rank & Gift Season Timing",
-    action: "Page 1 for 'weighted blanket for anxiety adults', 'heavy blanket 15lb', and 'cooling weighted blanket queen'. Launch timed to land page 1 status 3 weeks before peak gifting window. Combined with a Subscribe & Save setup that drove 41% of buyers to recurring orders. $52,400 monthly revenue by day 85.",
-    metric: "Monthly Revenue",
-    before: "$0",
-    after: "$52,400",
-    kpi: "$52.4K/mo",
-    kpiLabel: "at day 85",
+    label: "Subscribe & Save Domination",
+    action: "With the visuals locking in the first purchase and the taste securing the second, we optimized the listing for Subscribe & Save. Growth hit 112% MoM, pacing toward 742K units yearly, with daily sales consistently over $6K.",
+    metric: "MoM Growth",
+    before: "Stagnant",
+    after: "+112% MoM",
+    kpi: "+112%",
+    kpiLabel: "MoM Revenue Growth",
     barPct: 100,
     icon: <TrendingUp size={16} />,
-    color: "from-violet-500 to-amber-400",
+    color: "from-amber-500 to-yellow-400",
   },
 ];
 
@@ -116,12 +116,12 @@ function PhasePerformanceDashboard() {
     <div className="bg-zinc-950 rounded-[24px] sm:rounded-[40px] p-5 sm:p-6 md:p-14 border border-white/5 relative overflow-hidden">
       {/* Background styling */}
       <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-violet-500/30 to-transparent" />
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-amber-500/30 to-transparent" />
 
       <div className="relative z-10">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
-            <SectionLabel light>85-Day Execution — What Each Phase Moved</SectionLabel>
+            <SectionLabel light>90-Day Execution — What Each Phase Moved</SectionLabel>
             <h2 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tighter uppercase text-white leading-none mt-2">
               Every phase.<br />
               <span className="italic font-light text-zinc-500 lowercase" style={{ fontFamily: "'Playfair Display', serif" }}>every metric it moved.</span>
@@ -151,9 +151,9 @@ function PhasePerformanceDashboard() {
 
                 {/* Content (Title + Desc) */}
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-black text-base uppercase tracking-tight mb-2 text-white group-hover:text-violet-400 transition-colors duration-300">
+                  <h3 className="font-black text-base uppercase tracking-tight mb-2 text-white group-hover:text-amber-400 transition-colors duration-300">
                     {p.label}
-                  </h4>
+                  </h3>
                   <p className="text-[13px] font-light leading-relaxed text-zinc-400">
                     {p.action}
                   </p>
@@ -165,7 +165,7 @@ function PhasePerformanceDashboard() {
                     <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest mb-1.5 xl:mb-0.5">{p.metric}</p>
                     <div className="flex items-center gap-2 xl:justify-end">
                       <span className="text-zinc-500 text-sm font-bold line-through">{p.before}</span>
-                      <span className="text-violet-500 text-sm font-bold">→</span>
+                      <span className="text-amber-500 text-sm font-bold">→</span>
                       <span className="text-white text-sm font-black">{p.after}</span>
                     </div>
                   </div>
@@ -200,7 +200,7 @@ function PhasePerformanceDashboard() {
                   className="absolute top-0 flex flex-col items-center z-20 transition-all duration-1000"
                   style={{ left: `${p.barPct}%`, transform: 'translateX(-50%)' }}
                 >
-                  <div className={`w-4 h-4 rounded-full bg-gradient-to-br ${p.color} ring-[3px] ring-zinc-950 shadow-[0_0_15px_rgba(139,92,246,0.5)]`} />
+                  <div className={`w-4 h-4 rounded-full bg-gradient-to-br ${p.color} ring-[3px] ring-zinc-950 shadow-[0_0_15px_rgba(245,158,11,0.5)]`} />
                   <span className="text-[9px] font-bold font-mono text-white uppercase tracking-widest mt-2 whitespace-nowrap">
                     Result
                   </span>
@@ -215,33 +215,33 @@ function PhasePerformanceDashboard() {
         <div className="pt-10 border-t border-white/[0.06]">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
             <div>
-              <p className="text-[9px] font-mono text-zinc-600 uppercase tracking-[0.3em] mb-1">Cumulative Revenue — Day 1 to Day 85</p>
-              <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tight">$0 → $52,400/month</h3>
+              <p className="text-[9px] font-mono text-zinc-600 uppercase tracking-[0.3em] mb-1">Growth Trajectory</p>
+              <h3 className="text-2xl md:text-3xl font-black text-white uppercase tracking-tight">+112% MoM Growth</h3>
             </div>
-            <div className="bg-violet-500/10 border border-violet-500/20 rounded-xl px-5 py-3 text-center self-start sm:self-auto">
-              <p className="text-violet-400 font-black text-2xl tracking-tighter">9.1x</p>
-              <p className="text-[8px] font-mono text-violet-400/60 uppercase tracking-widest">Peak ROAS</p>
+            <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl px-5 py-3 text-center self-start sm:self-auto">
+              <p className="text-amber-400 font-black text-2xl tracking-tighter">742K</p>
+              <p className="text-[8px] font-mono text-amber-400/60 uppercase tracking-widest">Yearly Units</p>
             </div>
           </div>
 
           <div className="flex items-end gap-1 sm:gap-2 h-[120px] sm:h-[100px]">
             {[
-              { label: "Day 1",  rev: "$0",      pct: 0   },
-              { label: "Wk 3",  rev: "$920",    pct: 2   },
-              { label: "Wk 5",  rev: "$6.1K",   pct: 12  },
-              { label: "Wk 7",  rev: "$17K",    pct: 32  },
-              { label: "Wk 10", rev: "$33K",    pct: 63  },
-              { label: "Wk 12", rev: "$52.4K",  pct: 100 },
+              { label: "Day 1",  rev: "Base",      pct: 10   },
+              { label: "Wk 3",   rev: "+20%",      pct: 20   },
+              { label: "Wk 5",   rev: "+45%",      pct: 45  },
+              { label: "Wk 7",   rev: "+70%",      pct: 70  },
+              { label: "Wk 10",  rev: "+95%",      pct: 95  },
+              { label: "Wk 12",  rev: "+112%",     pct: 100 },
             ].map((bar, i) => (
               <div key={i} className="flex-1 flex flex-col items-center gap-1.5 group cursor-default">
-                <p className={`text-[8px] md:text-[10px] font-black uppercase tracking-tight transition-colors ${bar.pct === 100 ? "text-violet-400" : "text-zinc-500 group-hover:text-zinc-300"}`}>
+                <p className={`text-[8px] md:text-[10px] font-black uppercase tracking-tight transition-colors ${bar.pct === 100 ? "text-amber-400" : "text-zinc-500 group-hover:text-zinc-300"}`}>
                   {bar.rev}
                 </p>
                 <div
                   className="w-full rounded-t-lg transition-colors duration-300"
                   style={{
                     height: `${Math.max(bar.pct, 4)}%`,
-                    background: bar.pct === 100 ? "#f97316" : bar.pct > 50 ? "#52525b" : "#3f3f46"
+                    background: bar.pct === 100 ? "#f59e0b" : bar.pct > 50 ? "#52525b" : "#3f3f46"
                   }}
                 />
                 <p className="text-[7px] md:text-[8px] font-mono text-zinc-600 uppercase tracking-widest text-center mt-1">
@@ -259,25 +259,20 @@ function PhasePerformanceDashboard() {
 /* ─── VISUAL DATA ─── */
 const visualProof = {
   listingImages: [
-    { src: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=800&auto=format&fit=crop", label: "Lifestyle Hero — Wrapped & Warm" },
-    { src: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800&auto=format&fit=crop",   label: "Bead Fill Cross-Section" },
-    { src: "https://images.unsplash.com/photo-1588776814546-ec7e1a7a6a7e?q=80&w=800&auto=format&fit=crop", label: "Weight Distribution Diagram" },
-    { src: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop", label: "Gifting Lifestyle Scene" },
-  ],
-  aPlus: [
-    { src: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=800&auto=format&fit=crop", label: "Deep Sleep Hero Banner" },
-    { src: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?q=80&w=800&auto=format&fit=crop",   label: "Glass Bead Fill Module" },
-  ],
-  brandStory: [
-    { src: "https://images.unsplash.com/photo-1540555700478-4be289fbecef?q=80&w=800&auto=format&fit=crop", label: "The Rest Standard" },
-    { src: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=800&auto=format&fit=crop", label: "Crafted for Calm" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg", label: "Hero Image" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872004/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/2.jpg", label: "Hero Detail" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872005/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/3.jpg", label: "Ingredients" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872007/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/4.jpg", label: "Texture Shot" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872008/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/5.jpg", label: "Taste Profile" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872009/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/6.jpg", label: "Lifestyle Image" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872010/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/7.jpg", label: "Social Proof" },
   ],
 };
 
 /* ═══════════════════════════════════════════
    PAGE
 ═══════════════════════════════════════════ */
-export default function CaseStudyDunova() {
+export default function CaseStudyLuminaBites() {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [activeListingImg, setActiveListingImg] = useState(0);
 
@@ -293,46 +288,45 @@ export default function CaseStudyDunova() {
       {/* ─── HERO ─── */}
       <div className="bg-zinc-950 pt-28 sm:pt-32 pb-14 sm:pb-20 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "24px 24px" }} />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_45%,rgba(139,92,246,0.10),transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_65%_45%,rgba(245,158,11,0.10),transparent_55%)]" />
         <div className="max-w-[1400px] mx-auto px-5 sm:px-6 lg:px-12 relative z-10">
 
           <div className="flex items-center gap-3 mb-8">
-            <Link href="/case-study" className="flex items-center gap-2 text-zinc-500 hover:text-violet-400 transition-colors no-underline text-[10px] font-bold uppercase tracking-widest">
+            <Link href="/case-study" className="flex items-center gap-2 text-zinc-500 hover:text-amber-400 transition-colors no-underline text-[10px] font-bold uppercase tracking-widest">
               <ArrowLeft size={14} /> Case Studies
             </Link>
             <div className="w-1 h-1 rounded-full bg-zinc-700" />
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-violet-400">Case Study · Dunova</span>
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-amber-400">Case Study · Lumina Bites</span>
           </div>
 
           <div className="lg:max-w-[900px]">
-            <div className="inline-flex items-center gap-2 bg-violet-500/10 border border-violet-500/20 rounded-full px-4 py-2 mb-6">
-              <Moon size={12} className="text-violet-400" />
-              <span className="text-[9px] font-bold uppercase tracking-widest text-violet-400">Home & Sleep · Weighted Blanket · USA Launch</span>
+            <div className="inline-flex items-center gap-2 bg-amber-500/10 border border-amber-500/20 rounded-full px-4 py-2 mb-6">
+              <Layers size={12} className="text-amber-400" />
+              <span className="text-[9px] font-bold uppercase tracking-widest text-amber-400">Grocery & Gourmet · Snacks</span>
             </div>
             <h1 className="text-[36px] sm:text-5xl md:text-[88px] font-black tracking-tighter leading-[0.88] text-white uppercase mb-5 sm:mb-6">
-              $52K/month.<br />
-              <span className="text-violet-500 italic font-light lowercase" style={{ fontFamily: "'Playfair Display', serif" }}>
-                outselling gravity.
+              112% MoM.<br />
+              <span className="text-amber-500 italic font-light lowercase" style={{ fontFamily: "'Playfair Display', serif" }}>
+                742k yearly units.
               </span>
             </h1>
             <p className="text-zinc-400 text-base sm:text-xl font-light max-w-2xl leading-relaxed">
-              Dunova launched a premium weighted blanket against the brand that invented the category.
-              No history, no reviews, no PR budget. Just a smarter visual system — and $52,400 per month by day 85.
+              Lumina Bites had incredible cookies but generic visuals. We transformed their listing into a mouth-watering experience that justified a premium price and drove unprecedented sales.
             </p>
           </div>
 
           {/* Snapshot bar */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-px bg-white/5 rounded-2xl sm:rounded-3xl overflow-hidden border border-white/5 mt-10 sm:mt-14">
             {[
-              { label: "Revenue · Day 85",  val: "$52,400/mo",     icon: <TrendingUp size={14} /> },
-              { label: "Timeline",          val: "85 Days",        icon: <Zap size={14} /> },
-              { label: "CTR Lift",          val: "+156%",          icon: <MousePointerClick size={14} /> },
-              { label: "CVR Achieved",      val: "10.2%",          icon: <ShoppingCart size={14} /> },
-              { label: "ACoS Achieved",     val: "13%",            icon: <BarChart3 size={14} /> },
-              { label: "Peak ROAS",         val: "9.1x",           icon: <Award size={14} /> },
+              { label: "MoM Growth",        val: "+112%",          icon: <TrendingUp size={14} /> },
+              { label: "Yearly Units",      val: "742K",           icon: <Package size={14} /> },
+              { label: "Daily Sales",       val: "$6K+",           icon: <BarChart3 size={14} /> },
+              { label: "Buy Box Rate",      val: "99%",            icon: <ShoppingCart size={14} /> },
+              { label: "CTR Lift",          val: "+85%",           icon: <MousePointerClick size={14} /> },
+              { label: "Peak ROAS",         val: "5.8x",           icon: <Award size={14} /> },
             ].map((s, i) => (
-              <div key={i} className="bg-zinc-900/40 p-3.5 sm:p-5 group hover:bg-violet-500/5 transition-colors">
-                <div className="flex items-center gap-2 text-zinc-500 mb-2 group-hover:text-violet-400 transition-colors">
+              <div key={i} className="bg-zinc-900/40 p-3.5 sm:p-5 group hover:bg-amber-500/5 transition-colors">
+                <div className="flex items-center gap-2 text-zinc-500 mb-2 group-hover:text-amber-400 transition-colors">
                   {s.icon}
                   <span className="text-[9px] font-mono uppercase tracking-[0.15em]">{s.label}</span>
                 </div>
@@ -351,59 +345,59 @@ export default function CaseStudyDunova() {
           <div className="bg-white rounded-[24px] sm:rounded-[32px] border border-zinc-100 p-6 sm:p-10 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
             <div className="absolute top-0 left-0 w-1.5 h-full bg-zinc-900 rounded-l-[32px]" />
             <SectionLabel>The Problem</SectionLabel>
-            <h3 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">
-              Selling a tactile product to buyers who can't touch it.
-            </h3>
+            <h2 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">
+              A premium product with commodity visuals.
+            </h2>
             <p className="text-zinc-500 text-base font-light leading-relaxed">
-              A weighted blanket lives or dies on how it feels. The gentle pressure, the warmth, the weight distribution — none of that translates in a flat product photo on a white background. Gravity Blanket solves this with $15 million in brand recognition. New brands have nothing. So they race each other to $34.99 and wonder why margins disappear.
+              Lumina Bites made an exceptional cookie using high-quality ingredients, but their Amazon listing looked like any other mass-produced snack. Buyers scrolling on mobile couldn't tell the difference, leading to low click-through rates and poor conversion. They needed to convey taste and texture immediately to justify a higher price point.
             </p>
           </div>
           <div className="bg-white rounded-[24px] sm:rounded-[32px] border border-zinc-100 p-6 sm:p-10 relative overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-violet-500 rounded-l-[32px]" />
+            <div className="absolute top-0 left-0 w-1.5 h-full bg-amber-500 rounded-l-[32px]" />
             <SectionLabel>Our Answer</SectionLabel>
-            <h3 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">
-              Make the buyer feel it before they buy it.
-            </h3>
+            <h2 className="text-2xl font-black text-zinc-900 mb-4 tracking-tight uppercase leading-tight">
+              Make them taste it through the screen.
+            </h2>
             <p className="text-zinc-700 text-base font-light leading-relaxed">
-              We couldn't let them touch it. So we showed them everything else — the lifestyle moment it creates, the science behind why it works, and the engineering that makes it different. Every visual asset was built to transfer the sensory experience through a screen. That's not photography. That's conversion architecture.
+              We replaced the flat product shots with highly textured, beautifully lit lifestyle and macro images. By showing off the chocolate chunks, the perfect bake, and the premium ingredients visually, we eliminated the perceived risk for the buyer, drastically improving CTR and CVR.
             </p>
           </div>
         </div>
 
         {/* CTA banner */}
         <div className="bg-zinc-950 rounded-[24px] sm:rounded-[36px] p-6 sm:p-10 md:p-14 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 sm:gap-8 border border-white/10 shadow-2xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(139,92,246,0.08),transparent_55%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(245,158,11,0.08),transparent_55%)]" />
           <div className="relative z-10 max-w-xl">
-            <p className="text-violet-400 font-mono text-[10px] uppercase tracking-[0.3em] mb-2">Selling something tactile?</p>
-            <h4 className="text-white text-2xl sm:text-3xl font-black tracking-tighter uppercase mb-2 leading-tight">
-              If buyers can't feel it,<br />your listing has to.
-            </h4>
+            <p className="text-amber-400 font-mono text-[10px] uppercase tracking-[0.3em] mb-2">Selling food on Amazon?</p>
+            <h2 className="text-white text-2xl sm:text-3xl font-black tracking-tighter uppercase mb-2 leading-tight">
+              If it doesn't look delicious,<br />it won't sell.
+            </h2>
             <p className="text-zinc-400 text-sm font-light leading-relaxed">
-              Home goods, textiles, furniture, wellness — tactile categories have the highest conversion upside on Amazon because most brands never solve the sensory gap. We will show you exactly how to close it in 15 minutes, free.
+              Food and grocery is one of the most competitive spaces on Amazon. We can help your product stand out visually and turn casual browsers into loyal subscribers. Book a free strategy call today.
             </p>
           </div>
-          <Link href="/contact" className="relative z-10 shrink-0 bg-violet-500 text-white px-8 py-4 rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-white hover:text-zinc-900 transition-all shadow-xl no-underline whitespace-nowrap w-full sm:w-auto text-center">
+          <Link href="/contact" className="relative z-10 shrink-0 bg-amber-500 text-white px-8 py-4 rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-white hover:text-zinc-900 transition-all shadow-xl no-underline whitespace-nowrap w-full sm:w-auto text-center">
             Book Free Strategy Call
           </Link>
         </div>
 
         {/* Before vs After */}
         <div className="bg-zinc-950 rounded-[24px] sm:rounded-[40px] p-5 sm:p-10 md:p-14 border border-white/5 relative overflow-hidden">
-          <SectionLabel light>Day 1 vs Day 85</SectionLabel>
-          <h3 className="text-white text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 sm:mb-10 -mt-2">The exact numbers that changed.</h3>
+          <SectionLabel light>Before vs After</SectionLabel>
+          <h2 className="text-white text-2xl sm:text-3xl font-black uppercase tracking-tight mb-6 sm:mb-10 -mt-2">The exact numbers that changed.</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
             <div>
-              <h4 className="text-red-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
+              <h3 className="text-red-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
                 <span className="w-4 h-4 rounded-full bg-red-500/20 flex items-center justify-center text-[9px] text-red-400">✕</span>
-                Day 1 State
-              </h4>
+                Before Grow Orbit
+              </h3>
               <ul className="space-y-3">
                 {[
-                  ["CTR",          "1.8%",    "flat product shot, lost in sea of identical thumbnails"],
-                  ["CVR",          "3.4%",    "buyers interested but couldn't justify $69 without feeling it"],
-                  ["ACoS",         "47%",     "broad match keywords, no sleep intent architecture"],
-                  ["Organic Rank", "Page 10+","zero indexation for sleep and anxiety terms"],
-                  ["Revenue",      "$0",      "100% ad spend, no organic support, no gifting traffic"],
+                  ["CTR",          "2.1%",    "flat product shot, lost in sea of identical snacks"],
+                  ["CVR",          "5.4%",    "buyers couldn't see the premium quality"],
+                  ["ACoS",         "42%",     "broad match keywords bleeding spend"],
+                  ["MoM Growth",   "Stagnant","struggling to build momentum"],
+                  ["Brand Feel",   "Generic", "indistinguishable from lower-quality competitors"],
                 ].map(([label, val, note], i) => (
                   <li key={i} className="flex flex-col sm:flex-row items-start gap-1.5 sm:gap-4 bg-white/[0.03] rounded-xl px-4 py-3 border border-white/[0.04]">
                     <div className="flex items-center gap-3 sm:contents">
@@ -416,19 +410,19 @@ export default function CaseStudyDunova() {
               </ul>
             </div>
             <div>
-              <h4 className="text-emerald-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
+              <h3 className="text-emerald-400 font-black text-sm uppercase tracking-widest mb-5 flex items-center gap-2">
                 <span className="w-4 h-4 rounded-full bg-emerald-500/20 flex items-center justify-center">
                   <CheckCircle2 size={9} className="text-emerald-400" />
                 </span>
-                Day 85 State
-              </h4>
+                After Grow Orbit
+              </h3>
               <ul className="space-y-3">
                 {[
-                  ["CTR",          "4.6%",       "+156% — lifestyle shot the only human image in search"],
-                  ["CVR",          "10.2%",      "+200% — bead fill + science modules closed the gap"],
-                  ["ACoS",         "13%",        "−72% — sleep intent + gifting clusters at full profit"],
-                  ["Organic Rank", "Page 1",     "3 top anxiety & sleep terms, combined 80K searches/mo"],
-                  ["Revenue",      "$52.4K/mo",  "9.1x ROAS, 41% on Subscribe & Save for recurring LTV"],
+                  ["CTR",          "3.9%",       "+85% — appetite appeal vs flat packaging"],
+                  ["CVR",          "11.2%",      "+107% — trust elements and ingredient highlights"],
+                  ["ACoS",         "15%",        "−64% — dialed in specific snack intent clusters"],
+                  ["MoM Growth",   "+112%",      "explosive growth through Subscribe & Save"],
+                  ["Brand Feel",   "Premium",    "visuals match the high quality of the product"],
                 ].map(([label, val, note], i) => (
                   <li key={i} className="flex flex-col sm:flex-row items-start gap-1.5 sm:gap-4 bg-white/[0.03] rounded-xl px-4 py-3 border border-white/[0.04]">
                     <div className="flex items-center gap-3 sm:contents">
@@ -445,41 +439,41 @@ export default function CaseStudyDunova() {
 
         {/* ─── LISTING IMAGES ─── */}
         <div>
-          <SectionLabel>The Image That Made Buyers Feel It</SectionLabel>
+          <SectionLabel>The Image That Made Buyers Hungry</SectionLabel>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 bg-white p-5 sm:p-8 md:p-10 rounded-[24px] sm:rounded-[40px] border border-zinc-100 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-            <div className="lg:col-span-1 hidden lg:flex flex-col gap-3">
+            <div className="lg:col-span-1 hidden lg:flex flex-col gap-3 overflow-y-auto no-scrollbar max-h-[500px] pr-1">
               {visualProof.listingImages.map((img, i) => (
                 <button key={i} onClick={() => setActiveListingImg(i)}
-                  className={`aspect-square rounded-xl overflow-hidden border-2 transition-all ${activeListingImg === i ? "border-violet-500" : "border-zinc-200 hover:border-zinc-400"}`}>
+                  className={`aspect-square rounded-xl overflow-hidden border-2 transition-all shrink-0 ${activeListingImg === i ? "border-amber-500" : "border-zinc-200 hover:border-zinc-400"}`}>
                   <img src={img.src} className="w-full h-full object-cover" alt="" />
                 </button>
               ))}
             </div>
             <div className="lg:col-span-6 relative aspect-square rounded-[28px] overflow-hidden bg-zinc-50 border border-zinc-100 cursor-pointer group" onClick={() => setLightboxImage(visualProof.listingImages[activeListingImg])}>
-              <img src={visualProof.listingImages[activeListingImg].src} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="" />
+              <img src={visualProof.listingImages[activeListingImg].src} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700" alt="" />
               <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md text-white text-[8px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <ExternalLink size={10} /> Expand
               </div>
-              <div className="absolute bottom-4 left-4 bg-violet-500 text-white text-[9px] font-black uppercase px-3 py-1 rounded-lg">
+              <div className="absolute bottom-4 left-4 bg-amber-500 text-white text-[9px] font-black uppercase px-3 py-1 rounded-lg">
                 {visualProof.listingImages[activeListingImg].label}
               </div>
             </div>
             <div className="lg:col-span-5 flex flex-col justify-center">
-              <h3 className="text-2xl font-black tracking-tighter uppercase mb-3 leading-tight">
-                Everyone shot the blanket.<br />We shot the moment.
-              </h3>
+              <h2 className="text-2xl font-black tracking-tighter uppercase mb-3 leading-tight">
+                Selling taste through pixels.
+              </h2>
               <p className="text-zinc-500 text-sm font-light leading-relaxed mb-6">
-                In a search row of 8 flat product shots, a single human moment — soft bedroom light, a person fully wrapped and at peace — is the only thumbnail that creates an emotional response. That's not just design preference. It's the reason the CTR hit 4.6% in a category where 1.8% was the baseline. The buyer didn't see a blanket. They saw themselves.
+                When you're selling food, the visual is the flavor. We stopped relying on the packaging and started showing the actual product in mouth-watering detail. The high contrast, the visible texture, the ingredient callouts—they all worked together to make the buyer crave the cookies before they even read the reviews.
               </p>
               <div className="space-y-3">
                 {[
-                  ["Lifestyle hero",         "+156% CTR — only human image in category search"],
-                  ["Bead fill cross-section","Translates the tactile density buyers can't feel"],
-                  ["Weight distribution map","Makes the 'even pressure' claim visual and believable"],
-                  ["Gifting lifestyle",      "Unlocks the second buyer intent: holiday gift searches"],
+                  ["Texture Highlights",     "Lighting engineered to show crunch and softness"],
+                  ["Ingredient Transparency","Visual callouts build immediate trust"],
+                  ["Mobile Optimized",       "Large, clear typography for quick scanning"],
+                  ["Appetite Appeal",        "Warm, rich colors that stimulate hunger"],
                 ].map(([label, result], i) => (
                   <div key={i} className="flex items-start gap-3">
-                    <div className="w-5 h-5 rounded-full bg-violet-500/10 flex items-center justify-center text-violet-500 shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-500 shrink-0 mt-0.5">
                       <CheckCircle2 size={11} />
                     </div>
                     <div>
@@ -488,112 +482,6 @@ export default function CaseStudyDunova() {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* ─── A+ CONTENT ─── */}
-        <div>
-          <SectionLabel>A+ Content · Selling What Buyers Can't Touch</SectionLabel>
-          <div className="rounded-[24px] sm:rounded-[40px] overflow-hidden border border-zinc-200 bg-white shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-            <div className="bg-zinc-50 border-b border-zinc-200 px-4 sm:px-8 py-3 sm:py-4 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-300" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-300" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-300" />
-                </div>
-                <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-tight ml-4 hidden sm:inline">amazon.com › dp · Dunova A+ Content</span>
-              </div>
-              <span className="text-[9px] font-black text-violet-500 uppercase tracking-widest bg-violet-50 border border-violet-100 px-3 py-1 rounded-full">A+ Preview</span>
-            </div>
-            <div className="divide-y divide-zinc-100">
-              <div className="relative cursor-pointer group overflow-hidden" style={{ height: "260px" }} onClick={() => setLightboxImage(visualProof.aPlus[0])}>
-                <img src={visualProof.aPlus[0].src} className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-700" alt="" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-                <div className="absolute inset-0 flex items-end p-5 sm:p-10">
-                  <div className="text-white">
-                    <p className="text-[10px] font-mono text-violet-300 uppercase tracking-[0.3em] mb-2">Module 01 · Hero Banner</p>
-                    <h4 className="text-xl sm:text-2xl font-black uppercase tracking-tight">Deeper Sleep. Less Anxiety. Proven Calm.</h4>
-                  </div>
-                  <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm text-white text-[8px] font-bold uppercase px-3 py-1.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1.5">
-                    <ExternalLink size={9} /> Expand
-                  </div>
-                </div>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2">
-                <div className="p-6 sm:p-10 flex flex-col justify-center">
-                  <p className="text-[9px] font-mono text-violet-500 uppercase tracking-widest mb-2">Module 02 · The Science of Weight</p>
-                  <h4 className="text-xl font-black uppercase tracking-tight mb-4 text-zinc-900">
-                    A buyer can't feel 15lbs through a screen.<br />So we made them understand it.
-                  </h4>
-                  <p className="text-zinc-500 text-sm font-light leading-relaxed mb-6">
-                    Deep Pressure Stimulation is the clinical mechanism behind every weighted blanket claim. Instead of saying "reduces anxiety," we showed the cortisol reduction pathway. Instead of "even weight distribution," we cross-sectioned the glass bead grid. Instead of "premium fill," we displayed the GSM count against competitors. The buyer didn't need to trust us — the data did that for us.
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {["Glass Bead Fill", "15-Year Warranty", "OEKO-TEX Certified"].map((t, i) => (
-                      <span key={i} className="text-[9px] font-bold uppercase tracking-widest border border-zinc-200 px-3 py-1 rounded-lg text-zinc-400">{t}</span>
-                    ))}
-                  </div>
-                </div>
-                <div className="relative cursor-pointer group overflow-hidden" style={{ minHeight: "240px" }} onClick={() => setLightboxImage(visualProof.aPlus[1])}>
-                  <img src={visualProof.aPlus[1].src} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="" />
-                </div>
-              </div>
-            </div>
-            <div className="bg-violet-500 text-white p-4 text-center text-[10px] font-bold uppercase tracking-widest">
-              6 additional weight guide, material, size comparison & gifting modules on the live listing
-            </div>
-          </div>
-        </div>
-
-        {/* ─── BRAND STORY ─── */}
-        <div>
-          <SectionLabel>Brand Story · Rest Is Not a Luxury</SectionLabel>
-          <div className="bg-zinc-950 rounded-[24px] sm:rounded-[40px] p-6 sm:p-10 lg:p-14 border border-white/5 relative overflow-hidden">
-            <div className="absolute inset-0 opacity-[0.18]">
-              <img src={visualProof.brandStory[0].src} className="w-full h-full object-cover blur-3xl" alt="" />
-            </div>
-            <div className="absolute inset-0 bg-zinc-950/65" />
-            <div className="relative z-10 flex flex-col lg:flex-row items-start gap-12">
-              <div className="max-w-lg">
-                <div className="w-14 h-14 rounded-full bg-violet-500 flex items-center justify-center mb-8 shadow-2xl">
-                  <Moon size={26} className="text-white" />
-                </div>
-                <h3 className="text-white text-3xl sm:text-4xl lg:text-5xl font-black tracking-tighter uppercase mb-4 leading-none">
-                  Dunova.<br />
-                  <span className="text-violet-500">Sleep built</span><br />
-                  <span className="italic font-light text-zinc-400 lowercase" style={{ fontFamily: "'Playfair Display', serif" }}>on science.</span>
-                </h3>
-                <p className="text-zinc-400 text-base font-light italic leading-relaxed mb-6" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  "Positioning Dunova as a sleep-science brand rather than a home goods brand changed who clicked, who bought, and who stayed. Buyers who came through a clinical keyword are buying for a specific reason. They don't return the product. That's why our return rate held at 3.2% — in a category where 12% is industry average."
-                </p>
-                <Link href="/contact" className="bg-white text-zinc-900 px-7 py-3.5 rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-violet-500 hover:text-white transition-all no-underline shadow-xl inline-block">
-                  Build My Brand Authority
-                </Link>
-              </div>
-              <div className="flex-1 w-full flex flex-col gap-4">
-                <div className="flex items-center justify-between lg:hidden px-1">
-                  <p className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-2">
-                    Brand Assets <span className="w-8 h-px bg-white/10" />
-                  </p>
-                  <p className="text-[10px] font-mono text-violet-400 uppercase tracking-widest animate-pulse">
-                    Slide to next →
-                  </p>
-                </div>
-                <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 w-full snap-x snap-mandatory">
-                  {visualProof.brandStory.map((img, i) => (
-                    <div key={i} className="shrink-0 w-[85%] sm:w-64 lg:flex-1 rounded-2xl overflow-hidden border border-white/10 relative group cursor-pointer snap-center" style={{ height: "360px" }} onClick={() => setLightboxImage(img)}>
-                      <img src={img.src} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-                      <div className="absolute bottom-5 left-5 right-5">
-                        <p className="text-[8px] font-bold uppercase tracking-[0.3em] text-violet-400 mb-1">Asset 0{i + 1}</p>
-                        <h4 className="text-white font-black text-sm uppercase tracking-tight">{img.label}</h4>
-                      </div>
-                    </div>
-                  ))}
-                </div>
               </div>
             </div>
           </div>
@@ -610,16 +498,16 @@ export default function CaseStudyDunova() {
           </h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
             {[
-              { icon: <MousePointerClick size={18} />, label: "Lifestyle CTR",       desc: "+156% · Human vs flat product" },
-              { icon: <Search size={18} />,            label: "Sleep Intent SEO",    desc: "Page 1 · 3 anxiety terms" },
-              { icon: <Layers size={18} />,            label: "Tactile A+",          desc: "+200% CVR · Science layer" },
-              { icon: <Shield size={18} />,            label: "Gift Positioning",    desc: "41% Subscribe & Save rate" },
-              { icon: <BarChart3 size={18} />,         label: "PPC Architecture",    desc: "47% → 13% ACoS · 9.1x ROAS" },
+              { icon: <MousePointerClick size={18} />, label: "CTR Boost",           desc: "+85% · High contrast" },
+              { icon: <Search size={18} />,            label: "Snack Intent SEO",    desc: "Targeted PPC terms" },
+              { icon: <Layers size={18} />,            label: "CVR Optimization",    desc: "Contextual lifestyle imagery" },
+              { icon: <Shield size={18} />,            label: "Subscribe & Save",    desc: "Consistent recurring revenue" },
+              { icon: <BarChart3 size={18} />,         label: "PPC Efficiency",      desc: "42% → 15% ACoS" },
             ].map((s, i) => (
-              <div key={i} className="group bg-zinc-50 hover:bg-violet-500 rounded-2xl p-5 border border-zinc-100 hover:border-violet-500 transition-all duration-500 text-center cursor-default">
-                <div className="text-violet-500 group-hover:text-white transition-colors flex justify-center mb-3">{s.icon}</div>
+              <div key={i} className="group bg-zinc-50 hover:bg-amber-500 rounded-2xl p-5 border border-zinc-100 hover:border-amber-500 transition-all duration-500 text-center cursor-default">
+                <div className="text-amber-500 group-hover:text-white transition-colors flex justify-center mb-3">{s.icon}</div>
                 <p className="font-black text-[11px] uppercase tracking-tight text-zinc-700 group-hover:text-white transition-colors leading-tight mb-1">{s.label}</p>
-                <p className="text-[9px] text-zinc-500 group-hover:text-white/70 transition-colors font-bold uppercase tracking-wider">{s.desc}</p>
+                <p className="text-[9px] text-zinc-500 group-hover:text-white/80 transition-colors font-bold uppercase tracking-wider">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -630,55 +518,36 @@ export default function CaseStudyDunova() {
 
         {/* Testimonial */}
         <div className="bg-white rounded-[24px] sm:rounded-[32px] border border-zinc-100 p-6 sm:p-10 md:p-14 shadow-[0_20px_50px_rgba(0,0,0,0.04)]">
-          <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-12">
-            <div className="max-w-3xl">
+          <div className="flex flex-col xl:flex-row items-start justify-between gap-12 xl:gap-20">
+            <div className="flex-1 max-w-2xl">
               <SectionLabel>Client Voice</SectionLabel>
               
               <div className="space-y-12">
                 {/* Primary Testimonial */}
                 <div>
                   <div className="flex gap-1 mb-5">
-                    {[...Array(5)].map((_, i) => <Star key={i} size={16} className="text-violet-500 fill-violet-500" />)}
+                    {[...Array(5)].map((_, i) => <Star key={i} size={16} className="text-amber-500 fill-amber-500" />)}
                   </div>
                   <p className="text-zinc-700 text-xl sm:text-2xl md:text-[32px] font-light italic leading-tight mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
-                    "We were competing against a brand with a $15 million marketing budget and the patent on the category name. Grow Orbit told us to stop competing on price and start competing on proof. We went from invisible to $52K a month in less than 90 days."
+                    "We revamped their listings and optimized PPC. Within 12 months, they hit 742K units sold with consistent monthly growth."
                   </p>
                   
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md grayscale hover:grayscale-0 transition-all duration-500 flex-shrink-0">
                       <img 
-                        src="https://randomuser.me/api/portraits/women/68.jpg" 
-                        alt="Sarah Chen" 
+                        src="https://randomuser.me/api/portraits/women/44.jpg" 
+                        alt="Sarah J." 
                         className="w-full h-full object-cover" 
                       />
                     </div>
                     <div>
                       <span className="font-black text-[13px] uppercase tracking-tight text-zinc-900 block leading-tight">
-                        Sarah Chen
+                        Sarah J.
                       </span>
                       <span className="text-[10px] font-medium text-zinc-500 block">
-                        Founder, Dunova Sleep Co.
+                        Founder, Lumina Bites
                       </span>
                     </div>
-                  </div>
-                </div>
-
-                {/* Secondary Testimonial / Impact Strip */}
-                <div className="pt-10 border-t border-zinc-100 grid md:grid-cols-2 gap-8">
-                  <div>
-                    <p className="text-zinc-500 text-base font-light italic leading-relaxed mb-4">
-                      "The science layer we added to the A+ content was the turning point. It shifted us from a 'choice' to a 'solution' for buyers."
-                    </p>
-                    <p className="text-zinc-900 font-bold text-[10px] uppercase tracking-widest">— Director of Ops</p>
-                  </div>
-                  <div className="bg-zinc-50 rounded-2xl p-6 border border-zinc-100">
-                    <div className="flex items-center gap-3 mb-2">
-                       <div className="flex gap-0.5">{[...Array(5)].map((_, i) => <Star key={i} size={10} className="text-violet-500 fill-violet-500" />)}</div>
-                       <span className="text-zinc-900 font-black text-[10px] uppercase tracking-widest">Growth Retention</span>
-                    </div>
-                    <p className="text-zinc-500 text-[11px] leading-relaxed">
-                      Maintained a 3.2% return rate—nearly 4x better than category average. High trust conversion translates to low regret purchases.
-                    </p>
                   </div>
                 </div>
               </div>
@@ -686,10 +555,10 @@ export default function CaseStudyDunova() {
 
             <div className="shrink-0 xl:text-right w-full xl:w-auto pt-10 xl:pt-0">
               <div className="inline-block">
-                <p className="text-[70px] sm:text-[100px] md:text-[140px] font-black text-violet-500 tracking-tighter leading-none" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  9.1<span className="text-[42px] sm:text-[60px] md:text-[90px]">x</span>
+                <p className="text-[70px] sm:text-[100px] md:text-[140px] font-black text-amber-500 tracking-tighter leading-none" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  112<span className="text-[42px] sm:text-[60px] md:text-[90px]">%</span>
                 </p>
-                <p className="text-[11px] font-mono text-zinc-400 uppercase tracking-[0.3em] mt-2 mb-8">Peak ROAS · Day 85</p>
+                <p className="text-[11px] font-mono text-zinc-400 uppercase tracking-[0.3em] mt-2 mb-8">MoM Growth</p>
                 <div className="rounded-2xl overflow-hidden border border-zinc-200 shadow-xl max-w-[240px] mx-auto xl:ml-auto">
                    <img src="/images/saler centeral screens/3.jpg" alt="Seller Central Results" className="w-full h-auto" />
                 </div>
@@ -702,74 +571,28 @@ export default function CaseStudyDunova() {
           </div>
         </div>
 
-        {/* Interactive Calculator Tools Cross-Link */}
-        <div className="bg-zinc-50 border border-zinc-200/80 rounded-[24px] sm:rounded-[32px] p-6 sm:p-10 shadow-[0_20px_50px_rgba(0,0,0,0.02)]">
-          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-8">
-            <div className="max-w-xl">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-violet-500" />
-                <span className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-zinc-400">
-                  Interactive Profit Planning
-                </span>
-              </div>
-              <h3 className="text-xl sm:text-2xl font-black uppercase text-zinc-900 tracking-tight leading-tight">
-                Evaluate Your Own Amazon Margins
-              </h3>
-              <p className="text-zinc-500 text-sm font-light mt-1.5 leading-relaxed">
-                Dunova's premium sleep positioning and fulfillment modeling laid the groundwork for scale. Run your own numbers using our free, interactive Amazon seller calculators.
-              </p>
-            </div>
-            <div className="shrink-0 flex flex-wrap gap-3">
-              <Link href="/amazon-tools/fba-vs-fbm-vs-3pl" className="bg-zinc-900 text-white hover:bg-violet-500 hover:text-white px-5 py-3 rounded-full font-black text-[10px] uppercase tracking-widest transition-all no-underline shadow-md inline-flex items-center gap-2">
-                FBA vs FBM vs 3PL <ArrowRight size={12} />
-              </Link>
-              <Link href="/amazon-tools/quick-estimator" className="bg-white text-zinc-900 border border-zinc-200 hover:border-violet-500 hover:text-violet-500 px-5 py-3 rounded-full font-black text-[10px] uppercase tracking-widest transition-all no-underline shadow-sm inline-flex items-center gap-2">
-                Quick Estimator <ArrowRight size={12} />
-              </Link>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-zinc-200/60 pt-6">
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-xl bg-violet-50 flex items-center justify-center text-violet-500 shrink-0 mt-0.5"><TrendingUp size={14} /></div>
-              <div>
-                <h5 className="font-black text-[11px] uppercase tracking-tight text-zinc-900 leading-tight mb-0.5">Model True Margins</h5>
-                <p className="text-[10px] text-zinc-400 font-light leading-snug">Factor in CPC, dynamic FBA fulfillment fees, and referral cuts.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-xl bg-violet-50 flex items-center justify-center text-violet-500 shrink-0 mt-0.5"><Zap size={14} /></div>
-              <div>
-                <h5 className="font-black text-[11px] uppercase tracking-tight text-zinc-900 leading-tight mb-0.5">Predict Breakeven ACoS</h5>
-                <p className="text-[10px] text-zinc-400 font-light leading-snug">Determine exactly how high your ad spend can go before bleeding cash.</p>
-              </div>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-8 h-8 rounded-xl bg-violet-50 flex items-center justify-center text-violet-500 shrink-0 mt-0.5"><Package size={14} /></div>
-              <div>
-                <h5 className="font-black text-[11px] uppercase tracking-tight text-zinc-900 leading-tight mb-0.5">Optimize FBA Tiering</h5>
-                <p className="text-[10px] text-zinc-400 font-light leading-snug">Minimize shipping fees by designing package dimensions strategically.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
         {/* Navigation */}
         <div className="pt-10 border-t border-zinc-100 flex flex-col sm:flex-row items-center sm:items-center justify-between gap-6">
           <Link href="/case-study" className="flex items-center gap-2 text-zinc-400 hover:text-zinc-900 font-bold text-[10px] uppercase tracking-widest transition-colors no-underline">
             <ArrowLeft size={14} /> All Case Studies
           </Link>
           <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 w-full sm:w-auto">
-            <Link href="/get-started" className="bg-zinc-900 text-white px-8 py-4 rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-violet-500 transition-all no-underline shadow-lg text-center w-full sm:w-auto">
+            <Link href="/get-started" className="bg-zinc-900 text-white px-8 py-4 rounded-full font-black text-[11px] uppercase tracking-widest hover:bg-amber-500 transition-all no-underline shadow-lg text-center w-full sm:w-auto">
               Scale My Brand Like This
             </Link>
-            <Link href="/case-study/li-01" className="group flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-widest text-zinc-900 hover:text-violet-500 transition-colors no-underline">
+            <Link href="/case-study/li-01" className="group flex items-center justify-center gap-3 font-black text-[11px] uppercase tracking-widest text-zinc-900 hover:text-amber-500 transition-colors no-underline">
               Next — Graffixx Full Optimization
               <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
         </div>
       </div>
-      <SellerCentralShowcase />
+      <SellerCentralShowcase
+        unitsSold12mo="742K"
+        growthVsLastYear="112%"
+        buyBoxRate="99%"
+        highlightIndex={2}
+      />
     </main>
   );
 }

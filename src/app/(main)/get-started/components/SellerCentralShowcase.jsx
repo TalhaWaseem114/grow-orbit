@@ -2,7 +2,30 @@
 
 import Image from "next/image";
 
-export default function SellerCentralShowcase() {
+export default function SellerCentralShowcase({
+  unitsSold12mo = "1.15M+",
+  growthVsLastYear = "135%",
+  buyBoxRate = "99%",
+  highlightIndex = 1,
+}) {
+  const screens = [
+    {
+      src: "/images/saler centeral screens/1.jpg",
+      alt: "Amazon Seller Central — Graffixx 61K units sold",
+      index: 0,
+    },
+    {
+      src: "/images/saler centeral screens/2.jpg",
+      alt: "Amazon Seller Central — Kazvoo 88K units sold",
+      index: 1,
+    },
+    {
+      src: "/images/saler centeral screens/3.jpg",
+      alt: "Amazon Seller Central — Dunova 67K units sold",
+      index: 2,
+    },
+  ];
+
   return (
     <section
       className="py-16 sm:py-24 bg-gradient-to-b from-zinc-950 via-zinc-900 to-zinc-950 relative overflow-hidden"
@@ -47,61 +70,53 @@ export default function SellerCentralShowcase() {
 
         {/* Screenshots row */}
         <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-8">
-          {/* Left screen — smaller */}
-          <div className="w-[28%] sm:w-[26%] max-w-[220px] shrink-0">
-            <div className="rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-1">
-              <Image
-                src="/images/saler centeral screens/1.jpg"
-                alt="Amazon Seller Central — 61K units sold, 112% growth"
-                width={390}
-                height={844}
-                className="w-full h-auto"
-                quality={85}
-                sizes="(max-width: 640px) 28vw, 220px"
-              />
-            </div>
-          </div>
-
-          {/* Center screen — bigger & elevated */}
-          <div className="w-[36%] sm:w-[34%] max-w-[280px] shrink-0 -mt-4 sm:-mt-6">
-            <div className="rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-orange-500/30 shadow-[0_30px_80px_rgba(249,115,22,0.15),0_20px_60px_rgba(0,0,0,0.5)] hover:border-orange-500/50 transition-all duration-500 hover:-translate-y-2 relative">
-              {/* Glow ring behind center card */}
-              <div className="absolute -inset-px bg-gradient-to-b from-orange-500/20 via-transparent to-orange-500/10 rounded-3xl pointer-events-none" />
-              <Image
-                src="/images/saler centeral screens/2.jpg"
-                alt="Amazon Seller Central — 88K units sold, 1.15M yearly, Outstanding performance"
-                width={390}
-                height={844}
-                className="w-full h-auto relative z-10"
-                quality={90}
-                priority
-                sizes="(max-width: 640px) 36vw, 280px"
-              />
-            </div>
-          </div>
-
-          {/* Right screen — smaller */}
-          <div className="w-[28%] sm:w-[26%] max-w-[220px] shrink-0">
-            <div className="rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-1">
-              <Image
-                src="/images/saler centeral screens/3.jpg"
-                alt="Amazon Seller Central — 67K units sold, 812K yearly, Business thriving"
-                width={390}
-                height={844}
-                className="w-full h-auto"
-                quality={85}
-                sizes="(max-width: 640px) 28vw, 220px"
-              />
-            </div>
-          </div>
+          {screens.map((screen) => {
+            const isHighlighted = screen.index === highlightIndex;
+            return (
+              <div
+                key={screen.index}
+                className={
+                  isHighlighted
+                    ? "w-[36%] sm:w-[34%] max-w-[280px] shrink-0 -mt-4 sm:-mt-6"
+                    : "w-[28%] sm:w-[26%] max-w-[220px] shrink-0"
+                }
+              >
+                <div
+                  className={
+                    isHighlighted
+                      ? "rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-orange-500/30 shadow-[0_30px_80px_rgba(249,115,22,0.15),0_20px_60px_rgba(0,0,0,0.5)] hover:border-orange-500/50 transition-all duration-500 hover:-translate-y-2 relative"
+                      : "rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-1"
+                  }
+                >
+                  {isHighlighted && (
+                    <div className="absolute -inset-px bg-gradient-to-b from-orange-500/20 via-transparent to-orange-500/10 rounded-3xl pointer-events-none" />
+                  )}
+                  <Image
+                    src={screen.src}
+                    alt={screen.alt}
+                    width={390}
+                    height={844}
+                    className={`w-full h-auto ${isHighlighted ? "relative z-10" : ""}`}
+                    quality={isHighlighted ? 90 : 85}
+                    priority={isHighlighted}
+                    sizes={
+                      isHighlighted
+                        ? "(max-width: 640px) 36vw, 280px"
+                        : "(max-width: 640px) 28vw, 220px"
+                    }
+                  />
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Bottom stats callout */}
         <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 mt-10 sm:mt-14">
           {[
-            { stat: "1.15M+", label: "Units Sold (12mo)" },
-            { stat: "135%", label: "Growth vs Last Year" },
-            { stat: "99%", label: "Buy Box Rate" },
+            { stat: unitsSold12mo, label: "Units Sold (12mo)" },
+            { stat: growthVsLastYear, label: "Growth vs Last Year" },
+            { stat: buyBoxRate, label: "Buy Box Rate" },
           ].map((item, i) => (
             <div key={i} className="text-center">
               <p className="text-2xl sm:text-3xl font-black text-white tracking-tighter" style={{ fontFamily: "'Montserrat', sans-serif" }}>

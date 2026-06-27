@@ -1,12 +1,10 @@
-import {
+ import {
   LayoutGrid, Camera, Layers, BookOpen,
   Store, Search, Sparkles,
 } from "lucide-react";
-
 /* ═══════════════════════════════════════════════
    PORTFOLIO DATA — shared across listing + detail
    ═══════════════════════════════════════════════ */
-
 export const PORTFOLIO_ITEMS = [
   /* ─── LISTING IMAGES ─── */
   {
@@ -432,9 +430,9 @@ export const PORTFOLIO_ITEMS = [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872109/grow_orbit_portfolio/neogrid_hand_grip/aplus-3.jpg", label: "Smart Tracking" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872110/grow_orbit_portfolio/neogrid_hand_grip/aplus-4.jpg", label: "Workout Guide" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872112/grow_orbit_portfolio/neogrid_hand_grip/aplus-5.jpg", label: "Grip Comparison" },
-          { src: "https://res.cloudinary.com/grow_orbit_portfolio/neogrid_hand_grip/aplus-6.jpg", label: "Material Breakdown" },
-          { src: "https://res.cloudinary.com/grow_orbit_portfolio/neogrid_hand_grip/aplus-7.jpg", label: "Action Shot" },
-          { src: "https://res.cloudinary.com/grow_orbit_portfolio/neogrid_hand_grip/aplus-8.jpg", label: "Product Summary" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872113/grow_orbit_portfolio/neogrid_hand_grip/aplus-6.jpg", label: "Material Breakdown" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872114/grow_orbit_portfolio/neogrid_hand_grip/aplus-7.jpg", label: "Action Shot" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872115/grow_orbit_portfolio/neogrid_hand_grip/aplus-8.jpg", label: "Product Summary" },
         ],
       },
       "Main Image CTR": {
@@ -925,7 +923,6 @@ export const PORTFOLIO_ITEMS = [
     },
   },
 ];
-
 /* ═══════════════════════════════════════════════
    FILTER CONFIG
    ═══════════════════════════════════════════════ */
@@ -938,7 +935,6 @@ export const FILTERS = [
   // { key: "Brand Store",        label: "Brand Store",        icon: "Store",       color: "bg-orange-500 text-white" },
   { key: "Full Brand Package", label: "Full Brand Package", icon: "Sparkles",    color: "bg-zinc-900 text-white"   },
 ];
-
 /* ─── Stats per category ─── */
 export const FILTER_STATS = {
   all:                  { count: 4, metric: "20+ brands transformed", sub: "across all creative services" },
@@ -949,12 +945,10 @@ export const FILTER_STATS = {
   "Brand Store":        { count: 0,  metric: "+45% avg storefront CTR",sub: "on brand store builds"          },
   "Full Brand Package": { count: 1,  metric: "+660% peak revenue lift",sub: "on complete brand builds"       },
 };
-
 /* ═══════════════════════════════════════════════
    MATERIAL FILTER
    ═══════════════════════════════════════════════ */
 export const MATERIALS = ["All Materials", "Plastic", "Steel", "Glass", "Wood", "Cardboard"];
-
 /* ═══════════════════════════════════════════════
    SERVICE DESCRIPTIONS — for detail page
    ═══════════════════════════════════════════════ */
@@ -980,7 +974,6 @@ export const SERVICE_INFO = {
     color: "#f97316",
   },
 };
-
 /* Helper: get icon component by name */
 export function getFilterIcon(iconName, size = 13) {
   const icons = { LayoutGrid, Camera, Layers, BookOpen, Store, Search, Sparkles };

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useLayoutEffect, useRef, Suspense } from "react";
+import React, { useLayoutEffect, useRef, Suspense, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -89,6 +89,16 @@ function PortfolioPageInner() {
   const rawNiche = searchParams.get("niche") || "All Categories";
   const activeNiche = NICHES.includes(rawNiche) ? rawNiche : "All Categories";
 
+  // Normalize query parameters to prevent uppercase and space-containing URLs
+  useEffect(() => {
+    const normalizedFilter = rawFilter.toLowerCase().replace(/\s+/g, "-");
+    if (rawFilter !== normalizedFilter) {
+      const matParam = activeMaterial !== "All Materials" ? `&material=${encodeURIComponent(activeMaterial)}` : "";
+      const nicheParam = activeNiche !== "All Categories" ? `&niche=${encodeURIComponent(activeNiche)}` : "";
+      router.replace(`/portfolio?filter=${normalizedFilter}${matParam}${nicheParam}`, { scroll: false });
+    }
+  }, [rawFilter, activeMaterial, activeNiche, router]);
+
   const heroRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -109,10 +119,17 @@ function PortfolioPageInner() {
     return () => ctx.revert();
   }, []);
 
+  function getFilterSlug(key) {
+    if (key === "all") return "all";
+    if (key === "A+ Content") return "a-plus-content";
+    return encodeURIComponent(key.toLowerCase().replace(/\s+/g, "-"));
+  }
+
   /* normalise — map URL slug back to category key */
   const activeKey = FILTERS.find(f =>
     f.key.toLowerCase().replace(/\s+/g, "-") === rawFilter ||
     f.key === rawFilter ||
+    (rawFilter === "a-plus-content" && f.key === "A+ Content") ||
     rawFilter === "all" && f.key === "all"
   )?.key || "all";
 
@@ -126,21 +143,21 @@ function PortfolioPageInner() {
   const activeFilter = FILTERS.find(f => f.key === activeKey);
 
   function handleCategorySelect(key) {
-    const slug = key === "all" ? "all" : encodeURIComponent(key.toLowerCase().replace(/\s+/g, "-"));
+    const slug = getFilterSlug(key);
     const matParam = activeMaterial !== "All Materials" ? `&material=${encodeURIComponent(activeMaterial)}` : "";
     const nicheParam = activeNiche !== "All Categories" ? `&niche=${encodeURIComponent(activeNiche)}` : "";
     router.push(`/portfolio?filter=${slug}${matParam}${nicheParam}`, { scroll: false });
   }
 
   function handleMaterialSelect(mat) {
-    const slug = activeKey === "all" ? "all" : encodeURIComponent(activeKey.toLowerCase().replace(/\s+/g, "-"));
+    const slug = getFilterSlug(activeKey);
     const matParam = mat !== "All Materials" ? `&material=${encodeURIComponent(mat)}` : "";
     const nicheParam = activeNiche !== "All Categories" ? `&niche=${encodeURIComponent(activeNiche)}` : "";
     router.push(`/portfolio?filter=${slug}${matParam}${nicheParam}`, { scroll: false });
   }
 
   function handleNicheSelect(niche) {
-    const slug = activeKey === "all" ? "all" : encodeURIComponent(activeKey.toLowerCase().replace(/\s+/g, "-"));
+    const slug = getFilterSlug(activeKey);
     const matParam = activeMaterial !== "All Materials" ? `&material=${encodeURIComponent(activeMaterial)}` : "";
     const nicheParam = niche !== "All Categories" ? `&niche=${encodeURIComponent(niche)}` : "";
     router.push(`/portfolio?filter=${slug}${matParam}${nicheParam}`, { scroll: false });

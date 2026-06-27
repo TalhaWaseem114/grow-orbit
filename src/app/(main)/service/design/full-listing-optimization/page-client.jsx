@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   ArrowRight, CheckCircle2, Search, Image as ImageIcon, PenTool, LayoutGrid,
   TrendingUp, BarChart3, ChevronRight, Plus, Minus, Terminal,
@@ -821,8 +822,14 @@ function RealResults() {
                 {/* Before */}
                 <div className="p-3.5 border-r border-zinc-50">
                   <div className="aspect-[4/3] mb-4 relative overflow-hidden rounded-2xl border border-zinc-100 shadow-sm">
-                    <img src={t.before.img} className="w-full h-full object-cover" alt="Before" />
-                    <div className="absolute top-2 left-2 bg-red-100 text-red-500 text-[7px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full">Before</div>
+                    <Image
+                      src={t.before.img}
+                      alt="Before"
+                      fill
+                      sizes="(max-width: 768px) 50vw, 30vw"
+                      className="object-cover"
+                    />
+                    <div className="absolute top-2 left-2 bg-red-100 text-red-500 text-[7px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full z-10">Before</div>
                   </div>
                   <p className="text-[11px] font-bold text-zinc-600 uppercase tracking-wide mb-1">{t.before.label}</p>
                   <p className="text-[10px] text-zinc-400 font-light">{t.before.note}</p>
@@ -830,8 +837,14 @@ function RealResults() {
                 {/* After */}
                 <div className="p-3.5">
                   <div className="aspect-[4/3] mb-4 relative overflow-hidden rounded-2xl border border-orange-100 shadow-sm">
-                    <img src={t.after.img} className="w-full h-full object-cover" alt="After" />
-                    <div className="absolute top-2 left-2 bg-orange-500 text-white text-[7px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full">Optimized</div>
+                    <Image
+                      src={t.after.img}
+                      alt="After"
+                      fill
+                      sizes="(max-width: 768px) 50vw, 30vw"
+                      className="object-cover"
+                    />
+                    <div className="absolute top-2 left-2 bg-orange-500 text-white text-[7px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full z-10">Optimized</div>
                   </div>
                   <p className="text-[11px] font-bold text-zinc-900 uppercase tracking-wide mb-1">{t.after.label}</p>
                   <p className="text-[10px] text-emerald-600 font-bold">{t.after.note}</p>
@@ -1119,7 +1132,7 @@ function Portfolio() {
                  <div className="w-[20%] flex flex-col gap-2 shrink-0">
                    {/* BEFORE THUMBNAIL */}
                    <div className="aspect-square rounded-2xl overflow-hidden border-[3px] border-red-500/30 bg-red-50 relative group/before">
-                     <img src={ex.thumbs[0]} className="w-full h-full object-cover p-0 opacity-80" />
+                     <img src={ex.thumbs[0]} alt={`${ex.niche} Before optimization image`} className="w-full h-full object-cover p-0 opacity-80" />
                      <div className="absolute inset-0 bg-red-500/10" />
                      <div className="absolute bottom-1 left-0 right-0 flex justify-center">
                        <span className="text-[5px] font-black text-red-600 bg-white/90 px-1 rounded-sm uppercase tracking-widest">Before</span>

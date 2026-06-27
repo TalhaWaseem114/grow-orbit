@@ -1086,7 +1086,7 @@ function Portfolio() {
           {examples.map((ex, i) => (
             <Link
               key={i}
-              href="/portfolio/?filter=a%2B-content"
+              href="/portfolio?filter=a-plus-content"
               className="group relative block p-5 bg-[#f0f4f8] rounded-[36px] transition-all duration-700 ease-out no-underline border border-transparent shadow-[10px_10px_20px_#d2dbe6,-10px_-10px_20px_#ffffff] hover:shadow-[16px_16px_32px_#d2dbe6,-16px_-16px_32px_#ffffff]"
             >
               {/* Header with Badges */}
@@ -1139,7 +1139,7 @@ function Portfolio() {
         <div className="mt-16 text-center">
           <p className="text-zinc-400 text-[10px] font-bold uppercase tracking-[0.2em] mb-6">Want to see more of our A+ design work?</p>
           <Link
-            href="/portfolio/?filter=a%2B-content"
+            href="/portfolio?filter=a-plus-content"
             className="inline-flex items-center gap-3 bg-zinc-950 hover:bg-orange-500 transition-all duration-500 text-white font-black text-[12px] uppercase tracking-[0.2em] px-10 py-5 rounded-full no-underline shadow-[0_10px_30px_rgba(0,0,0,0.1)] hover:shadow-orange-500/20"
           >
             View All A+ Content

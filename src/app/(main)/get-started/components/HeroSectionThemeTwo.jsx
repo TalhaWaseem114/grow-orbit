@@ -205,7 +205,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           {/* Background image with overlay */}
           <div className="absolute inset-0">
             <Image
-              src="/newUpload/strategy_meeting.png"
+              src="/newUpload/strategy-meeting.jpg"
               alt="Amazon growth strategy session"
               fill
               sizes="(max-width: 1024px) 100vw, 42vw"

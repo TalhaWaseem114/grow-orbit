@@ -1,7 +1,7 @@
 import React from "react";
 
 export const metadata = {
-  title: "Privacy Policy | Grow Orbit",
+  title: "Privacy Policy & Data Protection | Grow Orbit",
   description: "Read our privacy policy to understand how we collect, use, and protect your personal information at Grow Orbit.",
   alternates: {
     canonical: "https://www.groworbitofficial.com/privacy-policy/",

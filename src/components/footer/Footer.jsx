@@ -175,7 +175,7 @@ export default function Footer() {
           <div className="lg:w-1/2 pt-6">
 
             {/* Main headline */}
-            <h2
+            <h3
               className="font-black leading-[0.88] tracking-tighter mb-8 uppercase"
               style={{
                 fontSize: "clamp(3.2rem, 8.5vw, 6.8rem)",
@@ -189,7 +189,7 @@ export default function Footer() {
               >
                 the orbit.
               </span>
-            </h2>
+            </h3>
 
             <p className="text-zinc-400 text-xl font-light max-w-lg leading-relaxed mb-16">
               Ready to stop guessing and start growing? Tell us what you're working on —{" "}
@@ -428,12 +428,12 @@ export default function Footer() {
             GIANT WATERMARK TEXT
         ══════════════════════════════════════ */}
         <div className="w-full flex justify-center items-center py-12 md:py-16 border-t border-b border-white/5 my-8 select-none overflow-hidden relative z-10">
-          <h2
+          <div
             className="font-black uppercase text-white/[0.08] leading-none whitespace-nowrap tracking-tighter"
             style={{ fontSize: "clamp(2rem, 11vw, 15rem)", fontFamily: "'Montserrat', sans-serif" }}
           >
             GROW ORBIT
-          </h2>
+          </div>
         </div>
 
         {/* ══════════════════════════════════════

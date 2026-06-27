@@ -878,7 +878,7 @@ function Portfolio() {
 
         <div className="mt-20 flex flex-col items-center gap-6">
           <Link
-            href="/portfolio?filter=listing-image"
+            href="/portfolio?filter=listing-images"
             className="group w-full sm:w-auto inline-flex items-center justify-center gap-4 sm:gap-6 bg-zinc-950 hover:bg-orange-500 text-white px-8 sm:px-10 py-5 rounded-full transition-all duration-500 no-underline shadow-none hover:shadow-orange-500/20"
           >
             <span className="text-[10px] sm:text-[11px] font-black uppercase tracking-[0.2em] sm:tracking-[0.4em] whitespace-nowrap">View All Listing Images</span>

@@ -6,17 +6,16 @@ import LazySection from "@/components/LazySection";
 
 import AuditHero from "./components/AuditHero";
 import MetricsStrip from "./components/MetricsStrip";
-
-const Methodology = dynamic(() => import("./components/Methodology"), { ssr: false });
-const Pricing = dynamic(() => import("./components/Pricing"), { ssr: false });
-const OrbitWay = dynamic(() => import("./components/OrbitWay"), { ssr: false });
-const DiagnosticProtocol = dynamic(() => import("./components/DiagnosticProtocol"), { ssr: false });
-const Deliverables = dynamic(() => import("./components/Deliverables"), { ssr: false });
-const WhoItsFor = dynamic(() => import("./components/WhoItsFor"), { ssr: false });
-const ProcessSection = dynamic(() => import("../../../../components/service/audit strategy/ProcessSection"), { ssr: false });
-const FAQ = dynamic(() => import("./components/FAQ"), { ssr: false });
-const AuditCTA = dynamic(() => import("./components/AuditCTA"), { ssr: false });
-const FooterNav = dynamic(() => import("./components/FooterNav"), { ssr: false });
+import Methodology from "./components/Methodology";
+import Pricing from "./components/Pricing";
+import OrbitWay from "./components/OrbitWay";
+import DiagnosticProtocol from "./components/DiagnosticProtocol";
+import Deliverables from "./components/Deliverables";
+import WhoItsFor from "./components/WhoItsFor";
+import ProcessSection from "../../../../components/service/audit strategy/ProcessSection";
+import FAQ from "./components/FAQ";
+import AuditCTA from "./components/AuditCTA";
+import FooterNav from "./components/FooterNav";
 
 export default function OrbitDiagnosticPage() {
   useEffect(() => {

@@ -560,7 +560,7 @@ export default function CaseStudyLuminaBites() {
                 </p>
                 <p className="text-[11px] font-mono text-zinc-400 uppercase tracking-[0.3em] mt-2 mb-8">MoM Growth</p>
                 <div className="rounded-2xl overflow-hidden border border-zinc-200 shadow-xl max-w-[240px] mx-auto xl:ml-auto">
-                   <img src="/images/saler centeral screens/3.jpg" alt="Seller Central Results" className="w-full h-auto" />
+                   <img src="/images/saler centeral screens/3.jpg" alt="Seller Central Results" width="400" height="250" className="w-full h-auto" />
                 </div>
                 <div className="mt-6 flex items-center justify-center xl:justify-end gap-2">
                    <div className="w-2 h-2 rounded-full bg-emerald-500" />

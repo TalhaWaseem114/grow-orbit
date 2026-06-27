@@ -10,24 +10,18 @@ import {
   Layers, Globe, Compass, ShieldCheck, Terminal, Star,
   TrendingUp, Award, Plus, Minus, Rocket, Activity,
   Radio, LayoutGrid, FileText, PenTool, Store, Camera,
-  RefreshCw, AlertCircle,
+  RefreshCw, AlertCircle
 } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroButton from "@/components/ui/HeroButton";
-
-const ProcessSection = dynamic(() => import("@/components/service/brand launch/ProcessSection"), { ssr: false });
-const PriceMatrix = dynamic(() => import("@/components/service/brand launch/PriceMatrix"), { ssr: false });
+import ProcessSection from "@/components/service/brand launch/ProcessSection";
+import PriceMatrix from "@/components/service/brand launch/PriceMatrix";
 import LaunchCTA from "./components/LaunchCTA";
-
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
-
-/* ─────────────────────────────────────────────
-   SHARED
-───────────────────────────────────────────── */
 const SectionLabel = ({ children, light = false }) => (
   <div className="flex items-center gap-3 mb-6">
     <div className="w-6 h-[2px] bg-orange-500" />

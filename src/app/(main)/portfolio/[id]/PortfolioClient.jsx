@@ -622,7 +622,7 @@ export default function PortfolioDetailPage() {
                 <span className="font-mono text-[9px] font-bold uppercase tracking-[0.4em] text-orange-500/80">{item.category}</span>
                 {item.services?.length > 1 && <span className="bg-orange-50 text-orange-500 text-[8px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full border border-orange-100">{item.services.length} Services</span>}
               </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-black tracking-tighter uppercase leading-[0.88] mb-2 text-zinc-900">{item.brandName}</h1>
+              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-black tracking-tighter uppercase leading-[0.88] mb-2 text-zinc-900">{item.brandName} ({item.niche})</h1>
               <p className="text-zinc-400 font-mono text-[10px] uppercase tracking-widest mb-4 sm:mb-6">{item.niche}</p>
 
               <div className="flex items-center gap-3 mb-6 pb-6 border-b border-zinc-100">
@@ -738,7 +738,7 @@ export default function PortfolioDetailPage() {
                       <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-zinc-400">Service {String(idx + 1).padStart(2, "0")} of {normalizedServices.length}</span>
                     </div>
                     <h2 className="text-2xl sm:text-3xl font-black tracking-tighter uppercase text-zinc-900">
-                      {svc}<span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-300 lowercase tracking-normal ml-3">· delivered.</span>
+                      {svc} for {item.brandName}<span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-300 lowercase tracking-normal ml-3">· delivered.</span>
                     </h2>
                   </div>
                   <Link href="/service" className="hidden md:inline-flex items-center gap-2 text-zinc-400 hover:text-orange-500 font-bold text-[10px] uppercase tracking-widest transition-colors no-underline">

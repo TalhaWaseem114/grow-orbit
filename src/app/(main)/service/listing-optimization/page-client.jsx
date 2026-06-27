@@ -9,15 +9,15 @@ import {
 } from "lucide-react";
 import HeroSection from "@/components/service/listing optimization/HeroSection";
 import MetricsStrip from "@/components/service/listing optimization/MetricsStrip";
-const ProblemSection = dynamic(() => import("@/components/service/listing optimization/ProblemSection"), { ssr: false });
-const FrameworkSection = dynamic(() => import("@/components/service/listing optimization/FrameworkSection"), { ssr: false });
-const DeliverablesSection = dynamic(() => import("@/components/service/listing optimization/DeliverablesSection"), { ssr: false });
-const WhoItsFor = dynamic(() => import("@/components/service/listing optimization/WhoItsFor"), { ssr: false });
-const WhyGrowOrbitSection = dynamic(() => import("@/components/service/listing optimization/WhyGrowOrbitSection"), { ssr: false });
-const ProcessSection = dynamic(() => import("@/components/service/listing optimization/ProcessSection"), { ssr: false });
-const FAQSection = dynamic(() => import("@/components/service/listing optimization/FAQSection"), { ssr: false });
-const CTASection = dynamic(() => import("@/components/service/listing optimization/CtaSection"), { ssr: false });
-const ProofTable = dynamic(() => import("@/components/service/listing optimization/ProofTable"), { ssr: false });
+import ProblemSection from "@/components/service/listing optimization/ProblemSection";
+import FrameworkSection from "@/components/service/listing optimization/FrameworkSection";
+import DeliverablesSection from "@/components/service/listing optimization/DeliverablesSection";
+import WhoItsFor from "@/components/service/listing optimization/WhoItsFor";
+import WhyGrowOrbitSection from "@/components/service/listing optimization/WhyGrowOrbitSection";
+import ProcessSection from "@/components/service/listing optimization/ProcessSection";
+import FAQSection from "@/components/service/listing optimization/FAQSection";
+import CTASection from "@/components/service/listing optimization/CtaSection";
+import ProofTable from "@/components/service/listing optimization/ProofTable";
 import Link from "next/link";
 
 // ════════════════════════════════════════════════════════════════════════════

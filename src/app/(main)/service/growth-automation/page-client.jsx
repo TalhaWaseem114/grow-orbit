@@ -7,16 +7,16 @@ import Link from "next/link";
 import LazySection from "@/components/LazySection";
 
 import AutomationHero from "@/components/service/growth automation/AutomationHero";
-const AutomationLedger = dynamic(() => import("@/components/service/growth automation/AutomationLedger"), { ssr: false });
-const WhoItsFor = dynamic(() => import("@/components/service/growth automation/WhoItsFor"), { ssr: false });
-const TheProblem = dynamic(() => import("@/components/service/growth automation/TheProblem"), { ssr: false });
-const TheFramework = dynamic(() => import("@/components/service/growth automation/TheFramework"), { ssr: false });
-const SystemsCatalogue = dynamic(() => import("@/components/service/growth automation/SystemsCatalogue"), { ssr: false });
-const AutomationStack = dynamic(() => import("@/components/service/growth automation/AutomationStack"), { ssr: false });
-const ExpectedOutcomes = dynamic(() => import("@/components/service/growth automation/ExpectedOutcomes"), { ssr: false });
-const HowWeWork = dynamic(() => import("@/components/service/growth automation/HowWeWork"), { ssr: false });
-const FAQ = dynamic(() => import("@/components/service/growth automation/FAQ"), { ssr: false });
-const AutomationCTA = dynamic(() => import("@/components/service/growth automation/AutomationCTA"), { ssr: false });
+import AutomationLedger from "@/components/service/growth automation/AutomationLedger";
+import WhoItsFor from "@/components/service/growth automation/WhoItsFor";
+import TheProblem from "@/components/service/growth automation/TheProblem";
+import TheFramework from "@/components/service/growth automation/TheFramework";
+import SystemsCatalogue from "@/components/service/growth automation/SystemsCatalogue";
+import AutomationStack from "@/components/service/growth automation/AutomationStack";
+import ExpectedOutcomes from "@/components/service/growth automation/ExpectedOutcomes";
+import HowWeWork from "@/components/service/growth automation/HowWeWork";
+import FAQ from "@/components/service/growth automation/FAQ";
+import AutomationCTA from "@/components/service/growth automation/AutomationCTA";
 
 export default function GrowthAutomation() {
   useEffect(() => {

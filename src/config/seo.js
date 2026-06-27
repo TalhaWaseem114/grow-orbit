@@ -27,7 +27,7 @@ export const DEFAULT_SEO = {
 
 export const METADATA_MAP = {
   '/': {
-    title: 'Amazon Seller Growth & Full-Service FBA Management Agency | Grow Orbit',
+    title: 'Amazon FBA Management & Seller Growth Agency | Grow Orbit',
     description: 'We run the systems that scale Amazon brands. Expert PPC advertising, listing optimization, product sourcing, and A+ creative design. Book your free audit.'
   },
   '/faq': {
@@ -71,23 +71,23 @@ export const METADATA_MAP = {
     description: 'Explore our full suite of Amazon agency services. We optimize PPC efficiency, design listing creative, manage logistics, and protect your brand.'
   },
   '/service/product-hunting-sourcing': {
-    title: 'Amazon Product Hunting & Direct Factory Sourcing | Grow Orbit',
+    title: 'Amazon Product Sourcing & Factory Vetting | Grow Orbit',
     description: 'Data-first product research and direct ex-factory sourcing. We identify high-margin keyword gaps and vet global factories to protect your ROI.'
   },
   '/service/trademark-registration': {
-    title: 'Amazon Trademark Registration & Brand Protection | Grow Orbit',
+    title: 'Amazon Trademark & Brand Protection | Grow Orbit',
     description: 'Secure your brand registry. Fast USPTO/UKIPO/EUIPO trademark filing, listing protection, hijacker removal, and IP enforcement.'
   },
   '/service/sop': {
-    title: 'Standard Operating Procedures (SOPs) for Amazon | Grow Orbit',
+    title: 'Amazon Standard Operating Procedures (SOPs) | Grow Orbit',
     description: 'Operational blueprints and SOPs to run customer support, catalog management, and daily seller account health checks.'
   },
   '/service/ppc-efficiency': {
-    title: 'Amazon PPC Management & Advertising Efficiency | Grow Orbit',
+    title: 'Amazon PPC Management & Ad Efficiency | Grow Orbit',
     description: 'Cut ad waste. 4-tier campaign structures and bid optimization designed to lower ACoS, maximize ROAS, and build organic rankings.'
   },
   '/service/ongoing-support': {
-    title: 'Ongoing Amazon Operational Support & Account Management | Grow Orbit',
+    title: 'Ongoing Amazon Account Support & Operations | Grow Orbit',
     description: 'Full-time operations support, case resolution, catalog auditing, and safety monitoring to keep your account safe and active.'
   },
   '/service/listing-optimization': {
@@ -111,7 +111,7 @@ export const METADATA_MAP = {
     description: 'CTR-tested main images, brand guidelines, premium A+ content layout, and storefronts that convey authority and drive sales.'
   },
   '/service/brand-launch': {
-    title: 'Amazon Brand Launch & Honeymoon Period Strategy | Grow Orbit',
+    title: 'Amazon Brand Launch & Honeymoon Strategy | Grow Orbit',
     description: 'Harness Amazon\'s Honeymoon visibility window. Complete launch coordination, early PPC, and ranking systems to hit Page 1.'
   },
   '/service/audit-strategy': {

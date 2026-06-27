@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CheckCircle2, ArrowRight, Palette, ShieldCheck, Users, Clock, Sparkles, TrendingUp, FileText, Eye, Type, MessageSquare, Paintbrush, ChevronRight, Plus, Minus, Terminal, Star, Layers, Zap, Repeat, Activity, Image as ImageIcon, BookOpen, Fingerprint, Layout, AlertTriangle } from "lucide-react";
@@ -493,27 +494,33 @@ function BeforeAfter() {
               {/* Fake image grid — chaotic */}
               <div className="grid grid-cols-3 gap-1.5 mb-8 flex-grow">
                 <div className="aspect-square rounded-lg overflow-hidden col-span-2 row-span-2 border border-zinc-100 relative group/img">
-                  <img
+                  <Image
                     src="/images/before/supplements_before.png"
                     alt="Generic Product"
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 50vw, 30vw"
+                    className="object-cover"
                   />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/5">
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/5 z-10">
                     <ImageIcon size={24} className="text-white/30" />
                   </div>
                 </div>
-                <div className="aspect-square rounded-lg overflow-hidden border border-zinc-100">
-                  <img
+                <div className="aspect-square rounded-lg overflow-hidden border border-zinc-100 relative">
+                  <Image
                     src="/images/before/supplements_before_detail.png"
                     alt="Messy Shot"
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 30vw, 15vw"
+                    className="object-cover"
                   />
                 </div>
-                <div className="aspect-square rounded-lg overflow-hidden border border-zinc-100">
-                  <img
+                <div className="aspect-square rounded-lg overflow-hidden border border-zinc-100 relative">
+                  <Image
                     src="/images/before/supplements_before_lifestyle.png"
                     alt="Generic Shot"
-                    className="w-full h-full object-cover"
+                    fill
+                    sizes="(max-width: 768px) 30vw, 15vw"
+                    className="object-cover"
                   />
                 </div>
               </div>

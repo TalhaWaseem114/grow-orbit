@@ -587,7 +587,7 @@ function BeforeAfterShowcase() {
           {transformations.map((t, i) => (
             <Link
               key={i}
-              href="/portfolio?filter=Main Image CTR"
+              href="/portfolio?filter=main-image-ctr"
               className="group bg-white rounded-[32px] border border-zinc-100 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.1)] hover:border-orange-500/20 transition-all duration-500 overflow-hidden no-underline block"
             >
               {/* Header */}
@@ -611,8 +611,14 @@ function BeforeAfterShowcase() {
                 {/* Before */}
                 <div className="p-3.5 border-r border-zinc-50">
                   <div className="aspect-square mb-4 relative overflow-hidden rounded-2xl border border-zinc-100 shadow-sm">
-                    <img src={t.before.img} className="w-full h-full object-cover" alt="Before" />
-                    <div className="absolute top-2 left-2 bg-red-100 text-red-500 text-[7px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full">Before</div>
+                    <Image
+                      src={t.before.img}
+                      alt="Before"
+                      fill
+                      sizes="(max-width: 768px) 50vw, 30vw"
+                      className="object-cover"
+                    />
+                    <div className="absolute top-2 left-2 bg-red-100 text-red-500 text-[7px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full z-10">Before</div>
                   </div>
                   <p className="text-[11px] font-bold text-zinc-600 uppercase tracking-wide mb-1">{t.before.label}</p>
                   <p className="text-[10px] text-red-500/70 font-light">{t.before.note}</p>
@@ -620,7 +626,13 @@ function BeforeAfterShowcase() {
                 {/* After */}
                 <div className="p-3.5">
                   <div className="aspect-square mb-4 relative overflow-hidden rounded-2xl border border-orange-100 shadow-sm">
-                    <img src={t.after.img} className="w-full h-full object-cover" alt="After" />
+                    <Image
+                      src={t.after.img}
+                      alt="After"
+                      fill
+                      sizes="(max-width: 768px) 50vw, 30vw"
+                      className="object-cover"
+                    />
                     <div className="absolute top-2 left-2 bg-orange-500 text-white text-[7px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full z-10">After</div>
 
                     {/* Results Badge Overlay */}
@@ -645,7 +657,7 @@ function BeforeAfterShowcase() {
         <div className="mt-12 text-center">
           <p className="text-zinc-400 text-sm font-light mb-6">Results vary. Average CTR improvement across 3,500+ images designed: 40%.</p>
           <Link
-            href="/portfolio?filter=Main Image CTR"
+            href="/portfolio?filter=main-image-ctr"
             className="inline-flex items-center gap-3 bg-black hover:bg-orange-500 transition-all duration-300 text-white font-black text-[11px] uppercase tracking-widest px-8 py-4 rounded-full no-underline"
           >
             See More CTR Results

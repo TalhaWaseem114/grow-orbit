@@ -414,7 +414,7 @@ function CountryPricing() {
                 )}
 
                 <div className="flex items-center justify-between mb-5">
-                  <img src={`https://flagcdn.com/w40/${c.code}.png`} alt={`${c.country} flag`} className="w-8 rounded-[4px] shadow-sm" />
+                  <img src={`https://flagcdn.com/w40/${c.code}.png`} alt={`${c.country} flag`} width="32" height="24" className="w-8 rounded-[4px] shadow-sm" />
                   <span className={`text-[9px] font-mono font-bold uppercase tracking-widest ${c.popular ? "text-orange-400" : "text-zinc-400"}`}>{c.office}</span>
                 </div>
 

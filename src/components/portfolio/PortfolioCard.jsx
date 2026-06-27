@@ -75,7 +75,7 @@ export default function PortfolioCard({ item, priority = false }) {
           </div>
 
           {/* Outcome Metric */}
-          <h4
+          <h2
             className="text-[12.5px] sm:text-[13.5px] font-black uppercase tracking-tight text-white group-hover:text-orange-400 transition-colors duration-300 flex items-center justify-between pointer-events-auto"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
@@ -83,7 +83,7 @@ export default function PortfolioCard({ item, priority = false }) {
             <span className="w-5.5 h-5.5 rounded-full bg-white/15 border border-white/10 flex items-center justify-center group-hover:bg-orange-50 group-hover:border-orange-50 group-hover:rotate-45 transition-all duration-500 shrink-0 shadow-sm">
               <ArrowUpRight size={11} className="text-white" />
             </span>
-          </h4>
+          </h2>
         </div>
 
         {/* Floating Tag - Top Center Edge */}

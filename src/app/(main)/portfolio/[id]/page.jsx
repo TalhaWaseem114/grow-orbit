@@ -19,8 +19,8 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const title = `${item.brandName} - ${item.category} Case Study | Grow Orbit`;
-  const description = `See how we achieved ${item.outcome} for ${item.brandName} (${item.niche}) with our tailored ${item.category} systems. Read the full case study.`;
+  const title = `${item.brandName} (${item.niche}) Case Study | Grow Orbit`;
+  const description = `See how we drove ${item.outcome} for ${item.brandName} (${item.niche}) with tailored ${item.category}. Read the full case study.`;
   const canonical = `https://www.groworbitofficial.com/portfolio/${id}/`;
 
   return {

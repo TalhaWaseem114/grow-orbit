@@ -1,7 +1,7 @@
 import React from "react";
 
 export const metadata = {
-  title: "Terms of Service | Grow Orbit",
+  title: "Terms of Service & User Conditions | Grow Orbit",
   description: "Read our terms of service and conditions governing your use of the Grow Orbit website and FBA marketing services.",
   alternates: {
     canonical: "https://www.groworbitofficial.com/terms-of-service/",

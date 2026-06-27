@@ -222,26 +222,26 @@ function PhasePerformanceDashboard() {
 /* ─── VISUAL DATA ─── */
 const visualProof = {
   listingImages: [
-    { src: "/newUpload/main images.jpg", label: "Hero Image" },
-    { src: "/newUpload/whats included.jpg", label: "What's Included" },
-    { src: "/newUpload/shades.jpg", label: "Color Shades" },
-    { src: "/newUpload/tips.jpg", label: "Dual Tips" },
-    { src: "/newUpload/image versatality.jpg", label: "Versatility" },
-    { src: "/newUpload/lifestyle cartoon.jpg", label: "Lifestyle Art" },
-    { src: "/newUpload/collage.jpg", label: "Art Collage" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560175/grow_orbit_portfolio/assets/portfolio/graffixx/main_images.jpg", label: "Hero Image" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560179/grow_orbit_portfolio/assets/portfolio/graffixx/whats_included.jpg", label: "What's Included" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560177/grow_orbit_portfolio/assets/portfolio/graffixx/shades.jpg", label: "Color Shades" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560178/grow_orbit_portfolio/assets/portfolio/graffixx/tips.jpg", label: "Dual Tips" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560173/grow_orbit_portfolio/assets/portfolio/graffixx/image_versatality.jpg", label: "Versatility" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560174/grow_orbit_portfolio/assets/portfolio/graffixx/lifestyle_cartoon.jpg", label: "Lifestyle Art" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560172/grow_orbit_portfolio/assets/portfolio/graffixx/collage.jpg", label: "Art Collage" },
   ],
   aPlus: [
-    { src: "/newUpload/new banner.jpg", label: "Brand Header" },
-    { src: "/newUpload/Artboard 1 copy.jpg", label: "Blending Tutorial" },
-    { src: "/newUpload/Artboard 2 (1).jpg", label: "Artist Lifestyle" },
-    { src: "/newUpload/Artboard 3 (1).jpg", label: "Butterfly Art" },
-    { src: "/newUpload/Artboard 4 (1).jpg", label: "Leaves Art" },
-    { src: "/newUpload/Artboard 5 (1).jpg", label: "Pomegranate Art" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560176/grow_orbit_portfolio/assets/portfolio/graffixx/new_banner.jpg", label: "Brand Header" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560163/grow_orbit_portfolio/assets/portfolio/graffixx/Artboard_1_copy.jpg", label: "Blending Tutorial" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560164/grow_orbit_portfolio/assets/portfolio/graffixx/Artboard_2_1.jpg", label: "Artist Lifestyle" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560166/grow_orbit_portfolio/assets/portfolio/graffixx/Artboard_3_1.jpg", label: "Butterfly Art" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560167/grow_orbit_portfolio/assets/portfolio/graffixx/Artboard_4_1.jpg", label: "Leaves Art" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560168/grow_orbit_portfolio/assets/portfolio/graffixx/Artboard_5_1.jpg", label: "Pomegranate Art" },
   ],
   brandStory: [
-    { src: "/newUpload/Artboard 6 (1).jpg", label: "Violet Art" },
-    { src: "/newUpload/Artboard 7 (1).jpg", label: "Ocean Glass Art" },
-    { src: "/newUpload/Artboard 1 copy 4.jpg", label: "Swatches" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560169/grow_orbit_portfolio/assets/portfolio/graffixx/Artboard_6_1.jpg", label: "Violet Art" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560171/grow_orbit_portfolio/assets/portfolio/graffixx/Artboard_7_1.jpg", label: "Ocean Glass Art" },
+    { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560160/grow_orbit_portfolio/assets/portfolio/graffixx/Artboard_1_copy_4.jpg", label: "Swatches" },
   ],
 };
 

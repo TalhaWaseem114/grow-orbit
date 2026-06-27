@@ -25,7 +25,7 @@ const projects = [
     growth: "$28K/mo",
     metric: "Revenue at Day 60",
     unitsSold12mo: "742.9K",
-    image: "/newUpload/main images.jpg",
+    image: "https://res.cloudinary.com/dciggvulg/image/upload/v1782560175/grow_orbit_portfolio/assets/portfolio/graffixx/main_images.jpg",
     sellerCentralImage: "/images/saler centeral screens/1.jpg",
     niche: "Alcohol Markers · Art & Hobby",
     accentColor: "#f97316",

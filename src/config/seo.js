@@ -1,7 +1,7 @@
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
 
 export const DEFAULT_SEO = {
-  title: "Grow Orbit | Amazon Seller Growth & Full-Service FBA Management Agency",
+  title: "Grow Orbit | Amazon FBA Management & Seller Growth Agency",
   description: "We run the systems that scale Amazon brands. Expert PPC advertising, listing optimization, product sourcing, and A+ creative design.",
   openGraph: {
     type: "website",
@@ -27,7 +27,7 @@ export const DEFAULT_SEO = {
 
 export const METADATA_MAP = {
   '/': {
-    title: 'Amazon FBA Management & Seller Growth Agency | Grow Orbit',
+    title: 'Amazon FBA Management & Seller Growth | Grow Orbit',
     description: 'We run the systems that scale Amazon brands. Expert PPC advertising, listing optimization, product sourcing, and A+ creative design. Book your free audit.'
   },
   '/faq': {

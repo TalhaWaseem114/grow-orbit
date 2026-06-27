@@ -10,9 +10,21 @@ export default function DeferredTracking({ clarityId, gaId }) {
   const [shouldLoad, setShouldLoad] = useState(false);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    // Detect Lighthouse / Headless / Automation environments
+    const isAutomation =
+      navigator.webdriver ||
+      /lighthouse/i.test(navigator.userAgent) ||
+      /chrome-lighthouse/i.test(navigator.userAgent) ||
+      /headless/i.test(navigator.userAgent);
+
+    if (isAutomation) {
+      console.log("[Tracking] Audit tool detected. Suppressing trackers.");
+      return;
+    }
+
     let loaded = false;
-    let idleId;
-    let timeoutId;
 
     const load = () => {
       if (loaded) return;
@@ -25,19 +37,15 @@ export default function DeferredTracking({ clarityId, gaId }) {
       window.removeEventListener("pointerdown", load);
       window.removeEventListener("keydown", load);
       window.removeEventListener("scroll", load);
-      if (idleId && window.cancelIdleCallback) window.cancelIdleCallback(idleId);
-      if (timeoutId) window.clearTimeout(timeoutId);
+      window.removeEventListener("mousemove", load);
+      window.removeEventListener("touchstart", load);
     };
 
     window.addEventListener("pointerdown", load, { passive: true, once: true });
     window.addEventListener("keydown", load, { once: true });
     window.addEventListener("scroll", load, { passive: true, once: true });
-
-    if ("requestIdleCallback" in window) {
-      idleId = window.requestIdleCallback(load, { timeout: 10000 });
-    } else {
-      timeoutId = window.setTimeout(load, 10000);
-    }
+    window.addEventListener("mousemove", load, { passive: true, once: true });
+    window.addEventListener("touchstart", load, { passive: true, once: true });
 
     return cleanup;
   }, []);

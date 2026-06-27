@@ -35,8 +35,8 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           }
         }
         .animate-subtle-form {
-          animation: subtle-fade-in-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-          animation-delay: 0.35s;
+          animation: subtle-fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+          animation-delay: 0.2s;
         }
       `}</style>
       <section className="relative min-h-screen flex flex-col lg:flex-row items-stretch overflow-hidden bg-zinc-950">

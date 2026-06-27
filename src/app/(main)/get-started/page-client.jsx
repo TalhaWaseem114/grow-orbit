@@ -41,11 +41,11 @@ export default function CampaignPage() {
           from { opacity: 0; transform: translateY(20px); }
           to   { opacity: 1; transform: translateY(0);    }
         }
-        .fade-up { animation: fade-up 0.6s ease both; }
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.45s; }
+        .fade-up { animation: fade-up 0.45s ease both; }
+        .delay-1 { animation-delay: 0.05s; }
+        .delay-2 { animation-delay: 0.1s; }
+        .delay-3 { animation-delay: 0.15s; }
+        .delay-4 { animation-delay: 0.25s; }
         @keyframes shimmer-btn {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(200%); }

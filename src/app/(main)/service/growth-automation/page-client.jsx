@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import LazySection from "@/components/LazySection";
 
 import AutomationHero from "@/components/service/growth automation/AutomationHero";
 const AutomationLedger = dynamic(() => import("@/components/service/growth automation/AutomationLedger"), { ssr: false });
@@ -25,16 +26,46 @@ export default function GrowthAutomation() {
   return (
     <div className="min-h-screen bg-[#fafafa] selection:bg-orange-500 selection:text-white" style={{ fontFamily: "'Montserrat', sans-serif" }}>
       <AutomationHero />
-      <AutomationLedger />
-      <TheProblem />
-      <TheFramework />
-      <SystemsCatalogue />
-      <AutomationStack />
-      <ExpectedOutcomes />
-      <WhoItsFor />
-      <HowWeWork />
-      <FAQ />
-      <AutomationCTA />
+      
+      <LazySection height="500px">
+        <AutomationLedger />
+      </LazySection>
+
+      <LazySection height="500px">
+        <TheProblem />
+      </LazySection>
+
+      <LazySection height="600px">
+        <TheFramework />
+      </LazySection>
+
+      <LazySection height="600px">
+        <SystemsCatalogue />
+      </LazySection>
+
+      <LazySection height="500px">
+        <AutomationStack />
+      </LazySection>
+
+      <LazySection height="600px">
+        <ExpectedOutcomes />
+      </LazySection>
+
+      <LazySection height="500px">
+        <WhoItsFor />
+      </LazySection>
+
+      <LazySection height="600px">
+        <HowWeWork />
+      </LazySection>
+
+      <LazySection height="500px">
+        <FAQ />
+      </LazySection>
+
+      <LazySection height="350px">
+        <AutomationCTA />
+      </LazySection>
 
       {/* --- NAVIGATION FOOTER --- */}
       <footer className="py-16 md:py-24 bg-white border-t border-zinc-100">

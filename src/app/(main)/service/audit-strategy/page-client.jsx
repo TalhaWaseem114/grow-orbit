@@ -1,23 +1,22 @@
 "use client";
 
 import React, { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import ProcessSection from "../../../../components/service/audit strategy/ProcessSection";
+import dynamic from "next/dynamic";
+import LazySection from "@/components/LazySection";
 
 import AuditHero from "./components/AuditHero";
 import MetricsStrip from "./components/MetricsStrip";
-import Methodology from "./components/Methodology";
-import OrbitWay from "./components/OrbitWay";
-import DiagnosticProtocol from "./components/DiagnosticProtocol";
-import Deliverables from "./components/Deliverables";
-import WhoItsFor from "./components/WhoItsFor";
-import Pricing from "./components/Pricing";
-import FAQ from "./components/FAQ";
-import AuditCTA from "./components/AuditCTA";
-import FooterNav from "./components/FooterNav";
 
-gsap.registerPlugin(ScrollTrigger);
+const Methodology = dynamic(() => import("./components/Methodology"), { ssr: false });
+const Pricing = dynamic(() => import("./components/Pricing"), { ssr: false });
+const OrbitWay = dynamic(() => import("./components/OrbitWay"), { ssr: false });
+const DiagnosticProtocol = dynamic(() => import("./components/DiagnosticProtocol"), { ssr: false });
+const Deliverables = dynamic(() => import("./components/Deliverables"), { ssr: false });
+const WhoItsFor = dynamic(() => import("./components/WhoItsFor"), { ssr: false });
+const ProcessSection = dynamic(() => import("../../../../components/service/audit strategy/ProcessSection"), { ssr: false });
+const FAQ = dynamic(() => import("./components/FAQ"), { ssr: false });
+const AuditCTA = dynamic(() => import("./components/AuditCTA"), { ssr: false });
+const FooterNav = dynamic(() => import("./components/FooterNav"), { ssr: false });
 
 export default function OrbitDiagnosticPage() {
   useEffect(() => {
@@ -31,16 +30,46 @@ export default function OrbitDiagnosticPage() {
     >
       <AuditHero />
       <MetricsStrip />
-      <Methodology />
-      <Pricing />
-      <OrbitWay />
-      <DiagnosticProtocol />
-      <Deliverables />
-      <WhoItsFor />
-      <ProcessSection />
-      <FAQ />
-      <AuditCTA />
-      <FooterNav />
+      
+      <LazySection height="500px">
+        <Methodology />
+      </LazySection>
+
+      <LazySection height="400px">
+        <Pricing />
+      </LazySection>
+
+      <LazySection height="500px">
+        <OrbitWay />
+      </LazySection>
+
+      <LazySection height="600px">
+        <DiagnosticProtocol />
+      </LazySection>
+
+      <LazySection height="600px">
+        <Deliverables />
+      </LazySection>
+
+      <LazySection height="500px">
+        <WhoItsFor />
+      </LazySection>
+
+      <LazySection height="700px">
+        <ProcessSection />
+      </LazySection>
+
+      <LazySection height="500px">
+        <FAQ />
+      </LazySection>
+
+      <LazySection height="350px">
+        <AuditCTA />
+      </LazySection>
+
+      <LazySection height="150px">
+        <FooterNav />
+      </LazySection>
     </div>
   );
 }

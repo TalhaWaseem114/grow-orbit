@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import LazySection from "@/components/LazySection";
 import {
   Search, Layers, Target, TrendingUp, BarChart3, AlertTriangle,
   Zap, Eye, Shield, Cpu, Box, Link2, Image, File, Settings,
@@ -31,18 +32,46 @@ export default function SeoOptimizationService() {
     >
       <HeroSection/>
       <MetricsStrip />
-      <ProblemSection />
-      <WhyGrowOrbitSection />
+      
+      <LazySection height="500px">
+        <ProblemSection />
+      </LazySection>
+
+      <LazySection height="500px">
+        <WhyGrowOrbitSection />
+      </LazySection>
+
       <div className="h-px w-full bg-zinc-950 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-orange-500/20 to-transparent" />
       </div>
-      <FrameworkSection />
-      <DeliverablesSection />
-      <ProofTable />
-      <WhoItsFor />
-      <ProcessSection />
-      <FAQSection />
-      <CTASection />
+
+      <LazySection height="600px">
+        <FrameworkSection />
+      </LazySection>
+
+      <LazySection height="600px">
+        <DeliverablesSection />
+      </LazySection>
+
+      <LazySection height="500px">
+        <ProofTable />
+      </LazySection>
+
+      <LazySection height="500px">
+        <WhoItsFor />
+      </LazySection>
+
+      <LazySection height="700px">
+        <ProcessSection />
+      </LazySection>
+
+      <LazySection height="500px">
+        <FAQSection />
+      </LazySection>
+
+      <LazySection height="350px">
+        <CTASection />
+      </LazySection>
 
        {/* --- NAVIGATION FOOTER --- */}
       <footer className="py-24 bg-white border-t border-zinc-100">

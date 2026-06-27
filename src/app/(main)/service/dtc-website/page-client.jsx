@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import React from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import LazySection from "@/components/LazySection";
 
 // Section Imports
 import DTCHero from "@/components/service/dtc website/components/DTCHero";
@@ -81,16 +82,42 @@ export default function DtcWebsiteService() {
       {/* Narrative Order */}
       <DTCHero />
       <MetricsStrip />
-      <TheProblem />
-      <DTCFramework />
-      <Deliverables />
-      <DTCTechStack />
-      <ExpectedOutcomes />
-      <HowWeWork />
-      <FAQ />
-      <DtcWebsiteCTA />
+      
+      <LazySection height="500px">
+        <TheProblem />
+      </LazySection>
 
-      <FooterNav />
+      <LazySection height="600px">
+        <DTCFramework />
+      </LazySection>
+
+      <LazySection height="600px">
+        <Deliverables />
+      </LazySection>
+
+      <LazySection height="500px">
+        <DTCTechStack />
+      </LazySection>
+
+      <LazySection height="600px">
+        <ExpectedOutcomes />
+      </LazySection>
+
+      <LazySection height="600px">
+        <HowWeWork />
+      </LazySection>
+
+      <LazySection height="500px">
+        <FAQ />
+      </LazySection>
+
+      <LazySection height="350px">
+        <DtcWebsiteCTA />
+      </LazySection>
+
+      <LazySection height="150px">
+        <FooterNav />
+      </LazySection>
     </div>
   );
 }

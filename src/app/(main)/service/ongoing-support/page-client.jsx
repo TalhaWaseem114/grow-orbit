@@ -2,6 +2,8 @@
 
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
+import LazySection from "@/components/LazySection";
+
 import SupportHero from "@/components/service/ongoing support/components/SupportHero";
 import MetricsStrip from "@/components/service/ongoing support/components/MetricsStrip";
 const TheProblem = dynamic(() => import("@/components/service/ongoing support/components/TheProblem"), { ssr: false });
@@ -29,17 +31,50 @@ export default function OngoingSupport() {
     >
       <SupportHero />
       <MetricsStrip />
-      <MonthlyDeliverables />
-      <TheProblem />
-      <PriceMatrix />
-      <SupportFramework />
-      <SupportCycles />
-      <SupportTechStack />
-      <ExpectedOutcomes />
-      <HowWeWork />
-      <SupportFAQ />
-      <SupportCTA />
-      <FooterNav />
+      
+      <LazySection height="500px">
+        <MonthlyDeliverables />
+      </LazySection>
+
+      <LazySection height="500px">
+        <TheProblem />
+      </LazySection>
+
+      <LazySection height="400px">
+        <PriceMatrix />
+      </LazySection>
+
+      <LazySection height="600px">
+        <SupportFramework />
+      </LazySection>
+
+      <LazySection height="600px">
+        <SupportCycles />
+      </LazySection>
+
+      <LazySection height="500px">
+        <SupportTechStack />
+      </LazySection>
+
+      <LazySection height="600px">
+        <ExpectedOutcomes />
+      </LazySection>
+
+      <LazySection height="600px">
+        <HowWeWork />
+      </LazySection>
+
+      <LazySection height="500px">
+        <SupportFAQ />
+      </LazySection>
+
+      <LazySection height="350px">
+        <SupportCTA />
+      </LazySection>
+
+      <LazySection height="150px">
+        <FooterNav />
+      </LazySection>
     </div>
   );
 }

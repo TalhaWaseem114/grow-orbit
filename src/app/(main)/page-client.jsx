@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
+import LazySection from "@/components/LazySection";
 
 // Above-the-fold — eagerly loaded
 import HeroSection from "@/components/home/HeroSection";
@@ -34,15 +35,38 @@ export default function Home() {
       <ServicesMarquee />
       <OrbitBridgeCTA scrollToForm={scrollToForm} />
       <ServiceSection />
-      <OrbitPortfolioSection />
-      <WhyChooseUs />
-      <OrbitProcessSection scrollToForm={scrollToForm} />
-      <OrbitTestimonialsSection />
-      <ClientLogosMarquee isDark={false} bgClass="bg-white" borderClass="border-y border-zinc-100" />
-      <TeamSection />
-      <WhoItsFor />
-      <FAQSection scrollToForm={scrollToForm} />
+      
+      <LazySection height="600px">
+        <OrbitPortfolioSection />
+      </LazySection>
 
+      <LazySection height="500px">
+        <WhyChooseUs />
+      </LazySection>
+
+      <LazySection height="700px">
+        <OrbitProcessSection scrollToForm={scrollToForm} />
+      </LazySection>
+
+      <LazySection height="500px">
+        <OrbitTestimonialsSection />
+      </LazySection>
+
+      <LazySection height="120px">
+        <ClientLogosMarquee isDark={false} bgClass="bg-white" borderClass="border-y border-zinc-100" />
+      </LazySection>
+
+      <LazySection height="600px">
+        <TeamSection />
+      </LazySection>
+
+      <LazySection height="500px">
+        <WhoItsFor />
+      </LazySection>
+
+      <LazySection height="500px">
+        <FAQSection scrollToForm={scrollToForm} />
+      </LazySection>
     </main>
   );
 }

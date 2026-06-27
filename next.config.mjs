@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: ["lucide-react", "react-icons"],
+  experimental: {
+    optimizePackageImports: ["lucide-react", "react-icons"],
+  },
   serverExternalPackages: ["firebase-admin"],
   trailingSlash: true,
   devIndicators: {

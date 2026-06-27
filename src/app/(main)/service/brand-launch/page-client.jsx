@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import LazySection from "@/components/LazySection";
 import {
   ArrowRight, ArrowLeft, Check, CheckCircle2, ChevronRight,
   Target, Zap, Search, BarChart3, Layout, Package,
@@ -1311,32 +1312,54 @@ export default function BrandLaunchPage() {
     >
       <BrandLaunchHero />
       <MetricsStrip />
-      <MarketFriction />
+      <LazySection height="500px">
+        <MarketFriction />
+      </LazySection>
       <div className="bg-white py-4">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="h-px w-full bg-linear-to-r from-transparent via-zinc-200 to-transparent" />
         </div>
       </div>
-      <LaunchComparison />
-      <PriceMatrix />
+      <LazySection height="500px">
+        <LaunchComparison />
+      </LazySection>
+      <LazySection height="400px">
+        <PriceMatrix />
+      </LazySection>
       <div className="bg-[#fafafa] py-4">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="h-px w-full bg-linear-to-r from-transparent via-zinc-200 to-transparent" />
         </div>
       </div>
-      <LaunchFramework />
-      <Deliverables />
-      <WhoItsFor />
-      <ProcessSection />
+      <LazySection height="600px">
+        <LaunchFramework />
+      </LazySection>
+      <LazySection height="600px">
+        <Deliverables />
+      </LazySection>
+      <LazySection height="500px">
+        <WhoItsFor />
+      </LazySection>
+      <LazySection height="700px">
+        <ProcessSection />
+      </LazySection>
       <div className="bg-white py-4">
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
           <div className="h-px w-full bg-linear-to-r from-transparent via-zinc-200 to-transparent" />
         </div>
       </div>
-      <LaunchTestimonial />
-      <FAQ />
-      <LaunchCTA />
-      <FooterNav />
+      <LazySection height="400px">
+        <LaunchTestimonial />
+      </LazySection>
+      <LazySection height="500px">
+        <FAQ />
+      </LazySection>
+      <LazySection height="350px">
+        <LaunchCTA />
+      </LazySection>
+      <LazySection height="150px">
+        <FooterNav />
+      </LazySection>
     </div>
   );
 }

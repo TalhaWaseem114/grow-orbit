@@ -1265,7 +1265,7 @@ function SocialProof() {
                   <p className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest mt-0.5">{t.role}</p>
                 </div>
                 <div className="bg-orange-50 border border-orange-100 rounded-xl px-3 py-2 text-right">
-                  <p className="text-[9px] font-mono text-orange-500 font-bold uppercase tracking-widest">{t.result}</p>
+                  <p className="text-[9px] font-mono text-orange-700 font-bold uppercase tracking-widest">{t.result}</p>
                 </div>
               </div>
             </div>

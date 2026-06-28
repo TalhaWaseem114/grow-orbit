@@ -56,7 +56,7 @@ export default function OrbitTestimonialsSection() {
 
           {/* Section Label — App Style */}
           <div className="relative z-10 flex items-center gap-3 mb-6">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">
+            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-700">
               04 / CLIENT RESULTS
             </span>
           </div>
@@ -75,7 +75,7 @@ export default function OrbitTestimonialsSection() {
           </h2>
 
           {/* Sub-copy */}
-          <p className="relative z-10 text-zinc-500 font-light text-lg leading-relaxed max-w-xl mb-14">
+          <p className="relative z-10 text-zinc-600 font-light text-lg leading-relaxed max-w-xl mb-14">
             Real sellers. Documented outcomes. Not a single vanity metric.
           </p>
         </div>
@@ -134,7 +134,7 @@ export default function OrbitTestimonialsSection() {
               </div>
 
               {/* Paragraph */}
-              <p className="relative z-10 text-zinc-500 text-[14px] leading-relaxed mb-8 line-clamp-3">
+              <p className="relative z-10 text-zinc-600 text-[14px] leading-relaxed mb-8 line-clamp-3">
                 {t.paragraph}
               </p>
 
@@ -153,7 +153,7 @@ export default function OrbitTestimonialsSection() {
                       {stat.type === 'spend' && <LineChart size={16} />}
                     </div>
                     <span className="text-[13px] font-black text-zinc-900 leading-none mb-1.5">{stat.val}</span>
-                    <span className="text-[8px] font-bold text-zinc-400 uppercase tracking-wider">{stat.label}</span>
+                    <span className="text-[8px] font-bold text-zinc-600 uppercase tracking-wider">{stat.label}</span>
                   </div>
                 ))}
               </div>
@@ -176,7 +176,7 @@ export default function OrbitTestimonialsSection() {
                     <span className="font-black text-[12px] uppercase tracking-tight text-zinc-900 block leading-tight">
                       {t.name}
                     </span>
-                    <span className="text-[10px] font-medium text-zinc-500 block">
+                    <span className="text-[10px] font-medium text-zinc-600 block">
                       {t.role}
                     </span>
                   </div>
@@ -185,7 +185,7 @@ export default function OrbitTestimonialsSection() {
                 <Link
                   href={t.caseStudyLink}
                   prefetch={false}
-                  className="flex items-center gap-2 text-orange-500 font-black text-[10px] uppercase tracking-[0.15em] hover:gap-3 transition-all no-underline group/link"
+                  className="flex items-center gap-2 text-orange-700 font-black text-[10px] uppercase tracking-[0.15em] hover:gap-3 transition-all no-underline group/link"
                 >
                   View Case Study
                   <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
@@ -232,7 +232,7 @@ export default function OrbitTestimonialsSection() {
                   <span className="text-lg md:text-xl font-extrabold text-zinc-900 leading-none tracking-tight group-hover:text-orange-500 transition-colors">
                     {stat.val}
                   </span>
-                  <span className="text-[10px] font-medium text-zinc-400 uppercase tracking-wider mt-1 group-hover:text-zinc-500 transition-colors">
+                  <span className="text-[10px] font-medium text-zinc-600 uppercase tracking-wider mt-1 group-hover:text-zinc-500 transition-colors">
                     {stat.label}
                   </span>
                 </div>

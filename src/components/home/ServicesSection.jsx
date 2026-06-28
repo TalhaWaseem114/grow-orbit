@@ -55,9 +55,9 @@ const serviceGroups = [
 ];
 
 const colorMap = {
-  orange:  { dot: "bg-orange-500",  badge: "bg-orange-50 text-orange-500 border-orange-100", icon: "bg-orange-50 text-orange-500 group-hover:bg-orange-500", rgb: "249,115,22"  },
-  violet:  { dot: "bg-violet-500",  badge: "bg-violet-50 text-violet-600 border-violet-100", icon: "bg-violet-50 text-violet-500 group-hover:bg-violet-500", rgb: "139,92,246"   },
-  emerald: { dot: "bg-emerald-500", badge: "bg-emerald-50 text-emerald-600 border-emerald-100", icon: "bg-emerald-50 text-emerald-500 group-hover:bg-emerald-500", rgb: "16,185,129" },
+  orange:  { dot: "bg-orange-500",  badge: "bg-orange-50 text-orange-800 border-orange-100/80", icon: "bg-orange-50 text-orange-800 group-hover:bg-orange-500", rgb: "249,115,22"  },
+  violet:  { dot: "bg-violet-500",  badge: "bg-violet-50 text-violet-700 border-violet-100/80", icon: "bg-violet-50 text-violet-700 group-hover:bg-violet-500", rgb: "139,92,246"   },
+  emerald: { dot: "bg-emerald-500", badge: "bg-emerald-50 text-emerald-700 border-emerald-100/80", icon: "bg-emerald-50 text-emerald-700 group-hover:bg-emerald-500", rgb: "16,185,129" },
 };
 
 /* ─────────────────────────────────────────────
@@ -108,7 +108,7 @@ export default function ServicesSection({ mode }) {
                </span>
              </h2>
 
-             <p className="text-zinc-500 text-base sm:text-lg font-light leading-relaxed max-w-sm mb-8 sm:mb-10">
+             <p className="text-zinc-600 text-base sm:text-lg font-light leading-relaxed max-w-sm mb-8 sm:mb-10">
                Every layer moves revenue. Nothing decorative, nothing redundant — activated in the right order, at the right time.
              </p>
 
@@ -154,7 +154,7 @@ export default function ServicesSection({ mode }) {
                           </div>
                           <div>
                             <h3 className="font-montserrat font-black text-[12px] uppercase tracking-tight text-zinc-900 mb-1 group-hover:text-orange-500 transition-colors">{item.title}</h3>
-                            <p className="text-zinc-500 text-[11px] font-light leading-relaxed">{item.desc}</p>
+                            <p className="text-zinc-600 text-[11px] font-light leading-relaxed">{item.desc}</p>
                           </div>
                         </Link>
                       );
@@ -174,7 +174,7 @@ export default function ServicesSection({ mode }) {
                     </div>
                     <div>
                       <h3 className="text-white font-montserrat font-black text-[13px] uppercase tracking-widest leading-tight">Growth On Steroids</h3>
-                      <p className="text-zinc-500 text-[11px] font-light mt-1">Ready for a full account takeover? Let's talk.</p>
+                      <p className="text-zinc-400 text-[11px] font-light mt-1">Ready for a full account takeover? Let's talk.</p>
                     </div>
                  </div>
                  <Link href="/contact" prefetch={false} className="px-8 py-3 bg-orange-500 text-white rounded-xl font-montserrat font-black text-[10px] uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-all duration-300 no-underline whitespace-nowrap shadow-lg hover:shadow-orange-500/25">

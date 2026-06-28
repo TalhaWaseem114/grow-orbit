@@ -181,7 +181,7 @@ export default function Hero({ mode }) {
                     title: "Helium 10",
                     sub: "CERTIFIED PARTNER",
                     logo: (
-                      <div className="w-4 h-4 sm:w-6 sm:h-6 rounded bg-[#00AEEF] flex items-center justify-center text-[6px] sm:text-[8px] font-black text-white">H10</div>
+                      <div className="w-4 h-4 sm:w-6 sm:h-6 rounded bg-[#00AEEF] flex items-center justify-center text-[6px] sm:text-[8px] font-black text-zinc-950">H10</div>
                     ),
                     subColor: "text-[#00AEEF]"
                   },

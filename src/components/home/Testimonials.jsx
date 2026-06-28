@@ -23,7 +23,7 @@ export default function TestimonialSection() {
 
         {/* --- HEADING --- */}
         <div className="mb-16">
-          <span className="text-orange-500 font-bold uppercase tracking-[0.2em] text-[10px] mb-3 block">
+          <span className="text-orange-700 font-bold uppercase tracking-[0.2em] text-[10px] mb-3 block">
             TESTIMONIALS
           </span>
           <h2 className="text-[48px] font-montserrat font-black leading-[1] tracking-tighter text-zinc-950 uppercase">
@@ -89,7 +89,7 @@ export default function TestimonialSection() {
                     <h4 className="font-bold text-black text-xl leading-tight">
                       {t.name}
                     </h4>
-                    <p className="text-[11px] text-gray-400 font-bold uppercase tracking-widest mt-1">
+                    <p className="text-[11px] text-zinc-600 font-bold uppercase tracking-widest mt-1">
                       {t.role}
                     </p>
                   </div>
@@ -99,7 +99,7 @@ export default function TestimonialSection() {
                 {t.caseStudyLink && (
                   <Link
                     href={t.caseStudyLink}
-                    className="inline-flex items-center gap-2 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline group"
+                    className="inline-flex items-center gap-2 text-orange-700 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline group"
                   >
                     Read Full Case Study
                     <ArrowRight
@@ -119,7 +119,7 @@ export default function TestimonialSection() {
         {/* Navigation Indicator */}
         <div className="flex items-center gap-4">
           <div className="w-14 h-[1px] bg-gray-200" />
-          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400">
+          <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-600">
             Drag or Scroll to Explore
           </span>
         </div>

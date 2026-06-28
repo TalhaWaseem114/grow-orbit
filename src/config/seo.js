@@ -27,8 +27,8 @@ export const DEFAULT_SEO = {
 
 export const METADATA_MAP = {
   '/': {
-    title: 'Amazon FBA Management & Seller Growth | Grow Orbit',
-    description: 'We run the systems that scale Amazon brands. Expert PPC advertising, listing optimization, product sourcing, and A+ creative design. Book your free audit.'
+    title: 'Amazon FBA Brand Growth & Listing Management | Grow Orbit',
+    description: 'We run the systems that scale Amazon brand growth and sales. Expert PPC advertising, listing optimization, product sourcing, and listing images design.'
   },
   '/faq': {
     title: 'Frequently Asked Questions | Grow Orbit',

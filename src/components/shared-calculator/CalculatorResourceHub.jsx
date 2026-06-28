@@ -68,15 +68,15 @@ export default function CalculatorResourceHub({ type = "general" }) {
         <div>
           <div className="flex items-center gap-2 mb-2">
             <ShieldCheck size={14} className="text-orange-500" />
-            <span className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-zinc-400">
+            <span className="text-[10px] font-mono font-black uppercase tracking-[0.3em] text-zinc-500">
               Grow Orbit Topical Ecosystem
             </span>
           </div>
           <h2 className="text-2xl font-black uppercase tracking-tight text-zinc-900" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-            Master Your <span className="text-orange-500">Amazon Margins</span>
+            Master Your <span className="text-orange-700">Amazon Margins</span>
           </h2>
         </div>
-        <p className="text-zinc-500 font-light text-sm max-w-sm">
+        <p className="text-zinc-600 font-light text-sm max-w-sm">
           Calculations are only the first step. Explore the verified playbooks, case results, and services to scale your seller account.
         </p>
       </div>
@@ -89,7 +89,7 @@ export default function CalculatorResourceHub({ type = "general" }) {
           >
             <div>
               <div className="flex items-center justify-between mb-4">
-                <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-400 bg-zinc-50 border border-zinc-100 rounded-full px-3 py-1">
+                <span className="text-[9px] font-mono font-bold uppercase tracking-widest text-zinc-600 bg-zinc-50 border border-zinc-100 rounded-full px-3 py-1">
                   {item.category}
                 </span>
                 <div className="w-8 h-8 rounded-xl bg-orange-50 flex items-center justify-center">
@@ -100,14 +100,14 @@ export default function CalculatorResourceHub({ type = "general" }) {
               <h3 className="text-base font-black uppercase text-zinc-900 tracking-tight mb-2 group-hover:text-orange-500 transition-colors leading-snug">
                 {item.title}
               </h3>
-              <p className="text-zinc-500 text-xs font-light leading-relaxed mb-6">
+              <p className="text-zinc-600 text-xs font-light leading-relaxed mb-6">
                 {item.desc}
               </p>
             </div>
 
             <Link
               href={item.href}
-              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-orange-500 hover:text-zinc-900 transition-all no-underline w-fit"
+              className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-orange-700 hover:text-zinc-900 transition-all no-underline w-fit"
             >
               {item.actionText} <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
             </Link>

@@ -109,6 +109,7 @@ export default function Footer() {
     { name: "Full Management",       url: "/service/full/amazon-management"      },
     { name: "Amazon Growth Services",url: "/service/amazon-services"             },
     { name: "Design & Creative Hub", url: "/service/design-creative"             },
+    { name: "Quick Margin Estimator",url: "/amazon-tools/quick-estimator"        },
   ];
 
   const socialLinks = [

@@ -88,6 +88,7 @@ export default function Footer() {
     { name: "Services",   url: "/service"   },
     { name: "Portfolio",  url: "/portfolio" },
     { name: "Case Studies", url: "/case-study"},
+    { name: "Blog",       url: "/blog"      },
     { name: "About",      url: "/about"     },
     { name: "FAQ",        url: "/faq"       },
     { name: "Contact",    url: "/contact"   },
@@ -106,6 +107,8 @@ export default function Footer() {
     { name: "Amazon DSP",            url: "/service/amazon-dsp"                  },
     { name: "Trademark Registration",url: "/service/trademark-registration"       },
     { name: "Full Management",       url: "/service/full/amazon-management"      },
+    { name: "Amazon Growth Services",url: "/service/amazon-services"             },
+    { name: "Design & Creative Hub", url: "/service/design-creative"             },
   ];
 
   const socialLinks = [

@@ -38,7 +38,7 @@ export default function OrbitWay() {
               <span className="text-[1.35em] italic font-light text-zinc-300 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>certainty.</span>
             </h2>
             <Link
-              href="/contact"
+              href="/contact/"
               className="px-8 py-4 bg-black text-white rounded-full font-bold text-[10px] uppercase tracking-widest hover:bg-orange-500 transition-colors"
             >
               Compare Your Account Now

@@ -61,7 +61,7 @@ export default function Conversions() {
                     </span>
                   </div>
                 </div>
-                <Link href="/contact">
+                <Link href="/contact/">
                   <button className="bg-orange-500 hover:bg-white hover:text-black transition-all px-10 py-5 rounded-2xl font-bold uppercase text-xs tracking-[0.2em] flex items-center gap-3">
                     Get Your Free Audit <ArrowRight size={16} />
                   </button>

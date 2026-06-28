@@ -142,8 +142,8 @@ export default function FAQSection() {
                   Query_Resolution_Complete
                 </span>
               </div>
-              <Link href="/contact" className="flex items-center gap-2 group cursor-pointer no-underline">
-                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 group-hover:text-white transition-colors">
+              <Link href="/contact/" className="flex items-center gap-2 group cursor-pointer no-underline">
+                <span className="text-[10px] font-black uppercase tracking-widest text-zinc-450 group-hover:text-white transition-colors">
                   Speak to a Strategist
                 </span>
                 <ChevronRight size={14} className="text-orange-500" />

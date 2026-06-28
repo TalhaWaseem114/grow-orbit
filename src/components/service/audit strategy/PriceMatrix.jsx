@@ -194,7 +194,7 @@ export default function PriceMatrix() {
 
                 {/* CTA */}
                 <Link
-                  href="/contact"
+                  href="/contact/"
                   className={`w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-500 no-underline ${
                     tier.featured
                       ? "bg-orange-500 text-white hover:bg-white hover:text-zinc-900"
@@ -212,7 +212,7 @@ export default function PriceMatrix() {
         {/* Bottom note */}
         <p className="text-center text-[11px] text-zinc-400 font-light mt-10">
           All tiers include a complete audit deck delivered within 10 business days.{" "}
-          <Link href="/contact" className="text-orange-500 font-bold hover:underline">
+          <Link href="/contact/" className="text-orange-700 font-bold hover:underline">
             Need something custom? →
           </Link>
         </p>

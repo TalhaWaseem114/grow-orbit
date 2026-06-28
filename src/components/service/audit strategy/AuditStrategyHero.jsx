@@ -155,7 +155,7 @@ export default function AuditStrategyHero() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-8">
-                <HeroButton href="/contact">
+                <HeroButton href="/contact/">
                   Book Your Free Diagnostic
                 </HeroButton>
 

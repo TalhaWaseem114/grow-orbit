@@ -219,13 +219,13 @@ export default function ContactUs() {
               </div>
               <div className="hidden sm:block w-px h-10 bg-zinc-200" />
               <div className="flex items-center gap-4">
-                <a href="https://wa.me/4372126458" target="_blank" rel="noreferrer"
+                <a href="https://wa.me/14372126458" target="_blank" rel="noreferrer"
                    className="w-11 h-11 rounded-2xl bg-[#25D366] flex items-center justify-center shrink-0 hover:scale-105 transition-transform">
                   <MessageCircle size={16} className="text-white" />
                 </a>
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-900">WhatsApp</p>
-                  <a href="https://wa.me/4372126458" target="_blank" rel="noreferrer"
+                  <a href="https://wa.me/14372126458" target="_blank" rel="noreferrer"
                      className="text-sm font-medium text-[#25D366] hover:text-[#1da851] transition-colors">
                     437-212-6458
                   </a>
@@ -417,7 +417,7 @@ export default function ContactUs() {
 
                 {/* WhatsApp */}
                 <a
-                  href="https://wa.me/4372126458"
+                  href="https://wa.me/14372126458"
                   target="_blank" rel="noreferrer"
                   className="group/wa w-full py-5 rounded-2xl border border-zinc-200 hover:border-[#25D366] hover:bg-[#25D366]/5 text-zinc-900 font-bold text-[10px] uppercase tracking-widest transition-all duration-300 flex items-center justify-center gap-3 bg-white shadow-[0_8px_30px_-12px_rgba(0,0,0,0.05)]"
                 >

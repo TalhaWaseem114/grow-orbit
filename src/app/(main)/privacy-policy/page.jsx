@@ -19,7 +19,7 @@ export default function PrivacyPolicyPage() {
         
         <div className="space-y-6 text-zinc-600 text-sm leading-relaxed font-light">
           <p>
-            At <strong>Grow Orbit</strong>, accessible from <a href="https://www.groworbitofficial.com" className="text-orange-500 hover:underline">https://www.groworbitofficial.com</a>, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Grow Orbit and how we use it.
+            At <strong>Grow Orbit</strong>, accessible from <a href="https://www.groworbitofficial.com" className="text-orange-500 hover:underline">Grow Orbit</a>, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Grow Orbit and how we use it.
           </p>
           <p>
             If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.

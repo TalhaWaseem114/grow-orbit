@@ -19,7 +19,7 @@ export default function TermsOfServicePage() {
         
         <div className="space-y-6 text-zinc-600 text-sm leading-relaxed font-light">
           <p>
-            Welcome to <strong>Grow Orbit</strong>. These Terms of Service outline the rules and regulations for the use of Grow Orbit's Website, located at <a href="https://www.groworbitofficial.com" className="text-orange-500 hover:underline">https://www.groworbitofficial.com</a>.
+            Welcome to <strong>Grow Orbit</strong>. These Terms of Service outline the rules and regulations for the use of Grow Orbit's Website, located at <a href="https://www.groworbitofficial.com" className="text-orange-500 hover:underline">Grow Orbit</a>.
           </p>
           <p>
             By accessing this website, we assume you accept these terms of service in full. Do not continue to use Grow Orbit's website if you do not agree to accept all of the terms of service stated on this page.

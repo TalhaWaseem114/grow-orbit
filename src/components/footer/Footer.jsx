@@ -253,7 +253,7 @@ export default function Footer() {
                   <a href="mailto:support@groworbit.com" className="text-zinc-300 text-[12px] font-medium hover:text-orange-500 transition-colors">
                     support@groworbit.com
                   </a>
-                  <a href="https://wa.me/4372126458" target="_blank" rel="noreferrer" className="text-zinc-400 text-[12px] font-light hover:text-orange-500 transition-colors">
+                  <a href="https://wa.me/14372126458" target="_blank" rel="noreferrer" className="text-zinc-400 text-[12px] font-light hover:text-orange-500 transition-colors">
                     437-212-6458
                   </a>
                   <p className="text-zinc-500 text-[11px] font-light leading-relaxed mt-1">

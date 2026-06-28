@@ -60,8 +60,6 @@ export default async function sitemap() {
     '/service/ongoing-support',
     '/service/coaching-consultation',
     '/service/sop',
-    '/service/full',
-    '/service/design',
     '/service/design/brand-story',
     '/service/design/main-image-ctr',
     '/service/design/listing-image-systems',
@@ -133,7 +131,7 @@ export default async function sitemap() {
     priority: 0.8,
   }));
 
-  return [
+  const rawUrls = [
     {
       url: baseUrl,
       lastModified: new Date('2026-06-15'),
@@ -177,4 +175,15 @@ export default async function sitemap() {
     // Spread dynamic blog URLs
     ...blogUrls,
   ];
+
+  return rawUrls.map(item => {
+    let url = item.url;
+    if (!url.endsWith('/')) {
+      url = `${url}/`;
+    }
+    return {
+      ...item,
+      url,
+    };
+  });
 }

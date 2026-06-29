@@ -152,8 +152,8 @@ function BookMeetingContent() {
           </div>
         </Link>
         <div className="flex items-center gap-4">
-          <Link 
-            href="/" 
+          <Link
+            href="/"
             className="px-4 py-1.5 rounded-full border border-zinc-800/80 bg-zinc-900/40 hover:bg-zinc-800 hover:border-zinc-700 text-[10px] font-black uppercase tracking-widest text-zinc-400 hover:text-white transition-all shadow-md focus-visible:ring-2 focus-visible:ring-orange-500"
           >
             Exit
@@ -163,7 +163,7 @@ function BookMeetingContent() {
 
       {/* Main Container */}
       <main className="relative z-10 flex-1 max-w-4xl w-full mx-auto px-4 py-6 sm:px-6 sm:py-12 flex flex-col items-center">
-        
+
         {/* Step Tracker (Glass Panel) */}
         <div className="w-full max-w-md bg-zinc-950/40 backdrop-blur-md border border-white/5 rounded-2xl px-6 py-4.5 mb-8 sm:mb-12 shadow-[0_12px_30px_rgba(0,0,0,0.6)] relative z-20">
           <div className="flex items-center justify-between">
@@ -192,16 +192,16 @@ function BookMeetingContent() {
             </div>
 
             <div className={`flex-1 h-[2px] mx-2 sm:mx-4 translate-y-[-10px] transition-all duration-500 ${
-              bookingConfirmed 
-                ? "bg-gradient-to-r from-orange-500/40 to-violet-500/40" 
+              bookingConfirmed
+                ? "bg-gradient-to-r from-orange-500/40 to-violet-500/40"
                 : "bg-zinc-800/60"
             }`} />
 
             {/* Step 3 */}
             <div className="flex flex-col items-center gap-2">
               <div className={`w-9 h-9 rounded-full border flex items-center justify-center text-xs font-bold transition-all duration-300 ${
-                bookingConfirmed 
-                  ? "bg-violet-500/15 border-2 border-violet-500 text-violet-400 shadow-[0_0_20px_rgba(139,92,246,0.3)]" 
+                bookingConfirmed
+                  ? "bg-violet-500/15 border-2 border-violet-500 text-violet-400 shadow-[0_0_20px_rgba(139,92,246,0.3)]"
                   : "bg-zinc-900 border-zinc-800 text-zinc-600"
               }`}>
                 <Sparkles size={14} />

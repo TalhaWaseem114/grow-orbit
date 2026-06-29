@@ -50,7 +50,7 @@ export default function TrustedBrands() {
         </div>
 
         {/* Infinite Marquee */}
-        <ClientLogosMarquee isDark={false} bgClass="bg-white" borderClass="border-y border-zinc-100" />
+        <ClientLogosMarquee isDark={false} bgClass="bg-white" borderClass="" />
       </div>
     </section>
   );

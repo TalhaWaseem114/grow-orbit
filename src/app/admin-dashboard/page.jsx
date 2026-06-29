@@ -7,7 +7,7 @@ import {
 } from "firebase/firestore";
 import {
   Briefcase, ChevronRight, Globe, Layout, LogOut, Settings,
-  Shield, Users, Zap, ExternalLink, MoreHorizontal, Download, 
+  Shield, Users, Zap, ExternalLink, MoreHorizontal, Download,
   Home, FileText, Mail, HelpCircle
 } from "lucide-react";
 import { useEffect, useState, useMemo, useRef } from "react";
@@ -399,7 +399,7 @@ export default function AdminDashboard() {
         }
         await updateDoc(doc(db, "users", userId), updateData);
         setUsers(prev => prev.map(u => u.id === userId ? { ...u, role: newRole, allowedPanels: allowedPanels || u.allowedPanels || [] } : u));
-        
+
         if (newRole === "admin") {
           const panelsStr = allowedPanels ? allowedPanels.join(", ") : "All";
           logActivity(allowedPanels ? "UPDATE_PERMISSIONS" : "PROMOTE_ADMIN", `Updated role for "${label}" to ADMIN with panel access: [${panelsStr}]`);
@@ -416,8 +416,8 @@ export default function AdminDashboard() {
     if (skipConfirm) {
       await executeRoleChange();
     } else {
-      const confirmTitle = newRole === "admin" 
-        ? (allowedPanels ? "Update Permissions" : "Promote Member") 
+      const confirmTitle = newRole === "admin"
+        ? (allowedPanels ? "Update Permissions" : "Promote Member")
         : "Revoke Admin Access";
       const confirmMsg = newRole === "admin"
         ? `Are you sure you want to ${allowedPanels ? "update the permissions for" : "promote"} "${label}" to Admin access?`
@@ -429,8 +429,8 @@ export default function AdminDashboard() {
 
   const exportLeads = () => {
     const headers = [
-      "Name", "Email", "WhatsApp", "Service", "ASINs", "Retainer", 
-      "Source", "Status", "Priority", "Assigned To", "Meeting Booked", 
+      "Name", "Email", "WhatsApp", "Service", "ASINs", "Retainer",
+      "Source", "Status", "Priority", "Assigned To", "Meeting Booked",
       "Follow Up Date", "Date Created", "Notes/Challenge"
     ];
 
@@ -728,7 +728,7 @@ export default function AdminDashboard() {
             {allowedPanels.includes("overview") && (
               <SidebarItem id="overview" label="Overview" icon={Globe} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
             )}
-            
+
             {/* Management Section */}
             {(allowedPanels.includes("leads") || allowedPanels.includes("users") || allowedPanels.includes("team")) && (
               <>
@@ -884,7 +884,7 @@ export default function AdminDashboard() {
           ) : (
             <>
               {activeTab === "overview" && allowedPanels.includes("overview") && (
-                <OverviewTab 
+                <OverviewTab
                   currentTime={currentTime}
                   users={users}
                   leads={leads}
@@ -899,7 +899,7 @@ export default function AdminDashboard() {
               )}
 
               {activeTab === "leads" && allowedPanels.includes("leads") && (
-                <LeadsTab 
+                <LeadsTab
                   leads={leads}
                   users={users}
                   loading={loading}
@@ -939,7 +939,7 @@ export default function AdminDashboard() {
               )}
 
               {activeTab === "users" && allowedPanels.includes("users") && (
-                <UsersTab 
+                <UsersTab
                   users={users}
                   leads={leads}
                   clients={clients}
@@ -952,7 +952,7 @@ export default function AdminDashboard() {
               )}
 
               {activeTab === "team" && allowedPanels.includes("team") && (
-                <TeamTab 
+                <TeamTab
                   users={users}
                   handleRoleChange={handleRoleChange}
                   currentUserId={auth.currentUser?.uid}
@@ -962,7 +962,7 @@ export default function AdminDashboard() {
               )}
 
               {activeTab === "cms" && allowedPanels.includes("cms") && (
-                <CmsTab 
+                <CmsTab
                   activeTheme={activeTheme}
                   setActiveTheme={setActiveTheme}
                   liveTheme={liveTheme}
@@ -984,7 +984,7 @@ export default function AdminDashboard() {
               )}
 
               {activeTab === "blog" && allowedPanels.includes("blog") && (
-                <BlogManagerTab 
+                <BlogManagerTab
                   isMobile={isMobile}
                   triggerConfirm={triggerConfirm}
                   logActivity={logActivity}
@@ -992,13 +992,13 @@ export default function AdminDashboard() {
               )}
 
               {activeTab === "newsletter" && allowedPanels.includes("newsletter") && (
-                <NewsletterTab 
+                <NewsletterTab
                   isMobile={isMobile}
                 />
               )}
 
               {activeTab === "settings" && allowedPanels.includes("settings") && (
-                <SettingsTab 
+                <SettingsTab
                   triggerConfirm={triggerConfirm}
                   logActivity={logActivity}
                 />
@@ -1049,7 +1049,7 @@ export default function AdminDashboard() {
               <ExternalLink size={14} style={{ marginLeft: "auto", opacity: 0.4 }} />
             </Link>
             <div style={{ height: 1, background: "rgba(255,255,255,0.06)", margin: "4px 0 12px" }} />
-            
+
             {allowedPanels.includes("team") && (
               <button className={`mobile-menu-item ${activeTab === "team" ? "active" : ""}`}
                 onClick={() => { setActiveTab("team"); setMobileMenuOpen(false); }}>
@@ -1068,7 +1068,7 @@ export default function AdminDashboard() {
                 <Settings size={18} /> Settings
               </button>
             )}
-            
+
             <div style={{ height: 1, background: "rgba(255,255,255,0.06)", margin: "12px 0" }} />
             {showInstallBtn && (
               <button className="mobile-menu-item" onClick={() => { handleInstallApp(); setMobileMenuOpen(false); }}

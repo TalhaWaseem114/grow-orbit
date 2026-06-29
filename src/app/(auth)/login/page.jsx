@@ -61,7 +61,7 @@ export default function Login() {
       if (role === "admin") {
         router.push("/admin-dashboard");
       } else {
-        router.push("/client-dashboard");
+        router.push("/");
       }
     } catch (err) { setError("Google login failed."); } finally { setLoading(false); }
   };
@@ -80,7 +80,7 @@ export default function Login() {
       if (role === "admin") {
         router.push("/admin-dashboard");
       } else {
-        router.push("/client-dashboard");
+        router.push("/");
       }
     } catch (err) { setError("Invalid email or password."); } finally { setLoading(false); }
   };

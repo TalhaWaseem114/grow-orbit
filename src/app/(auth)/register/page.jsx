@@ -59,7 +59,7 @@ export default function Register() {
       if (role === "admin") {
         router.push("/admin-dashboard");
       } else {
-        router.push("/client-dashboard");
+        router.push("/get-started");
       }
     } catch (err) { setError(err.message); } finally { setLoading(false); }
   };
@@ -71,7 +71,7 @@ export default function Register() {
       setLoading(true);
       const cred = await createUserWithEmailAndPassword(auth, form.email, form.password);
       await updateProfile(cred.user, { displayName: form.name });
-      
+
       // Store user role in Firestore
       await setDoc(doc(db, "users", cred.user.uid), {
         email: cred.user.email,
@@ -80,7 +80,7 @@ export default function Register() {
         createdAt: serverTimestamp(),
       });
 
-      router.push("/client-dashboard");
+      router.push("/get-started");
     } catch (err) { setError(err.message); } finally { setLoading(false); }
   };
 

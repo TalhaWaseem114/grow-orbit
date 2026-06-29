@@ -80,7 +80,7 @@ export default function Navbar() {
       }
     };
     timeoutId = setTimeout(initAuth, 2500);
-    
+
     return () => {
       if (timeoutId) clearTimeout(timeoutId);
       if (unsub) unsub();
@@ -184,7 +184,7 @@ export default function Navbar() {
             if (item === "Home") path = "/";
             if (item === "Case Studies") path = "/case-study";
             if (item === "Tools") path = "/amazon-tools";
-            
+
             const isActive = pathname.replace(/\/$/, "") === path.replace(/\/$/, "") || (path === "/" && pathname === "/");
             const isService = item === "Service";
 

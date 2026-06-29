@@ -109,7 +109,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
 
       // Show success animation before redirect
       setShowSuccess(true);
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
       // Redirect to the internal booking page with the Firestore document ID
       const nameParam = encodeURIComponent(form.name);

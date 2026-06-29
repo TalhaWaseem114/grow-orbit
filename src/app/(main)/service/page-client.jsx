@@ -388,57 +388,140 @@ function ServiceCard({ service }) {
 /* ─────────────────────────────────────────────
    FEATURED CARD (tall, for highlights)
 ───────────────────────────────────────────── */
-function FeaturedCard({ service }) {
-  return (
-    <Link
-      href={service.href}
-      className="group relative flex flex-col bg-zinc-950 rounded-[28px] border border-zinc-800 hover:border-orange-500/40 hover:shadow-2xl hover:shadow-orange-500/10 transition-all duration-500 overflow-hidden no-underline ring-1 ring-orange-500/20"
-    >
-      <div className="h-1 w-full bg-linear-to-r from-orange-500 to-amber-400" />
+function FeaturedCard({ service, isFullWidth = false }) {
+  if (isFullWidth) {
+    return (
+      <Link
+        href={service.href}
+        className="group relative flex flex-col md:flex-row bg-gradient-to-br from-zinc-900 via-zinc-950 to-black rounded-[28px] border border-zinc-800/80 hover:border-orange-500/50 hover:shadow-[0_0_50px_rgba(249,115,22,0.12)] transition-all duration-500 overflow-hidden no-underline ring-1 ring-orange-500/10 w-full hover:-translate-y-0.5"
+      >
+        {/* Glowing border top */}
+        <div className="h-[2px] w-full absolute top-0 left-0 bg-linear-to-r from-orange-500 via-amber-400 to-orange-500" />
+        
+        {/* Soft corner radial glow */}
+        <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-orange-500/[0.03] blur-[80px] rounded-full pointer-events-none" />
 
-      <div className="p-7 flex flex-col flex-1">
-        <div className="flex items-start justify-between mb-5">
-          <div className="w-12 h-12 rounded-xl bg-orange-500/15 border border-orange-500/30 text-orange-400 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-500">
-            {service.icon}
-          </div>
-          <div className="flex items-center gap-2">
-            <Star size={9} className="text-orange-400 fill-orange-400" />
-            <span className="text-[9px] font-black uppercase tracking-[0.3em] text-orange-400">Featured</span>
-          </div>
-        </div>
-
-        <span className="text-[9px] font-mono font-bold uppercase tracking-[0.35em] text-orange-400/60 mb-2">
-          {service.categoryLabel}
-        </span>
-        <h3
-          className="text-[17px] font-black uppercase tracking-tight text-white mb-1 group-hover:text-orange-400 transition-colors leading-tight"
-          style={{ fontFamily: "'Montserrat', sans-serif" }}
-        >
-          {service.title}
-        </h3>
-        <p className="text-[11px] font-bold text-zinc-600 uppercase tracking-widest mb-4">{service.subtitle}</p>
-        <p className="text-zinc-400 text-[13px] font-light leading-relaxed flex-1 mb-6">{service.desc}</p>
-
-        <div className="flex flex-wrap gap-1.5 mb-5">
-          {service.tags.map((tag, i) => (
-            <span key={i} className="text-[9px] font-bold uppercase tracking-widest text-zinc-500 border border-zinc-800 group-hover:border-orange-500/30 px-2.5 py-1 rounded-lg transition-colors">
-              {tag}
-            </span>
-          ))}
-        </div>
-
-        <div className="flex items-center justify-between pt-4 border-t border-white/5">
+        {/* Content Section (Left side) */}
+        <div className="p-8 sm:p-10 flex-1 flex flex-col justify-between">
           <div>
-            <span className="text-xl font-black tracking-tighter text-orange-400" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+            <div className="flex items-center gap-4 mb-6">
+              <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-500 shadow-[0_0_15px_rgba(249,115,22,0.15)] group-hover:shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+                {service.icon}
+              </div>
+              <div className="flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 px-2.5 py-1 rounded-full">
+                <Star size={9} className="text-orange-400 fill-orange-400 animate-pulse" />
+                <span className="text-[8px] font-black uppercase tracking-[0.25em] text-orange-400">Flagship Service</span>
+              </div>
+            </div>
+
+            <span className="text-[9px] font-mono font-bold uppercase tracking-[0.35em] text-orange-400/60 mb-2.5 block">
+              {service.categoryLabel}
+            </span>
+            <h3
+              className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-white mb-2 group-hover:text-orange-400 transition-colors leading-tight"
+              style={{ fontFamily: "'Montserrat', sans-serif" }}
+            >
+              {service.title}
+            </h3>
+            <p className="text-[11px] font-bold text-orange-500/80 uppercase tracking-widest mb-4">{service.subtitle}</p>
+            <p className="text-zinc-400 text-sm sm:text-[15px] font-light leading-relaxed max-w-2xl mb-6">{service.desc}</p>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {service.tags.map((tag, i) => (
+              <span key={i} className="text-[9px] font-bold uppercase tracking-widest text-zinc-400 bg-white/[0.02] border border-zinc-800 group-hover:border-orange-500/30 px-3 py-1.5 rounded-xl transition-all">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats Section (Right side on desktop) */}
+        <div className="p-8 sm:p-10 md:w-[320px] shrink-0 bg-white/[0.01] border-t md:border-t-0 md:border-l border-zinc-800/60 flex flex-col justify-center items-start md:items-center text-left md:text-center relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent to-orange-500/[0.01] pointer-events-none" />
+          <div className="mb-6 md:mb-8">
+            <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest block mb-2">Performance Guarantee</span>
+            <span 
+              className="text-5xl sm:text-6xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300 drop-shadow-[0_0_15px_rgba(249,115,22,0.3)] block"
+              style={{ fontFamily: "'Montserrat', sans-serif" }}
+            >
               {service.stat.val}
             </span>
-            <span className="text-[10px] font-mono text-zinc-500 ml-2 uppercase tracking-widest">
+            <span className="text-[11px] font-bold text-zinc-400 uppercase tracking-widest mt-2 block">
               {service.stat.label}
             </span>
           </div>
-          <div className="flex items-center gap-1.5 text-orange-400 font-bold text-[10px] uppercase tracking-widest">
-            <span className="opacity-0 group-hover:opacity-100 transition-opacity">View</span>
+
+          <div className="inline-flex items-center gap-2.5 px-6 py-3 bg-white/5 border border-white/10 text-white rounded-full font-bold text-[10px] uppercase tracking-widest group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white transition-all duration-300 w-full md:w-auto justify-center">
+            <span>Explore Flagship</span>
             <ChevronRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
+  // Standard premium FeaturedCard
+  return (
+    <Link
+      href={service.href}
+      className="group relative flex flex-col bg-gradient-to-br from-zinc-900 via-zinc-950 to-black rounded-[28px] border border-zinc-800/80 hover:border-orange-500/50 hover:shadow-[0_0_40px_rgba(249,115,22,0.08)] transition-all duration-500 overflow-hidden no-underline ring-1 ring-orange-500/15 flex-1 hover:-translate-y-1"
+    >
+      <div className="h-[2px] w-full bg-linear-to-r from-orange-500 to-amber-400" />
+      
+      {/* Corner radial glow */}
+      <div className="absolute top-0 right-0 w-[200px] h-[200px] bg-orange-500/[0.02] blur-[40px] rounded-full pointer-events-none" />
+
+      <div className="p-7 flex flex-col flex-1 justify-between">
+        <div>
+          <div className="flex items-start justify-between mb-6">
+            <div className="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 flex items-center justify-center group-hover:bg-orange-500 group-hover:text-white group-hover:border-orange-500 transition-all duration-500 shadow-[0_0_15px_rgba(249,115,22,0.1)] group-hover:shadow-[0_0_20px_rgba(249,115,22,0.25)]">
+              {service.icon}
+            </div>
+            <div className="flex items-center gap-1.5 bg-orange-500/10 border border-orange-500/20 px-2 py-0.5 rounded-full">
+              <Star size={8} className="text-orange-400 fill-orange-400" />
+              <span className="text-[8px] font-black uppercase tracking-[0.2em] text-orange-400">Featured</span>
+            </div>
+          </div>
+
+          <span className="text-[9px] font-mono font-bold uppercase tracking-[0.35em] text-orange-400/60 mb-2 block">
+            {service.categoryLabel}
+          </span>
+          <h3
+            className="text-[18px] font-black uppercase tracking-tight text-white mb-1 group-hover:text-orange-400 transition-colors leading-tight"
+            style={{ fontFamily: "'Montserrat', sans-serif" }}
+          >
+            {service.title}
+          </h3>
+          <p className="text-[11px] font-bold text-zinc-500 uppercase tracking-widest mb-4">{service.subtitle}</p>
+          <p className="text-zinc-400 text-[13px] font-light leading-relaxed mb-6">{service.desc}</p>
+        </div>
+
+        <div>
+          <div className="flex flex-wrap gap-1.5 mb-5">
+            {service.tags.map((tag, i) => (
+              <span key={i} className="text-[9px] font-bold uppercase tracking-widest text-zinc-500 border border-zinc-800/80 group-hover:border-orange-500/25 px-2.5 py-1 rounded-lg transition-colors">
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          <div className="flex items-center justify-between pt-4 border-t border-white/[0.05] group-hover:border-orange-500/10 transition-colors">
+            <div>
+              <span 
+                className="text-2xl font-black tracking-tighter text-orange-400 drop-shadow-[0_0_10px_rgba(249,115,22,0.2)]" 
+                style={{ fontFamily: "'Montserrat', sans-serif" }}
+              >
+                {service.stat.val}
+              </span>
+              <span className="text-[10px] font-mono text-zinc-500 ml-2 uppercase tracking-widest">
+                {service.stat.label}
+              </span>
+            </div>
+            <div className="flex items-center gap-1.5 text-orange-400 font-bold text-[10px] uppercase tracking-widest">
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity">View</span>
+              <ChevronRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
+            </div>
           </div>
         </div>
       </div>
@@ -688,32 +771,39 @@ export default function AllServicesPage() {
           </div>
         ) : (
           <>
-            {/* Featured / highlight cards — full width row */}
-            {highlights.length > 0 && (
-              <div className="mb-6">
-                <div className={`grid gap-5 ${
-                  highlights.length === 1 ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" :
-                  highlights.length === 2 ? "grid-cols-1 md:grid-cols-2" :
-                  "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-                }`}>
-                  {highlights.map((s, i) => (
-                    <div key={s.id} className="card-appear" style={{ animationDelay: `${i * 0.06}s` }}>
-                      <FeaturedCard service={s} />
-                    </div>
-                  ))}
-                  {/* Fill remaining slots in highlights row with regular cards if ≤2 highlights */}
-                  {highlights.length < 3 && regular.slice(0, 3 - highlights.length).map((s, i) => (
-                    <div key={s.id} className="card-appear" style={{ animationDelay: `${(i + highlights.length) * 0.06}s` }}>
-                      <ServiceCard service={s} />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+             {/* Featured / highlight cards */}
+             {highlights.length > 0 && (
+               <div className="mb-6 space-y-5">
+                 <div className={`grid gap-5 ${
+                   highlights.length === 1 ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" :
+                   highlights.length === 2 ? "grid-cols-1 md:grid-cols-2" :
+                   "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+                 }`}>
+                   {highlights.slice(0, 3).map((s, i) => (
+                     <div key={s.id} className="card-appear" style={{ animationDelay: `${i * 0.06}s` }}>
+                       <FeaturedCard service={s} />
+                     </div>
+                   ))}
+                   {/* Fill remaining slots in highlights row with regular cards if ≤2 highlights */}
+                   {highlights.length < 3 && regular.slice(0, 3 - highlights.length).map((s, i) => (
+                     <div key={s.id} className="card-appear" style={{ animationDelay: `${(i + highlights.length) * 0.06}s` }}>
+                       <ServiceCard service={s} />
+                     </div>
+                   ))}
+                 </div>
+
+                 {/* Remaining highlights (e.g. 4th card) rendered full-width */}
+                 {highlights.slice(3).map((s, i) => (
+                   <div key={s.id} className="card-appear w-full" style={{ animationDelay: `${(i + 3) * 0.06}s` }}>
+                     <FeaturedCard service={s} isFullWidth={true} />
+                   </div>
+                 ))}
+               </div>
+             )}
 
             {/* Regular cards grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {(highlights.length > 0 ? regular.slice(3 - highlights.length) : regular).map((s, i) => (
+              {(highlights.length > 0 ? regular.slice(Math.max(0, 3 - highlights.length)) : regular).map((s, i) => (
                 <div key={s.id} className="card-appear" style={{ animationDelay: `${i * 0.04}s` }}>
                   <ServiceCard service={s} />
                 </div>

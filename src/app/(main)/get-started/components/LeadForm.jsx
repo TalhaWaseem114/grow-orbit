@@ -11,6 +11,8 @@ import { getSavedUtmData } from "@/utils/utmTracker";
 export default function LeadForm({ theme = "light", compact = false }) {
   const isDark = theme === "dark";
   const router = useRouter();
+  const [step, setStep] = useState(1);
+  const [leadId, setLeadId] = useState(null);
   const [form, setForm] = useState({ name: "", email: "", whatsapp: "", service: "", pain: "" });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -41,6 +43,63 @@ export default function LeadForm({ theme = "light", compact = false }) {
     if (error) setError(""); // Clear error on input change
   };
 
+  const validateStep1 = () => {
+    if (!form.name.trim() || !form.email.trim()) {
+      setError("Please fill in your name and email address.");
+      return false;
+    }
+    if (!EMAIL_REGEX.test(form.email)) {
+      setError("Please enter a valid email address.");
+      return false;
+    }
+    if (!form.service) {
+      setError("Please select the service you are interested in.");
+      return false;
+    }
+    setError("");
+    return true;
+  };
+
+  const submitStep1 = async () => {
+    if (!validateStep1()) return;
+    setLoading(true);
+    setError("");
+    try {
+      const response = await fetch("/api/leads", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: form.name,
+          email: form.email,
+          requestedService: form.service || "Not specified",
+          whatsapp: "N/A",
+          notes: "Step 1 Captured (Partial Lead) — awaiting Step 2 details...",
+          source: "Landing Page Form Step 1",
+          website_confirm: honeypot,
+          ...utmData,
+        }),
+      });
+
+      const resData = await response.json();
+      if (!response.ok) {
+        throw new Error(resData.error || "Failed to submit step 1");
+      }
+
+      if (resData.id) {
+        setLeadId(resData.id);
+      }
+      setStep(2);
+    } catch (err) {
+      console.error("Step 1 submission error:", err);
+      // Fallback: Let them proceed to Step 2 even if Step 1 API fails so we don't break the user flow!
+      setStep(2);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,43 +114,50 @@ export default function LeadForm({ theme = "light", compact = false }) {
     }
     lastSubmitRef.current = now;
 
-    // Validation
-    if (!form.name.trim() || !form.email.trim()) {
-      setError("Please fill in your name and email address.");
-      return;
-    }
-    if (!EMAIL_REGEX.test(form.email)) {
-      setError("Please enter a valid email address.");
-      return;
-    }
-
     setError("");
     setLoading(true);
 
     try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          fullName: form.name,
-          email: form.email,
-          whatsapp: form.whatsapp || "N/A",
-          requestedService: form.service || "Not specified",
-          notes: form.pain || "No message provided",
-          source: "Landing Page Form",
-          brandName: null,
-          website_confirm: honeypot,
-          ...utmData,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to submit lead");
+      let response;
+      if (leadId) {
+        // Step 2 PATCH update to append Mobile Number & Notes to the existing lead
+        response = await fetch("/api/leads", {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            leadId: leadId,
+            whatsapp: form.whatsapp || "N/A",
+            notes: form.pain || "No message provided",
+          }),
+        });
+      } else {
+        // Fallback POST if leadId was not captured in Step 1
+        response = await fetch("/api/leads", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            fullName: form.name,
+            email: form.email,
+            whatsapp: form.whatsapp || "N/A",
+            requestedService: form.service || "Not specified",
+            notes: form.pain || "No message provided",
+            source: "Landing Page Form Fallback",
+            website_confirm: honeypot,
+            ...utmData,
+          }),
+        });
       }
 
       const resData = await response.json();
+      if (!response.ok) {
+        throw new Error(resData.error || "Failed to submit lead details");
+      }
+
+      const finalId = leadId || resData.id;
 
       // Track Meta Pixel Lead event
       if (typeof window !== "undefined" && window.fbq) {
@@ -111,10 +177,10 @@ export default function LeadForm({ theme = "light", compact = false }) {
       // Redirect to the internal booking page with the Firestore document ID
       const nameParam = encodeURIComponent(form.name);
       const emailParam = encodeURIComponent(form.email);
-      router.push(`/get-started/book-meeting?leadId=${resData.id}&name=${nameParam}&email=${emailParam}`);
+      router.push(`/get-started/book-meeting?leadId=${finalId}&name=${nameParam}&email=${emailParam}`);
     } catch (err) {
       console.error("Lead submission error:", err);
-      setError("Submission failed. Please check your connection and try again.");
+      setError(err.message || "Submission failed. Please check your connection and try again.");
       setLoading(false); // Only reset loading on error
     }
   };
@@ -144,7 +210,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={compact ? "space-y-2.5" : "space-y-4"} noValidate>
+    <form onSubmit={handleSubmit} className={compact ? "space-y-3.5" : "space-y-4"} noValidate>
       {/* Honeypot field for spam prevention */}
       <input
         type="text"
@@ -155,6 +221,28 @@ export default function LeadForm({ theme = "light", compact = false }) {
         tabIndex={-1}
         autoComplete="off"
       />
+
+      {/* Dynamic CSS animations */}
+      <style>{`
+        @keyframes slide-in {
+          from { opacity: 0; transform: translateX(10px); }
+          to { opacity: 1; transform: translateX(0); }
+        }
+        .animate-slide-in {
+          animation: slide-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+      `}</style>
+
+      {/* Progress step indicator */}
+      <div className="flex items-center justify-between mb-4 px-1 select-none">
+        <span className={`text-[9px] font-bold uppercase tracking-[0.25em] ${isDark ? "text-zinc-500" : "text-zinc-400"}`}>
+          Step {step} of 2
+        </span>
+        <div className="flex gap-1.5">
+          <div className={`h-1 rounded-full transition-all duration-300 ${step === 1 ? "w-6 bg-orange-500" : "w-2 bg-zinc-700"}`} />
+          <div className={`h-1 rounded-full transition-all duration-300 ${step === 2 ? "w-6 bg-orange-500" : "w-2 bg-zinc-700"}`} />
+        </div>
+      </div>
 
       {/* Inline error message */}
       {error && (
@@ -168,104 +256,178 @@ export default function LeadForm({ theme = "light", compact = false }) {
         </div>
       )}
 
-      {[
-        { label: "Full Name *",       name: "name",     type: "text",  placeholder: "Your name",         required: true },
-        { label: "Email Address *",   name: "email",    type: "email", placeholder: "you@brand.com",     required: true },
-        { label: "Mobile Number (Optional)", name: "whatsapp", type: "tel",   placeholder: "e.g. +1 (555) 000-0000", required: false },
-      ].map((f) => (
-        <div key={f.name}>
-          <label htmlFor={`lead-${f.name}`} className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
-            isDark ? "text-zinc-400" : "text-zinc-500"
-          }`}>{f.label}</label>
-          <input
-            id={`lead-${f.name}`}
-            type={f.type}
-            name={f.name}
-            required={f.required}
-            value={form[f.name]}
-            onChange={handleChange}
-            placeholder={f.placeholder}
-            className={`w-full border text-base md:text-[13px] transition-all font-light focus:outline-none focus:border-orange-500 ${
-              compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
-            } ${
-              isDark
-                ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
-                : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white"
-            }`}
-          />
-        </div>
-      ))}
+      {step === 1 ? (
+        <div key="step-1" className="space-y-3.5 animate-slide-in">
+          {/* Full Name */}
+          <div>
+            <label htmlFor="lead-name" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
+              isDark ? "text-zinc-400" : "text-zinc-500"
+            }`}>Full Name *</label>
+            <input
+              id="lead-name"
+              type="text"
+              name="name"
+              required
+              value={form.name}
+              onChange={handleChange}
+              placeholder="Your name"
+              className={`w-full border text-base md:text-[13px] transition-all font-light focus:outline-none focus:border-orange-500 ${
+                compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
+              } ${
+                isDark
+                  ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
+                  : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white"
+              }`}
+            />
+          </div>
 
-      <div>
-        <label htmlFor="lead-service" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
-          isDark ? "text-zinc-400" : "text-zinc-500"
-        }`}>Service You're Interested In</label>
-        <div className="relative">
-          <select
-            id="lead-service"
-            name="service"
-            value={form.service}
-            onChange={handleChange}
-            className={`w-full border text-base md:text-[13px] transition-all appearance-none cursor-pointer font-light focus:outline-none focus:border-orange-500 ${
-              compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
-            } ${
-              isDark
-                ? "bg-white/[0.03] border-white/10 text-white focus:bg-zinc-950"
-                : "bg-zinc-50 border-zinc-200 text-zinc-900 focus:bg-white"
-            }`}
+          {/* Email Address */}
+          <div>
+            <label htmlFor="lead-email" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
+              isDark ? "text-zinc-400" : "text-zinc-500"
+            }`}>Email Address *</label>
+            <input
+              id="lead-email"
+              type="email"
+              name="email"
+              required
+              value={form.email}
+              onChange={handleChange}
+              placeholder="you@brand.com"
+              className={`w-full border text-base md:text-[13px] transition-all font-light focus:outline-none focus:border-orange-500 ${
+                compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
+              } ${
+                isDark
+                  ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
+                  : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white"
+              }`}
+            />
+          </div>
+
+          {/* Service Dropdown */}
+          <div>
+            <label htmlFor="lead-service" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
+              isDark ? "text-zinc-400" : "text-zinc-500"
+            }`}>Service You're Interested In</label>
+            <div className="relative">
+              <select
+                id="lead-service"
+                name="service"
+                value={form.service}
+                onChange={handleChange}
+                className={`w-full border text-base md:text-[13px] transition-all appearance-none cursor-pointer font-light focus:outline-none focus:border-orange-500 ${
+                  compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
+                } ${
+                  isDark
+                    ? "bg-white/[0.03] border-white/10 text-white focus:bg-zinc-950"
+                    : "bg-zinc-50 border-zinc-200 text-zinc-900 focus:bg-white"
+                }`}
+              >
+                <option value="" disabled className={isDark ? "bg-zinc-950 text-white" : ""}>Select a service...</option>
+                <option value="Product Hunting & Research" className={isDark ? "bg-zinc-950 text-white" : ""}>Product Hunting & Research</option>
+                <option value="Product Sourcing & Setup" className={isDark ? "bg-zinc-950 text-white" : ""}>Product Sourcing & Setup</option>
+                <option value="Brand Launch (Full)" className={isDark ? "bg-zinc-950 text-white" : ""}>Brand Launch (Full)</option>
+                <option value="Listing Optimization" className={isDark ? "bg-zinc-950 text-white" : ""}>Listing Optimization</option>
+                <option value="PPC / Ads Management" className={isDark ? "bg-zinc-950 text-white" : ""}>PPC / Ads Management</option>
+                <option value="A+ Content & Creative" className={isDark ? "bg-zinc-950 text-white" : ""}>A+ Content & Creative</option>
+                <option value="Full Account Management" className={isDark ? "bg-zinc-950 text-white" : ""}>Full Account Management</option>
+                <option value="I'm Not Sure Yet" className={isDark ? "bg-zinc-950 text-white" : ""}>I'm Not Sure Yet — Help Me Decide</option>
+              </select>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none text-sm">↓</span>
+            </div>
+          </div>
+
+          {/* Continue button */}
+          <button
+            type="button"
+            disabled={loading}
+            onClick={submitStep1}
+            className={`w-full font-black text-[11px] uppercase tracking-[0.2em] text-white bg-orange-500 transition-all duration-300 shadow-[0_8px_30px_rgba(249,115,22,0.3)] disabled:opacity-50 flex items-center justify-center gap-3 group ${
+              compact ? "py-3 rounded-xl" : "py-4 rounded-2xl"
+            } hover:bg-orange-600 cursor-pointer`}
           >
-            <option value="" disabled className={isDark ? "bg-zinc-950 text-white" : ""}>Select a service...</option>
-            <option value="Product Hunting & Research" className={isDark ? "bg-zinc-950 text-white" : ""}>Product Hunting & Research</option>
-            <option value="Product Sourcing & Setup" className={isDark ? "bg-zinc-950 text-white" : ""}>Product Sourcing & Setup</option>
-            <option value="Brand Launch (Full)" className={isDark ? "bg-zinc-950 text-white" : ""}>Brand Launch (Full)</option>
-            <option value="Listing Optimization" className={isDark ? "bg-zinc-950 text-white" : ""}>Listing Optimization</option>
-            <option value="PPC / Ads Management" className={isDark ? "bg-zinc-950 text-white" : ""}>PPC / Ads Management</option>
-            <option value="A+ Content & Creative" className={isDark ? "bg-zinc-950 text-white" : ""}>A+ Content & Creative</option>
-            <option value="Full Account Management" className={isDark ? "bg-zinc-950 text-white" : ""}>Full Account Management</option>
-            <option value="I'm Not Sure Yet" className={isDark ? "bg-zinc-950 text-white" : ""}>I'm Not Sure Yet — Help Me Decide</option>
-          </select>
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none text-sm">↓</span>
+            {loading ? "Sending..." : (
+              <>
+                Continue
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+              </>
+            )}
+          </button>
         </div>
-      </div>
+      ) : (
+        <div key="step-2" className="space-y-3.5 animate-slide-in">
+          {/* Mobile Number */}
+          <div>
+            <label htmlFor="lead-whatsapp" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
+              isDark ? "text-zinc-400" : "text-zinc-500"
+            }`}>Mobile Number (Optional)</label>
+            <input
+              id="lead-whatsapp"
+              type="tel"
+              name="whatsapp"
+              value={form.whatsapp}
+              onChange={handleChange}
+              placeholder="e.g. +1 (555) 000-0000"
+              className={`w-full border text-base md:text-[13px] transition-all font-light focus:outline-none focus:border-orange-500 ${
+                compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
+              } ${
+                isDark
+                  ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
+                  : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white"
+              }`}
+            />
+          </div>
 
+          {/* Anything else? */}
+          <div>
+            <label htmlFor="lead-pain" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
+              isDark ? "text-zinc-400" : "text-zinc-500"
+            }`}>Anything else? (optional)</label>
+            <textarea
+              id="lead-pain"
+              rows={compact ? 3 : 4}
+              name="pain"
+              value={form.pain}
+              onChange={handleChange}
+              placeholder="Tell us about your product, current stage, or what you need help with..."
+              className={`w-full border text-base md:text-[13px] transition-all resize-none font-light focus:outline-none focus:border-orange-500 ${
+                compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
+              } ${
+                isDark
+                  ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
+                  : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white"
+              }`}
+            />
+          </div>
 
-      <div>
-        <label htmlFor="lead-pain" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
-          isDark ? "text-zinc-400" : "text-zinc-500"
-        }`}>Anything else? (optional)</label>
-        <textarea
-          id="lead-pain"
-          rows={compact ? 3 : 4}
-          name="pain"
-          value={form.pain}
-          onChange={handleChange}
-          placeholder="Tell us about your product, current stage, or what you need help with..."
-          className={`w-full border text-base md:text-[13px] transition-all resize-none font-light focus:outline-none focus:border-orange-500 ${
-            compact ? "px-4 py-2.5 rounded-xl" : "px-5 py-3.5 rounded-2xl"
-          } ${
-            isDark
-              ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
-              : "bg-zinc-50 border-zinc-200 text-zinc-900 placeholder-zinc-400 focus:bg-white"
-          }`}
-        />
-      </div>
-
-      <button
-        type="submit"
-        disabled={loading || submitted}
-        className={`w-full font-black text-[11px] uppercase tracking-[0.2em] text-white bg-orange-500 transition-all duration-300 shadow-[0_8px_30px_rgba(249,115,22,0.3)] disabled:opacity-50 flex items-center justify-center gap-3 group ${
-          compact ? "py-3 rounded-xl" : "py-4 rounded-2xl"
-        } ${
-          isDark ? "hover:bg-white hover:text-black" : "hover:bg-zinc-900"
-        }`}
-      >
-        {loading ? "Sending..." : (
-          <>
-            Book My Free Meeting
-            <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-          </>
-        )}
-      </button>
+          {/* Back & Submit buttons */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className={`font-bold text-[10px] uppercase tracking-[0.2em] text-zinc-500 hover:text-orange-500 transition-colors bg-transparent border-none outline-none cursor-pointer shrink-0 py-3 px-2`}
+            >
+              ← Back
+            </button>
+            <button
+              type="submit"
+              disabled={loading || submitted}
+              className={`flex-1 font-black text-[11px] uppercase tracking-[0.2em] text-white bg-orange-500 transition-all duration-300 shadow-[0_8px_30px_rgba(249,115,22,0.3)] disabled:opacity-50 flex items-center justify-center gap-3 group ${
+                compact ? "py-3 rounded-xl" : "py-4 rounded-2xl"
+              } ${
+                isDark ? "hover:bg-white hover:text-black" : "hover:bg-zinc-900"
+              }`}
+            >
+              {loading ? "Sending..." : (
+                <>
+                  Book My Free Meeting
+                  <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
 
       {!compact && (
         <div className={`border rounded-2xl p-4 mt-4 ${

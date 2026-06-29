@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db as clientDb } from "@/firebase/firebaseConfig";
-import { collection, addDoc, doc, updateDoc, getDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc, getDoc, getDocs, query, where, arrayUnion } from "firebase/firestore";
 
 // Lazy-load firebase-admin to prevent route crash if module fails to load on Vercel
 let _adminDb = null;
@@ -365,21 +365,19 @@ async function handleBookingConfirmation(body, webhookUrl) {
     }
 
     if (!alreadyBooked) {
-      try {
-        await notifyWebhook(
-          webhookUrl,
-          createDiscordBookingPayload(leadData, email),
-          [
-            "*Strategy Call Scheduled!*",
-            `Name: ${leadData.fullName || "N/A"}`,
-            `Email: ${email || leadData.email || "N/A"}`,
-            `WhatsApp: ${leadData.whatsapp || "N/A"}`,
-            `Service: ${leadData.requestedService || "Not specified"}`,
-          ].join("\n")
-        );
-      } catch (error) {
+      notifyWebhook(
+        webhookUrl,
+        createDiscordBookingPayload(leadData, email),
+        [
+          "*Strategy Call Scheduled!*",
+          `Name: ${leadData.fullName || "N/A"}`,
+          `Email: ${email || leadData.email || "N/A"}`,
+          `WhatsApp: ${leadData.whatsapp || "N/A"}`,
+          `Service: ${leadData.requestedService || "Not specified"}`,
+        ].join("\n")
+      ).catch((error) => {
         console.error("[API/Leads] Webhook notification dispatch failed for booking:", error);
-      }
+      });
     }
 
     return NextResponse.json({ success: true, id: match.leadId, merged: true, alreadyBooked });
@@ -429,21 +427,18 @@ async function handleBookingConfirmation(body, webhookUrl) {
     }
   }
 
-  try {
-    await notifyWebhook(
-      webhookUrl,
-      createDiscordOrphanBookingPayload(body, email),
-      `Strategy call scheduled, but no matching lead was found. Email: ${email || "N/A"} Lead ID: ${body.leadId || "N/A"}`
-    );
-  } catch (error) {
+  notifyWebhook(
+    webhookUrl,
+    createDiscordOrphanBookingPayload(body, email),
+    `Strategy call scheduled, but no matching lead was found. Email: ${email || "N/A"} Lead ID: ${body.leadId || "N/A"}`
+  ).catch((error) => {
     console.error("[API/Leads] Webhook notification dispatch failed for orphaned booking:", error);
-  }
+  });
 
   return NextResponse.json({ success: true, id: docRef.id, merged: false });
 }
 
 async function updateBookingWithClientSdk(leadId, body, alreadyBooked) {
-  const { arrayUnion } = await import("firebase/firestore");
   const clientBookingUpdate = {
     meetingBooked: true,
     status: "hot",
@@ -547,23 +542,21 @@ async function handleLeadIntake(body, webhookUrl) {
     }
   }
 
-  try {
-    await notifyWebhook(
-      webhookUrl,
-      createDiscordLeadPayload(leadDoc),
-      [
-        "*New Lead Received!*",
-        `Name: ${leadDoc.fullName}`,
-        `Email: ${leadDoc.email}`,
-        `WhatsApp: ${leadDoc.whatsapp}`,
-        `Service: ${leadDoc.requestedService}`,
-        `Notes: ${leadDoc.notes}`,
-        `Source: ${leadDoc.source}`,
-      ].join("\n")
-    );
-  } catch (error) {
+  notifyWebhook(
+    webhookUrl,
+    createDiscordLeadPayload(leadDoc),
+    [
+      "*New Lead Received!*",
+      `Name: ${leadDoc.fullName}`,
+      `Email: ${leadDoc.email}`,
+      `WhatsApp: ${leadDoc.whatsapp}`,
+      `Service: ${leadDoc.requestedService}`,
+      `Notes: ${leadDoc.notes}`,
+      `Source: ${leadDoc.source}`,
+    ].join("\n")
+  ).catch((error) => {
     console.error("[API/Leads] Webhook notification dispatch failed:", error);
-  }
+  });
 
   return NextResponse.json({ success: true, id: docRef.id });
 }
@@ -598,5 +591,122 @@ export async function POST(request) {
   } catch (error) {
     console.error("[API/Leads] Handler crash:", error);
     return NextResponse.json({ error: "Failed to process lead submission" }, { status: 500 });
+  }
+}
+
+export async function PATCH(request) {
+  try {
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid JSON payload" }, { status: 400 });
+    }
+
+    const leadId = cleanString(body.leadId);
+    if (!leadId) {
+      return NextResponse.json({ error: "Lead ID is required" }, { status: 400 });
+    }
+
+    const { adminDb, FieldValue } = await getAdmin();
+    const updateData = {
+      whatsapp: cleanString(body.whatsapp, "N/A") || "N/A",
+      notes: cleanString(body.notes, "No message provided") || "No message provided",
+      updatedAt: new Date(),
+    };
+
+    // Try admin SDK first
+    if (adminDb && FieldValue) {
+      try {
+        const leadRef = adminDb.collection("leads").doc(leadId);
+        await leadRef.update({
+          ...updateData,
+          updatedAt: FieldValue.serverTimestamp(),
+          timeline: FieldValue.arrayUnion({
+            text: "Lead updated with Step 2 (Mobile & Notes) details.",
+            timestamp: new Date(),
+            adminName: "System",
+            adminId: "system",
+          }),
+        });
+
+        // Fetch completed lead details to notify webhook (non-blocking)
+        leadRef.get().then((leadSnap) => {
+          if (leadSnap.exists) {
+            const fullLeadDoc = leadSnap.data();
+            resolveWebhookUrl().then((webhookUrl) => {
+              notifyWebhook(
+                webhookUrl,
+                createDiscordLeadPayload(fullLeadDoc),
+                [
+                  "*Lead Details Finalized!*",
+                  `Name: ${fullLeadDoc.fullName}`,
+                  `Email: ${fullLeadDoc.email}`,
+                  `WhatsApp: ${fullLeadDoc.whatsapp}`,
+                  `Service: ${fullLeadDoc.requestedService}`,
+                  `Notes: ${fullLeadDoc.notes}`,
+                  `Source: ${fullLeadDoc.source}`,
+                ].join("\n")
+              ).catch((webhookError) => {
+                console.error("[API/Leads] Webhook notify failed in PATCH admin:", webhookError);
+              });
+            });
+          }
+        }).catch((getSnapError) => {
+          console.error("[API/Leads] Fetch lead document failed in PATCH admin:", getSnapError);
+        });
+
+        return NextResponse.json({ success: true, id: leadId });
+      } catch (adminError) {
+        console.warn("[API/Leads] adminDb PATCH update failed, trying clientDb fallback:", adminError.message);
+      }
+    }
+
+    // Fallback to client SDK
+    try {
+      await updateDoc(doc(clientDb, "leads", leadId), {
+        ...updateData,
+        timeline: arrayUnion({
+          text: "Lead updated with Step 2 (Mobile & Notes) details.",
+          timestamp: new Date(),
+          adminName: "System",
+          adminId: "system",
+        }),
+      });
+
+      // Fetch completed lead details to notify webhook (non-blocking)
+      getDoc(doc(clientDb, "leads", leadId)).then((leadSnap) => {
+        if (leadSnap.exists()) {
+          const fullLeadDoc = leadSnap.data();
+          resolveWebhookUrl().then((webhookUrl) => {
+            notifyWebhook(
+              webhookUrl,
+              createDiscordLeadPayload(fullLeadDoc),
+              [
+                "*Lead Details Finalized!*",
+                `Name: ${fullLeadDoc.fullName}`,
+                `Email: ${fullLeadDoc.email}`,
+                `WhatsApp: ${fullLeadDoc.whatsapp}`,
+                `Service: ${fullLeadDoc.requestedService}`,
+                `Notes: ${fullLeadDoc.notes}`,
+                `Source: ${fullLeadDoc.source}`,
+              ].join("\n")
+            ).catch((webhookError) => {
+              console.error("[API/Leads] Webhook notify failed in PATCH client:", webhookError);
+            });
+          });
+        }
+      }).catch((getSnapError) => {
+        console.error("[API/Leads] Fetch lead document failed in PATCH client:", getSnapError);
+      });
+
+      return NextResponse.json({ success: true, id: leadId });
+    } catch (clientError) {
+      console.error("[API/Leads] clientDb PATCH update failed:", clientError.message, clientError.stack);
+      return NextResponse.json({ error: `clientDb PATCH update failed: ${clientError.message}` }, { status: 500 });
+    }
+  } catch (error) {
+    console.error("[API/Leads] PATCH handler crash:", error);
+    return NextResponse.json({ error: `PATCH handler crash: ${error.message}` }, { status: 500 });
   }
 }

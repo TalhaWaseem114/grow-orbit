@@ -40,10 +40,10 @@ const SERVICES = [
 ];
 
 const TEAM = [
-  { name: "Ali",  role: "Founder & CEO",      img: "https://res.cloudinary.com/dciggvulg/image/upload/v1781271782/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/9.png", years: "8 yrs Amazon" },
-  { name: "Sarah Chen",    role: "Head of PPC",        img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=400&auto=format&fit=crop", years: "$5M managed" },
-  { name: "Marcus Thorne", role: "Creative Director",  img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?q=80&w=400&auto=format&fit=crop", years: "1,200+ listings" },
-  { name: "Elena Voss",    role: "Growth Strategist",  img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=400&auto=format&fit=crop", years: "12 launches" },
+  { name: "Ali", role: "Founder & CEO", img: "/assets/team-ali.png", years: "8 yrs Amazon" },
+  { name: "Shahrooz", role: "Head of Growth & PPC", img: "/assets/team-shahrooz.png", years: "6 yrs Strategy" },
+  { name: "Talha", role: "Head of Operations & Dev", img: "/assets/team-talha.png", years: "5 yrs Systems" },
+  { name: "Ikram", role: "Creative Director", img: "/assets/team-ikram.png", years: "7 yrs Design" },
 ];
 
 const VALUES = [
@@ -300,7 +300,7 @@ export default function AboutPage() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 -mt-8 mb-0 relative z-10 scroll-in">
         <div className="relative rounded-[32px] overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.12)] border border-zinc-100">
           <img
-            src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1600&auto=format&fit=crop"
+            src="/newUpload/strategy-meeting.jpg"
             alt="Grow Orbit team at work"
             className="w-full object-cover"
             style={{ height: "300px", mdHeight: "420px" }}
@@ -392,7 +392,7 @@ export default function AboutPage() {
             {/* Left image */}
             <div className="relative rounded-[32px] overflow-hidden min-h-[500px]">
               <img
-                src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=900&auto=format&fit=crop"
+                src="/assets/operational-excellence-dashboard.png"
                 alt="Operational excellence"
                 className="w-full h-full object-cover min-h-[350px] lg:min-h-full"
               />

@@ -31,7 +31,13 @@ export default function LeadForm({ theme = "light", compact = false }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+    if (name === "whatsapp") {
+      // Only allow digits, spaces, and standard phone symbols +, -, (, )
+      const cleaned = value.replace(/[^0-9+\s()-]/g, "");
+      setForm((prev) => ({ ...prev, [name]: cleaned }));
+    } else {
+      setForm((prev) => ({ ...prev, [name]: value }));
+    }
     if (error) setError(""); // Clear error on input change
   };
 
@@ -165,7 +171,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
       {[
         { label: "Full Name *",       name: "name",     type: "text",  placeholder: "Your name",         required: true },
         { label: "Email Address *",   name: "email",    type: "email", placeholder: "you@brand.com",     required: true },
-        { label: "WhatsApp (Optional)", name: "whatsapp", type: "tel",   placeholder: "+1 (555) 000-0000", required: false },
+        { label: "Mobile Number (Optional)", name: "whatsapp", type: "tel",   placeholder: "e.g. +1 (555) 000-0000", required: false },
       ].map((f) => (
         <div key={f.name}>
           <label htmlFor={`lead-${f.name}`} className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${

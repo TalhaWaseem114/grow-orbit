@@ -27,9 +27,9 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
         <div className="relative">
           {/* Large Background Watermark */}
           <div
-            className="absolute top-[30px] right-0 rotate-90 origin-center translate-x-[40%] sm:top-[20px] sm:left-0 sm:right-auto sm:rotate-0 sm:origin-center sm:-translate-y-[70%] sm:translate-x-0 font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.05] pointer-events-none select-none whitespace-nowrap z-0"
+            className="absolute top-[30px] right-0 rotate-90 origin-center translate-x-[40%] sm:top-[20px] sm:left-0 sm:right-auto sm:rotate-0 sm:origin-center sm:-translate-y-[70%] sm:translate-x-0 font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.09] pointer-events-none select-none whitespace-nowrap z-0"
             style={{
-              fontFamily: "'Oswald', sans-serif",
+              fontFamily: "Arial, sans-serif",
               WebkitTextStroke: "1.5px rgb(0, 0, 0)",
               color: "transparent"
             }}
@@ -45,7 +45,7 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
                 className="text-zinc-900 text-3xl sm:text-4xl md:text-[44px] font-black uppercase tracking-tighter leading-[1.1] mb-4"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                Our Work in <span className="text-zinc-300 italic font-normal lowercase tracking-normal text-[32px] sm:text-[38px] md:text-[46px]" style={{ fontFamily: "'Playfair Display', serif" }}>Real-Time.</span>
+                Our Work in <span className="text-zinc-400 italic font-normal lowercase tracking-normal text-[32px] sm:text-[38px] md:text-[46px]" style={{ fontFamily: "'Playfair Display', serif" }}>Real-Time.</span>
               </h2>
             </div>
             {/* Desktop version - hidden on mobile */}
@@ -107,7 +107,7 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
             <div className="px-5 sm:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
               <div>
                 <p className="font-black text-zinc-900 uppercase tracking-tight text-[13px] sm:text-[14px] mb-1">This is what winning listings look like.</p>
-                <p className="text-zinc-400 text-[12px] sm:text-[13px] font-light">Whether you're launching or scaling — great visuals aren't optional.</p>
+                <p className="text-zinc-600 text-[12px] sm:text-[13px] font-normal">Whether you're launching or scaling — great visuals aren't optional.</p>
               </div>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto shrink-0">
                 <Link href="/portfolio" prefetch={false} className="flex items-center justify-center gap-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 font-black text-[10px] uppercase tracking-widest px-6 py-3.5 rounded-2xl no-underline transition-all duration-300">

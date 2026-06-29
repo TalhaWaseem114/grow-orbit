@@ -51,9 +51,9 @@ export default function OrbitProcessSection({ scrollToForm }) {
             className="absolute
               top-[30px] right-0 rotate-90 origin-center translate-x-[40%]
               sm:top-[20px] sm:left-0 sm:right-auto sm:rotate-0 sm:origin-center sm:-translate-y-[70%] sm:translate-x-0
-              font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.05] pointer-events-none select-none whitespace-nowrap"
+              font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.09] pointer-events-none select-none whitespace-nowrap"
             style={{
-              fontFamily: "'Oswald', sans-serif",
+              fontFamily: "Arial, sans-serif",
               WebkitTextStroke: "1.5px #000",
               color: "transparent"
             }}
@@ -69,10 +69,10 @@ export default function OrbitProcessSection({ scrollToForm }) {
                 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                From Idea To <span className="italic font-light text-zinc-300 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>Revenue.</span>
+                From Idea To <span className="italic font-light text-zinc-400 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>Revenue.</span>
               </h2>
             </div>
-            <p className="text-zinc-400 text-sm font-light max-w-[260px] leading-relaxed md:pb-2">
+            <p className="text-zinc-600 text-sm font-normal max-w-[260px] leading-relaxed md:pb-2">
               One end-to-end system — from product hunting to scaling your brand to $50K–$200K/mo.
             </p>
           </div>
@@ -144,7 +144,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
                       <p className="font-black text-[11px] lg:text-[12px] uppercase tracking-[0.1em] text-zinc-900 group-hover:text-orange-500 transition-colors duration-300 leading-tight mb-2 pt-2">
                         {s.title}
                       </p>
-                      <p className="text-[10px] font-light text-zinc-400 leading-relaxed max-w-[170px] mx-auto px-4">
+                      <p className="text-[10.5px] font-normal text-zinc-600 leading-relaxed max-w-[170px] mx-auto px-4">
                         {s.sub}
                       </p>
                     </div>
@@ -220,7 +220,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
                         <p className="font-black text-[11px] uppercase tracking-widest text-zinc-900 mb-1">
                           {s.title}
                         </p>
-                        <p className="text-[10px] font-light text-zinc-400 leading-relaxed">
+                        <p className="text-[10.5px] font-normal text-zinc-600 leading-relaxed">
                           {s.sub}
                         </p>
                       </div>

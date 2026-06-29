@@ -587,7 +587,7 @@ function BeforeAfterShowcase() {
           {transformations.map((t, i) => (
             <Link
               key={i}
-              href="/portfolio?filter=main-image-ctr"
+              href="/portfolio/"
               className="group bg-white rounded-[32px] border border-zinc-100 shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05)] hover:shadow-[0_30px_60px_-20px_rgba(0,0,0,0.1)] hover:border-orange-500/20 transition-all duration-500 overflow-hidden no-underline block"
             >
               {/* Header */}
@@ -657,7 +657,7 @@ function BeforeAfterShowcase() {
         <div className="mt-12 text-center">
           <p className="text-zinc-400 text-sm font-light mb-6">Results vary. Average CTR improvement across 3,500+ images designed: 40%.</p>
           <Link
-            href="/portfolio?filter=main-image-ctr"
+            href="/portfolio/"
             className="inline-flex items-center gap-3 bg-black hover:bg-orange-500 transition-all duration-300 text-white font-black text-[11px] uppercase tracking-widest px-8 py-4 rounded-full no-underline"
           >
             See More CTR Results

@@ -11,28 +11,28 @@ import { Plus, Minus, ChevronRight, Terminal } from "lucide-react";
 ───────────────────────────────────────── */
 const faqs = [
   {
-    q: "When will revenue start?",
-    a: "We typically see measurable revenue growth within 30–60 days of execution. However, initial improvements in CTR and conversion rates usually start within the first 14 days."
+    q: "How soon will we see results in sales and profit?",
+    a: "We typically drive noticeable conversion (CVR) and CTR improvements in the first 14 days, with stable, profitable scaling establishing between 30–60 days."
   },
   {
-    q: "What makes you different from other Amazon agencies?",
-    a: "Most agencies focus on one piece. We handle everything together so your growth actually moves instead of staying stuck."
+    q: "Do I own the listings, creative assets, and advertising accounts?",
+    a: "Yes, 100%. All ad accounts, listing copies, graphic designs, and A+ content we create are entirely your property. We never hold your assets hostage."
   },
   {
-    q: "Do I need to commit long-term?",
-    a: "No. We work month-to-month. You stay because it works, not because you're locked in."
+    q: "What is your pricing structure and is there a setup fee?",
+    a: "We work on a transparent flat-fee monthly retainer aligned with your brand's catalog complexity. There are no hidden fees, and we work month-to-month."
   },
   {
-    q: "Is this right for my brand right now?",
-    a: "Best fit is brands already doing $10K+ per month. If you're earlier, we'll guide you on the right next step."
+    q: "How much time is required from my internal team?",
+    a: "Almost none. We run a fully managed service. Aside from a bi-weekly performance sync and inventory forecast approvals, we handle 95% of the heavy lifting."
   },
   {
-    q: "Can you take over my existing account?",
-    a: "Yes. We audit first, fix what’s holding you back, and transition without disrupting your current sales."
+    q: "How do you prevent wasting ad spend on unprofitable keywords?",
+    a: "Every campaign is built on unit-economics. We target high-intent, profitable search terms first, optimizing bids hourly to maintain your target ACoS and TACoS."
   },
   {
-    q: "What kind of budget do I need to get started?",
-    a: "It depends on your stage. We’ll give you a clear recommendation on the call based on your numbers."
+    q: "Can you handle all facets of Amazon (PPC, SEO, Design, & Catalog)?",
+    a: "Yes. Unlike single-channel consultants, we unify listing creatives, SEO, PPC management, and store catalog health under one single growth strategy."
   }
 ];
 
@@ -53,7 +53,7 @@ export default function FAQSection({ scrollToForm }) {
             className="text-4xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            Frequently Asked <span className="italic font-light text-zinc-300 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Frequently Asked <span className="italic font-light text-zinc-400 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
               questions.
             </span>
           </h2>

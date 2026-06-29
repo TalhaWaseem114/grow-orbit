@@ -500,7 +500,7 @@ export default function PortfolioDetailPage() {
 
   // NORMALIZE SERVICE DATA: If serviceDetails is missing, synthesize from gallery
   const normalizedServices = (item.services || [])
-    .filter(svc => svc !== "Brand Story" && svc !== "Brand Store")
+    .filter(svc => svc !== "Brand Story" && svc !== "Brand Store" && svc !== "Main Image CTR")
     .map(svc => {
     const details = item.serviceDetails?.[svc] || {
       description: svc === "Listing Images" ? item.solution : item.challenge,

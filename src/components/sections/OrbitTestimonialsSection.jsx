@@ -27,9 +27,15 @@ export default function OrbitTestimonialsSection() {
   return (
     <section className="py-32 bg-white border-t border-zinc-100 relative overflow-hidden">
       {/* Background Graphic */}
-      <div className="absolute top-0 right-0 w-[320px] h-[320px] sm:w-[600px] sm:h-[600px] pointer-events-none translate-x-[20%] translate-y-[0%] sm:-translate-y-[10%] opacity-60 sm:opacity-100 blur-[0.5px]">
+      <div
+        className="absolute top-0 right-0 w-[320px] h-[320px] sm:w-[600px] sm:h-[600px] pointer-events-none translate-x-[20%] translate-y-[0%] sm:-translate-y-[10%] opacity-[0.32] sm:opacity-[0.38] blur-[0.5px]"
+        style={{
+          maskImage: "radial-gradient(circle at 55% 50%, black 15%, transparent 75%)",
+          WebkitMaskImage: "radial-gradient(circle at 55% 50%, black 15%, transparent 75%)",
+        }}
+      >
         <Image
-          src="/assets/orbit-testimonials-bg.png"
+          src="/assets/orbit-testimonials-bg-new.jpg"
           alt="Orbit Testimonials Background"
           fill
           sizes="(max-width: 640px) 320px, 600px"
@@ -44,9 +50,9 @@ export default function OrbitTestimonialsSection() {
             className="absolute
               top-[30px] right-0 rotate-90 origin-center translate-x-[40%]
               sm:top-[20px] sm:left-0 sm:right-auto sm:rotate-0 sm:origin-center sm:-translate-y-[70%] sm:translate-x-0
-              font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.05] pointer-events-none select-none whitespace-nowrap"
+              font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.09] pointer-events-none select-none whitespace-nowrap"
             style={{
-              fontFamily: "'Oswald', sans-serif",
+              fontFamily: "Arial, sans-serif",
               WebkitTextStroke: "1.5px #000",
               color: "transparent"
             }}
@@ -67,7 +73,7 @@ export default function OrbitTestimonialsSection() {
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             BRANDS THAT SCALED <span
-              className="italic font-light text-zinc-300 lowercase tracking-normal"
+              className="italic font-light text-zinc-400 lowercase tracking-normal"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               with us.
@@ -87,111 +93,89 @@ export default function OrbitTestimonialsSection() {
           className="md:grid md:grid-cols-3 md:gap-6 flex md:flex-none gap-4 overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-hide py-8 -my-8 md:py-0 md:my-0 -mx-6 px-6 md:mx-0 md:px-0"
         >
           {testimonialsData.map((t, i) => (
-            <div
+            <Link
               key={i}
-              className="group relative bg-white rounded-[32px] p-7 md:p-8 border border-zinc-100 hover:border-orange-500/10 transition-all duration-700 flex flex-col w-[320px] sm:w-[360px] md:w-auto snap-center shrink-0 overflow-hidden"
+              href={t.caseStudyLink}
+              prefetch={false}
+              className="group relative bg-white rounded-[32px] p-8 md:p-10 border border-zinc-100 hover:border-orange-500/25 transition-all duration-500 flex flex-col w-[320px] sm:w-[360px] md:w-auto snap-center shrink-0 overflow-hidden no-underline"
               style={{
-                boxShadow: "0 10px 30px rgba(0,0,0,0.04), 0 4px 10px rgba(0,0,0,0.01)",
+                boxShadow: "0 25px 50px -12px rgba(0,0,0,0.08), 0 8px 24px -8px rgba(0,0,0,0.04)",
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 30px 60px rgba(0,0,0,0.08), 0 10px 20px rgba(249,115,22,0.03)";
+                e.currentTarget.style.boxShadow = "0 40px 70px -10px rgba(0,0,0,0.12), 0 16px 36px -12px rgba(249,115,22,0.08)";
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 10px 30px rgba(0,0,0,0.04), 0 4px 10px rgba(0,0,0,0.01)";
+                e.currentTarget.style.boxShadow = "0 25px 50px -12px rgba(0,0,0,0.08), 0 8px 24px -8px rgba(0,0,0,0.04)";
               }}
             >
-              {/* Background Quote Icon */}
-              <Quote
-                size={80}
-                className="absolute top-10 right-6 text-orange-500 fill-orange-500 opacity-[0.03] pointer-events-none rotate-12"
-              />
-
-              {/* Top Row: Badge + Rating */}
-              <div className="relative z-10 flex items-center justify-between gap-4 mb-8">
-                <div className="flex items-center gap-2 bg-orange-500/5 border border-orange-500/10 rounded-full px-3.5 py-1.5">
-                  <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-                  <span className="text-[9px] font-black text-zinc-900 tracking-wider uppercase">
-                    {t.status} <span className="mx-1 text-zinc-300">|</span> {t.category}
+              {/* Upper Content Group */}
+              <div>
+                {/* Stars + Category Badge */}
+                <div className="flex items-center justify-between gap-4 mb-8">
+                  <div className="flex items-center gap-1.5">
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, s) => (
+                        <Star key={s} size={13} className="text-orange-500 fill-orange-500" />
+                      ))}
+                    </div>
+                    <span className="text-[12px] font-bold text-zinc-900 ml-1">5.0</span>
+                  </div>
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50/70 border border-orange-100/30 px-3.5 py-1.5 rounded-full">
+                    {t.category}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1.5">
-                  <div className="flex gap-0.5">
-                    {[...Array(5)].map((_, s) => (
-                      <Star key={s} size={12} className="text-orange-500 fill-orange-500" />
-                    ))}
-                  </div>
-                  <span className="text-[12px] font-black text-zinc-900">{t.rating.toFixed(1)}</span>
+                {/* Punchy Review Headline */}
+                <h4 className="text-[15px] sm:text-[16px] font-black uppercase tracking-tight text-zinc-900 mb-3 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  {t.headline[0]} <span className="text-orange-500 font-extrabold">— {t.headline[1]}</span>
+                </h4>
+
+                {/* Spacious Quote */}
+                <p className="text-zinc-600 text-[13.5px] sm:text-[14px] font-normal leading-relaxed italic mb-6 relative">
+                  <span className="text-zinc-200 text-3xl absolute -top-3.5 -left-1.5 font-serif select-none pointer-events-none">“</span>
+                  <span className="pl-4.5 block">{t.paragraph}</span>
+                </p>
+
+                {/* Spacious, Clean Metrics Grid */}
+                <div className="grid grid-cols-3 gap-2 py-4 border-y border-zinc-100/80 mb-6">
+                  {t.stats.map((stat, si) => (
+                    <div key={si} className={`flex flex-col ${si !== 2 ? "border-r border-zinc-100" : ""}`}>
+                      <span className="text-[13px] font-black text-zinc-900 leading-none">{stat.val}</span>
+                      <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-wider mt-1">{stat.label}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              {/* Headline */}
-              <div className="relative z-10 mb-4">
-                <h3 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight text-zinc-900 uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  {t.headline[0]}<br />
-                  <span className="text-orange-500">{t.headline[1]}</span>
-                </h3>
-              </div>
-
-              {/* Paragraph */}
-              <p className="relative z-10 text-zinc-600 text-[14px] leading-relaxed mb-8 line-clamp-3">
-                {t.paragraph}
-              </p>
-
-              {/* Stats Block */}
-              <div className="relative z-10 bg-zinc-50/50 border border-zinc-100 rounded-2xl p-5 grid grid-cols-3 gap-2 mb-6">
-                {t.stats.map((stat, si) => (
-                  <div key={si} className={`flex flex-col items-center text-center ${si !== 2 ? "border-r border-zinc-200" : ""}`}>
-                    <div className="mb-2 text-orange-500">
-                      {stat.type === 'roas' && <Flame size={16} />}
-                      {stat.type === 'days' && <Clock size={16} />}
-                      {stat.type === 'revenue' && <Zap size={16} />}
-                      {stat.type === 'acos' && <Percent size={16} />}
-                      {stat.type === 'profit' && <LineChart size={16} />}
-                      {stat.type === 'growth' && <Target size={16} />}
-                      {stat.type === 'rank' && <Target size={16} />}
-                      {stat.type === 'spend' && <LineChart size={16} />}
-                    </div>
-                    <span className="text-[13px] font-black text-zinc-900 leading-none mb-1.5">{stat.val}</span>
-                    <span className="text-[8px] font-bold text-zinc-600 uppercase tracking-wider">{stat.label}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Footer */}
-              <div className="relative z-10 mt-auto flex items-center justify-between gap-4">
+              {/* Footer Row: Author + Explicit Case Study Link */}
+              <div className="border-t border-zinc-100 pt-6 flex items-center justify-between gap-4 mt-auto">
                 <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md grayscale hover:grayscale-0 transition-all duration-500 relative shrink-0">
+                  <div className="w-10 h-10 rounded-full overflow-hidden border border-zinc-100 relative shrink-0">
                     <Image
                       src={t.image}
                       alt={t.name}
                       fill
-                      sizes="56px"
+                      sizes="40px"
                       className="object-cover"
-                      placeholder={typeof t.image === 'string' && t.image.includes('cloudinary.com/') ? "blur" : "empty"}
-                      blurDataURL={typeof t.image === 'string' && t.image.includes('cloudinary.com/') ? t.image.replace('/upload/', '/upload/w_100,e_blur:1000,q_1,f_auto/') : undefined}
                     />
                   </div>
                   <div>
-                    <span className="font-black text-[12px] uppercase tracking-tight text-zinc-900 block leading-tight">
+                    <span className="font-extrabold text-[11px] uppercase tracking-wider text-zinc-900 block leading-tight mb-0.5">
                       {t.name}
                     </span>
-                    <span className="text-[10px] font-medium text-zinc-600 block">
+                    <span className="text-[9px] font-medium text-zinc-500 block leading-none">
                       {t.role}
                     </span>
                   </div>
                 </div>
 
-                <Link
-                  href={t.caseStudyLink}
-                  prefetch={false}
-                  className="flex items-center gap-2 text-orange-700 font-black text-[10px] uppercase tracking-[0.15em] hover:gap-3 transition-all no-underline group/link"
-                >
-                  View Case Study
-                  <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
-                </Link>
+                {/* Explicit Text Link */}
+                <span className="flex items-center gap-1.5 text-orange-500 font-extrabold text-[10px] uppercase tracking-widest transition-colors duration-300 group-hover:text-zinc-950 shrink-0">
+                  Read Case Study
+                  <ArrowRight size={12} className="translate-x-0 transition-transform duration-300 group-hover:translate-x-1" />
+                </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -217,8 +201,8 @@ export default function OrbitTestimonialsSection() {
               { icon: Star,       val: "4.9/5", label: "Client Rating"      },
               { icon: ShieldCheck, val: "100%",  label: "Results Focused"    },
             ].map((stat, idx) => (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 className={`flex items-center gap-3 relative group ${
                   idx === 4 ? "col-span-2 md:col-span-1 justify-center md:justify-start" : ""
                 }`}

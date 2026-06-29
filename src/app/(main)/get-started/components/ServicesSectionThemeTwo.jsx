@@ -63,9 +63,9 @@ export default function ServicesSectionThemeTwo() {
       <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
         {/* Large Background Watermark */}
         <div
-          className="absolute top-[30px] right-0 rotate-90 origin-center translate-x-[40%] sm:top-[-120px] sm:left-[30px] sm:translate-x-0 sm:rotate-0 sm:origin-center sm:translate-y-0 font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.05] pointer-events-none select-none whitespace-nowrap z-0"
+          className="absolute top-[30px] right-0 rotate-90 origin-center translate-x-[40%] sm:top-[-120px] sm:left-[30px] sm:translate-x-0 sm:rotate-0 sm:origin-center sm:translate-y-0 font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.09] pointer-events-none select-none whitespace-nowrap z-0"
           style={{
-            fontFamily: "'Oswald', sans-serif",
+            fontFamily: "Arial, sans-serif",
             WebkitTextStroke: "1.5px #000",
             color: "transparent"
           }}
@@ -84,7 +84,7 @@ export default function ServicesSectionThemeTwo() {
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               Every Lever That <span
-                className="text-zinc-300 italic font-normal lowercase tracking-normal text-[32px] sm:text-[38px] md:text-[46px]"
+                className="text-zinc-400 italic font-normal lowercase tracking-normal text-[32px] sm:text-[38px] md:text-[46px]"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 moves revenue.
@@ -135,7 +135,7 @@ export default function ServicesSectionThemeTwo() {
               </h3>
 
               {/* Description */}
-              <p className="text-zinc-500 text-[11px] font-light leading-relaxed mb-4">
+              <p className="text-zinc-600 text-[11px] font-normal leading-relaxed mb-4">
                 {service.description}
               </p>
 
@@ -147,7 +147,7 @@ export default function ServicesSectionThemeTwo() {
                 >
                   {service.stat}
                 </p>
-                <p className="text-zinc-400 text-[9px] font-medium uppercase tracking-wider">
+                <p className="text-zinc-500 text-[9px] font-semibold uppercase tracking-wider">
                   {service.statLabel}
                 </p>
               </div>

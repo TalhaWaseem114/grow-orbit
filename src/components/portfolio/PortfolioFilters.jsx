@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   LayoutGrid, Camera, Layers, Search, BookOpen, Store, Sparkles,
   SlidersHorizontal, X, RotateCcw, Check
@@ -114,6 +115,13 @@ export default function PortfolioFilters({
   isSticky = true
 }) {
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
   const [tempCategory, setTempCategory] = useState(activeKey);
   const [tempMaterial, setTempMaterial] = useState(activeMaterial);
   const [tempNiche, setTempNiche] = useState(activeNiche);
@@ -212,7 +220,7 @@ export default function PortfolioFilters({
       </div>
 
       {/* ── MOBILE FILTER BOTTOM SHEET DRAWER ── */}
-      {isMobileDrawerOpen && (
+      {isMobileDrawerOpen && mounted && createPortal(
         <div className="fixed inset-0 z-[100] sm:hidden">
           {/* Backdrop */}
           <div
@@ -359,7 +367,8 @@ export default function PortfolioFilters({
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );

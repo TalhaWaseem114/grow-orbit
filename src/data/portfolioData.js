@@ -24,11 +24,16 @@ export const PORTFOLIO_ITEMS = [
     solution: "We created a full suite of listing images that showcased the cookies in lifestyle settings, highlighted the premium ingredients, and used engaging typography to emphasize the texture and taste. Optimized specifically for mobile browsing.",
     serviceDetails: {
       "Listing Images": {
-        description: "We created a full suite of listing images that showcased the cookies in lifestyle settings, highlighted the premium ingredients, and used engaging typography.",
+        description: "We created a full suite of listing images that showcased the cookies in lifestyle settings, highlighted the premium ingredients, and used engaging typography to emphasize the texture and taste. Optimized specifically for mobile browsing.",
         images: [
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872013/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.jpg", label: "Hero Image" },
           { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872004/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/2.jpg", label: "Hero Detail" },
-          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872005/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/3.jpg", label: "Ingredients" }
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872005/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/3.jpg", label: "Ingredients" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872007/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/4.jpg", label: "Texture Shot" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872008/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/5.jpg", label: "Taste Profile" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872009/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/6.jpg", label: "Lifestyle Image" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872010/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/7.jpg", label: "Social Proof" },
+          { src: "https://res.cloudinary.com/dciggvulg/image/upload/v1781872012/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/8.jpg", label: "Comparison" }
         ]
       },
       "Main Image CTR": {
@@ -56,7 +61,7 @@ export const PORTFOLIO_ITEMS = [
     ],
     testimonial: {
       quote: "We revamped their listings and optimized PPC. Within 12 months, they hit 742K units sold with consistent monthly growth.",
-      author: "Sarah J.",
+      author: "Sarah Jenkins",
       role: "Founder, Lumina Bites",
     },
   },
@@ -202,7 +207,7 @@ export const PORTFOLIO_ITEMS = [
     ],
     testimonial: {
       quote: "We rebuilt their brand, listings, and creatives. Revenue grew consistently with thriving business metrics and top seller status.",
-      author: "David R.",
+      author: "David Rutherford",
       role: "Founder, Kazvo",
     },
   },
@@ -918,7 +923,7 @@ export const PORTFOLIO_ITEMS = [
     ],
     testimonial: {
       quote: "The new visuals completely transformed our brand perception. We quickly became a top seller in the highly competitive art supplies category.",
-      author: "Alex G.",
+      author: "Marcus Thorne",
       role: "Founder, Graffixx",
     },
   },
@@ -930,7 +935,6 @@ export const FILTERS = [
   { key: "all",                label: "All Work",           icon: "LayoutGrid",  color: "bg-zinc-900 text-white"   },
   { key: "Listing Images",     label: "Listing Images",     icon: "Camera",      color: "bg-orange-500 text-white" },
   { key: "A+ Content",         label: "A+ Content",         icon: "Layers",      color: "bg-orange-500 text-white" },
-  { key: "Main Image CTR",     label: "Main Image CTR",     icon: "Search",      color: "bg-orange-500 text-white" },
   // { key: "Brand Story",        label: "Brand Story",        icon: "BookOpen",    color: "bg-orange-500 text-white" },
   // { key: "Brand Store",        label: "Brand Store",        icon: "Store",       color: "bg-orange-500 text-white" },
   { key: "Full Brand Package", label: "Full Brand Package", icon: "Sparkles",    color: "bg-zinc-900 text-white"   },

@@ -45,7 +45,7 @@ export default function TrustedBrands() {
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             80+ Brands <span className="text-orange-500">Scaled</span><br />
-            <span className="italic font-light text-zinc-300 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>to new orbits of revenue.</span>
+            <span className="italic font-light text-zinc-400 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>to new orbits of revenue.</span>
           </h2>
         </div>
 

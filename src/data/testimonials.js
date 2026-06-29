@@ -20,9 +20,9 @@ export const caseStudyTestimonials = [
       { type: "units", val: "742.9K", label: "Yearly Units" },
       { type: "revenue", val: "$6.7K/day", label: "Daily Sales" }
     ],
-    name: "MARCUS T.",
+    name: "Marcus Thorne",
     role: "Founder, Graffixx",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
+    image: "/assets/marcus-vance.avif",
     caseStudyLink: "/case-study/li-01",
     sellerCentralImage: "/images/saler centeral screens/1.jpg"
   },
@@ -37,9 +37,9 @@ export const caseStudyTestimonials = [
       { type: "units", val: "1.15M", label: "Yearly Units" },
       { type: "revenue", val: "$9.8K/day", label: "Daily Sales" }
     ],
-    name: "DAVID R.",
+    name: "Julian Vane",
     role: "Founder, Kazvoo",
-    image: "https://randomuser.me/api/portraits/men/44.jpg",
+    image: "/assets/david-rutherford.avif",
     caseStudyLink: "/case-study/li-02",
     sellerCentralImage: "/images/saler centeral screens/2.jpg"
   },
@@ -54,9 +54,9 @@ export const caseStudyTestimonials = [
       { type: "units", val: "812.7K", label: "Yearly Units" },
       { type: "revenue", val: "$7.6K/day", label: "Daily Sales" }
     ],
-    name: "SARAH J.",
+    name: "Sarah Jenkins",
     role: "Founder, Dunova",
-    image: "https://randomuser.me/api/portraits/women/68.jpg",
+    image: "/assets/sarah-jenkins.avif",
     caseStudyLink: "/case-study/li-03",
     sellerCentralImage: "/images/saler centeral screens/3.jpg"
   },

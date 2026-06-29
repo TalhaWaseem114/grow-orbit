@@ -11,13 +11,15 @@ export default function MainRouteChrome() {
   const pathname = usePathname();
   const isGetStarted = pathname === "/get-started" || pathname === "/get-started/";
 
-  if (isGetStarted) return null;
-
   return (
     <>
       <Navbar />
-      <ChatBot />
-      <OrbitMobileStickyCTA />
+      {!isGetStarted && (
+        <>
+          <ChatBot />
+          <OrbitMobileStickyCTA />
+        </>
+      )}
     </>
   );
 }

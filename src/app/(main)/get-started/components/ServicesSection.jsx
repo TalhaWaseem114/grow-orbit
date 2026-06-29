@@ -20,9 +20,9 @@ export default function ServicesSection() {
             className="absolute
               top-[30px] right-0 rotate-90 origin-center translate-x-[40%]
               sm:top-[20px] sm:left-0 sm:right-auto sm:rotate-0 sm:origin-center sm:-translate-y-[70%] sm:translate-x-0
-              font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.05] pointer-events-none select-none whitespace-nowrap"
+              font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.09] pointer-events-none select-none whitespace-nowrap"
             style={{
-              fontFamily: "'Oswald', sans-serif",
+              fontFamily: "Arial, sans-serif",
               WebkitTextStroke: "1.5px #000",
               color: "transparent"
             }}
@@ -37,7 +37,7 @@ export default function ServicesSection() {
               className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
-              Every lever that <span className="italic font-light text-zinc-300 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>moves revenue.</span>
+              Every lever that <span className="italic font-light text-zinc-400 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>moves revenue.</span>
             </h2>
             <p className="text-zinc-500 text-sm font-light leading-relaxed mt-4 max-w-lg">
               Amazon growth doesn’t come from ads alone—it comes from fixing every layer that drives conversion.
@@ -53,7 +53,7 @@ export default function ServicesSection() {
             <div key={i} className="group bg-[#fafafa] hover:bg-orange-500 rounded-[24px] p-5 border border-zinc-100 hover:border-orange-500 transition-all duration-500 cursor-default">
               <div className="text-orange-500 group-hover:text-white transition-colors mb-4">{s.icon}</div>
               <p className="font-black text-[13px] uppercase tracking-tight text-zinc-900 group-hover:text-white transition-colors mb-1.5 leading-tight">{s.title}</p>
-              <p className="text-zinc-400 group-hover:text-orange-100 text-[11px] font-light leading-snug transition-colors">{s.line}</p>
+              <p className="text-zinc-500 group-hover:text-orange-100 text-[11px] font-normal leading-snug transition-colors">{s.line}</p>
             </div>
           ))}
           </div>

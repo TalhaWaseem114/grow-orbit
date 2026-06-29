@@ -1227,8 +1227,8 @@ function Portfolio() {
    ═══════════════════════════════════════════════ */
 function SocialProof() {
   const testimonials = [
-    { quote: "Our sales tripled within 30 days of the full optimization. The keyword depth combined with the new visual hierarchy changed everything for our supplement line.", name: "Marcus T.", role: "Health Brand Owner",    result: "3x Sales Lift" },
-    { quote: "I thought my listing was fine. Then Grow Orbit showed me the mobile-first validation. After the fix, our conversion rate jumped by 40% in the first week.", name: "Sarah J.", role: "Home Goods Seller",       result: "+40% CVR" },
+    { quote: "Our sales tripled within 30 days of the full optimization. The keyword depth combined with the new visual hierarchy changed everything for our supplement line.", name: "Marcus Thorne", role: "Health Brand Owner",    result: "3x Sales Lift" },
+    { quote: "I thought my listing was fine. Then Grow Orbit showed me the mobile-first validation. After the fix, our conversion rate jumped by 40% in the first week.", name: "Sarah Jenkins", role: "Home Goods Seller",       result: "+40% CVR" },
     { quote: "The most robust listing optimization I've seen. They didn't just 'edit' — they re-architected the entire brand presence on Amazon from the ground up.", name: "James R.", role: "Tech Category Leader",   result: "BSR Top 50" },
   ];
 

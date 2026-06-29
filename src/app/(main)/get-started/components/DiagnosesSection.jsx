@@ -12,9 +12,9 @@ export default function DiagnosesSection() {
             className="absolute
               top-[30px] right-0 rotate-90 origin-center translate-x-[40%]
               sm:top-[20px] sm:left-0 sm:right-auto sm:rotate-0 sm:origin-center sm:-translate-y-[70%] sm:translate-x-0
-              font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.05] pointer-events-none select-none whitespace-nowrap"
+              font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.09] pointer-events-none select-none whitespace-nowrap"
             style={{
-              fontFamily: "'Oswald', sans-serif",
+              fontFamily: "Arial, sans-serif",
               WebkitTextStroke: "1.5px #fff",
               color: "transparent"
             }}

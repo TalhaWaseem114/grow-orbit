@@ -535,14 +535,14 @@ export default function CaseStudyLuminaBites() {
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md grayscale hover:grayscale-0 transition-all duration-500 flex-shrink-0">
                       <img 
-                        src="https://randomuser.me/api/portraits/women/44.jpg" 
-                        alt="Sarah J." 
+                        src="/assets/sarah-jenkins.avif" 
+                        alt="Sarah Jenkins" 
                         className="w-full h-full object-cover" 
                       />
                     </div>
                     <div>
                       <span className="font-black text-[13px] uppercase tracking-tight text-zinc-900 block leading-tight">
-                        Sarah J.
+                        Sarah Jenkins
                       </span>
                       <span className="text-[10px] font-medium text-zinc-500 block">
                         Founder, Lumina Bites

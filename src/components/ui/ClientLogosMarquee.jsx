@@ -32,6 +32,10 @@ const ClientLogosMarquee = ({
           <img 
             src={brand.src}
             alt={brand.name}
+            loading="lazy"
+            decoding="async"
+            width="200"
+            height="100"
             className="h-16 sm:h-20 md:h-24 w-auto max-w-none object-contain rounded-xl overflow-hidden"
           />
         </div>

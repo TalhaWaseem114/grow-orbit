@@ -364,102 +364,153 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
           </div>
         </div>
 
-        {/* GLOBAL PREFERENCES CARD */}
-        <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 24, padding: "24px", display: "flex", flexDirection: "column", gap: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <Sliders size={18} color="#f97316" />
-            <h3 style={{ fontSize: 14, fontWeight: 800, color: "#fff", textTransform: "uppercase" }}>Global Preferences</h3>
+        {/* COLUMN 2: SETTINGS & ANALYTICS */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          {/* GLOBAL PREFERENCES CARD */}
+          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 24, padding: "24px", display: "flex", flexDirection: "column", gap: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <Sliders size={18} color="#f97316" />
+              <h3 style={{ fontSize: 14, fontWeight: 800, color: "#fff", textTransform: "uppercase" }}>Global Preferences</h3>
+            </div>
+
+            {loadingSettings ? (
+              <div style={{ fontSize: 12, color: "#525252", padding: "20px 0" }}>Loading preferences...</div>
+            ) : (
+              <form onSubmit={handleSaveSettings} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                    <label style={{ fontSize: 9, fontWeight: 700, color: "#737373", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                      Lead Notifications Discord Webhook
+                    </label>
+                    <button
+                      type="button"
+                      onClick={isLocked ? handleUnlock : handleLockAndDiscard}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        color: isLocked ? "#f97316" : "#ef4444",
+                        fontSize: 10,
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 4,
+                        padding: 0
+                      }}
+                    >
+                      {isLocked ? (
+                        <>
+                          <Shield size={12} /> Unlock to Edit
+                        </>
+                      ) : (
+                        <>
+                          <Save size={12} /> Lock & Discard
+                        </>
+                      )}
+                    </button>
+                  </div>
+                  <input
+                    type={isLocked ? "password" : "text"}
+                    readOnly={isLocked}
+                    value={settings.leadNotificationWebhook}
+                    onChange={e => setSettings({ ...settings, leadNotificationWebhook: e.target.value })}
+                    placeholder="https://discord.com/api/webhooks/..."
+                    style={{
+                      width: "100%",
+                      background: "rgba(255,255,255,0.02)",
+                      border: "1px solid rgba(255,255,255,0.06)",
+                      borderRadius: 12,
+                      padding: "10px 14px",
+                      color: "#fff",
+                      fontSize: 12,
+                      opacity: isLocked ? 0.6 : 1,
+                      cursor: isLocked ? "not-allowed" : "text",
+                      fontFamily: isLocked ? "monospace" : "inherit"
+                    }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={savingSettings}
+                  style={{
+                    background: "linear-gradient(135deg, #f97316, #ea580c)",
+                    color: "#fff",
+                    border: "none",
+                    borderRadius: 12,
+                    padding: "10px 18px",
+                    fontSize: 12,
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                    boxShadow: "0 4px 15px rgba(249,115,22,0.2)",
+                    marginTop: 8,
+                    transition: "all 0.2s"
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.transform = "translateY(-1px)"}
+                  onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}
+                >
+                  <Save size={14} />
+                  {savingSettings ? "Saving..." : "Save Settings"}
+                </button>
+              </form>
+            )}
           </div>
 
-          {loadingSettings ? (
-            <div style={{ fontSize: 12, color: "#525252", padding: "20px 0" }}>Loading preferences...</div>
-          ) : (
-            <form onSubmit={handleSaveSettings} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+          {/* GOOGLE ANALYTICS CARD */}
+          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 24, padding: "24px", display: "flex", flexDirection: "column", gap: 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <Activity size={18} color="#f97316" />
+              <h3 style={{ fontSize: 14, fontWeight: 800, color: "#fff", textTransform: "uppercase" }}>Web Traffic & Analytics</h3>
+            </div>
 
-
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                  <label style={{ fontSize: 9, fontWeight: 700, color: "#737373", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                    Lead Notifications Discord Webhook
-                  </label>
-                  <button
-                    type="button"
-                    onClick={isLocked ? handleUnlock : handleLockAndDiscard}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      color: isLocked ? "#f97316" : "#ef4444",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 4,
-                      padding: 0
-                    }}
-                  >
-                    {isLocked ? (
-                      <>
-                        <Shield size={12} /> Unlock to Edit
-                      </>
-                    ) : (
-                      <>
-                        <Save size={12} /> Lock & Discard
-                      </>
-                    )}
-                  </button>
-                </div>
-                <input
-                  type={isLocked ? "password" : "text"}
-                  readOnly={isLocked}
-                  value={settings.leadNotificationWebhook}
-                  onChange={e => setSettings({ ...settings, leadNotificationWebhook: e.target.value })}
-                  placeholder="https://discord.com/api/webhooks/..."
-                  style={{
-                    width: "100%",
-                    background: "rgba(255,255,255,0.02)",
-                    border: "1px solid rgba(255,255,255,0.06)",
-                    borderRadius: 12,
-                    padding: "10px 14px",
-                    color: "#fff",
-                    fontSize: 12,
-                    opacity: isLocked ? 0.6 : 1,
-                    cursor: isLocked ? "not-allowed" : "text",
-                    fontFamily: isLocked ? "monospace" : "inherit"
-                  }}
-                />
+            <div style={{ background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 16, padding: 16 }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+                <span style={{ fontSize: 11, fontWeight: 800, color: "#fff" }}>
+                  Google Analytics 4
+                </span>
+                <span style={{ 
+                  fontSize: 9, fontWeight: 800, 
+                  background: "rgba(74,222,128,0.1)",
+                  color: "#4ade80",
+                  borderRadius: 6, padding: "2px 6px"
+                }}>
+                  Active
+                </span>
               </div>
 
+              <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 14 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11 }}>
+                  <span style={{ color: "#a3a3a3" }}>Measurement ID:</span>
+                  <span style={{ color: "#fff", fontWeight: 700 }}>G-6TGTYN8XX4</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11 }}>
+                  <span style={{ color: "#a3a3a3" }}>Tracking Status:</span>
+                  <span style={{ color: "#4ade80", fontWeight: 700 }}>Active & Recording</span>
+                </div>
+              </div>
 
+              <p style={{ fontSize: 10, color: "#525252", margin: "0 0 14px 0", lineHeight: 1.4 }}>
+                Use the Google Analytics console to track real-time active users, bounce rates, traffic acquisition channels, and conversion events.
+              </p>
 
-              <button
-                type="submit"
-                disabled={savingSettings}
-                style={{
-                  background: "linear-gradient(135deg, #f97316, #ea580c)",
-                  color: "#fff",
-                  border: "none",
-                  borderRadius: 12,
-                  padding: "10px 18px",
-                  fontSize: 12,
-                  fontWeight: 800,
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: 8,
-                  boxShadow: "0 4px 15px rgba(249,115,22,0.2)",
-                  marginTop: 8,
-                  transition: "all 0.2s"
-                }}
-                onMouseEnter={e => e.currentTarget.style.transform = "translateY(-1px)"}
-                onMouseLeave={e => e.currentTarget.style.transform = "translateY(0)"}
-              >
-                <Save size={14} />
-                {savingSettings ? "Saving..." : "Save Settings"}
-              </button>
-            </form>
-          )}
+              <div style={{ textAlign: "right" }}>
+                <a 
+                  href="https://analytics.google.com/" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  style={{ fontSize: 11, color: "#f97316", textDecoration: "none", fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 4 }}
+                  onMouseEnter={e => e.currentTarget.style.textDecoration = "underline"}
+                  onMouseLeave={e => e.currentTarget.style.textDecoration = "none"}
+                >
+                  Open Google Analytics Console ↗
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* AUDIT LOGS CARD */}

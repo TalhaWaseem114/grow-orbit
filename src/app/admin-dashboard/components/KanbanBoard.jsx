@@ -240,6 +240,7 @@ export default function KanbanBoard({
                         <span style={{ fontSize: 9, fontWeight: 700, color: "#525252", background: "rgba(255,255,255,0.03)", padding: "2px 6px", borderRadius: 4, textTransform: "uppercase" }}>
                           {lead.source || "Direct"}
                         </span>
+                        {/* 
                         <span style={{ 
                           fontSize: 8, 
                           fontWeight: 900, 
@@ -251,6 +252,7 @@ export default function KanbanBoard({
                         }} title={`Lead Score: ${score}`}>
                           {score}
                         </span>
+                        */}
                         {/* Individual Lead Card Age */}
                         <span style={{ 
                           fontSize: 9, 

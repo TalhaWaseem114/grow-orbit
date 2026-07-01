@@ -1508,6 +1508,7 @@ export default function LeadsTab({
                           COLD ❄️
                         </span>
                       )}
+                      {/* 
                       <span style={{ 
                         fontSize: 9, 
                         fontWeight: 900, 
@@ -1521,6 +1522,7 @@ export default function LeadsTab({
                       }}>
                         Score: {calculateLeadScore(lead)}
                       </span>
+                      */}
                       {lead.meetingBooked && (
                         <span style={{ fontSize: 9, fontWeight: 700, color: "#10b981", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.25)", borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
                           Booked
@@ -1781,6 +1783,7 @@ export default function LeadsTab({
                       <td style={{ padding: "14px 16px", minWidth: 220, whiteSpace: "nowrap" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, overflow: "hidden" }}>
                           <span style={{ fontSize: 13, fontWeight: 700, color: "#fff", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{lead.fullName || "Unknown"}</span>
+                          {/* 
                           <span style={{ 
                             fontSize: 8, 
                             fontWeight: 900, 
@@ -1793,6 +1796,7 @@ export default function LeadsTab({
                           }} title={`Lead Score: ${calculateLeadScore(lead)}`}>
                             {calculateLeadScore(lead)}
                           </span>
+                          */}
                           {lead.nextFollowUp && new Date(lead.nextFollowUp) < new Date(new Date().setHours(0,0,0,0)) && status !== "archived" && status !== "hot" && (
                              <span style={{ fontSize: 9, fontWeight: 800, color: "#ef4444", background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.12em", flexShrink: 0 }}>
                                ⏰ OVERDUE

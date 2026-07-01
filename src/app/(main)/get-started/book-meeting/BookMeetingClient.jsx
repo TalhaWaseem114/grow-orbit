@@ -22,7 +22,7 @@ function BookMeetingContent() {
 
   // Construct prefilled Calendly URL — use env variable or fallback domain, NOT window.location.host on SSR
   const embedDomain = process.env.NEXT_PUBLIC_SITE_URL?.replace(/^https?:\/\//, '') || "groworbitofficial.com";
-  const calendlyBaseUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/talhawaseem512/new-meeting";
+  const calendlyBaseUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/groworbitofficial-support/30min";
   const nameParam = encodeURIComponent(initialName);
   const emailParam = encodeURIComponent(initialEmail);
   const calendlySrc = `${calendlyBaseUrl}?embed_domain=${embedDomain}&embed_type=Inline&name=${nameParam}&email=${emailParam}&hide_gdpr_banner=1&background_color=0d0d0d&text_color=ffffff&primary_color=f97316`;

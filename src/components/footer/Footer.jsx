@@ -254,13 +254,13 @@ export default function Footer() {
               <div className="text-right">
                 <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-4">Contact Us</p>
                 <div className="flex flex-col gap-1 items-end">
-                  <a href="mailto:support@groworbit.com" className="text-zinc-300 text-[12px] font-medium hover:text-orange-500 transition-colors">
+                  <a href="mailto:support@groworbit.com" className="text-zinc-100 text-[12px] font-semibold hover:text-orange-500 transition-colors">
                     support@groworbit.com
                   </a>
-                  <a href="https://wa.me/14372126458" target="_blank" rel="noreferrer" className="text-zinc-400 text-[12px] font-light hover:text-orange-500 transition-colors">
-                    437-212-6458
+                  <a href="https://wa.me/14372126458" target="_blank" rel="noreferrer" className="text-zinc-100 text-[12px] font-semibold hover:text-orange-500 transition-colors">
+                    +1 (437) 212-6458
                   </a>
-                  <p className="text-zinc-500 text-[11px] font-light leading-relaxed mt-1">
+                  <p className="text-zinc-300 text-[11px] font-light leading-relaxed mt-1">
                     2583 Lundigan Dr<br />
                     Mississauga, ON L5J 3W2<br />
                     Canada

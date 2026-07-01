@@ -328,7 +328,7 @@ export default function ChatBot() {
 
             {/* ── CTA BUTTONS ── always visible at bottom ── */}
             <div className="grid grid-cols-2 gap-2 pt-1">
-              <a href="https://wa.me/19293847565" target="_blank" rel="noreferrer"
+              <a href="https://wa.me/14372126458" target="_blank" rel="noreferrer"
                  className="flex items-center justify-center gap-2 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest text-white transition-all duration-300 hover:opacity-90 active:scale-95"
                  style={{ background:"#25D366", boxShadow:"0 4px 15px rgba(37,211,102,.3)" }}>
                 <FaWhatsapp size={14}/> WhatsApp

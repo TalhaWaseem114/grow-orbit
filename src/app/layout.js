@@ -40,6 +40,11 @@ export const metadata = {
     icon: "/logo.png",
     apple: "/logo.png",
   },
+  verification: {
+    other: {
+      "facebook-domain-verification": "vjxlfz9p16itwtfufhnmr44vld0spr",
+    },
+  },
 };
 
 import PWARegister from "@/components/PWARegister";

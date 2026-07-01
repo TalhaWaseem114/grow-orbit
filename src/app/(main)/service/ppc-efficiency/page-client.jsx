@@ -9,8 +9,14 @@ import {
   AlertTriangle, DollarSign, Settings, RefreshCw, Eye,
   LayoutGrid, PenTool, LineChart, Award, Package, MousePointerClick,
 } from "lucide-react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroButton from "@/components/ui/HeroButton";
 import PPCEfficiencyCTA from "./components/PPCEfficiencyCTA";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 /* ─────────────────────────────────────────────
    SHARED

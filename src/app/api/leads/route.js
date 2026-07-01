@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, after } from "next/server";
 import { db as clientDb } from "@/firebase/firebaseConfig";
 import { collection, addDoc, doc, updateDoc, getDoc, getDocs, query, where, arrayUnion } from "firebase/firestore";
 
@@ -365,18 +365,20 @@ async function handleBookingConfirmation(body, webhookUrl) {
     }
 
     if (!alreadyBooked) {
-      notifyWebhook(
-        webhookUrl,
-        createDiscordBookingPayload(leadData, email),
-        [
-          "*Strategy Call Scheduled!*",
-          `Name: ${leadData.fullName || "N/A"}`,
-          `Email: ${email || leadData.email || "N/A"}`,
-          `WhatsApp: ${leadData.whatsapp || "N/A"}`,
-          `Service: ${leadData.requestedService || "Not specified"}`,
-        ].join("\n")
-      ).catch((error) => {
-        console.error("[API/Leads] Webhook notification dispatch failed for booking:", error);
+      after(() => {
+        notifyWebhook(
+          webhookUrl,
+          createDiscordBookingPayload(leadData, email),
+          [
+            "*Strategy Call Scheduled!*",
+            `Name: ${leadData.fullName || "N/A"}`,
+            `Email: ${email || leadData.email || "N/A"}`,
+            `WhatsApp: ${leadData.whatsapp || "N/A"}`,
+            `Service: ${leadData.requestedService || "Not specified"}`,
+          ].join("\n")
+        ).catch((error) => {
+          console.error("[API/Leads] Webhook notification dispatch failed for booking:", error);
+        });
       });
     }
 
@@ -427,12 +429,14 @@ async function handleBookingConfirmation(body, webhookUrl) {
     }
   }
 
-  notifyWebhook(
-    webhookUrl,
-    createDiscordOrphanBookingPayload(body, email),
-    `Strategy call scheduled, but no matching lead was found. Email: ${email || "N/A"} Lead ID: ${body.leadId || "N/A"}`
-  ).catch((error) => {
-    console.error("[API/Leads] Webhook notification dispatch failed for orphaned booking:", error);
+  after(() => {
+    notifyWebhook(
+      webhookUrl,
+      createDiscordOrphanBookingPayload(body, email),
+      `Strategy call scheduled, but no matching lead was found. Email: ${email || "N/A"} Lead ID: ${body.leadId || "N/A"}`
+    ).catch((error) => {
+      console.error("[API/Leads] Webhook notification dispatch failed for orphaned booking:", error);
+    });
   });
 
   return NextResponse.json({ success: true, id: docRef.id, merged: false });
@@ -542,20 +546,22 @@ async function handleLeadIntake(body, webhookUrl) {
     }
   }
 
-  notifyWebhook(
-    webhookUrl,
-    createDiscordLeadPayload(leadDoc),
-    [
-      "*New Lead Received!*",
-      `Name: ${leadDoc.fullName}`,
-      `Email: ${leadDoc.email}`,
-      `WhatsApp: ${leadDoc.whatsapp}`,
-      `Service: ${leadDoc.requestedService}`,
-      `Notes: ${leadDoc.notes}`,
-      `Source: ${leadDoc.source}`,
-    ].join("\n")
-  ).catch((error) => {
-    console.error("[API/Leads] Webhook notification dispatch failed:", error);
+  after(() => {
+    notifyWebhook(
+      webhookUrl,
+      createDiscordLeadPayload(leadDoc),
+      [
+        "*New Lead Received!*",
+        `Name: ${leadDoc.fullName}`,
+        `Email: ${leadDoc.email}`,
+        `WhatsApp: ${leadDoc.whatsapp}`,
+        `Service: ${leadDoc.requestedService}`,
+        `Notes: ${leadDoc.notes}`,
+        `Source: ${leadDoc.source}`,
+      ].join("\n")
+    ).catch((error) => {
+      console.error("[API/Leads] Webhook notification dispatch failed:", error);
+    });
   });
 
   return NextResponse.json({ success: true, id: docRef.id });
@@ -631,29 +637,31 @@ export async function PATCH(request) {
         });
 
         // Fetch completed lead details to notify webhook (non-blocking)
-        leadRef.get().then((leadSnap) => {
-          if (leadSnap.exists) {
-            const fullLeadDoc = leadSnap.data();
-            resolveWebhookUrl().then((webhookUrl) => {
-              notifyWebhook(
-                webhookUrl,
-                createDiscordLeadPayload(fullLeadDoc),
-                [
-                  "*Lead Details Finalized!*",
-                  `Name: ${fullLeadDoc.fullName}`,
-                  `Email: ${fullLeadDoc.email}`,
-                  `WhatsApp: ${fullLeadDoc.whatsapp}`,
-                  `Service: ${fullLeadDoc.requestedService}`,
-                  `Notes: ${fullLeadDoc.notes}`,
-                  `Source: ${fullLeadDoc.source}`,
-                ].join("\n")
-              ).catch((webhookError) => {
-                console.error("[API/Leads] Webhook notify failed in PATCH admin:", webhookError);
+        after(() => {
+          leadRef.get().then((leadSnap) => {
+            if (leadSnap.exists) {
+              const fullLeadDoc = leadSnap.data();
+              resolveWebhookUrl().then((webhookUrl) => {
+                notifyWebhook(
+                  webhookUrl,
+                  createDiscordLeadPayload(fullLeadDoc),
+                  [
+                    "*Lead Details Finalized!*",
+                    `Name: ${fullLeadDoc.fullName}`,
+                    `Email: ${fullLeadDoc.email}`,
+                    `WhatsApp: ${fullLeadDoc.whatsapp}`,
+                    `Service: ${fullLeadDoc.requestedService}`,
+                    `Notes: ${fullLeadDoc.notes}`,
+                    `Source: ${fullLeadDoc.source}`,
+                  ].join("\n")
+                ).catch((webhookError) => {
+                  console.error("[API/Leads] Webhook notify failed in PATCH admin:", webhookError);
+                });
               });
-            });
-          }
-        }).catch((getSnapError) => {
-          console.error("[API/Leads] Fetch lead document failed in PATCH admin:", getSnapError);
+            }
+          }).catch((getSnapError) => {
+            console.error("[API/Leads] Fetch lead document failed in PATCH admin:", getSnapError);
+          });
         });
 
         return NextResponse.json({ success: true, id: leadId });
@@ -675,29 +683,31 @@ export async function PATCH(request) {
       });
 
       // Fetch completed lead details to notify webhook (non-blocking)
-      getDoc(doc(clientDb, "leads", leadId)).then((leadSnap) => {
-        if (leadSnap.exists()) {
-          const fullLeadDoc = leadSnap.data();
-          resolveWebhookUrl().then((webhookUrl) => {
-            notifyWebhook(
-              webhookUrl,
-              createDiscordLeadPayload(fullLeadDoc),
-              [
-                "*Lead Details Finalized!*",
-                `Name: ${fullLeadDoc.fullName}`,
-                `Email: ${fullLeadDoc.email}`,
-                `WhatsApp: ${fullLeadDoc.whatsapp}`,
-                `Service: ${fullLeadDoc.requestedService}`,
-                `Notes: ${fullLeadDoc.notes}`,
-                `Source: ${fullLeadDoc.source}`,
-              ].join("\n")
-            ).catch((webhookError) => {
-              console.error("[API/Leads] Webhook notify failed in PATCH client:", webhookError);
+      after(() => {
+        getDoc(doc(clientDb, "leads", leadId)).then((leadSnap) => {
+          if (leadSnap.exists()) {
+            const fullLeadDoc = leadSnap.data();
+            resolveWebhookUrl().then((webhookUrl) => {
+              notifyWebhook(
+                webhookUrl,
+                createDiscordLeadPayload(fullLeadDoc),
+                [
+                  "*Lead Details Finalized!*",
+                  `Name: ${fullLeadDoc.fullName}`,
+                  `Email: ${fullLeadDoc.email}`,
+                  `WhatsApp: ${fullLeadDoc.whatsapp}`,
+                  `Service: ${fullLeadDoc.requestedService}`,
+                  `Notes: ${fullLeadDoc.notes}`,
+                  `Source: ${fullLeadDoc.source}`,
+                ].join("\n")
+              ).catch((webhookError) => {
+                console.error("[API/Leads] Webhook notify failed in PATCH client:", webhookError);
+              });
             });
-          });
-        }
-      }).catch((getSnapError) => {
-        console.error("[API/Leads] Fetch lead document failed in PATCH client:", getSnapError);
+          }
+        }).catch((getSnapError) => {
+          console.error("[API/Leads] Fetch lead document failed in PATCH client:", getSnapError);
+        });
       });
 
       return NextResponse.json({ success: true, id: leadId });

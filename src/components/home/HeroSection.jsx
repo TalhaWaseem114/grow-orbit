@@ -43,25 +43,25 @@ export default function Hero({ mode }) {
 
           {/* LEFT: FULL BUSINESS CONTENT */}
           <div className="lg:col-span-7 animate-content text-center lg:text-left">
-            <div className="flex items-center justify-center lg:justify-start gap-3 mb-8">
+            <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
               <div className="w-1.5 h-1.5 bg-orange-500 rounded-full" />
               <div className="w-6 h-[1px] bg-orange-500/50" />
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">
                 {mode === "amazon-services" ? "Amazon Operations & PPC Management" :
                  mode === "design-creative" ? "Amazon Visual Engineering & Design" :
-                 "Full Amazon Management"}
+                 "Amazon Growth Agency"}
               </span>
             </div>
 
             <h1
-              className="text-[44px] xs:text-[54px] sm:text-[68px] md:text-[76px] lg:text-[90px] font-black tracking-tighter leading-[0.9] mb-6 md:mb-8 text-white uppercase"
+              className="text-[44px] xs:text-[54px] sm:text-[68px] md:text-[76px] lg:text-[90px] font-black tracking-tighter leading-[0.9] mb-4 md:mb-5 text-white uppercase"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               {mode === "amazon-services" ? (
                 <>
                   Scale your<br />
                   <span className="text-orange-500">Amazon.</span><br />
-                  <span className="italic font-light lowercase tracking-tight text-zinc-500" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2 text-[26px] xs:text-[32px] sm:text-[42px] md:text-[48px] lg:text-[56px]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     zero guesswork.
                   </span>
                 </>
@@ -69,7 +69,7 @@ export default function Hero({ mode }) {
                 <>
                   Scale your<br />
                   <span className="text-orange-500">Conversion.</span><br />
-                  <span className="italic font-light lowercase tracking-tight text-zinc-500" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2 text-[26px] xs:text-[32px] sm:text-[42px] md:text-[48px] lg:text-[56px]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     engineered visuals.
                   </span>
                 </>
@@ -77,20 +77,17 @@ export default function Hero({ mode }) {
                 <>
                   Scale your<br />
                   <span className="text-orange-500">Revenue.</span><br />
-                  <span className="text-zinc-500 text-xs sm:text-sm tracking-[0.3em] font-black block mt-3 uppercase" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                    Amazon Growth Agency
-                  </span>
-                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2 text-[26px] xs:text-[32px] sm:text-[42px] md:text-[48px] lg:text-[56px]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     zero guesswork.
                   </span>
                 </>
               )}
             </h1>
 
-            <div className="flex flex-col lg:flex-row gap-6 mb-10 items-center lg:items-start">
-              <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden lg:block opacity-50 shrink-0" />
+            <div className="flex gap-6 mb-6 justify-center lg:justify-start text-left">
+              <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden md:block opacity-50 shrink-0" />
               <div>
-                <p className="text-lg sm:text-xl text-zinc-400 font-light leading-relaxed max-w-xl mb-6 mx-auto lg:mx-0">
+                <p className="text-lg sm:text-xl text-zinc-400 font-light leading-relaxed max-w-xl mb-4 mx-auto lg:mx-0">
                   {mode === "amazon-services" ? (
                     "We run your Amazon PPC advertising, organic ranking SEO, and product sourcing operations so you can focus on scale instead of management."
                   ) : mode === "design-creative" ? (
@@ -121,7 +118,7 @@ export default function Hero({ mode }) {
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 sm:gap-6 mb-10">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 sm:gap-6 mb-8">
               <Link
                 href="/get-started"
                 prefetch={false}
@@ -147,7 +144,7 @@ export default function Hero({ mode }) {
             </div>
 
             {/* Trusted & Verified Section - Recreated from Reference */}
-            <div className="mb-6 -mt-[20px] flex flex-col items-center lg:items-start">
+            <div className="mt-2 mb-6 flex flex-col items-center lg:items-start">
               <div className="flex items-center gap-3 mb-4 w-full lg:w-auto">
                 <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-600 whitespace-nowrap">Trusted & Verified By</span>
                 <div className="h-px bg-white/5 flex-1" />

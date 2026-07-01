@@ -142,7 +142,7 @@ export default function Navbar() {
           : "bg-transparent py-5"
       }`}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-10 flex items-center justify-between">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-8 flex items-center justify-between">
 
         {/* ── Logo ── */}
         <div className="flex-1 flex justify-start">
@@ -165,7 +165,7 @@ export default function Navbar() {
 
         {/* ── Mobile Toggle ── */}
         <button
-          className={`md:hidden p-2 rounded-xl transition-all duration-300 ${textColorClass} focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:outline-none flex flex-col justify-center items-end gap-[5px] w-10 h-10`}
+          className={`lg:hidden p-2 rounded-xl transition-all duration-300 ${textColorClass} focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:outline-none flex flex-col justify-center items-end gap-[5px] w-10 h-10`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle Navigation Menu"
           aria-expanded={mobileMenuOpen}
@@ -178,7 +178,7 @@ export default function Navbar() {
         {/* ════════════════════════════════════════
             DESKTOP NAV
         ════════════════════════════════════════ */}
-        <nav className="hidden md:flex md:items-center md:gap-5 lg:gap-6 justify-center" aria-label="Desktop Navigation">
+        <nav className="hidden lg:flex lg:items-center gap-3.5 xl:gap-5 justify-center" aria-label="Desktop Navigation">
           {navItems.map((item) => {
             let path = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
             if (item === "Home") path = "/";
@@ -195,7 +195,7 @@ export default function Navbar() {
                     onClick={() => setMegaMenuOpen(!megaMenuOpen)}
                     aria-expanded={megaMenuOpen}
                     aria-haspopup="true"
-                    className={`nav-link flex items-center gap-1 text-[11px] font-bold uppercase tracking-widest transition-colors cursor-pointer outline-none bg-transparent border-none p-0 focus-visible:text-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm
+                    className={`nav-link flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer outline-none bg-transparent border-none p-0 focus-visible:text-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm
                       ${isActive || megaMenuOpen ? "text-orange-500 nav-link-active" : textColorClass}
                       ${!(isActive || megaMenuOpen) && hoverColorClass}`}
                   >
@@ -214,7 +214,7 @@ export default function Navbar() {
                 key={item}
                 href={path}
                 prefetch={false}
-                className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm
+                className={`nav-link text-[11px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm
                   ${isActive ? "text-orange-500 nav-link-active" : textColorClass}
                   ${!isActive && hoverColorClass}`}
               >
@@ -225,19 +225,19 @@ export default function Navbar() {
         </nav>
 
         {/* Auth section — desktop */}
-        <div className="hidden md:flex flex-1 items-center justify-end gap-3 lg:gap-5">
+        <div className="hidden lg:flex flex-1 items-center justify-end gap-3 xl:gap-4">
           {!user ? (
               <>
-                <Link href="/login" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
+                <Link href="/login" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
                   Sign In
                 </Link>
-                <Link href="/register" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-widest transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
+                <Link href="/register" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
                   Register
                 </Link>
                 <Link
                   href="/get-started"
                   prefetch={false}
-                  className={`relative overflow-hidden px-6 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-widest transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
+                  className={`relative overflow-hidden px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
                     ${isDarkTextNeeded
                       ? "bg-black text-white hover:bg-orange-600 shadow-lg hover:shadow-orange-500/25"
                       : "bg-white text-black hover:bg-orange-500 hover:text-white shadow-lg hover:shadow-orange-500/25"
@@ -251,7 +251,7 @@ export default function Navbar() {
                 <Link
                   href="/get-started"
                   prefetch={false}
-                  className={`relative overflow-hidden px-5 py-2 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
+                  className={`relative overflow-hidden px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
                     ${isDarkTextNeeded
                       ? "bg-black text-white hover:bg-orange-600 shadow-lg hover:shadow-orange-500/25"
                       : "bg-white text-black hover:bg-orange-500 hover:text-white shadow-lg hover:shadow-orange-500/25"
@@ -262,18 +262,18 @@ export default function Navbar() {
               <div className="relative" ref={userDropdownRef}>
                 <button
                   onClick={() => setUserDropdownOpen(prev => !prev)}
-                  className={`flex items-center gap-2.5 cursor-pointer bg-transparent border-none outline-none transition-opacity hover:opacity-80 ${textColorClass}`}
+                  className={`flex items-center gap-2 cursor-pointer bg-transparent border-none outline-none transition-opacity hover:opacity-80 ${textColorClass}`}
                 >
-                  <div className="h-9 w-9 rounded-full overflow-hidden border border-white/20 relative shrink-0">
+                  <div className="h-8.5 w-8.5 rounded-full overflow-hidden border border-white/20 relative shrink-0">
                     {user.photoURL ? (
-                      <Image src={user.photoURL} alt="User" fill sizes="36px" className="object-cover" referrerPolicy="no-referrer" />
+                      <Image src={user.photoURL} alt="User" fill sizes="34px" className="object-cover" referrerPolicy="no-referrer" />
                     ) : (
                       <div className="h-full w-full bg-orange-500 flex items-center justify-center text-white font-bold text-sm">
                         {getUserInitial()}
                       </div>
                     )}
                   </div>
-                  <div className="hidden lg:block text-left">
+                  <div className="hidden xl:block text-left">
                     <p className={`text-xs font-semibold leading-none ${textColorClass}`}>
                       {user.displayName || "User"}
                     </p>
@@ -281,7 +281,7 @@ export default function Navbar() {
                       {role === "admin" ? "Admin" : "Online"}
                     </p>
                   </div>
-                  <ChevronDown size={14} className={`hidden lg:block transition-transform duration-200 ${userDropdownOpen ? "rotate-180" : ""} ${isDarkTextNeeded ? "text-gray-400" : "text-gray-400"}`} />
+                  <ChevronDown size={14} className={`hidden xl:block transition-transform duration-200 ${userDropdownOpen ? "rotate-180" : ""} ${isDarkTextNeeded ? "text-gray-400" : "text-gray-400"}`} />
                 </button>
 
                 {/* User Dropdown */}
@@ -321,8 +321,8 @@ export default function Navbar() {
           MEGA MENU — click to open, header level
       ════════════════════════════════════════ */}
       {megaMenuOpen && (
-        <div className="hidden md:block absolute top-full left-0 w-full">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-10 flex justify-center">
+        <div className="hidden lg:block absolute top-full left-0 w-full">
+          <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-8 flex justify-center">
             <MegaMenu onClose={() => setMegaMenuOpen(false)} />
           </div>
         </div>
@@ -332,7 +332,7 @@ export default function Navbar() {
           MOBILE NAV — slides down
       ════════════════════════════════════════ */}
       <nav
-        className={`md:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-y-auto transition-all duration-350 ease-in-out origin-top ${
+        className={`lg:hidden absolute top-full left-0 w-full bg-white shadow-xl border-t border-gray-100 overflow-y-auto transition-all duration-350 ease-in-out origin-top ${
           mobileMenuOpen
             ? "max-h-[85vh] opacity-100 translate-y-0 scale-y-100 visible"
             : "max-h-0 opacity-0 -translate-y-2 scale-y-95 invisible pointer-events-none"

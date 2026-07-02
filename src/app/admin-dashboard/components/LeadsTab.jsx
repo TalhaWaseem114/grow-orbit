@@ -1148,9 +1148,8 @@ export default function LeadsTab({
         </div>
       </div>
 
-      {/* Search + Filter bar */}
       <div className="leads-controls" style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-        <div style={{ flex: "1 1 300px", display: "flex", alignItems: "center", gap: 10, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "10px 16px" }}>
+        <div style={{ flex: 1, minWidth: "280px", display: "flex", alignItems: "center", gap: 10, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "10px 16px" }}>
           <Search size={14} color="#525252" />
           <input
             type="text"
@@ -1160,7 +1159,7 @@ export default function LeadsTab({
             style={{ flex: 1, background: "none", border: "none", color: "#fff", fontSize: 12, fontWeight: 500, outline: "none" }}
           />
         </div>
-         <div className="leads-filters" style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+         <div className="leads-filters" style={{ display: "flex", gap: 6, flexWrap: "wrap", width: "100%", maxWidth: "100%" }}>
           {["all", "new", "contacted", "qualified", "hot", "proposal_sent", "won", "lost"].map(f => (
             <button key={f} onClick={() => setLeadFilter(f)}
               style={{ padding: "8px 14px", borderRadius: 10, border: "1px solid", cursor: "pointer", fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", transition: "all 0.15s",

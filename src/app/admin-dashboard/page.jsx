@@ -557,7 +557,7 @@ export default function AdminDashboard() {
   const dateStr = currentTime.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
 
   return (
-    <div className="admin-shell" style={{ display: "flex", flexDirection: isMobile ? "column" : "row", height: "100vh", background: "#060606", color: "#fff", fontFamily: "'Montserrat', sans-serif", overflow: "hidden" }}>
+    <div className="admin-shell" style={{ display: "flex", flexDirection: isMobile ? "column" : "row", height: "100vh", width: "100%", maxWidth: "100vw", background: "#060606", color: "#fff", fontFamily: "'Montserrat', sans-serif", overflow: "hidden" }}>
       <style>{`
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -830,7 +830,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* ═══════════════ MAIN CONTENT ═══════════════ */}
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0, width: "100%" }}>
 
         {/* Header */}
         <header className="admin-header" style={{ height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", borderBottom: "1px solid rgba(255,255,255,0.04)", background: "rgba(6,6,6,0.8)", backdropFilter: "blur(12px)", flexShrink: 0 }}>

@@ -43,7 +43,7 @@ export default function Hero({ mode }) {
 
           {/* LEFT: FULL BUSINESS CONTENT */}
           <div className="lg:col-span-7 animate-content text-center lg:text-left">
-            <div className="flex items-center justify-center lg:justify-start gap-3 mb-4">
+            <div className="flex items-center justify-center lg:justify-start gap-3 mb-10 lg:mb-8">
               <div className="w-1.5 h-1.5 bg-orange-500 rounded-full" />
               <div className="w-6 h-[1px] bg-orange-500/50" />
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">
@@ -54,7 +54,7 @@ export default function Hero({ mode }) {
             </div>
 
             <h1
-              className="text-[44px] xs:text-[54px] sm:text-[68px] md:text-[76px] lg:text-[90px] font-black tracking-tighter leading-[0.9] mb-4 md:mb-5 text-white uppercase"
+              className="text-[44px] xs:text-[54px] sm:text-[68px] md:text-[76px] lg:text-[90px] font-black tracking-tighter leading-[0.9] mb-10 lg:mb-12 text-white uppercase"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               {mode === "amazon-services" ? (
@@ -84,7 +84,7 @@ export default function Hero({ mode }) {
               )}
             </h1>
 
-            <div className="flex gap-6 mb-6 justify-center lg:justify-start text-left">
+            <div className="flex gap-6 mb-12 lg:mb-10 justify-center lg:justify-start text-left">
               <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden md:block opacity-50 shrink-0" />
               <div>
                 <p className="text-lg sm:text-xl text-zinc-400 font-light leading-relaxed max-w-xl mb-4 mx-auto lg:mx-0">
@@ -110,7 +110,7 @@ export default function Hero({ mode }) {
             </div>
 
 
-            <div className="flex items-center justify-center lg:justify-start gap-2 mb-4 px-1">
+            <div className="flex items-center justify-center lg:justify-start gap-2 mb-8 lg:mb-6 px-1">
               <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
               <p className="text-[9px] sm:text-[11px] font-bold text-zinc-400 uppercase tracking-[0.1em] sm:tracking-[0.2em]">
                 Currently Accepting 3-4 Brands <span className="mx-1 opacity-30">··</span> Apply Now
@@ -118,7 +118,7 @@ export default function Hero({ mode }) {
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 sm:gap-6 mb-8">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 sm:gap-6 mb-12 lg:mb-24">
               <Link
                 href="/get-started"
                 prefetch={false}
@@ -144,7 +144,7 @@ export default function Hero({ mode }) {
             </div>
 
             {/* Trusted & Verified Section - Recreated from Reference */}
-            <div className="mt-2 mb-6 flex flex-col items-center lg:items-start">
+            <div className="mt-6 lg:mt-12 mb-6 flex flex-col items-center lg:items-start">
               <div className="flex items-center gap-3 mb-4 w-full lg:w-auto">
                 <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-600 whitespace-nowrap">Trusted & Verified By</span>
                 <div className="h-px bg-white/5 flex-1" />
@@ -196,7 +196,7 @@ export default function Hero({ mode }) {
                 ].map((b, i) => (
                   <div
                     key={i}
-                    className="relative group flex items-center gap-1.5 sm:gap-3 bg-[#0a0a0a] border border-white/10 rounded-xl sm:rounded-2xl px-2.5 sm:px-3.5 py-2 sm:py-2.5 transition-all hover:border-white/20 w-full lg:w-auto"
+                    className="relative group flex items-center gap-2 sm:gap-3 bg-[#0a0a0a] border border-white/10 rounded-xl sm:rounded-2xl px-3 py-3.5 sm:px-3.5 sm:py-2.5 transition-all hover:border-white/20 w-full lg:w-auto"
                   >
                     {/* Subtle Internal Grid Pattern */}
                     <div className="absolute inset-0 opacity-[0.1] pointer-events-none rounded-xl sm:rounded-2xl overflow-hidden"

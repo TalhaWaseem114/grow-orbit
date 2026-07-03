@@ -101,14 +101,6 @@ export default function CeoMessageTeamSection() {
               </div>
               <div className="flex gap-3">
                 <a
-                  href="https://linkedin.com"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-10 h-10 rounded-xl bg-white hover:bg-zinc-900 border border-zinc-200 flex items-center justify-center text-zinc-600 hover:text-white transition-all duration-300"
-                >
-                  <Linkedin size={16} />
-                </a>
-                <a
                   href="mailto:support@groworbit.com"
                   className="w-10 h-10 rounded-xl bg-white hover:bg-zinc-900 border border-zinc-200 flex items-center justify-center text-zinc-600 hover:text-white transition-all duration-300"
                 >

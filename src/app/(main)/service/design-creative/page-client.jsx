@@ -377,8 +377,6 @@ function ServiceCards() {
    03 — PRICING PACKAGES
    ═══════════════════════════════════════════════ */
 // PricingPackages removed
-  );
-}
 
 /* ═══════════════════════════════════════════════
    04 — WHY OUR DESIGN (trust section)

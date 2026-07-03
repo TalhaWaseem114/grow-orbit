@@ -392,15 +392,14 @@ export default function ClientDashboard() {
                     <span>support@groworbit.com</span>
                   </a>
                   
-                  {/* Direct WhatsApp link without onboarding check to minimize friction */}
                   <a 
-                    href="https://wa.me/14372126458" 
+                    href="https://wa.me/19128205916" 
                     target="_blank" 
                     rel="noreferrer" 
                     className="flex items-center justify-center gap-3 w-full py-4 bg-emerald-500/5 border border-emerald-500/10 rounded-xl text-xs font-bold uppercase tracking-widest text-emerald-400 transition-all duration-300 hover:bg-emerald-500/10 no-underline"
                   >
                     <Phone size={12} className="text-emerald-500" />
-                    <span>WhatsApp: +1 (437) 212-6458</span>
+                    <span>WhatsApp: +1 (912) 820-5916</span>
                   </a>
                 </div>
               </div>

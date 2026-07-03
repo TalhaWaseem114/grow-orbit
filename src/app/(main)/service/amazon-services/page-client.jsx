@@ -462,8 +462,6 @@ function HowWeWork() {
    04 — PRICING PACKAGES
    ═══════════════════════════════════════════════ */
 // PricingPackages removed
-  );
-}
 
 /* ═══════════════════════════════════════════════
    04 — WHY GROW ORBIT (trust section)

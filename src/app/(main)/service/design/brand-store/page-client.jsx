@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import ServicePricing from "@/components/sections/ServicePricing";
 import {
   ArrowRight, CheckCircle2, ShieldCheck, Users, TrendingUp,
   BarChart3, Zap, Sparkles, Eye, Star, Award, Package,
@@ -1169,143 +1170,7 @@ function WhoItsFor() {
 /* ═══════════════════════════════════════════════
    07 — PACKAGES / PRICING
    ═══════════════════════════════════════════════ */
-function Packages() {
-  const tiers = [
-    {
-      name: "Basic Store",
-      tag: "Foundation",
-      desc: "Perfect for brands launching on Amazon. Establishes a professional branded presence.",
-      features: [
-        "Homepage + up to 2 sub-pages",
-        "Targeted hero banner design",
-        "Mobile-first validation",
-        "SEO optimization for Store text",
-        "Menu navigation setup",
-        "1 revision round",
-      ],
-      delivery: "7–10 Days",
-    },
-    {
-      name: "Premium Store",
-      tag: "Most Popular",
-      desc: "The sweet spot for established brands. Combines engaging visuals with cross-sell architecture.",
-      features: [
-        "Homepage + up to 5 sub-pages",
-        "Custom interactive modules",
-        "Lifestyle image integration",
-        "Video background support",
-        "Bestseller & New Arrival widgets",
-        "Analytics configuration",
-        "2 revision rounds",
-      ],
-      delivery: "14–20 Days",
-      popular: true,
-    },
-    {
-      name: "Full Scale Hub",
-      tag: "Scale",
-      desc: "A completely immersive brand headquarters for large catalogs and complex architectures.",
-      features: [
-        "Homepage + up to 12 sub-pages",
-        "Advanced shoppable video modules",
-        "Complete catalog categorization",
-        "Dynamic content blocks",
-        "Seasonal campaign graphics prep",
-        "3 revision rounds",
-        "Dedicated strategy manager",
-      ],
-      delivery: "3–4 Weeks",
-    },
-  ];
-
-  return (
-    <section id="packages" className="py-32 bg-[#fafafa] relative overflow-hidden scroll-mt-24">
-      <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-          <div>
-            <SectionLabel>Pricing Tiers</SectionLabel>
-            <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-[0.88] text-zinc-900">
-              Choose your<br />
-              <span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-300 lowercase tracking-normal">level of scale.</span>
-            </h2>
-          </div>
-          <p className="text-zinc-500 text-lg font-light max-w-sm leading-relaxed pb-2">
-            Pricing tailored cleanly to the size of your catalog and the depth of your brand story.
-          </p>
-        </div>
-
-        <div className="relative group/package">
-          {/* Mobile Scroll Indicator & Smooth Arrow */}
-          <div className="flex lg:hidden items-center justify-between gap-4 mb-8 bg-orange-50/50 p-4 rounded-2xl border border-orange-100">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-1 rounded-full bg-orange-500/20 relative overflow-hidden">
-                <div className="absolute inset-0 bg-orange-500 origin-left animate-[loading-bar_3s_ease-in-out_infinite]" />
-              </div>
-              <span className="text-[10px] font-black text-orange-600 uppercase tracking-[0.2em]">Swipe for Packages</span>
-            </div>
-            <div className="flex items-center gap-1 text-orange-500 animate-pulse">
-              <ArrowRight size={14} />
-              <ArrowRight size={14} className="opacity-50" />
-            </div>
-          </div>
-
-          <div className="flex lg:grid lg:grid-cols-3 gap-6 overflow-x-auto lg:overflow-x-visible pb-12 lg:pb-0 px-4 -mx-4 snap-x snap-mandatory no-scrollbar scroll-smooth">
-            {tiers.map((tier, i) => (
-              <div key={i} className="relative rounded-[40px] overflow-hidden flex flex-col min-w-[85vw] sm:min-w-[400px] lg:min-w-0 snap-center shadow-none">
-                {tier.popular && <div className="h-1.5 w-full bg-gradient-to-r from-orange-500 to-amber-400 shrink-0" />}
-                <div className={`flex-1 border p-8 lg:p-10 flex flex-col transition-all duration-500 ${
-                  tier.popular
-                    ? "bg-zinc-950 border-t-0 border-zinc-800 rounded-b-[40px] hover:border-orange-500/30"
-                    : "bg-white border-zinc-100 rounded-[40px] hover:border-orange-500/20 hover:bg-orange-50/30 shadow-none"
-                }`}>
-                  {tier.popular && (
-                    <div className="inline-flex items-center gap-2 bg-orange-500/15 border border-orange-500/30 px-3 py-1.5 rounded-full mb-6 self-start">
-                      <Star size={9} className="text-orange-400 fill-orange-400" />
-                      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-orange-400">Most Popular</span>
-                    </div>
-                  )}
-                  <span className={`text-[9px] font-mono font-bold uppercase tracking-[0.4em] mb-2 block ${tier.popular ? "text-orange-400" : "text-orange-500"}`}>{tier.tag}</span>
-                  <h3 className={`text-3xl font-black tracking-tighter mb-3 ${tier.popular ? "text-white" : "text-zinc-900"}`}>{tier.name}</h3>
-                  <p className={`text-sm font-light leading-relaxed mb-8 ${tier.popular ? "text-zinc-400" : "text-zinc-500"}`}>{tier.desc}</p>
-                  <ul className="space-y-3 mb-8 flex-1">
-                    {tier.features.map((f, j) => (
-                      <li key={j} className="flex items-start gap-3">
-                        <CheckCircle2 size={14} className="text-orange-500 shrink-0 mt-0.5" />
-                        <span className={`text-[13px] font-light ${tier.popular ? "text-zinc-300" : "text-zinc-600"}`}>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="space-y-3">
-                    <div className={`flex items-center justify-between py-3 border-t ${tier.popular ? "border-white/5" : "border-zinc-100"}`}>
-                      <span className={`text-[10px] font-mono uppercase tracking-widest ${tier.popular ? "text-zinc-600" : "text-zinc-400"}`}>Turnaround</span>
-                      <span className={`text-[11px] font-bold ${tier.popular ? "text-zinc-300" : "text-zinc-700"}`}>{tier.delivery}</span>
-                    </div>
-                    <div className={`flex items-center justify-between py-3 border-t rounded-xl px-3 -mx-3 ${tier.popular ? "border-white/5 bg-orange-500/5" : "border-zinc-50 bg-zinc-50/50"}`}>
-                      <span className={`text-[10px] font-mono uppercase tracking-widest ${tier.popular ? "text-zinc-600" : "text-zinc-400"}`}>Pricing</span>
-                      <span className="text-[11px] font-bold text-orange-500">Contact for Quote</span>
-                    </div>
-                    <Link
-                      href="/contact"
-                      className={`group/btn w-full flex items-center justify-center gap-3 font-bold text-[11px] uppercase tracking-widest py-4 rounded-2xl no-underline transition-all duration-300 ${
-                        tier.popular
-                          ? "bg-orange-500 hover:bg-white hover:text-black text-white shadow-[0_8px_30px_rgba(249,115,22,0.3)]"
-                          : "bg-black hover:bg-orange-500 text-white"
-                      }`}
-                    >
-                      Get My Store Built
-                      <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
+// Packages removed
 
 /* ═══════════════════════════════════════════════
    08 — THE PROCESS
@@ -1541,7 +1406,23 @@ export default function BrandStorePage() {
       <TrafficComparison />
       <WhoItsFor />
       <OurProcess />
-      <Packages />
+
+      <ServicePricing
+        serviceName="Brand Store"
+        serviceSlug="design/brand-store"
+        serviceSubtitle="Custom Amazon storefronts"
+        serviceDescription="A professionally designed Amazon Brand Store with custom sub-pages, product architecture, and vanity URL — zero competitor ads, all your products."
+        serviceDeliverables={[
+          "Custom home page design",
+          "Visual catalog architecture pages",
+          "Vanity URL storefront config",
+          "Competitor ad blocker design",
+          "Multi-page store navigation"
+        ]}
+        serviceTimeline="21 Days"
+        serviceCtaLabel="Design Brand Store"
+      />
+
       <FAQ />
       <BrandStoreCTA />
       <FooterNav />

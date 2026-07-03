@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import LazySection from "@/components/LazySection";
+import ServicePricing from "@/components/sections/ServicePricing";
 
 import SupportHero from "@/components/service/ongoing support/components/SupportHero";
 import MetricsStrip from "@/components/service/ongoing support/components/MetricsStrip";
@@ -14,7 +15,6 @@ import MonthlyDeliverables from "@/components/service/ongoing support/components
 import SupportTechStack from "@/components/service/ongoing support/components/SupportTechStack";
 import ExpectedOutcomes from "@/components/service/ongoing support/components/ExpectedOutcomes";
 import HowWeWork from "@/components/service/ongoing support/components/HowWeWork";
-import PriceMatrix from "@/components/service/ongoing support/components/PriceMatrix";
 import SupportFAQ from "@/components/service/ongoing support/components/SupportFAQ";
 import SupportCTA from "@/components/service/ongoing support/components/SupportCTA";
 import FooterNav from "@/components/service/ongoing support/components/FooterNav";
@@ -40,10 +40,6 @@ export default function OngoingSupport() {
         <TheProblem />
       </LazySection>
 
-      <LazySection height="400px">
-        <PriceMatrix />
-      </LazySection>
-
       <LazySection height="600px">
         <SupportFramework />
       </LazySection>
@@ -62,6 +58,24 @@ export default function OngoingSupport() {
 
       <LazySection height="600px">
         <HowWeWork />
+      </LazySection>
+
+      <LazySection height="700px">
+        <ServicePricing
+          serviceName="Ongoing Support"
+          serviceSlug="ongoing-support"
+          serviceSubtitle="Continuous optimization"
+          serviceDescription="Monthly optimization retainer — weekly performance analysis, strategy pivots, and a dedicated team that keeps your account growing every cycle."
+          serviceDeliverables={[
+            "Weekly listing updates",
+            "Performance monitoring & alerts",
+            "Monthly review & strategy sessions",
+            "Ongoing conversion improvements",
+            "Dedicated support manager access"
+          ]}
+          serviceTimeline="Ongoing"
+          serviceCtaLabel="Start Retainer"
+        />
       </LazySection>
 
       <LazySection height="500px">

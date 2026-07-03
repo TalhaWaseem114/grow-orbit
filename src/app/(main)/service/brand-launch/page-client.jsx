@@ -16,8 +16,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroButton from "@/components/ui/HeroButton";
 import ProcessSection from "@/components/service/brand launch/ProcessSection";
-import PriceMatrix from "@/components/service/brand launch/PriceMatrix";
 import LaunchCTA from "./components/LaunchCTA";
+import ServicePricing from "@/components/sections/ServicePricing";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -1317,14 +1317,6 @@ export default function BrandLaunchPage() {
       <LazySection height="500px">
         <LaunchComparison />
       </LazySection>
-      <LazySection height="400px">
-        <PriceMatrix />
-      </LazySection>
-      <div className="bg-[#fafafa] py-4">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="h-px w-full bg-linear-to-r from-transparent via-zinc-200 to-transparent" />
-        </div>
-      </div>
       <LazySection height="600px">
         <LaunchFramework />
       </LazySection>
@@ -1344,6 +1336,23 @@ export default function BrandLaunchPage() {
       </div>
       <LazySection height="400px">
         <LaunchTestimonial />
+      </LazySection>
+      <LazySection height="700px">
+        <ServicePricing
+          serviceName="Brand Launch Setup"
+          serviceSlug="brand-launch"
+          serviceSubtitle="End-to-end Amazon launch"
+          serviceDescription="From first listing to first sale — a fully managed launch covering listings, PPC structure, Brand Registry, and day-one velocity strategy."
+          serviceDeliverables={[
+            "Brand registry assistance",
+            "Optimized listings launch",
+            "PPC launch campaign structure",
+            "Day-one sales velocity plan",
+            "Product listing setup & config"
+          ]}
+          serviceTimeline="30 Days"
+          serviceCtaLabel="Launch Brand"
+        />
       </LazySection>
       <LazySection height="500px">
         <FAQ />

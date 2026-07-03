@@ -1,9 +1,24 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { MoveLeft, HelpCircle } from "lucide-react";
 
 export default function NotFound() {
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const currentPath = window.location.pathname;
+      const decodedPath = decodeURIComponent(currentPath);
+      if (decodedPath.includes(" ") || currentPath.includes("%20")) {
+        const cleanedPath = decodedPath
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-");
+        if (cleanedPath !== currentPath) {
+          window.location.replace(cleanedPath + window.location.search);
+        }
+      }
+    }
+  }, []);
   return (
     <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
       {/* Background glow effects */}

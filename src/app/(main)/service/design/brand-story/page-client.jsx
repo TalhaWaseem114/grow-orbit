@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import ServicePricing from "@/components/sections/ServicePricing";
 import {
   ArrowRight, CheckCircle2, ShieldCheck, Users, TrendingUp,
   MessageSquare, Repeat, Zap, Sparkles, Eye, Star, Award,
@@ -1400,6 +1401,21 @@ export default function BrandStoryPage() {
       <ExamplesGallery />
       <ClientProof />
       <WhoItsFor />
+      <ServicePricing
+        serviceName="Brand Story"
+        serviceSlug="design/brand-story"
+        serviceSubtitle="Narrative & positioning"
+        serviceDescription="Strategic Amazon Brand Story modules that build trust, showcase your catalog, and convert browsers into loyal customers — above your A+ Content."
+        serviceDeliverables={[
+          "Amazon Brand Story module setup",
+          "Visual narrative & layout mapping",
+          "Cross-selling catalog cards",
+          "Custom brand intro copywriting",
+          "Conversion layout optimization"
+        ]}
+        serviceTimeline="7 Days"
+        serviceCtaLabel="Design Brand Story"
+      />
       <FAQ />
       <BrandStoryCTA />
       <FooterNav />

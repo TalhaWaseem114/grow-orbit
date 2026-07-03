@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import LazySection from "@/components/LazySection";
+import ServicePricing from "@/components/sections/ServicePricing";
 
 import AutomationHero from "@/components/service/growth automation/AutomationHero";
 import AutomationLedger from "@/components/service/growth automation/AutomationLedger";
@@ -57,6 +58,24 @@ export default function GrowthAutomation() {
 
       <LazySection height="600px">
         <HowWeWork />
+      </LazySection>
+
+      <LazySection height="650px">
+        <ServicePricing
+          serviceName="Growth Automation"
+          serviceSlug="growth-automation"
+          serviceSubtitle="Automate repetitive tasks"
+          serviceDescription="We build automated workflows that handle repricing, inventory alerts, reorder triggers, and review requests — giving you back hours every week."
+          serviceDeliverables={[
+            "Automated inventory repricing rules",
+            "Inventory reorder triggers",
+            "Automatic customer review requests",
+            "Alert workflow dashboard setup",
+            "Custom operational workflows"
+          ]}
+          serviceTimeline="14 Days"
+          serviceCtaLabel="Setup Automation"
+        />
       </LazySection>
 
       <LazySection height="500px">

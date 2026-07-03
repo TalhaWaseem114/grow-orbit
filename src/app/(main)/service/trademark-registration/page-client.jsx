@@ -362,124 +362,6 @@ function WhyTrademark() {
 }
 
 /* ═══════════════════════════════════════════════
-   04 — COUNTRY PRICING
-   ═══════════════════════════════════════════════ */
-function CountryPricing() {
-  const countries = [
-    { code: "us", country: "United States",  office: "USPTO",   fee: "$985",   time: "8–10 months",  popular: true,  abbr: "US" },
-    { code: "ca", country: "Canada",          office: "CIPO",    fee: "$1,125", time: "18–24 months", popular: false, abbr: "Canada" },
-    { code: "eu", country: "European Union",  office: "EUIPO",   fee: "$1,550", time: "4–6 months",   popular: false, abbr: "EU" },
-    { code: "de", country: "Germany",         office: "DPMA",    fee: "$990",   time: "3–4 months",   popular: false, abbr: "Germany" },
-    { code: "jp", country: "Japan",           office: "JPO",     fee: "$1,350", time: "12–18 months", popular: false, abbr: "Japan" },
-    { code: "mx", country: "Mexico",          office: "IMPI",    fee: "$945",   time: "6–12 months",  popular: false, abbr: "Mexico" },
-    { code: "gb", country: "United Kingdom",  office: "UKIPO",   fee: "$860",   time: "4 months",     popular: false, abbr: "UK" },
-  ];
-
-  return (
-    <section id="pricing" className="py-32 bg-[#fafafa] relative overflow-hidden scroll-mt-24">
-      <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-          <div>
-            <SectionLabel>Trademark Pricing</SectionLabel>
-            <h2 className="text-4xl md:text-7xl font-black tracking-tighter uppercase leading-[0.88] text-zinc-900" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-              File in<br />
-              <span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-300 lowercase tracking-normal">any market.</span>
-            </h2>
-          </div>
-          <p className="text-zinc-500 text-lg font-light max-w-sm leading-relaxed pb-2">
-            Fees include government filing costs and our attorney-assisted filing service. All-in — no surprises.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {countries.map((c, i) => (
-            <div
-              key={i}
-              className={`group relative rounded-[32px] overflow-hidden transition-all duration-500 ${
-                c.popular ? "ring-1 ring-orange-500/30 shadow-xl shadow-orange-500/10" : ""
-              }`}
-            >
-              {c.popular && <div className="h-1 w-full bg-gradient-to-r from-orange-500 to-amber-400" />}
-              <div className={`h-full border p-7 transition-all duration-500 ${
-                c.popular
-                  ? "bg-zinc-950 border-t-0 border-zinc-800 rounded-b-[32px] hover:border-orange-500/30"
-                  : "bg-[#fafafa] border-zinc-100 rounded-[32px] hover:bg-white hover:border-orange-500/20 hover:shadow-xl hover:shadow-zinc-200/50"
-              }`}>
-                {c.popular && (
-                  <div className="inline-flex items-center gap-1.5 bg-orange-500/15 border border-orange-500/30 px-2.5 py-1 rounded-full mb-4">
-                    <Star size={8} className="text-orange-400 fill-orange-400" />
-                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-orange-400">Most Common</span>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between mb-5">
-                  <img src={`https://flagcdn.com/w40/${c.code}.png`} alt={`${c.country} flag`} width="32" height="24" className="w-8 rounded-[4px] shadow-sm" />
-                  <span className={`text-[9px] font-mono font-bold uppercase tracking-widest ${c.popular ? "text-orange-400" : "text-zinc-400"}`}>{c.office}</span>
-                </div>
-
-                <h3 className={`text-lg font-black uppercase tracking-tight mb-4 ${c.popular ? "text-white" : "text-zinc-900 group-hover:text-orange-500 transition-colors"}`}>{c.country}</h3>
-
-                <div className={`flex items-center justify-between py-3 border-t ${c.popular ? "border-white/5" : "border-zinc-100"} mb-3`}>
-                  <span className={`text-[10px] font-mono uppercase tracking-widest ${c.popular ? "text-zinc-600" : "text-zinc-400"}`}>All-in Fee</span>
-                  <span className={`text-xl font-black tracking-tighter ${c.popular ? "text-orange-400" : "text-zinc-900"}`}>{c.fee}</span>
-                </div>
-
-                <div className={`flex items-center justify-between py-3 border-t ${c.popular ? "border-white/5" : "border-zinc-100"} mb-5`}>
-                  <span className={`text-[10px] font-mono uppercase tracking-widest ${c.popular ? "text-zinc-650" : "text-zinc-400"}`}>Est. Timeline</span>
-                  <span className={`text-[11px] font-bold ${c.popular ? "text-zinc-300" : "text-zinc-700"}`}>{c.time}</span>
-                </div>
-
-                <Link
-                  href="/contact"
-                  className={`group/btn w-full flex items-center justify-center gap-2 font-bold text-[10px] uppercase tracking-widest py-3 rounded-xl no-underline transition-all duration-300 ${
-                    c.popular
-                      ? "bg-orange-500 hover:bg-white hover:text-black text-white"
-                      : "bg-zinc-50 hover:bg-black hover:text-white text-zinc-700 border border-zinc-200"
-                  }`}
-                >
-                  File in {c.abbr}
-                  <ArrowRight size={11} className="group-hover/btn:translate-x-0.5 transition-transform" />
-                </Link>
-              </div>
-            </div>
-          ))}
-
-          {/* Not sure CTA card */}
-          <div className="group relative bg-gradient-to-br from-orange-500 to-orange-600 rounded-[32px] p-7 flex flex-col justify-between overflow-hidden md:scale-[1.03] z-10 shadow-[0_0_40px_rgba(249,115,22,0.3)] transition-all duration-500 hover:shadow-[0_0_60px_rgba(249,115,22,0.5)]">
-            <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)", backgroundSize: "16px 16px" }} />
-            <div className="relative z-10">
-              <p className="text-white/80 text-[10px] font-mono uppercase tracking-widest mb-3">Not Sure Where?</p>
-              <h3 className="text-xl font-black uppercase tracking-tight text-white mb-3 leading-tight">We'll recommend the right market for you.</h3>
-              <p className="text-white/70 text-xs font-light leading-relaxed">Filing in the wrong country wastes time and money. We advise on the best trademark strategy for your Amazon market.</p>
-            </div>
-            <Link href="/contact" className="relative z-10 mt-6 inline-flex items-center gap-2 bg-white text-orange-500 font-black text-[10px] uppercase tracking-widest px-5 py-3 rounded-xl no-underline hover:bg-zinc-900 hover:text-white transition-all duration-300">
-              Get Advice <ArrowRight size={11} />
-            </Link>
-          </div>
-        </div>
-
-        {/* Mid-Page CTA Button */}
-        <div className="mt-16 flex justify-center">
-          <Link
-            href="/get-started"
-            className="group flex items-center gap-3 bg-orange-500 text-white px-10 py-5 rounded-full font-black text-[11px] uppercase tracking-[0.2em] hover:bg-orange-600 transition-all duration-300 no-underline shadow-[0_20px_40px_rgba(249,115,22,0.3)] hover:scale-[1.02] active:scale-95"
-          >
-            Start My Trademark
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </div>
-
-        <p className="text-center text-[11px] text-zinc-400 font-light mt-8">
-          All fees include government filing costs + attorney review. Additional classes may apply.{" "}
-          <Link href="/contact" className="text-orange-500 font-bold hover:underline">Ask us about multi-class filings →</Link>
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════
    05 — 3-STEP PROCESS
    ═══════════════════════════════════════════════ */
 function HowItWorks() {
@@ -852,7 +734,7 @@ export default function TrademarkRegistrationPage() {
       <TrademarkHero />
       <MetricsStrip />
       <WhyTrademark />
-      <CountryPricing />
+
       <HowItWorks />
       <FAQ />
       <TrademarkCTA />

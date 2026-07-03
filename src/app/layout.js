@@ -45,6 +45,7 @@ export const metadata = {
     apple: "/logo.png",
   },
   verification: {
+    google: "cFITjI3qpZ41sEk95TbykLV03reZat4N3Te3iN808lQ",
     other: {
       "facebook-domain-verification": "vjxlfz9p16itwtfufhnmr44vld0spr",
     },

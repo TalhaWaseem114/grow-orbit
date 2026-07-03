@@ -376,143 +376,7 @@ function ServiceCards() {
 /* ═══════════════════════════════════════════════
    03 — PRICING PACKAGES
    ═══════════════════════════════════════════════ */
-function PricingPackages() {
-  const packages = [
-    {
-      name: "Single Asset",
-      tag: "Per Project",
-      desc: "Need one specific deliverable? Choose any individual creative service — from a main image redesign to a full A+ page.",
-      services: [
-        "Any single service from the list",
-        "Dedicated designer assigned",
-        "2 rounds of revisions included",
-        "Source files delivered",
-        "Amazon-compliant output",
-      ],
-      delivery: "5–7 Days",
-      ideal: "Quick fixes, single ASIN",
-    },
-    {
-      name: "Visual Suite",
-      tag: "Most Popular",
-      desc: "A complete visual overhaul for one product listing — images, A+ content, and main image CTR optimization bundled together.",
-      services: [
-        "7 listing images (3D + lifestyle)",
-        "Main Image CTR optimization",
-        "Premium A+ Content page",
-        "Brand Story module",
-        "3 rounds of revisions",
-        "Source files + style guide",
-        "Mobile-first responsive design",
-      ],
-      delivery: "10–14 Days",
-      ideal: "Per listing, full visual refresh",
-      popular: true,
-    },
-    {
-      name: "Brand Identity",
-      tag: "Complete System",
-      desc: "Full brand visual identity — from guidelines to storefront — everything your Amazon brand needs to look, feel, and convert like a premium brand.",
-      services: [
-        "Everything in Visual Suite",
-        "Brand Guidelines document",
-        "Amazon Brand Store (3+ pages)",
-        "Brand Story integration",
-        "Cross-ASIN visual consistency",
-        "Storefront hero banners",
-        "Product photography direction",
-        "Ongoing creative retainer option",
-      ],
-      delivery: "3–4 Weeks",
-      ideal: "Full brand, multi-ASIN",
-    },
-  ];
-
-  return (
-    <section id="packages" className="py-32 bg-[#fafafa] relative overflow-hidden scroll-mt-24">
-      <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-          <div>
-            <SectionLabel>Creative Packages</SectionLabel>
-            <h2
-              className="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-[0.88] text-zinc-900"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
-            >
-              Choose your<br />
-              <span
-                style={{ fontFamily: "'Playfair Display', serif" }}
-                className="italic font-light text-zinc-300 lowercase tracking-normal"
-              >
-                creative tier.
-              </span>
-            </h2>
-          </div>
-          <p className="text-zinc-500 text-lg font-light max-w-sm leading-relaxed pb-2">
-            From a single asset to a complete brand identity system — pick the scope that matches your needs.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {packages.map((pkg, i) => (
-            <div key={i} className="relative rounded-[40px] overflow-hidden flex flex-col">
-              {pkg.popular && <div className="h-1 w-full bg-linear-to-r from-orange-500 to-amber-400 shrink-0" />}
-              <div className={`flex-1 border p-8 lg:p-10 flex flex-col transition-all duration-500 ${
-                pkg.popular
-                  ? "bg-zinc-950 border-t-0 border-zinc-800 rounded-b-[40px] hover:border-orange-500/30"
-                  : "bg-white border-zinc-100 rounded-[40px] hover:border-orange-500/20 hover:shadow-2xl hover:shadow-zinc-200/60"
-              }`}>
-                {pkg.popular && (
-                  <div className="inline-flex items-center gap-2 bg-orange-500/15 border border-orange-500/30 px-3 py-1.5 rounded-full mb-6 self-start">
-                    <Star size={9} className="text-orange-400 fill-orange-400" />
-                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-orange-400">Most Popular</span>
-                  </div>
-                )}
-                <span className={`text-[9px] font-mono font-bold uppercase tracking-[0.4em] mb-2 block ${pkg.popular ? "text-orange-400" : "text-orange-500"}`}>{pkg.tag}</span>
-                <h3 className={`text-3xl font-black tracking-tighter mb-3 ${pkg.popular ? "text-white" : "text-zinc-900"}`} style={{ fontFamily: "'Montserrat', sans-serif" }}>{pkg.name}</h3>
-                <p className={`text-sm font-light leading-relaxed mb-8 ${pkg.popular ? "text-zinc-400" : "text-zinc-500"}`}>{pkg.desc}</p>
-
-                <ul className="space-y-3 mb-8 flex-1">
-                  {pkg.services.map((s, j) => (
-                    <li key={j} className="flex items-start gap-3">
-                      <CheckCircle2 size={14} className="text-orange-500 shrink-0 mt-0.5" />
-                      <span className={`text-[13px] font-light ${pkg.popular ? "text-zinc-300" : "text-zinc-600"}`}>{s}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <div className="space-y-3">
-                  <div className={`flex items-center justify-between py-3 border-t ${pkg.popular ? "border-white/5" : "border-zinc-100"}`}>
-                    <span className={`text-[10px] font-mono uppercase tracking-widest ${pkg.popular ? "text-zinc-600" : "text-zinc-400"}`}>Ideal For</span>
-                    <span className={`text-[11px] font-bold ${pkg.popular ? "text-zinc-300" : "text-zinc-700"}`}>{pkg.ideal}</span>
-                  </div>
-                  <div className={`flex items-center justify-between py-3 border-t ${pkg.popular ? "border-white/5" : "border-zinc-100"}`}>
-                    <span className={`text-[10px] font-mono uppercase tracking-widest ${pkg.popular ? "text-zinc-600" : "text-zinc-400"}`}>Timeline</span>
-                    <span className={`text-[11px] font-bold ${pkg.popular ? "text-zinc-300" : "text-zinc-700"}`}>{pkg.delivery}</span>
-                  </div>
-                  <div className={`flex items-center justify-between py-3 border-t rounded-xl px-3 -mx-3 ${pkg.popular ? "border-white/5 bg-orange-500/5" : "border-zinc-50 bg-zinc-50/50"}`}>
-                    <span className={`text-[10px] font-mono uppercase tracking-widest ${pkg.popular ? "text-zinc-600" : "text-zinc-400"}`}>Pricing</span>
-                    <span className="text-[11px] font-bold text-orange-500">Contact for Quote</span>
-                  </div>
-                  <Link
-                    href="/contact"
-                    className={`group/btn w-full flex items-center justify-center gap-3 font-bold text-[11px] uppercase tracking-widest py-4 rounded-2xl no-underline transition-all duration-300 ${
-                      pkg.popular
-                        ? "bg-orange-500 hover:bg-white hover:text-black text-white shadow-[0_8px_30px_rgba(249,115,22,0.3)]"
-                        : "bg-black hover:bg-orange-500 text-white"
-                    }`}
-                  >
-                    Get Started
-                    <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+// PricingPackages removed
   );
 }
 
@@ -761,7 +625,7 @@ export default function DesignCreativePage() {
     >
       <DesignHero />
       <ServiceCards />
-      <PricingPackages />
+
       <WhyOurDesign />
       <DesignProcess />
       <DesignCTA />

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
+import ServicePricing from "@/components/sections/ServicePricing";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CheckCircle2, ArrowRight, Palette, ShieldCheck, Users, Clock, Sparkles, TrendingUp, FileText, Eye, Type, MessageSquare, Paintbrush, ChevronRight, Plus, Minus, Terminal, Star, Layers, Zap, Repeat, Activity, Image as ImageIcon, BookOpen, Fingerprint, Layout, AlertTriangle } from "lucide-react";
 
@@ -917,152 +918,6 @@ function ComparisonTable() {
   );
 }
 
-function Pricing() {
-  const starterFeatures = [
-    "Logo design & primary variations",
-    "Color palette (Hex + RGB)",
-    "Primary typography system",
-    "Core usage guidelines",
-    "Deliverables pack (PDF + source files)",
-    "1 revision round",
-  ];
-
-  const proFeatures = [
-    "Everything in Starter",
-    "In-depth research & brand strategy",
-    "Advanced logo guidelines & sub-marks",
-    "Full typography scale + hierarchy",
-    "Imagery & photography style guide",
-    "Voice & tone documentation",
-    "Sub-brand guidelines",
-    "Brand applications toolkit",
-    "3 revision rounds",
-  ];
-
-  return (
-    <section id="packages" className="py-20 md:py-32 bg-white relative overflow-hidden scroll-mt-24">
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/20 to-transparent" />
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-          <div>
-            <SectionLabel>Packages</SectionLabel>
-            <h2
-              className="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-[0.85] text-zinc-900"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
-            >
-              Choose your<br />
-              <span
-                className="italic font-light text-zinc-300 lowercase tracking-normal"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                brand kit.
-              </span>
-            </h2>
-          </div>
-          <p className="text-zinc-500 text-lg font-light max-w-sm leading-relaxed pb-2">
-            Two comprehensive packages designed to match your brand ambitions — from foundational identity to a complete brand system.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          <div className="group relative bg-[#fafafa] rounded-[40px] border border-zinc-100 p-8 lg:p-12 flex flex-col hover:border-orange-500/20 hover:bg-white hover:shadow-2xl hover:shadow-zinc-200/60 transition-all duration-500">
-            <div className="mb-10">
-              <span className="text-[9px] font-mono font-bold uppercase tracking-[0.4em] text-orange-500 mb-2 block">Starter Package</span>
-              <h3
-                className="text-3xl lg:text-4xl font-black tracking-tighter text-zinc-900 mb-2"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
-              >
-                Brand Starter
-              </h3>
-              <div className="flex items-center gap-2 mb-4">
-                <Star size={12} className="text-orange-500" />
-                <span className="text-[10px] font-bold text-orange-500 uppercase tracking-widest">Foundational Authority</span>
-              </div>
-              <p className="text-zinc-500 text-base font-light leading-relaxed">
-                Foundational brand identity. Ideal for Amazon sellers launching or refreshing their brand presence.
-              </p>
-            </div>
-
-            <ul className="space-y-4 mb-12 flex-1">
-              {starterFeatures.map((f, i) => <CheckRow key={i}>{f}</CheckRow>)}
-            </ul>
-
-            <div className="space-y-4 pt-8 border-t border-zinc-100">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">Typical Delivery</span>
-                <span className="text-[11px] font-bold text-zinc-700">2–3 Weeks</span>
-              </div>
-              <div className="bg-zinc-50 border border-zinc-100 rounded-2xl px-6 py-4 flex items-center justify-between">
-                <span className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest">Pricing</span>
-                <span className="text-2xl font-black text-zinc-900 tracking-tighter">$1,800</span>
-              </div>
-              <Link
-                href="/contact"
-                className="group/btn w-full flex items-center justify-center gap-3 bg-black hover:bg-orange-500 transition-all duration-300 text-white font-bold text-[11px] uppercase tracking-widest py-5 rounded-2xl no-underline"
-              >
-                Get Starter Kit
-                <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-          </div>
-
-          <div className="relative rounded-[40px] overflow-hidden flex flex-col">
-            <div className="h-1.5 w-full bg-gradient-to-r from-orange-500 to-amber-400 shrink-0" />
-            <div className="relative flex-1 bg-zinc-950 border border-t-0 border-zinc-800 rounded-b-[40px] p-8 lg:p-12 flex flex-col hover:border-orange-500/30 transition-all duration-500">
-              <div className="absolute top-6 right-8">
-                <div className="inline-flex items-center gap-1.5 bg-orange-500/15 border border-orange-500/30 px-3 py-1.5 rounded-full">
-                  <Star size={9} className="text-orange-400 fill-orange-400" />
-                  <span className="text-[9px] font-black uppercase tracking-[0.3em] text-orange-400">Most Popular</span>
-                </div>
-              </div>
-
-              <div className="mb-10">
-                <span className="text-[9px] font-mono font-bold uppercase tracking-[0.4em] text-orange-400 mb-2 block">Complete Package</span>
-                <h3
-                  className="text-3xl lg:text-4xl font-black tracking-tighter text-white mb-2"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  Brand Complete
-                </h3>
-                <div className="flex items-center gap-2 mb-4">
-                  <TrendingUp size={12} className="text-emerald-400" />
-                  <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">+18% Avg. Conversion Lift</span>
-                </div>
-                <p className="text-zinc-400 text-base font-light leading-relaxed">
-                  Complete brand system with in-depth research and polished presence across every touchpoint.
-                </p>
-              </div>
-
-              <ul className="space-y-4 mb-12 flex-1">
-                {proFeatures.map((f, i) => <CheckRow key={i} light>{f}</CheckRow>)}
-              </ul>
-
-              <div className="space-y-4 pt-8 border-t border-white/5">
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">Typical Delivery</span>
-                  <span className="text-[11px] font-bold text-zinc-300">4–6 Weeks</span>
-                </div>
-                <div className="bg-orange-500/10 border border-orange-500/20 rounded-2xl px-6 py-4 flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">Pricing</span>
-                  <span className="text-2xl font-black text-white tracking-tighter">$4,000</span>
-                </div>
-                <Link
-                  href="/contact"
-                  className="group/btn w-full flex items-center justify-center gap-3 bg-orange-500 hover:bg-white hover:text-black transition-all duration-300 text-white font-bold text-[11px] uppercase tracking-widest py-5 rounded-2xl no-underline shadow-[0_8px_30px_rgba(249,115,22,0.3)]"
-                >
-                  Get Complete Kit
-                  <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
 function LogoTrustSection() {
   const cards = [
     {
@@ -1790,10 +1645,25 @@ export default function BrandGuidelinesPage() {
       <BeforeAfter />
       <WhatAreGuidelines />
       <ComparisonTable />
-      <Pricing />
+
       <LogoTrustSection />
       <WhoItsFor />
       <OurProcess />
+      <ServicePricing
+        serviceName="Brand Guidelines"
+        serviceSlug="design/brand-guidelines"
+        serviceSubtitle="Visual identity systems"
+        serviceDescription="A complete brand identity system — logo rules, color palette, typography, and usage standards that make every asset instantly recognizable."
+        serviceDeliverables={[
+          "Logo usage system & constraints",
+          "Hex & RGB color palette system",
+          "Typography & font combinations",
+          "Visual style guidelines guide",
+          "Reusable asset design files"
+        ]}
+        serviceTimeline="14 Days"
+        serviceCtaLabel="Build Guidelines"
+      />
       <FAQ />
       <BrandGuidelineCTA />
       <FooterNav />

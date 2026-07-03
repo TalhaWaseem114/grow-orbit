@@ -19,6 +19,7 @@ import FAQSection from "@/components/service/listing optimization/FAQSection";
 import CTASection from "@/components/service/listing optimization/CtaSection";
 import ProofTable from "@/components/service/listing optimization/ProofTable";
 import Link from "next/link";
+import ServicePricing from "@/components/sections/ServicePricing";
 
 // ════════════════════════════════════════════════════════════════════════════
 // MAIN COMPONENT
@@ -63,6 +64,24 @@ export default function SeoOptimizationService() {
 
       <LazySection height="700px">
         <ProcessSection />
+      </LazySection>
+
+      <LazySection height="700px">
+        <ServicePricing
+          serviceName="Listing Optimization"
+          serviceSlug="listing-optimization"
+          serviceSubtitle="SEO & keyword ranking"
+          serviceDescription="Full listing overhaul — title, bullets, description, backend keywords, and A9 indexing — built to rank for the terms that convert, not just the ones with volume."
+          serviceDeliverables={[
+            "SEO title & bullet overhaul",
+            "Backend search terms optimization",
+            "A9 algorithm keyword index mapping",
+            "HTML description conversion layout",
+            "Competitor keyword gap analysis"
+          ]}
+          serviceTimeline="7 Days"
+          serviceCtaLabel="Optimize Listing"
+        />
       </LazySection>
 
       <LazySection height="500px">

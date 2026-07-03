@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import ServicePricing from "@/components/sections/ServicePricing";
 import {
   ArrowRight, CheckCircle2, ShieldCheck, TrendingUp, Zap, Star,
   Award, Package, ChevronRight, Plus, Minus, Terminal, FileText,
@@ -698,103 +699,7 @@ function ModuleTypes() {
 /* ═══════════════════════════════════════════════
    05 — PACKAGES
    ═══════════════════════════════════════════════ */
-function Packages() {
-  const tiers = [
-    {
-      name: "Standard A+",
-      tag: "Essential",
-      desc: "Professional EBC with up to 5 modules — the baseline for any brand serious about conversion.",
-      features: ["Up to 5 content modules", "Custom graphic design", "Conversion copywriting", "SEO alt-text optimization", "1 revision round", "Upload-ready delivery"],
-      delivery: "10–14 Days",
-    },
-    {
-      name: "Premium A+",
-      tag: "Advanced",
-      desc: "Full-width interactive modules with video, hotspots, and carousels for brands eligible for Premium A+.",
-      features: ["Up to 7 premium modules", "Interactive hotspot modules", "Video integration support", "Enhanced comparison tables", "Brand story carousel", "2 revision rounds", "Seller Central upload"],
-      delivery: "14–21 Days",
-      popular: true,
-    },
-    {
-      name: "Catalog EBC",
-      tag: "Scale",
-      desc: "Consistent EBC across your entire product catalog — templated design systems for multi-ASIN brands.",
-      features: ["Bulk ASIN coverage", "Templated design system", "Brand story module", "Cross-sell strategy", "Dedicated designer", "3 revision rounds"],
-      delivery: "3–4 Weeks",
-    },
-  ];
-
-  return (
-    <section id="packages" className="py-32 bg-[#fafafa] relative overflow-hidden scroll-mt-24">
-      <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-20 gap-8">
-          <div>
-            <SectionLabel>Packages</SectionLabel>
-            <h2 className="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-[0.88] text-zinc-900">
-              Choose your<br />
-              <span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-300 lowercase tracking-normal">EBC package.</span>
-            </h2>
-          </div>
-          <p className="text-zinc-500 text-lg font-light max-w-sm leading-relaxed pb-2">
-            From a single listing upgrade to full catalog coverage — every package includes design, copywriting, and delivery.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {tiers.map((tier, i) => (
-            <div key={i} className="relative rounded-[40px] overflow-hidden flex flex-col">
-              {tier.popular && <div className="h-1 w-full bg-gradient-to-r from-orange-500 to-amber-400 shrink-0" />}
-              <div className={`flex-1 border p-8 lg:p-10 flex flex-col transition-all duration-500 ${
-                tier.popular
-                  ? "bg-zinc-950 border-t-0 border-zinc-800 rounded-b-[40px] hover:border-orange-500/30"
-                  : "bg-white border-zinc-100 rounded-[40px] hover:border-orange-500/20 hover:bg-orange-50/30"
-              }`}>
-                {tier.popular && (
-                  <div className="inline-flex items-center gap-2 bg-orange-500/15 border border-orange-500/30 px-3 py-1.5 rounded-full mb-6 self-start">
-                    <Star size={9} className="text-orange-400 fill-orange-400" />
-                    <span className="text-[9px] font-black uppercase tracking-[0.3em] text-orange-400">Most Popular</span>
-                  </div>
-                )}
-                <span className={`text-[9px] font-mono font-bold uppercase tracking-[0.4em] mb-2 block ${tier.popular ? "text-orange-400" : "text-orange-500"}`}>{tier.tag}</span>
-                <h3 className={`text-3xl font-black tracking-tighter mb-3 ${tier.popular ? "text-white" : "text-zinc-900"}`}>{tier.name}</h3>
-                <p className={`text-sm font-light leading-relaxed mb-8 ${tier.popular ? "text-zinc-400" : "text-zinc-500"}`}>{tier.desc}</p>
-                <ul className="space-y-3 mb-8 flex-1">
-                  {tier.features.map((f, j) => (
-                    <li key={j} className="flex items-start gap-3">
-                      <CheckCircle2 size={14} className="text-orange-500 shrink-0 mt-0.5" />
-                      <span className={`text-[13px] font-light ${tier.popular ? "text-zinc-300" : "text-zinc-600"}`}>{f}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="space-y-3">
-                  <div className={`flex items-center justify-between py-3 border-t ${tier.popular ? "border-white/5" : "border-zinc-100"}`}>
-                    <span className={`text-[10px] font-mono uppercase tracking-widest ${tier.popular ? "text-zinc-600" : "text-zinc-400"}`}>Delivery</span>
-                    <span className={`text-[11px] font-bold ${tier.popular ? "text-zinc-300" : "text-zinc-700"}`}>{tier.delivery}</span>
-                  </div>
-                  <div className={`flex items-center justify-between py-3 border-t rounded-xl px-3 -mx-3 ${tier.popular ? "border-white/5 bg-orange-500/5" : "border-zinc-50 bg-zinc-50/50"}`}>
-                    <span className={`text-[10px] font-mono uppercase tracking-widest ${tier.popular ? "text-zinc-600" : "text-zinc-400"}`}>Pricing</span>
-                    <span className="text-[11px] font-bold text-orange-500">Contact for Quote</span>
-                  </div>
-                  <Link href="/contact"
-                    className={`group/btn w-full flex items-center justify-center gap-3 font-bold text-[11px] uppercase tracking-widest py-4 rounded-2xl no-underline transition-all duration-300 ${
-                      tier.popular
-                        ? "bg-orange-500 hover:bg-white hover:text-black text-white shadow-[0_8px_30px_rgba(249,115,22,0.3)]"
-                        : "bg-black hover:bg-orange-500 text-white"
-                    }`}
-                  >
-                    Get {tier.name}
-                    <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
-                  </Link>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
+// Packages removed
 
 /* ═══════════════════════════════════════════════
    05.5 — BEFORE / AFTER COMPARISON
@@ -1634,11 +1539,26 @@ export default function EnhancedBrandContentPage() {
       <MetricsStrip />
       <WhyEBCMatters />
       <ModuleTypes />
-      <Packages />
+
       <BeforeAfterComparison />
       <Portfolio />
       <WhoItsFor />
       <OurProcess />
+      <ServicePricing
+        serviceName="Enhanced Brand Content"
+        serviceSlug="design/enhanced-brand-content"
+        serviceSubtitle="Premium A+ page design"
+        serviceDescription="Visually-led A+ Content modules that tell your brand story below the fold — comparison charts, feature callouts, and lifestyle imagery that converts."
+        serviceDeliverables={[
+          "A+ content block custom layout",
+          "Product comparison grid modules",
+          "Feature highlight copywriting",
+          "Lifestyle & graphic assets",
+          "Sub-brand cross-selling layout"
+        ]}
+        serviceTimeline="14 Days"
+        serviceCtaLabel="Design A+ Content"
+      />
       <FAQ />
       <EnhancedContentCTA />
       <FooterNav />

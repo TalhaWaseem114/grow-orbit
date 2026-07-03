@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import ServicePricing from "@/components/sections/ServicePricing";
 import {
   ArrowRight, CheckCircle2, ShieldCheck, TrendingUp, Zap, Star, StarHalf,
   Award, Package, ChevronRight, Plus, Minus, Terminal, FileText,
@@ -508,167 +509,7 @@ function BasicToShowcase() {
 /* ═══════════════════════════════════════════════
    05 — PACKAGES
    ═══════════════════════════════════════════════ */
-function Packages() {
-  const [scrollProgress, setScrollProgress] = useState(0);
-  const scrollRef = useRef(null);
-
-  const handleScroll = (e) => {
-    if (!scrollRef.current) return;
-    const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-    const progress = (scrollLeft / (scrollWidth - clientWidth)) * 100;
-    setScrollProgress(progress);
-  };
-
-  const tiers = [
-    {
-      name: "Essential",
-      tag: "Launch Package",
-      desc: "The core images every new listing needs to compete — hero, lifestyle, and key infographics.",
-      features: ["Main hero image (white bg)", "1 lifestyle image", "2 infographic images", "Amazon TOS review", "1 revision round"],
-      delivery: "5–7 Days",
-      ideal: "New listings launching for the first time",
-      dark: false,
-    },
-    {
-      name: "Standard",
-      tag: "Growth Package",
-      desc: "A complete 5-image suite designed to cover every stage of the shopper's decision journey.",
-      features: ["Main hero image", "2 lifestyle images", "2 infographic images", "Comparison or scale shot", "2 revision rounds"],
-      delivery: "7–10 Days",
-      ideal: "Existing listings ready to scale",
-      popular: true,
-      dark: true,
-    },
-    {
-      name: "Premium",
-      tag: "Domination Package",
-      desc: "All 7 slots fully optimized — the complete arsenal for category-leading brands.",
-      features: ["Main hero + alternate angle", "2 lifestyle images", "2 infographic images", "Comparison + scale shots", "Social proof / trust image", "3 revision rounds", "Mobile thumbnail testing"],
-      delivery: "10–14 Days",
-      ideal: "Brands competing at the category top",
-      dark: false,
-    },
-  ];
-
-  return (
-    <section id="packages" className="py-32 bg-[#fafafa] relative overflow-hidden scroll-mt-24">
-      <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-12 mb-20">
-          <div className="max-w-3xl">
-            <SectionLabel>Packages</SectionLabel>
-            <h2
-              className="text-5xl md:text-[80px] font-black tracking-tighter uppercase leading-[0.85] text-zinc-900"
-              style={{ fontFamily: "'Montserrat', sans-serif" }}
-            >
-              Choose your<br />
-              <span className="italic font-light text-zinc-300 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
-                image package.
-              </span>
-            </h2>
-          </div>
-          <p className="text-zinc-500 text-lg font-light leading-relaxed max-w-sm pb-2">
-            From a core launch set to a full 7-image domination suite — every package is designed to outperform generic listing images.
-          </p>
-        </div>
-
-        {/* Carousel for Mobile / Grid for Desktop */}
-        <div className="relative group">
-          {/* Fading Arrows - Only on Mobile */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 h-32 bg-gradient-to-r from-[#fafafa] to-transparent z-20 pointer-events-none lg:hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 h-32 bg-gradient-to-l from-[#fafafa] to-transparent z-20 pointer-events-none lg:hidden opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-          <div
-            ref={scrollRef}
-            onScroll={handleScroll}
-            className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto md:overflow-x-visible pb-12 md:pb-0 no-scrollbar snap-x snap-mandatory md:snap-none -mx-2 px-2"
-          >
-            {tiers.map((tier, i) => (
-              <div key={i} className="min-w-[300px] sm:min-w-[340px] md:min-w-0 snap-center relative rounded-[40px] overflow-hidden flex flex-col group/tier">
-                {tier.popular && <div className="h-1 w-full bg-gradient-to-r from-orange-500 to-amber-400" />}
-                <div className={`flex-1 border p-8 lg:p-10 flex flex-col transition-all duration-500 shadow-none ${
-                  tier.popular
-                    ? "bg-zinc-950 border-t-0 border-zinc-800 rounded-b-[40px] hover:border-orange-500/30 hover:shadow-orange-500/5"
-                    : "bg-white border-zinc-100 rounded-[40px] hover:border-orange-500/20 hover:bg-orange-50/30 hover:shadow-orange-500/5"
-                }`}>
-                  {tier.popular && (
-                    <div className="inline-flex items-center gap-2 bg-orange-500/15 border border-orange-500/30 px-3 py-1.5 rounded-full mb-6 self-start">
-                      <Star size={9} className="text-orange-400 fill-orange-400" />
-                      <span className="text-[9px] font-black uppercase tracking-[0.3em] text-orange-400">Most Popular</span>
-                    </div>
-                  )}
-
-                  <span className={`text-[9px] font-mono font-bold uppercase tracking-[0.4em] mb-2 block ${tier.popular ? "text-orange-400" : "text-orange-500"}`}>{tier.tag}</span>
-                  <h3 className={`text-3xl font-black tracking-tighter mb-3 ${tier.popular ? "text-white" : "text-zinc-900"}`} style={{ fontFamily: "'Montserrat', sans-serif" }}>{tier.name}</h3>
-                  <p className={`text-sm font-light leading-relaxed mb-8 ${tier.popular ? "text-zinc-400" : "text-zinc-500"}`}>
-                    {tier.desc}
-                    {tier.popular && <span className="block mt-2 font-bold text-orange-400">Best for: brands with 1-3 hero products ready to scale.</span>}
-                  </p>
-
-                  <ul className="space-y-3 mb-8 flex-1">
-                    {tier.features.map((f, j) => (
-                      <li key={j} className="flex items-start gap-3">
-                        <CheckCircle2 size={14} className="text-orange-500 shrink-0 mt-0.5" />
-                        <span className={`text-[13px] font-light ${tier.popular ? "text-zinc-300" : "text-zinc-600"}`}>{f}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="space-y-3">
-                    <div className={`flex items-center justify-between py-3 border-t ${tier.popular ? "border-white/5" : "border-zinc-100"}`}>
-                      <span className={`text-[10px] font-mono uppercase tracking-widest ${tier.popular ? "text-zinc-600" : "text-zinc-400"}`}>Delivery</span>
-                      <span className={`text-[11px] font-bold ${tier.popular ? "text-zinc-300" : "text-zinc-700"}`}>{tier.delivery}</span>
-                    </div>
-                    <div className={`flex items-center justify-between py-3 border-t ${tier.popular ? "border-white/5 bg-orange-500/5 -mx-2 px-2 rounded-xl" : "border-zinc-50 bg-zinc-50 -mx-2 px-2 rounded-xl"}`}>
-                      <span className={`text-[10px] font-mono uppercase tracking-widest ${tier.popular ? "text-zinc-600" : "text-zinc-400"}`}>Pricing</span>
-                      <span className="text-[11px] font-bold text-orange-500">Contact for Quote</span>
-                    </div>
-                    <Link
-                      href="/contact"
-                      className={`group/btn w-full flex items-center justify-center gap-3 font-bold text-[11px] uppercase tracking-widest py-4 rounded-2xl no-underline transition-all duration-300 ${
-                        tier.popular
-                          ? "bg-orange-500 hover:bg-white hover:text-black text-white"
-                          : "bg-black hover:bg-orange-500 text-white"
-                      }`}
-                    >
-                      Get {tier.name}
-                      <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Progress Indicator - Mobile Only */}
-          <div className="h-[2px] w-full bg-zinc-200 relative md:hidden overflow-hidden rounded-full mt-4">
-            <div
-              className="absolute h-full bg-orange-500 transition-all duration-300 ease-out"
-              style={{ width: `${Math.max(10, scrollProgress)}%`, left: `${scrollProgress * 0.9}%` }}
-            />
-          </div>
-        </div>
-
-        {/* Add-on row */}
-        <div className="mt-8 bg-white rounded-[32px] border border-zinc-100 p-6 flex flex-col md:flex-row items-center justify-between gap-6 hover:border-orange-500/20 transition-all duration-500">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center text-orange-500">
-              <Boxes size={20} />
-            </div>
-            <div>
-              <p className="font-black text-[13px] uppercase tracking-[0.12em] text-zinc-900">3D Rendering Add-On</p>
-              <p className="text-zinc-400 text-xs font-light mt-0.5">Photorealistic 3D product renders for any package — no physical samples required.</p>
-            </div>
-          </div>
-          <Link href="/contact" className="shrink-0 flex items-center gap-2 text-orange-500 font-bold text-[11px] uppercase tracking-widest hover:gap-4 transition-all no-underline">
-            Ask About 3D <ArrowRight size={13} />
-          </Link>
-        </div>
-      </div>
-    </section>
-  );
-}
+// Packages removed
 
 /* ═══════════════════════════════════════════════
    06 — PORTFOLIO EXAMPLES
@@ -1740,10 +1581,24 @@ export default function ListingImagesPage() {
       <MetricsStrip />
       <NoBoring />
       <BasicToShowcase />
-      <Packages />
+
       <Portfolio />
-      <CostCalculator />
       <WhoItsFor />
+      <ServicePricing
+        serviceName="Listing Image Systems"
+        serviceSlug="design/listing-image-systems"
+        serviceSubtitle="3D renders & photography"
+        serviceDescription="All 7 image slots designed for conversion — hero shots, lifestyle photography, infographics, comparison images, and 3D renders."
+        serviceDeliverables={[
+          "High-converting main hero image",
+          "3D product renders & mockups",
+          "Informative infographic slides",
+          "Lifestyle setting design backdrops",
+          "Product comparison charts"
+        ]}
+        serviceTimeline="14 Days"
+        serviceCtaLabel="Design Images"
+      />
       <FAQ />
       <ListingImagesCTA />
       <FooterNav />

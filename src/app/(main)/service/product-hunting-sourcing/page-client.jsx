@@ -11,6 +11,7 @@ import {
   Truck, Settings, DollarSign, Layers, Package
 } from "lucide-react";
 import HeroButton from "@/components/ui/HeroButton";
+import ServicePricing from "@/components/sections/ServicePricing";
 
 const SectionLabel = ({ children, light = false }) => (
   <div className="flex items-center gap-3 mb-6">
@@ -112,9 +113,7 @@ function ProductHuntingHero() {
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-6 mb-10">
                 <HeroButton href="/contact?service=product-hunting-sourcing" className="w-full sm:w-auto">Book Sourcing Strategy Call</HeroButton>
-                <a href="#packages" className="group flex items-center justify-center sm:justify-start gap-3 text-zinc-400 hover:text-zinc-900 font-bold text-[11px] uppercase tracking-widest px-2 py-4 transition-colors no-underline">
-                  View Service Packages <ChevronRight size={13} className="group-hover:translate-x-1 transition-transform" />
-                </a>
+
               </div>
 
               <div className="flex flex-wrap items-center gap-3">
@@ -407,136 +406,7 @@ function CostOfGuessing() {
   );
 }
 
-/* ═══════════════════════════════════════════════
-   04 — SERVICE PACKAGES
-   ═══════════════════════════════════════════════ */
-function ServicePackages() {
-  const packages = [
-    {
-      title: "Opportunity Audit",
-      subtitle: "Validate your own product idea",
-      desc: "You bring the idea, we stress-test it. Includes competitor deep dive, margin/FBA fee breakdown, patent search, and target sourcing cost modeling.",
-      cost: "$450",
-      delivery: "7 Days",
-      popular: false,
-      cta: "Audit My Idea"
-    },
-    {
-      title: "Sourcing & Supplier Vetting",
-      subtitle: "Find the manufacturer",
-      desc: "You know the product, we secure the source. We find 3 verified manufacturers, negotiate contract bids, coordinate samples, and run factory audits.",
-      cost: "$850",
-      delivery: "14 Days",
-      popular: false,
-      cta: "Find Vetted Suppliers"
-    },
-    {
-      title: "Full Product Hunt",
-      subtitle: "We hunt 3 winning products",
-      desc: "We scan the market and present 3 custom-vetted high-opportunity products tailored specifically to your capital, category goals, and target ROI.",
-      cost: "$1,200",
-      delivery: "21 Days",
-      popular: true,
-      cta: "Start Sourcing Hunt"
-    },
-    {
-      title: "End-to-End Hunt & Source",
-      subtitle: "Complete launch-ready pipeline",
-      desc: "From zero to active shipment. Covers the product hunt, supplier negotiations, branding/packaging design, quality testing, and freight logistics.",
-      cost: "$2,200",
-      delivery: "30 Days",
-      popular: false,
-      cta: "Launch My Brand"
-    }
-  ];
-
-  return (
-    <section id="packages" className="py-32 bg-[#fafafa] relative overflow-hidden scroll-mt-24">
-      <div className="absolute inset-0 opacity-[0.025] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
-      <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
-        
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-          <div>
-            <SectionLabel>Service Packages</SectionLabel>
-            <h2 className="text-4xl md:text-7xl font-black tracking-tighter uppercase leading-[0.88] text-zinc-900" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-              Hunting &<br />
-              <span style={{ fontFamily: "'Playfair Display', serif" }} className="italic font-light text-zinc-300 lowercase tracking-normal">sourcing options.</span>
-            </h2>
-          </div>
-          <p className="text-zinc-500 text-lg font-light max-w-sm leading-relaxed pb-2">
-            No long retainers. Pay per project. Transparent pricing with clear deliverables. Choose the tier that matches your stage.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {packages.map((pkg, i) => (
-            <div
-              key={i}
-              className={`group relative rounded-[32px] overflow-hidden transition-all duration-500 ${
-                pkg.popular ? "ring-1 ring-orange-500/30 shadow-xl shadow-orange-500/10" : ""
-              }`}
-            >
-              {pkg.popular && <div className="h-1 w-full bg-gradient-to-r from-orange-500 to-amber-400" />}
-              <div className={`h-full border p-7 transition-all duration-500 ${
-                pkg.popular
-                  ? "bg-zinc-950 border-t-0 border-zinc-800 rounded-b-[32px] hover:border-orange-500/30"
-                  : "bg-[#fafafa] border-zinc-100 rounded-[32px] hover:bg-white hover:border-orange-500/20 hover:shadow-xl hover:shadow-zinc-200/50"
-              }`}>
-                {pkg.popular && (
-                  <div className="inline-flex items-center gap-1.5 bg-orange-500/15 border border-orange-500/30 px-2.5 py-1 rounded-full mb-4">
-                    <Star size={8} className="text-orange-400 fill-orange-400" />
-                    <span className="text-[8px] font-black uppercase tracking-[0.3em] text-orange-400">Most Popular</span>
-                  </div>
-                )}
-
-                <h3 className={`text-lg font-black uppercase tracking-tight mb-1 ${pkg.popular ? "text-white" : "text-zinc-900 group-hover:text-orange-500 transition-colors"}`}>{pkg.title}</h3>
-                <p className={`text-[10px] font-bold uppercase tracking-wider mb-4 ${pkg.popular ? "text-zinc-400" : "text-zinc-400"}`}>{pkg.subtitle}</p>
-                <p className={`text-xs font-light leading-relaxed mb-6 h-28 ${pkg.popular ? "text-zinc-400" : "text-zinc-500"}`}>{pkg.desc}</p>
-
-                <div className={`flex items-center justify-between py-3 border-t ${pkg.popular ? "border-white/5" : "border-zinc-100"} mb-3`}>
-                  <span className={`text-[10px] font-mono uppercase tracking-widest ${pkg.popular ? "text-zinc-400" : "text-zinc-400"}`}>Deliverable Fee</span>
-                  <span className={`text-xl font-black tracking-tighter ${pkg.popular ? "text-orange-400" : "text-zinc-900"}`}>{pkg.cost}</span>
-                </div>
-
-                <div className={`flex items-center justify-between py-3 border-t ${pkg.popular ? "border-white/5" : "border-zinc-100"} mb-5`}>
-                  <span className={`text-[10px] font-mono uppercase tracking-widest ${pkg.popular ? "text-zinc-400" : "text-zinc-400"}`}>Timeline</span>
-                  <span className={`text-[11px] font-bold ${pkg.popular ? "text-zinc-300" : "text-zinc-700"}`}>{pkg.delivery}</span>
-                </div>
-
-                <Link
-                  href={`/contact?service=product-hunting-sourcing&package=${pkg.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`}
-                  className={`group/btn w-full flex items-center justify-center gap-2 font-bold text-[10px] uppercase tracking-widest py-3 rounded-xl no-underline transition-all duration-300 ${
-                    pkg.popular
-                      ? "bg-orange-500 hover:bg-white hover:text-black text-white"
-                      : "bg-zinc-50 hover:bg-black hover:text-white text-zinc-700 border border-zinc-200"
-                  }`}
-                >
-                  {pkg.cta}
-                  <ArrowRight size={11} className="group-hover/btn:translate-x-0.5 transition-transform" />
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Custom requirements info */}
-        <div className="mt-12 flex flex-col md:flex-row items-center justify-between p-8 bg-zinc-100 rounded-[32px] gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-xs font-black uppercase text-zinc-900 tracking-wider">Need Custom Multi-Product Sourcing?</span>
-          </div>
-          <p className="text-xs text-zinc-500 max-w-xl text-center md:text-left leading-relaxed">
-            Launching a cohesive collection or looking to migrate a mature catalog to new manufacturers? We design custom sourcing campaigns tailored for enterprise operations.
-          </p>
-          <Link href="/contact?service=product-hunting-sourcing&package=custom-sourcing" className="inline-flex items-center gap-2 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline shrink-0">
-            Consult With Our Sourcing Team <ArrowRight size={12} />
-          </Link>
-        </div>
-
-      </div>
-    </section>
-  );
-}
+// ServicePackages removed
 
 /* ═══════════════════════════════════════════════
    04b — COMMON SOURCING MISTAKES
@@ -968,7 +838,23 @@ export default function ProductHuntingPage() {
       <MetricsStrip />
       <WhyProductHunting />
       <CostOfGuessing />
-      <ServicePackages />
+      <ServicePricing
+        serviceName="Product Hunting & Sourcing"
+        serviceSlug="product-hunting-sourcing"
+        serviceSubtitle="Validate your product idea"
+        serviceDescription="We scan the market and present data-backed product opportunities tailored to your capital, category goals, and target ROI. Includes patent clearance, supplier vetting, and FBA logistics."
+        serviceDeliverables={[
+          "Keyword-to-ASIN gap analysis",
+          "Competitor deep dive & margin modeling",
+          "Direct ex-factory pricing",
+          "Utility & design patent clearance",
+          "AQL 2.5 quality audits",
+          "FBA logistics & shipping setup",
+          "Supplier vetting & sample coordination",
+        ]}
+        serviceTimeline="14 Days"
+        serviceCtaLabel="Start Sourcing Hunt"
+      />
       <SourcingMistakes />
       <SourcingProcess />
       <SourcingFAQ />

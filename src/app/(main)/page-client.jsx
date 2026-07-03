@@ -17,7 +17,7 @@ const OrbitPortfolioSection = dynamic(() => import("@/components/sections/OrbitP
 const OrbitTestimonialsSection = dynamic(() => import("@/components/sections/OrbitTestimonialsSection"), { ssr: false });
 const OrbitProcessSection = dynamic(() => import("@/components/sections/OrbitProcessSection"), { ssr: false });
 const ClientLogosMarquee = dynamic(() => import("@/components/ui/ClientLogosMarquee"), { ssr: false });
-const TeamSection = dynamic(() => import("@/components/home/TeamSection"), { ssr: false });
+const CeoMessageTeamSection = dynamic(() => import("@/components/home/CeoMessageTeamSection"), { ssr: false });
 const WhoItsFor = dynamic(() => import("@/components/home/WhoItsFor"), { ssr: false });
 const FAQSection = dynamic(() => import("@/components/home/FAQSection"), { ssr: false });
 
@@ -34,6 +34,11 @@ export default function Home() {
       <HeroSection />
       <ServicesMarquee />
       <OrbitBridgeCTA scrollToForm={scrollToForm} />
+      
+      <LazySection height="600px">
+        <CeoMessageTeamSection />
+      </LazySection>
+
       <ServiceSection />
       
       <LazySection height="600px">
@@ -56,9 +61,7 @@ export default function Home() {
         <ClientLogosMarquee isDark={false} bgClass="bg-white" borderClass="border-y border-zinc-100" />
       </LazySection>
 
-      <LazySection height="600px">
-        <TeamSection />
-      </LazySection>
+
 
       <LazySection height="500px">
         <WhoItsFor />

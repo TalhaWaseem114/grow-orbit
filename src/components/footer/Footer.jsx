@@ -257,7 +257,7 @@ export default function Footer() {
                   <a href="mailto:support@groworbit.com" className="text-zinc-100 text-[12px] font-semibold hover:text-orange-500 transition-colors">
                     support@groworbit.com
                   </a>
-                  <a href="https://wa.me/19128205916" target="_blank" rel="noreferrer" className="text-zinc-100 text-[12px] font-semibold hover:text-orange-500 transition-colors">
+                  <a href="https://wa.me/19128205916" target="_blank" rel="noreferrer" onClick={() => { if (typeof window !== "undefined" && window.fbq) { window.fbq("track", "Contact", { content_name: "WhatsApp — Footer" }); } }} className="text-zinc-100 text-[12px] font-semibold hover:text-orange-500 transition-colors">
                     +1 (912) 820-5916
                   </a>
                   <p className="text-zinc-300 text-[11px] font-light leading-relaxed mt-1">

@@ -99,6 +99,16 @@ function PortfolioPageInner() {
     }
   }, [rawFilter, activeMaterial, activeNiche, router]);
 
+  // Track Meta Pixel ViewContent for portfolio browsing intent
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "ViewContent", {
+        content_name: "Portfolio Gallery",
+        content_category: "Portfolio",
+      });
+    }
+  }, []);
+
   const heroRef = useRef(null);
 
   useLayoutEffect(() => {

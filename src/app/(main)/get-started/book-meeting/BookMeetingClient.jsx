@@ -25,7 +25,7 @@ function BookMeetingContent() {
   const calendlyBaseUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/groworbitofficial-support/30min";
   const nameParam = encodeURIComponent(initialName);
   const emailParam = encodeURIComponent(initialEmail);
-  const calendlySrc = `${calendlyBaseUrl}?embed_domain=${embedDomain}&embed_type=Inline&name=${nameParam}&email=${emailParam}&hide_gdpr_banner=1&background_color=0d0d0d&text_color=ffffff&primary_color=f97316`;
+  const calendlySrc = `${calendlyBaseUrl}?embed_domain=${embedDomain}&embed_type=Inline&name=${nameParam}&email=${emailParam}&hide_gdpr_banner=1&background_color=ffffff&text_color=000000&primary_color=f97316`;
 
   useEffect(() => {
     const handleCalendlyMessage = async (e) => {

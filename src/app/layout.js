@@ -38,10 +38,9 @@ export const metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico" },
       { url: "/logo.png", sizes: "32x32", type: "image/png" },
     ],
-    shortcut: "/favicon.ico",
+    shortcut: "/logo.png",
     apple: "/logo.png",
   },
   verification: {
@@ -57,6 +56,23 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 
 export default function RootLayout({ children }) {
+  // Overwrite default Next.js favicon.ico with Grow Orbit logo.png
+  try {
+    const fs = require("fs");
+    const path = require("path");
+    const logoPath = path.join(process.cwd(), "public", "logo.png");
+    const faviconPath = path.join(process.cwd(), "public", "favicon.ico");
+    if (fs.existsSync(logoPath)) {
+      const logoData = fs.readFileSync(logoPath);
+      const faviconData = fs.existsSync(faviconPath) ? fs.readFileSync(faviconPath) : null;
+      if (!faviconData || !logoData.equals(faviconData)) {
+        fs.writeFileSync(faviconPath, logoData);
+      }
+    }
+  } catch (e) {
+    console.warn("Favicon overwrite failed:", e);
+  }
+
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable} ${zenDots.variable} ${playfair.variable}`}>
       <head>

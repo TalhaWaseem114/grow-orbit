@@ -3,7 +3,8 @@
 import React, { useMemo, useRef, useState, useEffect } from "react";
 import { 
   LayoutGrid, List, KanbanSquare, Download, Search, Calendar, ChevronRight, 
-  Phone, Mail, Trash2, History, AlertCircle, X, RotateCcw, Inbox, HelpCircle
+  Phone, Mail, Trash2, History, AlertCircle, X, RotateCcw, Inbox, HelpCircle,
+  Copy, Check
 } from "lucide-react";
 
 import KanbanBoard from "./KanbanBoard";
@@ -71,6 +72,16 @@ function LeadDetailPanel({
   const [newTaskDueDate, setNewTaskDueDate] = useState("");
   const [addingTask, setAddingTask] = useState(false);
   const [convertingClient, setConvertingClient] = useState(false);
+  const [copiedField, setCopiedField] = useState(null);
+
+  const handleCopy = (text, field) => {
+    if (!text) return;
+    navigator.clipboard.writeText(text);
+    setCopiedField(field);
+    setTimeout(() => {
+      setCopiedField(null);
+    }, 1500);
+  };
 
   const [estValue, setEstValue] = useState(lead.estimatedDealValue || "");
   const [retainer, setRetainer] = useState(lead.monthlyRetainer || "");
@@ -275,15 +286,33 @@ function LeadDetailPanel({
             <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Quick Connect</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {lead.whatsapp && lead.whatsapp !== "N/A" && (
-                <a href={`https://wa.me/${lead.whatsapp.replace(/\D/g,"")}`} target="_blank" rel="noreferrer"
-                  style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px", borderRadius: 10, background: "rgba(74,222,128,0.05)", border: "1px solid rgba(74,222,128,0.1)", color: "#4ade80", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>
-                  <Phone size={12} /> {lead.whatsapp}
-                </a>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  <a href={`https://wa.me/${lead.whatsapp.replace(/\D/g,"")}`} target="_blank" rel="noreferrer"
+                    style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, padding: "10px", borderRadius: 10, background: "rgba(74,222,128,0.05)", border: "1px solid rgba(74,222,128,0.1)", color: "#4ade80", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>
+                    <Phone size={12} /> {lead.whatsapp}
+                  </a>
+                  <button onClick={() => handleCopy(lead.whatsapp, 'phone')}
+                    title="Copy Phone Number"
+                    style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 38, height: 38, borderRadius: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", color: "#a3a3a3", cursor: "pointer", outline: "none", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = '#a3a3a3'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}>
+                    {copiedField === 'phone' ? <Check size={12} style={{ color: '#4ade80' }} /> : <Copy size={12} />}
+                  </button>
+                </div>
               )}
-              <a href={`mailto:${lead.email}`}
-                style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px", borderRadius: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", color: "#fff", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>
-                  <Mail size={12} /> {lead.email}
-              </a>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <a href={`mailto:${lead.email}`}
+                  style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, padding: "10px", borderRadius: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", color: "#fff", fontSize: 11, fontWeight: 700, textDecoration: "none" }}>
+                    <Mail size={12} /> {lead.email}
+                </a>
+                <button onClick={() => handleCopy(lead.email, 'email')}
+                  title="Copy Email Address"
+                  style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 38, height: 38, borderRadius: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", color: "#a3a3a3", cursor: "pointer", outline: "none", transition: "all 0.2s" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.color = '#fff'; e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.color = '#a3a3a3'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}>
+                  {copiedField === 'email' ? <Check size={12} style={{ color: '#4ade80' }} /> : <Copy size={12} />}
+                </button>
+              </div>
             </div>
           </div>
 

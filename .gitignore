@@ -45,3 +45,10 @@ portfolio_downloads/
 
 # IDE/Agent folders
 .agents/
+
+# SEO Playbook & Clusters
+/plan.md
+/seo_cluster_database.md
+.seo cluster/
+/.seo cluster/
+

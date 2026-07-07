@@ -39,12 +39,6 @@ const SERVICES = [
   { icon: <Shield size={20} />,    title: "Brand Registry & IP", desc: "Trademark filing, Brand Registry enrollment, hijacker removal. Your brand protected end-to-end." },
 ];
 
-const TEAM = [
-  { name: "Ali", role: "Founder & CEO", img: "/assets/team-ali.png", years: "8 yrs Amazon" },
-  { name: "Shahrooz", role: "Head of Growth & PPC", img: "/assets/team-shahrooz.png", years: "6 yrs Strategy" },
-  { name: "Talha", role: "Head of Operations & Dev", img: "/assets/team-talha.png", years: "5 yrs Systems" },
-  { name: "Ikram", role: "Creative Director", img: "/assets/team-ikram.png", years: "7 yrs Design" },
-];
 
 const VALUES = [
   { num: "01", title: "Amazon-Only Focus",         desc: "We work on one platform. That's not a limitation — it's why our results are consistently better than generalist agencies." },
@@ -58,7 +52,6 @@ const VALUES = [
 ════════════════════════════════════════════ */
 export default function AboutPage() {
   const heroRef = useRef(null);
-  const [hoveredTeam, setHoveredTeam] = useState(null);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -457,58 +450,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════
-          TEAM
-      ═══════════════════════════════════ */}
-      <section className="py-20 px-6 lg:px-12 scroll-in">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-14">
-            <div>
-              <SectionLabel>The Collective</SectionLabel>
-              <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase leading-[0.9] text-zinc-900">
-                The minds<br />
-                <span className="italic font-light text-zinc-300" style={{ fontFamily: "'Playfair Display', serif" }}>
-                  behind the orbit.
-                </span>
-              </h2>
-            </div>
-            <p className="text-zinc-500 font-light max-w-xs md:text-right text-sm leading-relaxed">
-              Amazon specialists only. No generalists, no interns managing your account.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-            {TEAM.map((member, i) => (
-              <div
-                key={i}
-                className="group cursor-default"
-                onMouseEnter={() => setHoveredTeam(i)}
-                onMouseLeave={() => setHoveredTeam(null)}
-              >
-                <div className="relative rounded-[24px] overflow-hidden mb-3 sm:mb-4 aspect-[3/4]">
-                  <img
-                    src={member.img}
-                    alt={member.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-                  {/* Hover badge */}
-                  <div className={`absolute bottom-4 left-4 right-4 transition-all duration-500 ${hoveredTeam === i ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}>
-                    <div className="bg-orange-500 text-white text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full inline-block">
-                      {member.years}
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <h4 className="font-black text-zinc-900 uppercase tracking-tight text-sm leading-tight">{member.name}</h4>
-                  <p className="text-zinc-400 text-[10px] font-mono uppercase tracking-widest mt-0.5">{member.role}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ═══════════════════════════════════
           VALUES / PRINCIPLES

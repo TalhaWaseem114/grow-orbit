@@ -23,9 +23,9 @@ const PANELS_LIST = [
   { id: "leads", label: "Lead Pipeline" },
   { id: "users", label: "User Directory" },
   { id: "team", label: "Agency Team" },
+  { id: "invoices", label: "Invoice Manager" },
   { id: "blog", label: "Blog Manager" },
   { id: "newsletter", label: "Newsletter Manager" },
-  { id: "cms", label: "Site Layout (CMS)" },
   { id: "settings", label: "Settings Tab" }
 ];
 
@@ -469,10 +469,10 @@ export default function TeamTab({ users, handleRoleChange, currentUserId, trigge
               <div style={{ fontSize: 9, fontWeight: 700, color: "#404040", textTransform: "uppercase", letterSpacing: "0.08em" }}>Access Templates:</div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                 {[
-                  { label: "Super Admin", panels: ["overview", "leads", "users", "team", "blog", "newsletter", "cms", "settings"] },
-                  { label: "Sales & Pipeline", panels: ["overview", "leads"] },
+                  { label: "Super Admin", panels: ["overview", "leads", "users", "team", "invoices", "blog", "newsletter", "settings"] },
+                  { label: "Sales & Pipeline", panels: ["overview", "leads", "invoices"] },
                   { label: "Content Manager", panels: ["overview", "blog", "newsletter"] },
-                  { label: "Design & Layout", panels: ["overview", "cms"] }
+                  { label: "Finance", panels: ["overview", "invoices"] }
                 ].map(preset => (
                   <button
                     key={preset.label}

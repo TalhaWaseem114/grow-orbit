@@ -8,7 +8,7 @@ import {
 import {
   Briefcase, ChevronRight, Globe, Layout, LogOut, Settings,
   Shield, Users, Zap, ExternalLink, MoreHorizontal, Download,
-  Home, FileText, Mail, HelpCircle
+  Home, FileText, Mail, HelpCircle, Receipt
 } from "lucide-react";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -18,8 +18,6 @@ import Link from "next/link";
 import { db, auth } from "../../firebase/firebaseConfig";
 
 /* Configs and Services */
-import { THEMES, DEFAULT_THEME } from "@/lib/experimentConfig";
-import { fetchExperimentConfig } from "@/lib/experimentService";
 import { calculateLeadScore } from "@/lib/crmHelpers";
 
 /* Tab Subcomponents */
@@ -27,10 +25,10 @@ import OverviewTab from "./components/OverviewTab";
 import LeadsTab from "./components/LeadsTab";
 import UsersTab from "./components/UsersTab";
 import TeamTab from "./components/TeamTab";
-import CmsTab from "./components/CmsTab";
 import SettingsTab from "./components/SettingsTab";
 import BlogManagerTab from "./BlogManagerTab";
 import NewsletterTab from "./components/NewsletterTab";
+import InvoicesTab from "./components/InvoicesTab";
 import ConfirmModal from "./components/ConfirmModal";
 
 /* ─────────────────────────────────────────
@@ -118,15 +116,6 @@ export default function AdminDashboard() {
   const [sourceFilter, setSourceFilter] = useState("all");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
-  /* CMS Theme Builder State variables passed down */
-  const [activeTheme, setActiveTheme] = useState(DEFAULT_THEME);
-  const [liveTheme, setLiveTheme] = useState(DEFAULT_THEME);
-  const [activeSections, setActiveSections] = useState(THEMES[DEFAULT_THEME].defaultSections);
-  const [liveSections, setLiveSections] = useState(THEMES[DEFAULT_THEME].defaultSections);
-  const [themeSaving, setThemeSaving] = useState(false);
-  const [themeSaved, setThemeSaved] = useState(false);
-  const [configExpandedTheme, setConfigExpandedTheme] = useState(null);
-
   /* PWA/Responsive state variables */
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
@@ -146,7 +135,7 @@ export default function AdminDashboard() {
     if (!currentAdminData) return [];
     return Array.isArray(currentAdminData.allowedPanels) && currentAdminData.allowedPanels.length > 0
       ? currentAdminData.allowedPanels
-      : ["overview", "leads", "users", "team", "blog", "newsletter", "cms", "settings"];
+      : ["overview", "leads", "users", "team", "invoices", "blog", "newsletter", "settings"];
   }, [currentAdminData]);
 
   /* Persist active tab selection to localStorage */
@@ -170,20 +159,20 @@ export default function AdminDashboard() {
   /* Authentication Guard */
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {
-      if (!user) { router.push("/login"); return; }
+      if (!user) { router.push("/login/"); return; }
       try {
         const snap = await getDoc(doc(db, "users", user.uid));
-        if (!snap.exists()) { router.push("/login"); return; }
+        if (!snap.exists()) { router.push("/login/"); return; }
         const role = snap.data().role?.trim() || "user";
         if (role === "admin") {
           setCurrentAdminData({ id: snap.id, ...snap.data() });
           setAuthChecking(false);
         } else if (role === "user") {
-          router.push("/client-dashboard");
+          router.push("/client-dashboard/");
         } else {
-          router.push("/login");
+          router.push("/login/");
         }
-      } catch { router.push("/login"); }
+      } catch { router.push("/login/"); }
     });
     return () => unsub();
   }, [router]);
@@ -235,16 +224,6 @@ export default function AdminDashboard() {
         console.warn("Leads fetch restricted by permissions:", e.message);
       }
 
-      // 3. Fetch CMS Configuration
-      try {
-        const { layoutId, activeSections } = await fetchExperimentConfig();
-        setActiveTheme(layoutId);
-        setLiveTheme(layoutId);
-        setActiveSections(activeSections);
-        setLiveSections(activeSections);
-      } catch (e) {
-        console.warn("Experiment Config fetch failed:", e.message);
-      }
 
       setLoading(false);
     };
@@ -351,7 +330,7 @@ export default function AdminDashboard() {
     }
   };
 
-  const handleLogout = async () => { await signOut(auth); router.push("/login"); };
+  const handleLogout = async () => { await signOut(auth); router.push("/login/"); };
 
   const handleDeleteLead = async (id, skipConfirm = false) => {
     const targetLead = leads.find(l => l.id === id);
@@ -730,7 +709,7 @@ export default function AdminDashboard() {
             )}
 
             {/* Management Section */}
-            {(allowedPanels.includes("leads") || allowedPanels.includes("users") || allowedPanels.includes("team")) && (
+            {(allowedPanels.includes("leads") || allowedPanels.includes("users") || allowedPanels.includes("team") || allowedPanels.includes("invoices")) && (
               <>
                 {isSidebarCollapsed ? <div style={{ width: 24, height: 1, background: "rgba(255,255,255,0.06)", margin: "6px auto", borderRadius: 1 }} /> : <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>Management</div>}
                 {allowedPanels.includes("leads") && (
@@ -741,6 +720,9 @@ export default function AdminDashboard() {
                 )}
                 {allowedPanels.includes("team") && (
                   <SidebarItem id="team" label="Agency Team" icon={Shield} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+                )}
+                {allowedPanels.includes("invoices") && (
+                  <SidebarItem id="invoices" label="Invoices" icon={Receipt} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
                 )}
               </>
             )}
@@ -759,15 +741,10 @@ export default function AdminDashboard() {
             )}
 
             {/* System Section */}
-            {(allowedPanels.includes("cms") || allowedPanels.includes("settings")) && (
+            {allowedPanels.includes("settings") && (
               <>
                 {isSidebarCollapsed ? <div style={{ width: 24, height: 1, background: "rgba(255,255,255,0.06)", margin: "6px auto", borderRadius: 1 }} /> : <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>System</div>}
-                {allowedPanels.includes("cms") && (
-                  <SidebarItem id="cms" label="Site Layout" icon={Layout} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
-                )}
-                {allowedPanels.includes("settings") && (
-                  <SidebarItem id="settings" label="Settings" icon={Settings} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
-                )}
+                <SidebarItem id="settings" label="Settings" icon={Settings} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
               </>
             )}
           </nav>
@@ -850,15 +827,15 @@ export default function AdminDashboard() {
               <div style={{
                 fontSize: 9,
                 fontWeight: 800,
-                color: allowedPanels.length === 8 ? "#4ade80" : "#f97316",
-                background: allowedPanels.length === 8 ? "rgba(74,222,128,0.1)" : "rgba(249,115,22,0.1)",
-                border: `1px solid ${allowedPanels.length === 8 ? "rgba(74,222,128,0.2)" : "rgba(249,115,22,0.2)"}`,
+                color: allowedPanels.length === 7 ? "#4ade80" : "#f97316",
+                background: allowedPanels.length === 7 ? "rgba(74,222,128,0.1)" : "rgba(249,115,22,0.1)",
+                border: `1px solid ${allowedPanels.length === 7 ? "rgba(74,222,128,0.2)" : "rgba(249,115,22,0.2)"}`,
                 borderRadius: 8,
                 padding: "4px 8px",
                 textTransform: "uppercase",
                 letterSpacing: "0.08em"
               }}>
-                {allowedPanels.length === 8 ? "Super Admin" : "Limited Access"}
+                {allowedPanels.length === 7 ? "Super Admin" : "Limited Access"}
               </div>
             )}
             {!isMobile && (
@@ -961,22 +938,8 @@ export default function AdminDashboard() {
                 />
               )}
 
-              {activeTab === "cms" && allowedPanels.includes("cms") && (
-                <CmsTab
-                  activeTheme={activeTheme}
-                  setActiveTheme={setActiveTheme}
-                  liveTheme={liveTheme}
-                  setLiveTheme={setLiveTheme}
-                  activeSections={activeSections}
-                  setActiveSections={setActiveSections}
-                  liveSections={liveSections}
-                  setLiveSections={setLiveSections}
-                  themeSaving={themeSaving}
-                  setThemeSaving={setThemeSaving}
-                  themeSaved={themeSaved}
-                  setThemeSaved={setThemeSaved}
-                  configExpandedTheme={configExpandedTheme}
-                  setConfigExpandedTheme={setConfigExpandedTheme}
+              {activeTab === "invoices" && allowedPanels.includes("invoices") && (
+                <InvoicesTab
                   isMobile={isMobile}
                   triggerConfirm={triggerConfirm}
                   logActivity={logActivity}
@@ -1016,7 +979,6 @@ export default function AdminDashboard() {
             { id: "leads", icon: Briefcase, label: "Leads", badge: newLeadsCount },
             { id: "users", icon: Users, label: "Users" },
             { id: "newsletter", icon: Mail, label: "Email" },
-            { id: "cms", icon: Layout, label: "CMS" },
           ].filter(item => allowedPanels.includes(item.id)).map(item => (
             <button
               key={item.id}
@@ -1054,6 +1016,12 @@ export default function AdminDashboard() {
               <button className={`mobile-menu-item ${activeTab === "team" ? "active" : ""}`}
                 onClick={() => { setActiveTab("team"); setMobileMenuOpen(false); }}>
                 <Shield size={18} /> Agency Team
+              </button>
+            )}
+            {allowedPanels.includes("invoices") && (
+              <button className={`mobile-menu-item ${activeTab === "invoices" ? "active" : ""}`}
+                onClick={() => { setActiveTab("invoices"); setMobileMenuOpen(false); }}>
+                <Receipt size={18} /> Invoices
               </button>
             )}
             {allowedPanels.includes("blog") && (

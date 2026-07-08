@@ -269,12 +269,12 @@ export default function BlogPostClient({ post }) {
             <p className="text-sm font-medium text-zinc-600 mb-4">
               Join the conversation! You must be logged in to comment.
             </p>
-            <Link
-              href="/login"
+            <a
+              href="/login/"
               className="inline-flex items-center gap-2 bg-white border border-zinc-200 px-6 py-2 rounded-full text-[11px] font-bold uppercase tracking-widest hover:border-orange-500 hover:text-orange-500 transition-all no-underline text-zinc-700"
             >
               Log In to Comment
-            </Link>
+            </a>
           </div>
         )}
 

@@ -15,8 +15,8 @@ export default function PWARegister() {
       const existing = document.querySelector('link[rel="manifest"]');
       if (existing) existing.remove();
 
-      // UNREGISTER service worker if on main site to remove install icon
-      if ("serviceWorker" in navigator) {
+      // UNREGISTER service worker if on main site to remove install icon (HTTPS only to prevent localhost dev loops)
+      if ("serviceWorker" in navigator && window.location.protocol === "https:") {
         navigator.serviceWorker.getRegistrations().then(registrations => {
           for (let r of registrations) {
             r.unregister();

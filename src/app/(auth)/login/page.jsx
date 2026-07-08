@@ -35,7 +35,7 @@ export default function Login() {
   // EXIT ANIMATION — unchanged
   const navigateToRegister = () => {
     const isMobile = window.innerWidth < 1024;
-    const tl = gsap.timeline({ onComplete: () => router.push("/register") });
+    const tl = gsap.timeline({ onComplete: () => router.push("/register/") });
     tl.to([contentRef.current, darkPanelRef.current], { opacity: 0, y: -10, duration: 0.3 });
     tl.to(whitePanelRef.current, { x: "100%", borderRadius: isMobile ? "0px" : "48px 0px 0px 48px", duration: 0.6, ease: "power2.inOut" });
   };

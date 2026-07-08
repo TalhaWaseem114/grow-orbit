@@ -228,12 +228,12 @@ export default function Navbar() {
         <div className="hidden lg:flex flex-1 items-center justify-end gap-3 xl:gap-4">
           {!user ? (
               <>
-                <Link href="/login" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
+                <a href="/login/" className={`nav-link text-[11px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
                   Sign In
-                </Link>
-                <Link href="/register" prefetch={false} className={`nav-link text-[11px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
+                </a>
+                <a href="/register/" className={`nav-link text-[11px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
                   Register
-                </Link>
+                </a>
                 <Link
                   href="/get-started"
                   prefetch={false}
@@ -393,12 +393,12 @@ export default function Navbar() {
           <div className="pt-3 mt-3 border-t border-gray-100 space-y-2">
             {!user ? (
               <>
-                <Link href="/login" prefetch={false} className="block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest text-gray-700 hover:bg-gray-50 no-underline focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" onClick={closeMobileMenu}>
+                <a href="/login/" className="block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest text-gray-700 hover:bg-gray-50 no-underline focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" onClick={closeMobileMenu}>
                   Sign In
-                </Link>
-                <Link href="/register" prefetch={false} className="block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest text-gray-700 hover:bg-gray-50 no-underline focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" onClick={closeMobileMenu}>
+                </a>
+                <a href="/register/" className="block px-4 py-3 rounded-xl text-[13px] font-bold uppercase tracking-widest text-gray-700 hover:bg-gray-50 no-underline focus-visible:bg-orange-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500" onClick={closeMobileMenu}>
                   Register
-                </Link>
+                </a>
                 <Link
                   href="/get-started"
                   prefetch={false}

@@ -211,9 +211,9 @@ export default function ContactUs() {
                 </div>
                 <div>
                   <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-900">Email</p>
-                  <a href="mailto:support@groworbit.com"
+                  <a href="mailto:support@groworbitofficial.com"
                      className="text-sm font-medium text-orange-500 hover:text-orange-600 transition-colors">
-                    support@groworbit.com
+                    support@groworbitofficial.com
                   </a>
                 </div>
               </div>

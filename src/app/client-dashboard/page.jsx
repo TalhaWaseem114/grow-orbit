@@ -24,7 +24,7 @@ export default function ClientDashboard() {
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (currentUser) => {
       if (!currentUser) {
-        router.push("/login");
+        router.push("/login/");
         return;
       }
       setUser(currentUser);
@@ -66,7 +66,7 @@ export default function ClientDashboard() {
 
   const handleLogout = async () => {
     await signOut(auth);
-    router.push("/login");
+    router.push("/login/");
   };
 
   // Auth checking loading screen
@@ -385,11 +385,11 @@ export default function ClientDashboard() {
 
                 <div className="space-y-3">
                   <a 
-                    href="mailto:support@groworbit.com?subject=Operations Helpdesk Ticket"
+                    href="mailto:support@groworbitofficial.com?subject=Operations Helpdesk Ticket"
                     className="flex items-center justify-center gap-3 w-full py-4 bg-white/[0.02] border border-white/[0.05] rounded-xl text-xs font-bold uppercase tracking-widest text-white transition-all duration-300 hover:border-orange-500/20 hover:bg-orange-500/5 no-underline"
                   >
                     <Mail size={12} className="text-orange-500" />
-                    <span>support@groworbit.com</span>
+                    <span>support@groworbitofficial.com</span>
                   </a>
                   
                   <a 

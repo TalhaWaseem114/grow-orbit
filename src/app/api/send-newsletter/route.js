@@ -24,12 +24,13 @@ function generateEmailHtml({ subject, headerImage, headline, body }) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${subject}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       padding: 0;
       background-color: #f6f9fc;
-      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       color: #333333;
     }
@@ -129,7 +130,7 @@ function generateEmailHtml({ subject, headerImage, headline, body }) {
         <div class="body-text">${formattedBody}</div>
         
         <div class="cta-container">
-          <a href="${siteUrl}/get-started/book-meeting" class="cta-button" target="_blank">Book a Strategy Call</a>
+          <a href="${siteUrl}/get-started/#lead-form" class="cta-button" target="_blank">Book a Strategy Call</a>
         </div>
         
         <hr class="divider">

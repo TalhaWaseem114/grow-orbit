@@ -626,6 +626,122 @@ const TEMPLATES = [
     </div>
   </div>
 </div>`
+  },
+  {
+    id: "proposal",
+    label: "Custom Proposal",
+    emoji: "📄",
+    color: "#f97316",
+    bg: "rgba(249,115,22,0.06)",
+    border: "rgba(249,115,22,0.15)",
+    icon: Mail,
+    description: "Send pitch proposal to client",
+    subject: "Your Custom Growth & Amazon Scale Proposal 🚀",
+    headerImage: "/logo.png",
+    headline: "Your Tailored Brand Growth Proposal",
+    body: `<!-- HIDE_DEFAULT_CTA -->
+<!-- NEUMORPHIC_THEME -->
+<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi,</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+  It was great connecting on our recent call. Following our discussion where you walked us through your two products, our research team did a deep dive into <strong>Kadilo's Amazon presence</strong>, your competitors, and the market. What we uncovered was even more interesting than we expected.
+</p>
+
+<!-- Glassmorphic Metric Banner -->
+<div style="background-color: #f8fafc; border: 3px solid #ffffff; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.015);">
+  <div style="font-size: 10px; font-weight: 800; color: #ef4444; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">Category Revenue Opportunity</div>
+  <div style="font-size: 28px; font-weight: 900; color: #0f172a; letter-spacing: -0.03em;">Over $10.6M / Month</div>
+  <div style="font-size: 12px; color: #64748b; margin-top: 6px; font-weight: 500;">
+    $9.1M Scented Candles listings &bull; $1.5M Incense Sticks listings
+  </div>
+</div>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+  Over <strong style="color: #f97316; font-weight: 800;">$10.6M</strong> flows through your product categories every month, yet we identified several opportunities that could help Kadilo capture a much larger share of that demand.
+</p>
+
+<!-- Gaps Section Header (Pill Badge) -->
+<div style="text-align: left; margin-bottom: 22px;">
+  <div style="font-size: 10px; font-weight: 800; color: #ea580c; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; background-color: rgba(249, 115, 22, 0.08); border-radius: 20px; display: inline-block; border: 1px solid rgba(249, 115, 22, 0.18);">
+    ⚡ Priority Gaps to Target
+  </div>
+</div>
+
+<!-- List Structure -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 28px;">
+  <!-- Row 1 -->
+  <tr>
+    <td style="padding-bottom: 18px; vertical-align: top; width: 45px;">
+      <!-- Glass Bullet -->
+      <div style="background-color: rgba(255, 255, 255, 0.75); border: 1px solid rgba(255, 255, 255, 0.9); width: 28px; height: 28px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02); text-align: center; line-height: 26px; font-weight: bold; color: #f97316; font-size: 12px;">
+        1
+      </div>
+    </td>
+    <td style="padding-bottom: 18px; padding-top: 3px; vertical-align: top;">
+      <strong style="color: #1e293b;">Keyword Discoverability:</strong> Dominating high-volume search terms for ASINs B0H4NWP31Q & B0G62KPDVF to capture lost market share.
+    </td>
+  </tr>
+  <!-- Row 2 -->
+  <tr>
+    <td style="padding-bottom: 18px; vertical-align: top; width: 45px;">
+      <div style="background-color: rgba(255, 255, 255, 0.75); border: 1px solid rgba(255, 255, 255, 0.9); width: 28px; height: 28px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02); text-align: center; line-height: 26px; font-weight: bold; color: #f97316; font-size: 12px;">
+        2
+      </div>
+    </td>
+    <td style="padding-bottom: 18px; padding-top: 3px; vertical-align: top;">
+      <strong style="color: #1e293b;">A+ Brand Story:</strong> Upgrading the visual narrative to lock in conversions once shoppers land on your page.
+    </td>
+  </tr>
+  <!-- Row 3 -->
+  <tr>
+    <td style="vertical-align: top; width: 45px;">
+      <div style="background-color: rgba(255, 255, 255, 0.75); border: 1px solid rgba(255, 255, 255, 0.9); width: 28px; height: 28px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02); text-align: center; line-height: 26px; font-weight: bold; color: #f97316; font-size: 12px;">
+        3
+      </div>
+    </td>
+    <td style="padding-top: 3px; vertical-align: top;">
+      <strong style="color: #1e293b;">Persuasive Imagery:</strong> Designing custom, high-converting infographics tailored for mobile shoppers across all variations.
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+  Instead of sending a generic proposal, we prepared a <strong style="color: #0f172a;">personalized Growth Blueprint</strong> outlining our findings, the gaps we identified, and the strategy we'd recommend if Kadilo were our own brand.
+</p>
+
+<!-- Glass Attachment Box -->
+<a href="https://drive.google.com/file/d/1avAPVaDAQva217UPYlCbE72dx_TD8uDA/view?usp=drive_link" target="_blank" style="display: block; text-decoration: none; background-color: rgba(255, 255, 255, 0.55); border: 1.5px dashed rgba(249, 115, 22, 0.25); border-radius: 16px; padding: 20px 24px; margin-bottom: 24px; text-align: center; box-shadow: 0 8px 24px rgba(249, 115, 22, 0.02); transition: all 0.2s ease;">
+  <span style="font-size: 14px; font-weight: 800; color: #0f172a; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    <span style="font-size: 18px; vertical-align: middle; margin-right: 10px;">📄</span> Open Detailed Growth Blueprint (PDF)
+  </span>
+</a>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+  Rather than spoiling everything here, I'll let the report speak for itself.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+  If it resonates with you, I'd be happy to walk you through the strategy and answer any questions on a quick call.
+</p>
+
+<!-- Orange Glass CTA Button -->
+<div style="text-align: center; margin-bottom: 28px;">
+  <a href="https://www.groworbitofficial.com/get-started/#lead-form" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #ffffff !important; padding: 15px 35px; border-radius: 50px; font-size: 13px; font-weight: 800; text-decoration: none; box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25); border: 1px solid rgba(255, 255, 255, 0.1); text-transform: uppercase; letter-spacing: 0.06em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    🗓️ Book a Strategy Call
+  </a>
+</div>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+  Looking forward to hearing your thoughts.
+</p>
+
+<!-- Soft Divider line -->
+<div style="height: 1px; background-color: rgba(15, 23, 42, 0.06); margin: 30px 0 24px 0; border-radius: 1px;"></div>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 0;">
+  Warm regards,<br />
+  <strong style="color: #0f172a; font-size: 16px;">The Grow <span style="color: #f97316;">Orbit</span> Team</strong>
+</p>`,
   }
 ];
 
@@ -657,30 +773,49 @@ export default function NewsletterTab({ isMobile }) {
       : `${siteUrl}${logoUrl.startsWith("/") ? "" : "/"}${logoUrl}`;
 
     const isDark = bodyText.includes("<!-- DARK_THEME -->");
-    const containerBg = isDark ? "#0A0A0B" : "#ffffff";
-    const outerBg = isDark ? "#050506" : "#f8fafc";
-    const borderColor = isDark ? "#27272a" : "#e2e8f0";
-    const h1Color = isDark ? "#ffffff" : "#0F172A";
+    const isNeumorphic = bodyText.includes("<!-- NEUMORPHIC_THEME -->");
+    
+    let containerBg = "#ffffff";
+    let outerBg = "#f8fafc";
+    let borderColor = "#e2e8f0";
+    let h1Color = "#0F172A";
+    let containerShadow = "0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)";
 
-    const rawHtml = `<!DOCTYPE html>
+    if (isDark) {
+      containerBg = "#0A0A0B";
+      outerBg = "#050506";
+      borderColor = "#27272a";
+      h1Color = "#ffffff";
+    } else if (isNeumorphic) {
+      containerBg = "#f0f4f8";
+      outerBg = "#e2ebf5";
+      borderColor = "transparent";
+      h1Color = "#0f172a";
+      containerShadow = "9px 9px 18px #cbd5e1, -9px -9px 18px #ffffff";
+    }
+
+    const hideDefaultCta = bodyText.includes("<!-- HIDE_DEFAULT_CTA -->");
+    const hideHeader = bodyText.includes("<!-- HIDE_HEADER -->");
+
+    return `<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       padding: 0;
       background-color: ${outerBg};
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       color: ${isDark ? "#ffffff" : "#333333"};
     }
     @media only screen and (max-width: 600px) {
       .email-container {
         width: 100% !important;
-        border-radius: 0 !important;
-        border: none !important;
+        ${isNeumorphic ? "" : "border-radius: 0 !important; border: none !important;"}
       }
       .email-body {
         padding: 24px 16px !important;
@@ -689,29 +824,51 @@ export default function NewsletterTab({ isMobile }) {
   </style>
 </head>
 <body style="margin: 0; padding: 0; background-color: ${outerBg};">
-  <div style="width: 100%; background-color: ${outerBg}; padding: 24px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <div class="email-container" style="max-width: 600px; margin: 0 auto; background-color: ${containerBg}; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); border: 1px solid ${borderColor};">
+  <div style="width: 100%; background-color: ${outerBg}; padding: 24px 20px; box-sizing: border-box; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <div class="email-container" style="max-width: 600px; margin: 0 auto; background-color: ${containerBg}; border-radius: 24px; overflow: hidden; box-shadow: ${containerShadow}; ${isNeumorphic ? "border-top: 2px solid #ffffff; border-left: 2px solid #ffffff; border-bottom: 3px solid #cbd5e1; border-right: 3px solid #cbd5e1;" : `border: 1px solid ${borderColor};`}">
       <!-- Header -->
-      <div style="background-color: #0A0A0B; padding: 24px 20px; text-align: center; border-bottom: 2px solid ${isDark ? "#27272a" : "#f97316"};">
-        ${absoluteLogoUrl ? `<img src="${absoluteLogoUrl}" alt="Grow Orbit" style="max-height: 40px; max-width: 80%; object-fit: contain; display: inline-block;">` : `<h2 style="font-size: 20px; font-weight: 800; color: #ffffff; letter-spacing: 0.08em; text-transform: uppercase; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">GROW <span style="color:#f97316">ORBIT</span></h2>`}
+      ${hideHeader ? "" : `
+      <div style="background: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 50%, #050505 100%); padding: 32px 24px; text-align: center; border-bottom: 3px solid #f97316; border-top-left-radius: 24px; border-top-right-radius: 24px;">
+        <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto; border-collapse: collapse;">
+          <tr>
+            <td valign="middle" style="padding-right: 16px;">
+              <img src="${absoluteLogoUrl}" alt="Grow Orbit" style="max-height: 52px; display: block;" />
+            </td>
+            <td valign="middle" style="text-align: left; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+              <div style="font-size: 26px; font-weight: 900; line-height: 1; letter-spacing: 0.03em; color: #ffffff;">
+                GROW <span style="color: #f97316;">ORBIT</span>
+              </div>
+              <div style="font-size: 8px; font-weight: 700; color: #a1a1aa; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 6px; line-height: 1.2;">
+                WE RANK. YOU SELL. IT'S THAT SIMPLE.
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
+      `}
       <!-- Body -->
       <div class="email-body" style="padding: 36px 32px; background-color: ${containerBg}; text-align: left;">
-        ${headText ? `<h1 style="font-size: 22px; font-weight: 800; color: ${h1Color}; margin-top: 0; margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${headText}</h1>` : ""}
-        <div style="font-size: 15px; color: ${isDark ? "#e4e4e7" : "#334155"}; line-height: 1.6; margin-bottom: 28px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${formattedBody}</div>
+        ${headText ? `<h1 style="font-size: 22px; font-weight: 800; color: ${h1Color}; margin-top: 0; margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${headText}</h1>` : ""}
+        <div style="font-size: 15px; color: ${isDark ? "#e4e4e7" : "#334155"}; line-height: 1.6; margin-bottom: 28px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${formattedBody}</div>
         
         <!-- CTA -->
+        ${hideDefaultCta ? "" : `
         <div style="text-align: center; margin: 32px 0 12px;">
-          <a href="${siteUrl}/get-started/book-meeting" style="background-color: #f97316; color: #ffffff !important; padding: 14px 32px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; display: inline-block; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25); text-transform: uppercase; letter-spacing: 0.05em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" target="_blank">Book a Strategy Call</a>
+          <a href="${siteUrl}/get-started/#lead-form" style="background-color: #f97316; color: #ffffff !important; padding: 14px 32px; border-radius: 8px; font-size: 14px; font-weight: 700; text-decoration: none; display: inline-block; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.25); text-transform: uppercase; letter-spacing: 0.05em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;" target="_blank">Book a Strategy Call</a>
         </div>
+        `}
         
         <hr style="border: 0; border-top: 1px solid ${borderColor}; margin: 36px 0 24px 0;">
         
         <!-- Footer -->
         <div style="text-align: center; color: #94a3b8; font-size: 11px; line-height: 1.6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
           <p style="font-weight: 700; color: ${isDark ? "#a1a1aa" : "#64748B"}; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0; margin-bottom: 4px;">Grow Orbit Agency</p>
-          <p style="margin: 0; color: ${isDark ? "#71717a" : "#94A3B8"};">Premium growth strategies, graphic designs, and PPC consulting.</p>
-          <p style="margin: 4px 0 0; color: ${isDark ? "#71717a" : "#94A3B8"};">123 Commerce St, Suite 100, New York, NY</p>
+          <p style="margin: 0; color: ${isDark ? "#71717a" : "#94A3B8"};">
+            support@groworbitofficial.com &middot; +1 (912) 820-5916
+          </p>
+          <p style="margin: 4px 0 0; color: ${isDark ? "#71717a" : "#94A3B8"};">
+            2583 Lundigan Dr, Mississauga, ON L5J 3W2, Canada
+          </p>
         </div>
       </div>
     </div>

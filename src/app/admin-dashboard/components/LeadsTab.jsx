@@ -10,8 +10,10 @@ import {
 import KanbanBoard from "./KanbanBoard";
 import CrmDocumentationModal from "./CrmDocumentationModal";
 import { calculateLeadScore, getScoreCategory, calculateLeadPriority } from "@/lib/crmHelpers";
-import { db } from "../../../firebase/firebaseConfig";
+import { db, auth } from "../../../firebase/firebaseConfig";
 import { collection, query, where, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore";
+import ContractWorkspaceModal from "./ContractWorkspaceModal";
+import { Loader } from "lucide-react";
 
 /* ─────────────────────────────────────────
    CONFIGS & HELPERS
@@ -34,6 +36,17 @@ const PRIORITY_CONFIG = {
   high:   { label: "High Priority", color: "#ef4444", bg: "rgba(239,68,68,0.12)",  border: "rgba(239,68,68,0.25)" },
   medium: { label: "Medium",        color: "#f97316", bg: "rgba(249,115,22,0.12)",  border: "rgba(249,115,22,0.25)" },
   low:    { label: "Low",           color: "#3b82f6", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.25)" },
+};
+
+const CONTRACT_STATUS_CONFIG = {
+  draft: { label: "Draft", color: "#71717a", bg: "rgba(113,113,122,0.15)", border: "rgba(113,113,122,0.25)" },
+  awaiting_review: { label: "Awaiting Review", color: "#f97316", bg: "rgba(249,115,22,0.15)", border: "rgba(249,115,22,0.25)" },
+  awaiting_signature: { label: "Awaiting Signature", color: "#eab308", bg: "rgba(234,179,8,0.15)", border: "rgba(234,179,8,0.25)" },
+  viewed: { label: "Viewed 👁️", color: "#3b82f6", bg: "rgba(59,130,246,0.15)", border: "rgba(59,130,246,0.25)" },
+  signed: { label: "Signed ✍️", color: "#22c55e", bg: "rgba(34,197,94,0.15)", border: "rgba(34,197,94,0.25)" },
+  expired: { label: "Expired ⏳", color: "#ef4444", bg: "rgba(239,68,68,0.15)", border: "rgba(239,68,68,0.25)" },
+  void: { label: "Voided 🚫", color: "#64748b", bg: "rgba(100,116,139,0.15)", border: "rgba(100,116,139,0.25)" },
+  completed: { label: "Completed 🎉", color: "#10b981", bg: "rgba(16,185,129,0.15)", border: "rgba(16,185,129,0.25)" }
 };
 
 const fmt = d => d?.toDate ? d.toDate().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—";
@@ -86,6 +99,80 @@ function LeadDetailPanel({
   const [estValue, setEstValue] = useState(lead.estimatedDealValue || "");
   const [retainer, setRetainer] = useState(lead.monthlyRetainer || "");
   const [winProb, setWinProb] = useState(lead.winProbability || "");
+
+  // Contract states
+  const [contracts, setContracts] = useState([]);
+  const [loadingContracts, setLoadingContracts] = useState(false);
+  const [activeContract, setActiveContract] = useState(null);
+  const [showWorkspace, setShowWorkspace] = useState(false);
+
+  const fetchContracts = async () => {
+    if (!lead.id) return;
+    setLoadingContracts(true);
+    try {
+      const res = await fetch(`/api/contracts?leadId=${lead.id}`);
+      const data = await res.json();
+      if (data.success) {
+        setContracts(data.contracts);
+      }
+    } catch (err) {
+      console.warn("Failed to load lead contracts:", err);
+    } finally {
+      setLoadingContracts(false);
+    }
+  };
+
+  useEffect(() => {
+    setContracts([]);
+    fetchContracts();
+  }, [lead.id]);
+
+  const handleGenerateNewContract = async () => {
+    if (!lead.id) return;
+    setLoadingContracts(true);
+    try {
+      // Fetch default templates to get body
+      const tempRes = await fetch("/api/contracts/templates");
+      const tempData = await tempRes.json();
+      const defaultBody = tempData.templates?.[0]?.body || "";
+
+      // Post draft creation
+      const res = await fetch("/api/contracts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          leadId: lead.id,
+          clientName: lead.fullName || "N/A",
+          companyName: lead.company || lead.website || "",
+          clientEmail: lead.email || "",
+          clientPhone: lead.whatsapp || "",
+          requestedService: lead.requestedService || "",
+          monthlyRetainer: Number(lead.monthlyRetainer) || 0,
+          termLength: "Month-to-month",
+          paymentTerms: "Net 15",
+          templateBody: defaultBody,
+          expirationDays: "none"
+        })
+      });
+      
+      const data = await res.json();
+      if (data.success) {
+        alert("New contract draft generated successfully!");
+        fetchContracts();
+        setActiveContract(data.contract);
+        setShowWorkspace(true);
+        if (logActivity) {
+          logActivity("CREATE_CONTRACT", `Generated contract ${data.contract.contractNumber} for lead "${lead.fullName}".`);
+        }
+      } else {
+        alert("Failed to generate contract: " + data.error);
+      }
+    } catch (err) {
+      alert("Failed to generate contract: " + err.message);
+    } finally {
+      setLoadingContracts(false);
+    }
+  };
 
   useEffect(() => {
     setEstValue(lead.estimatedDealValue || "");
@@ -401,6 +488,76 @@ function LeadDetailPanel({
             </div>
           </div>
 
+          {/* Contract Summary Card Widget */}
+          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span>Digital Contracts</span>
+              {loadingContracts && <Loader size={10} className="animate-spin text-zinc-500" />}
+            </div>
+            
+            {contracts.length === 0 ? (
+              <div>
+                <div style={{ fontSize: 10, color: "#525252", fontStyle: "italic", marginBottom: 8 }}>No contracts drafted yet.</div>
+                <button
+                  type="button"
+                  onClick={handleGenerateNewContract}
+                  style={{ width: "100%", background: "#f97316", color: "#fff", border: "none", borderRadius: 8, padding: "6px 12px", fontSize: 10, fontWeight: 800, cursor: "pointer", textTransform: "uppercase" }}
+                >
+                  Generate Contract
+                </button>
+              </div>
+            ) : (
+              <div>
+                {contracts.map(contract => {
+                  const statusCfg = CONTRACT_STATUS_CONFIG[contract.status] || CONTRACT_STATUS_CONFIG.draft;
+                  const expiresStr = contract.expiresAt 
+                    ? new Date(contract.expiresAt.toDate ? contract.expiresAt.toDate() : contract.expiresAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+                    : "Never";
+                  return (
+                    <div key={contract.id} style={{ display: "flex", flexDirection: "column", gap: 8, background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 8, padding: "10px", marginBottom: 6 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span style={{ fontSize: 11, fontWeight: 800, color: "#fff" }}>{contract.contractNumber}</span>
+                        <span style={{ fontSize: 8, fontWeight: 900, textTransform: "uppercase", color: statusCfg.color, background: statusCfg.bg, border: `1px solid ${statusCfg.border}`, padding: "2px 6px", borderRadius: 4 }}>
+                          {statusCfg.label}
+                        </span>
+                      </div>
+                      
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", fontSize: 9, color: "#737373" }}>
+                        <div>Created: <span style={{ color: "#fff", fontWeight: 600 }}>{fmt(contract.createdAt)}</span></div>
+                        <div>Expires: <span style={{ color: "#fff", fontWeight: 600 }}>{expiresStr}</span></div>
+                        <div>Viewed: <span style={{ color: "#fff", fontWeight: 600 }}>{contract.analytics?.viewsCount > 0 ? "Yes" : "No"}</span></div>
+                        <div>Signed: <span style={{ color: "#fff", fontWeight: 600 }}>{contract.status === "signed" ? "Yes" : "No"}</span></div>
+                      </div>
+
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setActiveContract(contract);
+                          setShowWorkspace(true);
+                        }}
+                        style={{ width: "100%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#fff", borderRadius: 6, padding: "5px 10px", fontSize: 9, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+                      >
+                        Manage Agreement
+                      </button>
+                    </div>
+                  );
+                })}
+                
+                <button
+                  type="button"
+                  onClick={handleGenerateNewContract}
+                  style={{ width: "100%", background: "none", border: "1.5px dashed rgba(255,255,255,0.1)", color: "#a3a3a3", borderRadius: 8, padding: "6px 12px", fontSize: 9, fontWeight: 800, cursor: "pointer", transition: "all 0.2s", marginTop: 4 }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#f97316'; e.currentTarget.style.color = '#fff'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#a3a3a3'; }}
+                >
+                  + Create New Version/Draft
+                </button>
+              </div>
+            )}
+          </div>
+
           {/* Tasks Checklist Widget */}
           <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
             <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Actionable Tasks</div>
@@ -521,6 +678,17 @@ function LeadDetailPanel({
           </div>
         </div>
       </div>
+      {showWorkspace && activeContract && (
+        <ContractWorkspaceModal
+          contract={activeContract}
+          onClose={() => {
+            setShowWorkspace(false);
+            setActiveContract(null);
+            fetchContracts();
+          }}
+          onRefreshLeads={fetchContracts}
+        />
+      )}
     </div>
   );
 }

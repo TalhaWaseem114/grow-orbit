@@ -138,6 +138,19 @@ function InvoiceForm({ invoice, allInvoices, clients, onSave, onCancel, currentA
   const [showClientSuggestions, setShowClientSuggestions] = useState(false);
   const clientInputRef = useRef(null);
 
+  // Sync settings dynamically once they are loaded from Firestore if creating a new invoice
+  useEffect(() => {
+    if (!isEdit && invoiceSettings) {
+      setForm(prev => ({
+        ...prev,
+        taxRate: prev.taxRate || invoiceSettings.defaultTaxRate || 0,
+        notes: prev.notes === "Payment Details:\nBank Name: \nAccount Name: \nAccount Number: \nRouting/SWIFT: \n\nPayment is due within 30 days of the invoice date. Please include the invoice number with your payment."
+          ? (invoiceSettings.defaultNotes || prev.notes)
+          : prev.notes
+      }));
+    }
+  }, [invoiceSettings, isEdit]);
+
   const filteredClients = useMemo(() => {
     if (!form.clientName.trim()) return clients;
     const q = form.clientName.toLowerCase();
@@ -487,22 +500,77 @@ function InvoiceForm({ invoice, allInvoices, clients, onSave, onCancel, currentA
         }}>
           Cancel
         </button>
-        <button onClick={() => handleSave("draft")} disabled={saving} style={{
-          padding: "12px 24px", borderRadius: 12, background: "rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: 11,
-          fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", cursor: "pointer",
-        }}>
-          {saving ? "Saving..." : "Save as Draft"}
-        </button>
-        <button onClick={() => handleSave("sent")} disabled={saving} style={{
-          padding: "12px 24px", borderRadius: 12, background: "linear-gradient(135deg, #f97316, #ea580c)",
-          border: "none", color: "#fff", fontSize: 11, fontWeight: 800, textTransform: "uppercase",
-          letterSpacing: "0.1em", cursor: "pointer", boxShadow: "0 4px 15px rgba(249,115,22,0.3)",
-        }}>
-          <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <Send size={13} /> {saving ? "Saving..." : (isEdit ? "Save & Send" : "Create & Send")}
-          </span>
-        </button>
+
+        {isEdit ? (
+          // EDIT MODE BUTTONS
+          invoice.status === "draft" ? (
+            <>
+              <button onClick={() => handleSave("draft")} disabled={saving} style={{
+                padding: "12px 24px", borderRadius: 12, background: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: 11,
+                fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", cursor: "pointer",
+              }}>
+                {saving ? "Saving..." : "Save Draft"}
+              </button>
+              <button onClick={() => handleSave("sent")} disabled={saving} style={{
+                padding: "12px 24px", borderRadius: 12, background: "linear-gradient(135deg, #f97316, #ea580c)",
+                border: "none", color: "#fff", fontSize: 11, fontWeight: 800, textTransform: "uppercase",
+                letterSpacing: "0.1em", cursor: "pointer", boxShadow: "0 4px 15px rgba(249,115,22,0.3)",
+              }}>
+                <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Send size={13} /> {saving ? "Saving..." : "Save & Send"}
+                </span>
+              </button>
+            </>
+          ) : invoice.status === "sent" ? (
+            <>
+              <button onClick={() => handleSave("sent")} disabled={saving} style={{
+                padding: "12px 24px", borderRadius: 12, background: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: 11,
+                fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", cursor: "pointer",
+              }}>
+                {saving ? "Saving..." : "Save Changes"}
+              </button>
+              <button onClick={() => handleSave("paid")} disabled={saving} style={{
+                padding: "12px 24px", borderRadius: 12, background: "linear-gradient(135deg, #22c55e, #16a34a)",
+                border: "none", color: "#fff", fontSize: 11, fontWeight: 800, textTransform: "uppercase",
+                letterSpacing: "0.1em", cursor: "pointer", boxShadow: "0 4px 15px rgba(34,197,94,0.3)",
+              }}>
+                <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <CheckCircle2 size={13} /> {saving ? "Saving..." : "Mark Paid & Save"}
+                </span>
+              </button>
+            </>
+          ) : (
+            <button onClick={() => handleSave(invoice.status)} disabled={saving} style={{
+              padding: "12px 24px", borderRadius: 12, background: "linear-gradient(135deg, #f97316, #ea580c)",
+              border: "none", color: "#fff", fontSize: 11, fontWeight: 800, textTransform: "uppercase",
+              letterSpacing: "0.1em", cursor: "pointer", boxShadow: "0 4px 15px rgba(249,115,22,0.3)",
+            }}>
+              {saving ? "Saving..." : "Save Changes"}
+            </button>
+          )
+        ) : (
+          // NEW INVOICE MODE BUTTONS
+          <>
+            <button onClick={() => handleSave("draft")} disabled={saving} style={{
+              padding: "12px 24px", borderRadius: 12, background: "rgba(255,255,255,0.06)",
+              border: "1px solid rgba(255,255,255,0.1)", color: "#fff", fontSize: 11,
+              fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", cursor: "pointer",
+            }}>
+              {saving ? "Saving..." : "Save as Draft"}
+            </button>
+            <button onClick={() => handleSave("sent")} disabled={saving} style={{
+              padding: "12px 24px", borderRadius: 12, background: "linear-gradient(135deg, #f97316, #ea580c)",
+              border: "none", color: "#fff", fontSize: 11, fontWeight: 800, textTransform: "uppercase",
+              letterSpacing: "0.1em", cursor: "pointer", boxShadow: "0 4px 15px rgba(249,115,22,0.3)",
+            }}>
+              <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Send size={13} /> {saving ? "Saving..." : "Create & Send"}
+              </span>
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
@@ -1267,7 +1335,129 @@ export default function InvoicesTab({ isMobile, triggerConfirm, logActivity }) {
       )}
 
       {/* Preview Modal */}
-      {previewInvoice && <InvoicePrintPreview invoice={previewInvoice} onClose={() => setPreviewInvoice(null)} />}
+      {previewInvoice && <InvoicePrintPreview invoice={previewInvoice} onClose={() => setPreviewInvoice(null)} invoiceSettings={invoiceSettings} />}
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <InvoiceSettingsModal
+          onClose={() => setShowSettings(false)}
+          settings={invoiceSettings}
+          setSettings={setInvoiceSettings}
+        />
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   INVOICE SETTINGS MODAL
+───────────────────────────────────────── */
+function InvoiceSettingsModal({ onClose, settings, setSettings }) {
+  const [saving, setSaving] = useState(false);
+  const [form, setForm] = useState(settings || {
+    companyName: GROW_ORBIT_INFO.name,
+    tagline: GROW_ORBIT_INFO.tagline,
+    address: GROW_ORBIT_INFO.address,
+    email: GROW_ORBIT_INFO.email,
+    website: GROW_ORBIT_INFO.website,
+    defaultTaxRate: 0,
+    defaultNotes: "Payment Details:\nBank Name: \nAccount Name: \nAccount Number: \nRouting/SWIFT: \n\nPayment is due within 30 days of the invoice date. Please include the invoice number with your payment.",
+  });
+
+  // Ensure fields match dynamic settings when component mounts or settings update
+  useEffect(() => {
+    if (settings) {
+      setForm(prev => ({
+        companyName: settings.companyName || GROW_ORBIT_INFO.name,
+        tagline: settings.tagline || GROW_ORBIT_INFO.tagline,
+        address: settings.address || GROW_ORBIT_INFO.address,
+        email: settings.email || GROW_ORBIT_INFO.email,
+        website: settings.website || GROW_ORBIT_INFO.website,
+        defaultTaxRate: settings.defaultTaxRate ?? 0,
+        defaultNotes: settings.defaultNotes || "Payment Details:\nBank Name: \nAccount Name: \nAccount Number: \nRouting/SWIFT: \n\nPayment is due within 30 days of the invoice date. Please include the invoice number with your payment.",
+      }));
+    }
+  }, [settings]);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await setDoc(doc(db, "settings", "invoiceSettings"), form);
+      setSettings(form);
+      onClose();
+    } catch (e) {
+      console.error(e);
+      alert("Failed to save settings");
+    }
+    setSaving(false);
+  };
+
+  const inputStyle = {
+    width: "100%", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)",
+    borderRadius: 10, padding: "10px 14px", color: "#fff", fontSize: 12, fontWeight: 500,
+    outline: "none", fontFamily: "'Montserrat', sans-serif", transition: "border-color 0.2s",
+  };
+  const labelStyle = {
+    fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase",
+    letterSpacing: "0.15em", marginBottom: 6, display: "block",
+  };
+
+  return (
+    <div style={{
+      position: "fixed", inset: 0, zIndex: 1000, background: "rgba(0,0,0,0.85)",
+      backdropFilter: "blur(8px)", display: "flex", alignItems: "center", justifyContent: "center", padding: 20
+    }}>
+      <div style={{ background: "#111", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, width: "100%", maxWidth: 600, padding: 32, boxShadow: "0 20px 60px rgba(0,0,0,0.5)" }}>
+        <h2 style={{ fontSize: 18, fontWeight: 900, color: "#fff", marginBottom: 24, letterSpacing: "-0.02em" }}>Invoice Settings</h2>
+        
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+          <div>
+            <label style={labelStyle}>Company Name</label>
+            <input style={inputStyle} value={form.companyName} onChange={e => setForm(p => ({...p, companyName: e.target.value}))} />
+          </div>
+          <div>
+            <label style={labelStyle}>Tagline</label>
+            <input style={inputStyle} value={form.tagline} onChange={e => setForm(p => ({...p, tagline: e.target.value}))} />
+          </div>
+          <div style={{ gridColumn: "1 / -1" }}>
+            <label style={labelStyle}>Address</label>
+            <input style={inputStyle} value={form.address} onChange={e => setForm(p => ({...p, address: e.target.value}))} />
+          </div>
+          <div>
+            <label style={labelStyle}>Email</label>
+            <input style={inputStyle} value={form.email} onChange={e => setForm(p => ({...p, email: e.target.value}))} />
+          </div>
+          <div>
+            <label style={labelStyle}>Website</label>
+            <input style={inputStyle} value={form.website} onChange={e => setForm(p => ({...p, website: e.target.value}))} />
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 16 }}>
+          <div>
+            <label style={labelStyle}>Default Tax Rate (%)</label>
+            <input type="number" step="0.1" style={{ ...inputStyle, width: 120 }} value={form.defaultTaxRate} onChange={e => setForm(p => ({...p, defaultTaxRate: Number(e.target.value) || 0}))} />
+          </div>
+          <div>
+            <label style={labelStyle}>Default Notes & Payment Details</label>
+            <textarea style={{ ...inputStyle, minHeight: 120, resize: "vertical", lineHeight: 1.6 }} value={form.defaultNotes} onChange={e => setForm(p => ({...p, defaultNotes: e.target.value}))} />
+          </div>
+        </div>
+
+        <div style={{ display: "flex", gap: 12, justifyContent: "flex-end", marginTop: 32 }}>
+          <button onClick={onClose} disabled={saving} style={{
+            padding: "10px 20px", borderRadius: 10, background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)",
+            color: "#fff", cursor: "pointer", fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em"
+          }}>Cancel</button>
+          <button onClick={handleSave} disabled={saving} style={{
+            padding: "10px 20px", borderRadius: 10, background: "linear-gradient(135deg, #f97316, #ea580c)", border: "none",
+            color: "#fff", cursor: "pointer", fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em",
+            display: "flex", alignItems: "center", gap: 8
+          }}>
+            <Save size={14} /> {saving ? "Saving..." : "Save Settings"}
+          </button>
+        </div>
+      </div>
     </div>
   );
 }

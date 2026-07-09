@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Mail, Image as ImageIcon, LayoutTemplate, UploadCloud, RotateCcw, Copy, Eye, Palette, ShoppingCart, BarChart3, Sparkles, Smartphone, Monitor } from "lucide-react";
+import { Mail, Image as ImageIcon, LayoutTemplate, UploadCloud, RotateCcw, Copy, Eye, Palette, ShoppingCart, BarChart3, Sparkles, Smartphone, Monitor, Calendar } from "lucide-react";
 import { auth } from "@/firebase/firebaseConfig";
 
 // ─── Template Data ────────────────────────────────────────────
@@ -742,6 +742,67 @@ const TEMPLATES = [
   Warm regards,<br />
   <strong style="color: #0f172a; font-size: 16px;">The Grow <span style="color: #f97316;">Orbit</span> Team</strong>
 </p>`,
+  },
+  {
+    id: "meetingBooking",
+    label: "Meeting Booking",
+    emoji: "🗓️",
+    color: "#f97316",
+    bg: "rgba(249,115,22,0.06)",
+    border: "rgba(249,115,22,0.15)",
+    icon: Calendar,
+    description: "Confirm meeting & timezone",
+    subject: "Meeting Schedule Confirmation — Grow Orbit 🗓️",
+    headerImage: "/logo.png",
+    headline: "Meeting Schedule Confirmation",
+    body: `<!-- HIDE_DEFAULT_CTA -->
+<!-- NEUMORPHIC_THEME -->
+<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi,</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+  Thank you for your email.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+  <strong>2:00 PM</strong> works well for me. Could you please let me know which time zone you're referring to? That way, I can adjust the meeting time accordingly on my end.
+</p>
+
+<!-- Interactive Calendar Ticket Card -->
+<div style="background-color: #f8fafc; border: 3px solid #ffffff; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.015); border-left: 5px solid #f97316;">
+  <table cellpadding="0" cellspacing="0" border="0" style="width: 100%; border-collapse: collapse;">
+    <tr>
+      <td style="vertical-align: top; width: 60px; padding-right: 16px; text-align: center; border-right: 2px dashed #cbd5e1;">
+        <!-- Styled Calendar Icon Badge -->
+        <div style="background: rgba(249, 115, 22, 0.08); border-radius: 12px; border: 1.5px solid rgba(249, 115, 22, 0.25); padding: 8px; width: 40px; box-sizing: border-box;">
+          <div style="font-size: 8px; font-weight: 800; color: #f97316; text-transform: uppercase; margin-bottom: 2px;">TOMORROW</div>
+          <div style="font-size: 16px; font-weight: 900; color: #0f172a; line-height: 1;">📅</div>
+        </div>
+      </td>
+      <td style="vertical-align: middle; padding-left: 20px; text-align: left;">
+        <div style="font-size: 10px; font-weight: 800; color: #64748b; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Proposed Meeting Time</div>
+        <div style="font-size: 18px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;">2:00 PM <span style="font-size: 12px; color: #f97316; font-weight: 700;">(Time Zone Pending)</span></div>
+        <div style="font-size: 12px; color: #64748b; margin-top: 4px; font-weight: 500;">
+          Agenda: Discussing Strategy Plan & Costing
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+  Looking forward to speaking with you tomorrow and discussing the plan and costing.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+  Alternatively, you can click on the book meeting button below to book the meeting directly on my calendar.
+</p>
+
+<!-- Orange Glass CTA Button -->
+<div style="text-align: center; margin-bottom: 28px;">
+  <a href="https://www.groworbitofficial.com/get-started/#lead-form" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #ffffff !important; padding: 15px 35px; border-radius: 50px; font-size: 13px; font-weight: 800; text-decoration: none; box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25); border: 1px solid rgba(255, 255, 255, 0.1); text-transform: uppercase; letter-spacing: 0.06em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+    🗓️ Book Meeting
+  </a>
+</div>`,
   }
 ];
 

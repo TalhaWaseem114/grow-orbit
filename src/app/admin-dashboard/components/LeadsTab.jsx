@@ -74,6 +74,7 @@ function LeadDetailPanel({
   handleAssignLead,
   handleUpdatePriority,
   handleAddLeadNote,
+  handleDeleteLeadNote,
   handleUpdateFollowUp,
   leadsCollectionName,
   handleStatusChange,
@@ -173,6 +174,26 @@ function LeadDetailPanel({
       setLoadingContracts(false);
     }
   };
+
+  const handleDeleteContract = async (contractId, contractNum) => {
+    if (!window.confirm(`Are you sure you want to permanently delete contract ${contractNum}?`)) return;
+    try {
+      const res = await fetch(`/api/contracts/${contractId}`, {
+        method: "DELETE"
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Contract deleted successfully!");
+        fetchContracts();
+      } else {
+        alert("Failed to delete contract: " + data.error);
+      }
+    } catch (err) {
+      alert("Error deleting contract: " + err.message);
+    }
+  };
+
+
 
   useEffect(() => {
     setEstValue(lead.estimatedDealValue || "");
@@ -309,66 +330,82 @@ function LeadDetailPanel({
           </div>
         </div>
       </div>
-      <div className="lead-expanded-grid" style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 20 }}>
-        {/* Left Side: History & Activity */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-          <div style={{ fontSize: 10, fontWeight: 800, color: "#fff", display: "flex", alignItems: "center", gap: 8 }}>
-            <History size={14} color="#f97316" /> ACTIVITY TIMELINE
-          </div>
-
-          {/* Add Note Box */}
-          <div style={{ background: "rgba(249,115,22,0.03)", border: "1px solid rgba(249,115,22,0.1)", borderRadius: 12, padding: 12 }}>
-            <textarea
-              placeholder="Log a call, email update, or internal note..."
-              value={crmNote}
-              onChange={(e) => setCrmNote(e.target.value)}
-              style={{ width: "100%", background: "none", border: "none", color: "#fff", fontSize: 12, resize: "none", height: 60, outline: "none", marginBottom: 8 }}
-            />
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <button
-                onClick={async () => {
-                  const res = await handleAddLeadNote(lead.id, crmNote);
-                  if (res === "done") setCrmNote("");
-                }}
-                style={{ background: "#f97316", color: "#fff", border: "none", padding: "6px 14px", borderRadius: 8, fontSize: 10, fontWeight: 800, textTransform: "uppercase", cursor: "pointer" }}
-              >
-                Add Update
-              </button>
-            </div>
-          </div>
-
-          {/* Timeline Items */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 12, maxHeight: 300, overflowY: "auto", paddingRight: 8 }}>
-            {(lead.timeline || []).length === 0 ? (
-              <div style={{ padding: "20px 0", textAlign: "center", border: "1px dashed rgba(255,255,255,0.05)", borderRadius: 12 }}>
-                <div style={{ fontSize: 10, color: "#333", fontWeight: 700 }}>NO UPDATES LOGGED YET</div>
-              </div>
-            ) : (
-              lead.timeline.map((item, idx) => (
-                <div key={idx} style={{ position: "relative", paddingLeft: 16, borderLeft: "1px solid rgba(255,255,255,0.05)" }}>
-                  <div style={{ position: "absolute", left: -4, top: 4, width: 7, height: 7, borderRadius: "50%", background: "#f97316", border: "2px solid #0d0d0d" }} />
-                  <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                    <span style={{ fontSize: 10, fontWeight: 800, color: "#fff" }}>{item.adminName}</span>
-                    <span style={{ fontSize: 9, color: "#333", fontFamily: "monospace" }}>{fmt(item.timestamp)} {fmtTime(item.timestamp)}</span>
-                  </div>
-                  <div style={{ fontSize: 11, color: "#a3a3a3", lineHeight: 1.5, background: "rgba(255,255,255,0.02)", padding: "8px 12px", borderRadius: "0 10px 10px 10px" }}>
-                    {item.text}
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-        </div>
-
-        {/* Right Side: Brief & Actions */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Inbound Brief</div>
-            <p style={{ fontSize: 12, color: "#a3a3a3", lineHeight: 1.7, fontStyle: "italic", margin: 0 }}>
+      <div className="lead-expanded-grid" style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: 24 }}>
+        {/* Left Side: Brief & Activity */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+          {/* Inbound Brief */}
+          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 14, padding: "16px 20px" }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: "#f97316", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Inbound Brief</div>
+            <p style={{ fontSize: 12, color: "#e2e8f0", lineHeight: 1.7, fontStyle: "italic", margin: 0 }}>
               "{lead.notes || lead.challenge || "No brief provided."}"
             </p>
           </div>
 
+          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <div style={{ fontSize: 10, fontWeight: 800, color: "#fff", display: "flex", alignItems: "center", gap: 8, letterSpacing: "0.05em" }}>
+              <History size={14} color="#f97316" /> ACTIVITY TIMELINE
+            </div>
+
+            {/* Add Note Box */}
+            <div style={{ background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 14, padding: 14 }}>
+              <textarea
+                placeholder="Log a call, email update, or internal note..."
+                value={crmNote}
+                onChange={(e) => setCrmNote(e.target.value)}
+                style={{ width: "100%", background: "#0a0a0a", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 10, padding: 10, color: "#fff", fontSize: 12, resize: "none", height: 70, outline: "none", boxSizing: "border-box", marginBottom: 10 }}
+              />
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  onClick={async () => {
+                    const res = await handleAddLeadNote(lead.id, crmNote);
+                    if (res === "done") setCrmNote("");
+                  }}
+                  style={{ background: "linear-gradient(135deg,#f97316,#ea580c)", color: "#fff", border: "none", padding: "8px 16px", borderRadius: 8, fontSize: 10, fontWeight: 800, textTransform: "uppercase", cursor: "pointer", boxShadow: "0 4px 12px rgba(249,115,22,0.2)" }}
+                >
+                  Add Update
+                </button>
+              </div>
+            </div>
+
+            {/* Timeline Items */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, maxHeight: 380, overflowY: "auto", paddingRight: 8 }}>
+              {(lead.timeline || []).length === 0 ? (
+                <div style={{ padding: "30px 0", textAlign: "center", border: "1px dashed rgba(255,255,255,0.05)", borderRadius: 14 }}>
+                  <div style={{ fontSize: 10, color: "#525252", fontWeight: 700, letterSpacing: "0.05em" }}>NO UPDATES LOGGED YET</div>
+                </div>
+              ) : (
+                lead.timeline.map((item, idx) => (
+                  <div key={idx} style={{ position: "relative", paddingLeft: 20, borderLeft: "2px solid rgba(249,115,22,0.25)" }}>
+                    <div style={{ position: "absolute", left: -5, top: 12, width: 8, height: 8, borderRadius: "50%", background: "#f97316", boxShadow: "0 0 8px #f97316" }} />
+                    <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "12px 16px" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                        <span style={{ fontSize: 11, fontWeight: 800, color: "#f1f5f9" }}>{item.adminName}</span>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                          <span style={{ fontSize: 9, color: "#71717a", fontFamily: "monospace" }}>{fmt(item.timestamp)} {fmtTime(item.timestamp)}</span>
+                          <button
+                            onClick={() => handleDeleteLeadNote?.(lead.id, item.timestamp)}
+                            style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", opacity: 0.6, display: "flex", alignItems: "center", padding: 0 }}
+                            onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
+                            onMouseLeave={(e) => e.currentTarget.style.opacity = 0.6}
+                            title="Delete note"
+                          >
+                            <Trash2 size={11} />
+                          </button>
+                        </div>
+                      </div>
+                      <div style={{ fontSize: 12, color: "#cbd5e1", lineHeight: 1.6 }}>
+                        {item.text}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Quick Connect, Follow Up & Contracts */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
             <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Quick Connect</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -406,6 +443,7 @@ function LeadDetailPanel({
           {/* Next Follow Up */}
           <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
             <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Next Follow Up</div>
+
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <input 
                 type="date"
@@ -421,72 +459,7 @@ function LeadDetailPanel({
             </div>
           </div>
 
-          {/* Revenue Opportunity Tracking */}
-          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Revenue Opportunity</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <div style={{ display: "flex", gap: 8 }}>
-                <div style={{ flex: 1 }}>
-                  <label style={{ fontSize: 8, fontWeight: 700, color: "#737373", textTransform: "uppercase", display: "block", marginBottom: 4 }}>Est. Deal Value ($)</label>
-                  <input 
-                    type="number"
-                    placeholder="0"
-                    value={estValue}
-                    onChange={(e) => setEstValue(e.target.value)}
-                    onBlur={async () => {
-                      const val = estValue ? Number(estValue) : 0;
-                      if (val !== lead.estimatedDealValue) {
-                        await updateDoc(doc(db, leadsCollectionName || "leads", lead.id), { estimatedDealValue: val });
-                      }
-                    }}
-                    style={{ width: "100%", background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
-                  />
-                </div>
-                <div style={{ flex: 1 }}>
-                  <label style={{ fontSize: 8, fontWeight: 700, color: "#737373", textTransform: "uppercase", display: "block", marginBottom: 4 }}>Monthly Retainer ($)</label>
-                  <input 
-                    type="number"
-                    placeholder="0"
-                    value={retainer}
-                    onChange={(e) => setRetainer(e.target.value)}
-                    onBlur={async () => {
-                      const val = retainer ? Number(retainer) : 0;
-                      if (val !== lead.monthlyRetainer) {
-                        await updateDoc(doc(db, leadsCollectionName || "leads", lead.id), { monthlyRetainer: val });
-                      }
-                    }}
-                    style={{ width: "100%", background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
-                  />
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                <div style={{ flex: 1 }}>
-                  <label style={{ fontSize: 8, fontWeight: 700, color: "#737373", textTransform: "uppercase", display: "block", marginBottom: 4 }}>Win Probability (%)</label>
-                  <input 
-                    type="number"
-                    min="0"
-                    max="100"
-                    placeholder="50"
-                    value={winProb}
-                    onChange={(e) => setWinProb(e.target.value)}
-                    onBlur={async () => {
-                      const val = winProb ? Number(winProb) : 0;
-                      if (val !== lead.winProbability) {
-                        await updateDoc(doc(db, leadsCollectionName || "leads", lead.id), { winProbability: val });
-                      }
-                    }}
-                    style={{ width: "100%", background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
-                  />
-                </div>
-                <div style={{ flex: 1, textAlign: "right" }}>
-                  <div style={{ fontSize: 8, fontWeight: 700, color: "#737373", textTransform: "uppercase" }}>Expected Value</div>
-                  <div style={{ fontSize: 14, fontWeight: 900, color: "#f97316", marginTop: 4 }}>
-                    ${Math.round(((Number(estValue) || 0) * (Number(winProb) || 0)) / 100).toLocaleString()}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
 
           {/* Contract Summary Card Widget */}
           <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
@@ -513,6 +486,7 @@ function LeadDetailPanel({
                   const expiresStr = contract.expiresAt 
                     ? new Date(contract.expiresAt.toDate ? contract.expiresAt.toDate() : contract.expiresAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })
                     : "Never";
+
                   return (
                     <div key={contract.id} style={{ display: "flex", flexDirection: "column", gap: 8, background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 8, padding: "10px", marginBottom: 6 }}>
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
@@ -529,18 +503,28 @@ function LeadDetailPanel({
                         <div>Signed: <span style={{ color: "#fff", fontWeight: 600 }}>{contract.status === "signed" ? "Yes" : "No"}</span></div>
                       </div>
 
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setActiveContract(contract);
-                          setShowWorkspace(true);
-                        }}
-                        style={{ width: "100%", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#fff", borderRadius: 6, padding: "5px 10px", fontSize: 9, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
-                      >
-                        Manage Agreement
-                      </button>
+                      <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setActiveContract(contract);
+                            setShowWorkspace(true);
+                          }}
+                          style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#fff", borderRadius: 6, padding: "5px 10px", fontSize: 9, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+                        >
+                          Manage Agreement
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteContract(contract.id, contract.contractNumber)}
+                          style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.25)", color: "#ef4444", borderRadius: 6, padding: "5px 8px", fontSize: 9, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                          title="Delete Contract"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
                     </div>
                   );
                 })}
@@ -1052,6 +1036,7 @@ function LeadCalendarView({
                           handleAssignLead={handleAssignLead}
                           handleUpdatePriority={handleUpdatePriority}
                           handleAddLeadNote={handleAddLeadNote}
+                          handleDeleteLeadNote={handleDeleteLeadNote}
                           handleUpdateFollowUp={handleUpdateFollowUp}
                           leadsCollectionName={leadsCollectionName}
                           handleStatusChange={handleStatusChange}
@@ -1106,6 +1091,7 @@ export default function LeadsTab({
   handleUpdatePriority,
   handleUpdateFollowUp,
   handleAddLeadNote,
+  handleDeleteLeadNote,
   exportLeads,
   triggerConfirm,
   logActivity,
@@ -1860,6 +1846,7 @@ export default function LeadsTab({
                       handleAssignLead={handleAssignLead}
                       handleUpdatePriority={handleUpdatePriority}
                       handleAddLeadNote={handleAddLeadNote}
+                      handleDeleteLeadNote={handleDeleteLeadNote}
                       handleUpdateFollowUp={handleUpdateFollowUp}
                       leadsCollectionName={leadsCollectionName}
                       handleStatusChange={handleStatusChange}
@@ -2154,6 +2141,7 @@ export default function LeadsTab({
                             handleAssignLead={handleAssignLead}
                             handleUpdatePriority={handleUpdatePriority}
                             handleAddLeadNote={handleAddLeadNote}
+                            handleDeleteLeadNote={handleDeleteLeadNote}
                             handleUpdateFollowUp={handleUpdateFollowUp}
                             leadsCollectionName={leadsCollectionName}
                             handleStatusChange={handleStatusChange}

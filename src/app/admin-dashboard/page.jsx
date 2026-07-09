@@ -505,6 +505,26 @@ export default function AdminDashboard() {
     } catch (e) { console.warn("Add timeline note failed:", e.message); return "error"; }
   };
 
+  const handleDeleteLeadNote = async (leadId, timestamp) => {
+    if (!timestamp) return;
+    if (!window.confirm("Are you sure you want to delete this note?")) return;
+    try {
+      const leadRef = doc(db, leadsCollectionName, leadId);
+      const leadSnap = await getDoc(leadRef);
+      const currentTimeline = leadSnap.data().timeline || [];
+      const updatedTimeline = currentTimeline.filter(item => {
+        const itemTime = item.timestamp?.toDate ? item.timestamp.toDate().getTime() : new Date(item.timestamp).getTime();
+        const targetTime = timestamp?.toDate ? timestamp.toDate().getTime() : new Date(timestamp).getTime();
+        return itemTime !== targetTime;
+      });
+      await updateDoc(leadRef, { timeline: updatedTimeline });
+      setLeads(prev => prev.map(l => l.id === leadId ? { ...l, timeline: updatedTimeline } : l));
+    } catch (e) {
+      console.warn("Delete timeline note failed:", e.message);
+    }
+  };
+
+
   const newLeadsCount = leads.filter(l => (l.status || "new") === "new").length;
   const currentAdmin = users.find(u => u.id === auth.currentUser?.uid);
   const adminInitials = currentAdmin?.displayName
@@ -908,6 +928,7 @@ export default function AdminDashboard() {
                   handleUpdatePriority={handleUpdatePriority}
                   handleUpdateFollowUp={handleUpdateFollowUp}
                   handleAddLeadNote={handleAddLeadNote}
+                  handleDeleteLeadNote={handleDeleteLeadNote}
                   exportLeads={exportLeads}
                   triggerConfirm={triggerConfirm}
                   logActivity={logActivity}

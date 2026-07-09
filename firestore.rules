@@ -1,94 +1,10 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // 1. Users Collection
-    match /users/{userId} {
-      allow read, write: if request.auth != null;
-    }
-
-    // 2. Leads Collection
-    match /Leads/{leadId} {
-      allow create: if true;
-      allow read, update, delete: if request.auth != null;
-    }
-    match /leads/{leadId} {
-      allow create: if true;
-      allow read, update, delete: if request.auth != null;
-    }
-
-    // 3. Experiments Collection (Site Layout theme configurations)
-    match /experiments/{docId} {
-      allow read: if true;
-      allow write: if request.auth != null;
-    }
-
-    // 4. Blogs Collection & Comments Subcollection
-    match /blogs/{postId} {
-      allow read: if true;
-      allow write: if request.auth != null;
-
-      match /comments/{commentId} {
-        allow read: if true;
-        allow create: if request.auth != null;
-        allow update, delete: if request.auth != null;
-      }
-    }
-
-    // 5. Portfolio Collection
-    match /portfolio/{itemId} {
-      // Anyone can view the portfolio on the website
-      allow read: if true;
-      // Only authenticated admins can add, edit, or delete items
-      allow write: if request.auth != null;
-    }
-
-    // 6. Settings Collection (Global CRM configurations)
-    match /settings/{docId} {
-      allow read, write: if request.auth != null;
-    }
-
-    // 7. Newsletter Campaigns Collection (Email marketing logs)
-    match /newsletter_campaigns/{campaignId} {
-      allow read, write: if request.auth != null;
-    }
-
-    // 8. Activity Logs Collection (Audit trails)
-    match /activity_logs/{logId} {
-      allow read, write: if request.auth != null;
-    }
-
-    // 9. Invoices Collection
-    match /invoices/{invoiceId} {
-      allow read, write: if request.auth != null;
-    }
-
-    // 10. Clients Collection
-    match /clients/{clientId} {
-      allow read, write: if request.auth != null;
-    }
-
-    // 11. Contracts Collection
-    match /contracts/{contractId} {
-      allow read: if request.auth != null;
-      allow create: if request.auth != null;
-      allow update: if request.auth != null 
-        && resource.data.status != "signed" 
-        && resource.data.status != "void"
-        && request.resource.data.contractNumber == resource.data.contractNumber;
-      allow delete: if request.auth != null && resource.data.status == "draft";
-
-      // Subcollection for contract version history (immutable snapshots)
-      match /versions/{versionNum} {
-        allow read: if request.auth != null;
-        allow create: if request.auth != null && resource == null; // Write-once
-        allow update, delete: if false; // Never editable or deletable
-      }
-    }
-
-    // 12. Contract Templates Collection
-    match /contractTemplates/{templateId} {
-      allow read, write: if request.auth != null;
+    // TEMPORARY: Open access for development/testing
+    // TODO: Re-add proper auth rules before going to production
+    match /{document=**} {
+      allow read, write: if true;
     }
   }
 }

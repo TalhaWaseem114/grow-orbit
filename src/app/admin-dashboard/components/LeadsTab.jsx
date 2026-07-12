@@ -12,7 +12,7 @@ import CrmDocumentationModal from "./CrmDocumentationModal";
 import { calculateLeadScore, getScoreCategory, calculateLeadPriority } from "@/lib/crmHelpers";
 import { db, auth } from "../../../firebase/firebaseConfig";
 import { collection, query, where, orderBy, onSnapshot, addDoc, updateDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore";
-import ContractWorkspaceModal from "./ContractWorkspaceModal";
+import { useRouter } from "next/navigation";
 import { Loader } from "lucide-react";
 
 /* ─────────────────────────────────────────
@@ -81,6 +81,7 @@ function LeadDetailPanel({
   handleDeleteLead,
   logActivity
 }) {
+  const router = useRouter();
   const [tasks, setTasks] = useState([]);
   const [newTaskTitle, setNewTaskTitle] = useState("");
   const [newTaskDueDate, setNewTaskDueDate] = useState("");
@@ -104,8 +105,6 @@ function LeadDetailPanel({
   // Contract states
   const [contracts, setContracts] = useState([]);
   const [loadingContracts, setLoadingContracts] = useState(false);
-  const [activeContract, setActiveContract] = useState(null);
-  const [showWorkspace, setShowWorkspace] = useState(false);
 
   const fetchContracts = async () => {
     if (!lead.id) return;
@@ -128,51 +127,9 @@ function LeadDetailPanel({
     fetchContracts();
   }, [lead.id]);
 
-  const handleGenerateNewContract = async () => {
+  const handleGenerateNewContract = () => {
     if (!lead.id) return;
-    setLoadingContracts(true);
-    try {
-      // Fetch default templates to get body
-      const tempRes = await fetch("/api/contracts/templates");
-      const tempData = await tempRes.json();
-      const defaultBody = tempData.templates?.[0]?.body || "";
-
-      // Post draft creation
-      const res = await fetch("/api/contracts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          leadId: lead.id,
-          clientName: lead.fullName || "N/A",
-          companyName: lead.company || lead.website || "",
-          clientEmail: lead.email || "",
-          clientPhone: lead.whatsapp || "",
-          requestedService: lead.requestedService || "",
-          monthlyRetainer: Number(lead.monthlyRetainer) || 0,
-          termLength: "Month-to-month",
-          paymentTerms: "Net 15",
-          templateBody: defaultBody,
-          expirationDays: "none"
-        })
-      });
-      
-      const data = await res.json();
-      if (data.success) {
-        alert("New contract draft generated successfully!");
-        fetchContracts();
-        setActiveContract(data.contract);
-        setShowWorkspace(true);
-        if (logActivity) {
-          logActivity("CREATE_CONTRACT", `Generated contract ${data.contract.contractNumber} for lead "${lead.fullName}".`);
-        }
-      } else {
-        alert("Failed to generate contract: " + data.error);
-      }
-    } catch (err) {
-      alert("Failed to generate contract: " + err.message);
-    } finally {
-      setLoadingContracts(false);
-    }
+    router.push(`/admin-dashboard/contract-builder?leadId=${lead.id}`);
   };
 
   const handleDeleteContract = async (contractId, contractNum) => {
@@ -507,8 +464,11 @@ function LeadDetailPanel({
                         <button
                           type="button"
                           onClick={() => {
-                            setActiveContract(contract);
-                            setShowWorkspace(true);
+                            if (["draft", "awaiting_review"].includes(contract.status)) {
+                              router.push(`/admin-dashboard/contract-builder?id=${contract.id}`);
+                            } else {
+                              router.push(`/contract/${contract.id}`);
+                            }
                           }}
                           style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#fff", borderRadius: 6, padding: "5px 10px", fontSize: 9, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
                           onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
@@ -662,17 +622,7 @@ function LeadDetailPanel({
           </div>
         </div>
       </div>
-      {showWorkspace && activeContract && (
-        <ContractWorkspaceModal
-          contract={activeContract}
-          onClose={() => {
-            setShowWorkspace(false);
-            setActiveContract(null);
-            fetchContracts();
-          }}
-          onRefreshLeads={fetchContracts}
-        />
-      )}
+      {/* Contract Workspace Modal removed: migrated to full-page route */}
     </div>
   );
 }

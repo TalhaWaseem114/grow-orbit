@@ -4,31 +4,31 @@ import { Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/render
 // Stylesheet configuration for professional layout
 const styles = StyleSheet.create({
   page: {
-    padding: 54, // 0.75 in margins
-    fontSize: 10,
+    padding: 30, // Optimized margin
+    fontSize: 8.5, // Tighter font size
     fontFamily: "Helvetica",
-    lineHeight: 1.6,
+    lineHeight: 1.25, // Compact line height
     color: "#334155",
     position: "relative",
   },
   header: {
-    marginBottom: 24,
+    marginBottom: 12,
     borderBottomWidth: 1,
     borderBottomColor: "#e2e8f0",
-    paddingBottom: 12,
+    paddingBottom: 6,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
   logoText: {
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: "bold",
     color: "#0f172a",
     letterSpacing: 1,
   },
   contractNumber: {
-    fontSize: 9,
+    fontSize: 8,
     color: "#f97316",
     fontWeight: "bold",
   },
@@ -38,31 +38,31 @@ const styles = StyleSheet.create({
     left: "15%",
     fontSize: 54,
     fontWeight: "bold",
-    color: "rgba(226, 232, 240, 0.35)",
+    color: "rgba(226, 232, 240, 0.2)",
     transform: "rotate(-40deg)",
     width: "70%",
     textAlign: "center",
     zIndex: -1,
   },
   title: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: "bold",
     color: "#0f172a",
-    marginBottom: 20,
+    marginBottom: 10,
     textAlign: "center",
   },
   paragraph: {
-    marginBottom: 12,
+    marginBottom: 6,
     textAlign: "justify",
   },
   bulletItem: {
-    marginBottom: 8,
-    paddingLeft: 15,
+    marginBottom: 4,
+    paddingLeft: 12,
     display: "flex",
     flexDirection: "row",
   },
   bulletPrefix: {
-    width: 15,
+    width: 12,
   },
   bulletText: {
     flex: 1,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     textDecoration: "underline",
   },
   signatureContainer: {
-    marginTop: 40,
+    marginTop: 20,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -87,26 +87,26 @@ const styles = StyleSheet.create({
   signatureLine: {
     borderBottomWidth: 1,
     borderBottomColor: "#94a3b8",
-    marginTop: 8,
-    marginBottom: 6,
-    height: 40,
+    marginTop: 4,
+    marginBottom: 4,
+    height: 30,
     display: "flex",
     justifyContent: "center",
   },
   signatureText: {
-    fontSize: 14,
+    fontSize: 11,
     color: "#0f172a",
     fontFamily: "Times-Italic", // Default cursive fallback
   },
   signatureImage: {
-    maxHeight: 38,
-    maxWidth: 160,
+    maxHeight: 25,
+    maxWidth: 120,
     objectFit: "contain",
   },
   signerLabel: {
-    fontSize: 8,
+    fontSize: 7.5,
     color: "#64748b",
-    marginBottom: 2,
+    marginBottom: 1,
   },
   // Audit certificate styles
   certPage: {
@@ -274,9 +274,44 @@ function parseHtmlToPdfElements(html) {
   return elements;
 }
 
+function compilePlainHtml(contract) {
+  let text = contract.templateBody || contract.renderedHtml || "";
+  
+  const formatDate = (val) => {
+    if (!val) return "—";
+    const d = new Date(val);
+    return isNaN(d.getTime()) ? val : d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+  };
+
+  const replacements = {
+    "{{client_name}}": contract.clientName || "—",
+    "{{company_name}}": contract.companyName || "—",
+    "{{client_email}}": contract.clientEmail || "—",
+    "{{client_phone}}": contract.clientPhone || "—",
+    "{{requested_service}}": contract.requestedService || "—",
+    "{{monthly_retainer}}": contract.monthlyRetainer ? `$${Number(contract.monthlyRetainer).toLocaleString()}` : "—",
+    "{{term_length}}": contract.termLength || "—",
+    "{{payment_terms}}": contract.paymentTerms || "—",
+    "{{location}}": contract.location || "—",
+    "{{auto_renewal}}": contract.autoRenewal || "—",
+    "{{monthly_investment}}": contract.monthlyRetainer ? `$${Number(contract.monthlyRetainer).toLocaleString()} USD` : "—",
+    "{{initial_term}}": contract.termLength || "—",
+    "{{contract_date}}": formatDate(contract.contractDate),
+    "{{start_date}}": formatDate(contract.startDate),
+    "{{end_date}}": formatDate(contract.endDate),
+  };
+
+  Object.entries(replacements).forEach(([placeholder, value]) => {
+    text = text.split(placeholder).join(value);
+  });
+
+  return text;
+}
+
 // React PDF Document component
 export const ContractPdfDocument = ({ contract, watermark }) => {
-  const elements = parseHtmlToPdfElements(contract.renderedHtml);
+  const plainHtml = compilePlainHtml(contract);
+  const elements = parseHtmlToPdfElements(plainHtml);
   const showSignature = contract.status === "signed" || contract.status === "completed";
   const signatureData = contract.signature;
   const createdDate = contract.createdAt ? (contract.createdAt.toDate ? contract.createdAt.toDate() : new Date(contract.createdAt)) : new Date();

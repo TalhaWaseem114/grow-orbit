@@ -244,12 +244,38 @@ export default function ContractDetailsPage() {
     }
   };
 
+  const handleDownloadPDF = () => {
+    window.print();
+  };
+
   const copyLink = () => {
     if (!contract?.shareToken) return;
     const link = `${window.location.origin}/sign/${contract.shareToken}`;
     navigator.clipboard.writeText(link);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const parseSafeDate = (val) => {
+    if (!val) return null;
+    let d = null;
+    if (val instanceof Date) {
+      d = val;
+    } else if (typeof val === "object") {
+      const seconds = val.seconds !== undefined ? val.seconds : val._seconds;
+      if (seconds !== undefined) {
+        d = new Date(seconds * 1000);
+      }
+    } else {
+      d = new Date(val);
+    }
+    return d && !isNaN(d.getTime()) ? d : null;
+  };
+
+  const formatDateDisplay = (val) => {
+    const d = parseSafeDate(val);
+    if (!d) return "—";
+    return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
   };
 
   const handleVoidContract = async () => {
@@ -360,19 +386,50 @@ export default function ContractDetailsPage() {
 
 
           <button 
-            onClick={() => window.print()}
-            style={{ border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", color: "#fff", cursor: "pointer", fontSize: "11px", fontWeight: 700, display: "flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px" }}
+            disabled={!isExecuted}
+            onClick={isExecuted ? handleDownloadPDF : undefined}
+            style={{ 
+              border: "1px solid rgba(255,255,255,0.08)", 
+              background: "rgba(255,255,255,0.03)", 
+              color: isExecuted ? "#fff" : "#64748b", 
+              cursor: isExecuted ? "pointer" : "not-allowed", 
+              fontSize: "11px", 
+              fontWeight: 700, 
+              display: "flex", 
+              alignItems: "center", 
+              gap: "6px", 
+              padding: "7px 14px", 
+              borderRadius: "8px",
+              opacity: isExecuted ? 1 : 0.5
+            }}
+            title={!isExecuted ? "Please sign the contract to download a copy" : "Download signed agreement PDF"}
           >
             <Download size={13}/>
             Download PDF
           </button>
 
-          {canVoid && (
-            <button onClick={() => setShowVoidModal(true)} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", border: "1px solid rgba(239,68,68,0.3)", background: "rgba(239,68,68,0.1)", color: "#ef4444", cursor: "pointer", fontSize: "11px", fontWeight: 700 }}>
-              <FileX size={13}/>
-              Void Contract
-            </button>
-          )}
+          <a 
+            href="https://wa.me/19128205916"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ 
+              display: "flex", 
+              alignItems: "center", 
+              gap: "6px", 
+              padding: "7px 14px", 
+              borderRadius: "8px", 
+              border: "1px solid rgba(34, 197, 94, 0.3)", 
+              background: "rgba(34, 197, 94, 0.1)", 
+              color: "#22c55e", 
+              cursor: "pointer", 
+              fontSize: "11px", 
+              fontWeight: 700,
+              textDecoration: "none"
+            }}
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "2px" }}><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            Contact Support: +1 (912) 820-5916
+          </a>
         </div>
       </div>
 
@@ -382,14 +439,14 @@ export default function ContractDetailsPage() {
         <div style={{ flex: 1, overflow: "auto", padding: "40px", background: "#090d16", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
           
           {/* Scaled Container Wrapper */}
-          <div className="contract-scaled-wrapper" style={{ width: 1440 * zoom, height: 1720 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
+          <div className="contract-scaled-wrapper" style={{ width: 1440 * zoom, height: 1980 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
             
             <div className="contract-paper-sheet" style={{ 
               position: "absolute",
               top: 0,
               left: 0,
               width: "1440px", 
-              height: "1720px", 
+              height: "1980px", 
               background: "#fff", 
               borderRadius: "24px", 
               overflow: "hidden",
@@ -554,6 +611,16 @@ export default function ContractDetailsPage() {
                   </div>
 
                   <div style={{ padding: "24px", display: "flex", flexDirection: "column" }}>
+                    {/* Edits Notification Banner */}
+                    {!isExecuted && (
+                      <div style={{ background: "#f8fafc", border: "1px solid #cbd5e1", borderRadius: "10px", padding: "12px 14px", marginBottom: "20px", display: "flex", gap: "10px", alignItems: "flex-start" }}>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: "2px" }}><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        <span style={{ fontSize: "11px", color: "#475569", lineHeight: "1.4", fontWeight: 500 }}>
+                          Need to request edits or adjust details? Click the **Contact Support** button in the header or message us at **+1 (912) 820-5916** to update this agreement.
+                        </span>
+                      </div>
+                    )}
+                    
                     {/* Client Details Section */}
                     <div style={{ marginBottom: "24px", display: "flex", flexDirection: "column", gap: "16px" }}>
                       
@@ -642,7 +709,7 @@ export default function ContractDetailsPage() {
                         <h4 style={{ color: "#0f172a", fontSize: "14px", fontWeight: 800, margin: 0 }}>Electronic Signature</h4>
                       </div>
 
-                      {isExecuted ? (
+                       {isExecuted ? (
                         /* Read-only Signed Stamp */
                         <div style={{ marginBottom: "16px" }}>
                           <div style={{ border: "1px solid #f1f5f9", borderRadius: "8px", height: "130px", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", marginBottom: "8px" }}>
@@ -653,10 +720,35 @@ export default function ContractDetailsPage() {
                             )}
                           </div>
 
-                          <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f0fdf4", padding: "12px", borderRadius: "8px", color: "#16a34a" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f0fdf4", padding: "12px", borderRadius: "8px", color: "#16a34a", marginBottom: "12px" }}>
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
                             <span style={{ fontSize: "11px", fontWeight: 500, lineHeight: "1.4" }}>Your signature is secure and<br/>legally binding.</span>
                           </div>
+
+                          <button 
+                            type="button"
+                            onClick={handleDownloadPDF}
+                            style={{ 
+                              width: "100%", 
+                              background: "linear-gradient(135deg, #10b981, #059669)", 
+                              color: "#fff", 
+                              border: "none", 
+                              borderRadius: "8px", 
+                              padding: "12px", 
+                              fontSize: "14px", 
+                              fontWeight: 800, 
+                              cursor: "pointer", 
+                              display: "flex", 
+                              alignItems: "center", 
+                              justifyContent: "center", 
+                              gap: "8px",
+                              boxShadow: "0 4px 12px rgba(16, 185, 129, 0.2)",
+                              transition: "all 0.2s"
+                            }}
+                          >
+                            <Download size={16}/>
+                            Download Signed Copy (PDF)
+                          </button>
                         </div>
                       ) : (
                         /* Interactive Signing Block */
@@ -794,11 +886,22 @@ export default function ContractDetailsPage() {
                           {/* Sign Button */}
                           <button
                             onClick={handleSignContract}
-                            disabled={isSigning}
+                            disabled={isSigning || !consentChecked}
                             style={{
-                              width: "100%", padding: "12px 0", background: "#f97316", border: "none", color: "#fff",
-                              borderRadius: "8px", cursor: "pointer", fontSize: "13px", fontWeight: 700,
-                              display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", transition: "all 0.2s"
+                              width: "100%", 
+                              padding: "12px 0", 
+                              background: (isSigning || !consentChecked) ? "#e2e8f0" : "#f97316", 
+                              border: "none", 
+                              color: (isSigning || !consentChecked) ? "#94a3b8" : "#fff",
+                              borderRadius: "8px", 
+                              cursor: (isSigning || !consentChecked) ? "not-allowed" : "pointer", 
+                              fontSize: "13px", 
+                              fontWeight: 700,
+                              display: "flex", 
+                              alignItems: "center", 
+                              justifyContent: "center", 
+                              gap: "8px", 
+                              transition: "all 0.2s"
                             }}
                           >
                             {isSigning ? (
@@ -854,7 +957,7 @@ export default function ContractDetailsPage() {
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                   <div>
                     <div style={{ fontSize: "13px", color: "#94a3b8", fontWeight: 500, marginBottom: "4px" }}>Agreement Date</div>
-                    <div style={{ fontSize: "15px", color: "#f8fafc", fontWeight: 800 }}>{contract.contractDate ? new Date(contract.contractDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "—"}</div>
+                    <div style={{ fontSize: "15px", color: "#f8fafc", fontWeight: 800 }}>{formatDateDisplay(contract.contractDate)}</div>
                   </div>
                 </div>
 
@@ -1067,12 +1170,12 @@ export default function ContractDetailsPage() {
 
           .contract-scaled-wrapper {
             width: 1440px !important;
-            height: 1620px !important;
+            height: 1980px !important;
             position: absolute !important;
-            left: 50% !important;
-            top: 50% !important;
-            transform: translate(-50%, -50%) scale(0.60) !important;
-            transform-origin: center center !important;
+            left: 0 !important;
+            top: 0 !important;
+            transform: scale(0.55) !important;
+            transform-origin: top left !important;
             display: block !important;
           }
 
@@ -1081,7 +1184,7 @@ export default function ContractDetailsPage() {
             top: 0 !important;
             left: 0 !important;
             width: 1440px !important;
-            height: 1620px !important;
+            height: 1980px !important;
             padding: 80px !important;
             box-shadow: none !important;
             border-radius: 0 !important;

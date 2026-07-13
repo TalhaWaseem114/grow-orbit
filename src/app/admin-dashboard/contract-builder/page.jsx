@@ -234,6 +234,10 @@ function ContractBuilderWorkspace() {
   const [saveStatus, setSaveStatus] = useState("Saved");
   const [isSending, setIsSending] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+  const [emailCopied, setEmailCopied] = useState(false);
+  const [emailSubject, setEmailSubject] = useState("Action Required: Review & Sign Your Grow Orbit Agreement");
   const [focusedField, setFocusedField] = useState(null);
   const [zoom, setZoom] = useState(0.65);
   const [error, setError] = useState("");
@@ -432,7 +436,7 @@ function ContractBuilderWorkspace() {
       if (data.success) {
         const updated = { ...currentContract, status: "awaiting_signature", shareToken: data.shareToken };
         setCurrentContract(updated);
-        router.push(`/contract/${currentContract.id}`);
+        setShowSuccessModal(true);
       } else {
         alert("Failed to send: " + data.error);
       }
@@ -446,6 +450,46 @@ function ContractBuilderWorkspace() {
     navigator.clipboard.writeText(shareLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  // ── Copy formatted email outreach template ──
+  const copyRichEmail = async () => {
+    if (!shareLink || !isLocked) return;
+    
+    const htmlEmail = `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; color: #333333; line-height: 1.6;">
+        <p style="font-size: 15px;">Hi ${clientName || "Partner"},</p>
+        <p style="font-size: 15px;">I have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.</p>
+        <p style="font-size: 15px;">We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!</p>
+        
+        <p style="font-size: 15px; margin-bottom: 24px;">Please click the button below to view the full agreement and complete the secure e-signature process:</p>
+        
+        <div style="margin: 28px 0;">
+          <a href="${shareLink}" target="_blank" style="background: linear-gradient(135deg,#f97316,#ea580c); background-color: #ea580c; color: #ffffff; padding: 14px 28px; text-decoration: none; font-weight: bold; border-radius: 8px; display: inline-block; font-size: 14px; box-shadow: 0 4px 12px rgba(234,88,12,0.25);">Review & Sign Agreement</a>
+        </div>
+
+        <p style="font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 28px;">
+          This is a secure, legally-binding electronic signature process. If you have any questions, please let us know.
+        </p>
+      </div>
+    `;
+
+    const plainText = `Hi ${clientName || "Partner"},\n\nI have drafted our Amazon Growth Partnership Agreement and it is ready for your signature. We are incredibly excited to partner with you and help grow your brand. Let's sign this contract and begin this amazing journey together!\n\nReview & Sign Agreement: ${shareLink}\n\nBest regards,\nGrow Orbit Team`;
+
+    try {
+      const typeHtml = "text/html";
+      const typeText = "text/plain";
+      const blobHtml = new Blob([htmlEmail], { type: typeHtml });
+      const blobText = new Blob([plainText], { type: typeText });
+      const data = [new ClipboardItem({ [typeHtml]: blobHtml, [typeText]: blobText })];
+      await navigator.clipboard.write(data);
+      setEmailCopied(true);
+      setTimeout(() => setEmailCopied(false), 2000);
+    } catch (err) {
+      navigator.clipboard.writeText(plainText);
+      setEmailCopied(true);
+      setTimeout(() => setEmailCopied(false), 2000);
+    }
   };
 
   if (loading) {
@@ -488,7 +532,7 @@ function ContractBuilderWorkspace() {
   }[currentContract.status] || { label: currentContract.status, color: "#71717a" };
 
   return (
-    <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#0a0a0a", overflow: "hidden", color: "#fff", fontFamily: "'Inter', sans-serif" }}>
+    <div style={{ height: "100vh", display: "flex", flexDirection: "column", background: "#0a0a0a", overflow: "hidden", color: "#fff", fontFamily: "'Inter', sans-serif" }}>
       
       {/* ── Header ── */}
       <div style={{ display: "flex", alignItems: "center", gap: "16px", padding: "14px 20px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0, background: "#121212" }}>
@@ -522,7 +566,7 @@ function ContractBuilderWorkspace() {
               {isSending ? <Loader size={13} className="animate-spin" /> : <Save size={13}/>}
               Publish Contract
             </button>
-            <button onClick={() => alert("Email modal would open here")} disabled={isSending} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "7px 16px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg,#f97316,#ea580c)", color: "#fff", cursor: "pointer", fontSize: "12px", fontWeight: 800 }}>
+            <button onClick={() => setIsEmailModalOpen(true)} disabled={isSending} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "7px 16px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg,#f97316,#ea580c)", color: "#fff", cursor: "pointer", fontSize: "12px", fontWeight: 800 }}>
               <Send size={13}/>
               Send via Email
             </button>
@@ -535,6 +579,13 @@ function ContractBuilderWorkspace() {
             >
               <Eye size={13}/>
               View Contract Page
+            </button>
+            <button 
+              onClick={() => setIsEmailModalOpen(true)}
+              style={{ display: "flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg,#f97316,#ea580c)", color: "#fff", cursor: "pointer", fontSize: "11px", fontWeight: 800 }}
+            >
+              <Send size={13}/>
+              Share Email
             </button>
             {shareLink && (
               <button onClick={copyLink} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", color: "#94a3b8", cursor: "pointer", fontSize: "11px", fontWeight: 700 }}>
@@ -552,6 +603,15 @@ function ContractBuilderWorkspace() {
         {/* Left: Input Fields */}
         <div style={{ width: "320px", flexShrink: 0, overflowY: "auto", padding: "20px 24px", borderRight: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: "12px", background: "#121212" }}>
           
+          {isLocked && (
+            <div style={{ background: "rgba(234,88,12,0.1)", border: "1px solid rgba(234,88,12,0.3)", borderRadius: "8px", padding: "10px 12px", marginBottom: "8px", display: "flex", gap: "8px", alignItems: "center" }}>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <span style={{ fontSize: "10px", color: "#f97316", fontWeight: 700, lineHeight: 1.2 }}>
+                Contract Locked — Awaiting signature or completed.
+              </span>
+            </div>
+          )}
+
           <div style={{ fontSize: "9px", fontWeight: 800, color: "#64748b", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "4px" }}>Client Details</div>
           
           <div>
@@ -559,7 +619,7 @@ function ContractBuilderWorkspace() {
             <input type="text" value={clientName} disabled={isLocked} onChange={e => { setClientName(e.target.value); triggerAutoSave({ clientName: e.target.value }); }}
               onFocus={() => setFocusedField("clientName")}
               onBlur={() => setFocusedField(null)}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "clientName" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: focusedField === "clientName" ? "#0a0a0a" : "rgba(255,255,255,0.03)", color: "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s" }} />
+              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "clientName" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "clientName" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
           </div>
 
           <div>
@@ -567,7 +627,7 @@ function ContractBuilderWorkspace() {
             <input type="email" value={clientEmail} disabled={isLocked} onChange={e => { setClientEmail(e.target.value); triggerAutoSave({ clientEmail: e.target.value }); }}
               onFocus={() => setFocusedField("clientEmail")}
               onBlur={() => setFocusedField(null)}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "clientEmail" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: focusedField === "clientEmail" ? "#0a0a0a" : "rgba(255,255,255,0.03)", color: "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s" }} />
+              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "clientEmail" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "clientEmail" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
           </div>
 
           <div>
@@ -575,13 +635,13 @@ function ContractBuilderWorkspace() {
             <input type="text" value={companyName} disabled={isLocked} onChange={e => { setCompanyName(e.target.value); triggerAutoSave({ companyName: e.target.value }); }}
               onFocus={() => setFocusedField("companyName")}
               onBlur={() => setFocusedField(null)}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "companyName" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: focusedField === "companyName" ? "#0a0a0a" : "rgba(255,255,255,0.03)", color: "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s" }} />
+              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "companyName" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "companyName" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
           </div>
 
           <div>
             <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Location</div>
             <select value={location} disabled={isLocked} onChange={e => { setLocation(e.target.value); triggerAutoSave({ location: e.target.value }); }}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: "#0a0a0a", color: "#f1f5f9", fontSize: "12px", outline: "none" }}>
+              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#0a0a0a", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
               {["USA","UK","DE","CA","AU","FR","IT","ES","AE","Global"].map(o => <option key={o} value={o}>{o}</option>)}
             </select>
           </div>
@@ -591,13 +651,13 @@ function ContractBuilderWorkspace() {
           <div>
             <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Agreement Date</div>
             <input type="date" value={contractDate} disabled={isLocked} onChange={e => { setContractDate(e.target.value); triggerAutoSave({ contractDate: e.target.value }); }}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", color: "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", colorScheme: "dark" }}/>
+              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.03)", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", colorScheme: "dark", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}/>
           </div>
 
           <div>
             <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Initial Term</div>
             <select value={termLength} disabled={isLocked} onChange={e => { setTermLength(e.target.value); triggerAutoSave({ termLength: e.target.value }); }}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: "#0a0a0a", color: "#f1f5f9", fontSize: "12px", outline: "none" }}>
+              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#0a0a0a", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
               {["3 Months","6 Months","12 Months","Month-to-month","Project-based"].map(o => <option key={o} value={o}>{o}</option>)}
             </select>
           </div>
@@ -607,18 +667,16 @@ function ContractBuilderWorkspace() {
             <input type="number" value={monthlyRetainer} disabled={isLocked} onChange={e => { setMonthlyRetainer(e.target.value); triggerAutoSave({ monthlyRetainer: e.target.value }); }}
               onFocus={() => setFocusedField("monthlyRetainer")}
               onBlur={() => setFocusedField(null)}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "monthlyRetainer" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: focusedField === "monthlyRetainer" ? "#0a0a0a" : "rgba(255,255,255,0.03)", color: "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s" }} />
+              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "monthlyRetainer" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "monthlyRetainer" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
           </div>
 
           <div>
             <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Auto Renewal</div>
             <select value={autoRenewal} disabled={isLocked} onChange={e => { setAutoRenewal(e.target.value); triggerAutoSave({ autoRenewal: e.target.value }); }}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: "#090d16", color: "#f1f5f9", fontSize: "12px", outline: "none" }}>
+              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#090d16", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
               {["Yes, after 3 months","Yes, month-to-month","No","Custom"].map(o => <option key={o} value={o}>{o}</option>)}
             </select>
           </div>
-
-
         </div>
 
         {/* Center & Right: Editor / Preview Pane */}
@@ -766,6 +824,7 @@ function ContractBuilderWorkspace() {
                       <textarea
                         ref={textareaRef}
                         value={templateBody}
+                        disabled={isLocked}
                         onChange={(e) => {
                           setTemplateBody(e.target.value);
                           triggerAutoSave({ templateBody: e.target.value });
@@ -781,9 +840,11 @@ function ContractBuilderWorkspace() {
                           fontFamily: "monospace",
                           fontSize: "13px",
                           lineHeight: "1.6",
-                          color: "#334155",
+                          color: isLocked ? "#94a3b8" : "#334155",
                           background: "transparent",
-                          whiteSpace: "pre-wrap"
+                          whiteSpace: "pre-wrap",
+                          cursor: isLocked ? "not-allowed" : "text",
+                          opacity: isLocked ? 0.8 : 1
                         }}
                       />
                     )}
@@ -874,99 +935,104 @@ function ContractBuilderWorkspace() {
 
                       {/* Electronic Signature Section */}
                       <div>
-                        <div style={{ display: "flex", gap: "12px", alignItems: "center", marginBottom: "8px" }}>
+                        <div style={{ display: "flex", gap: "12px", alignItems: "center", marginBottom: "12px" }}>
                           <div style={{ position: "relative" }}>
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
                             <div style={{ position: "absolute", bottom: "-3px", left: "2px", right: "2px", height: "2px", background: "#ea580c" }}></div>
                           </div>
                           <h4 style={{ color: "#0f172a", fontSize: "14px", fontWeight: 800, margin: 0 }}>Electronic Signature</h4>
                         </div>
-                        <div style={{ fontSize: "12px", color: "#334155", marginBottom: "16px" }}>Choose how you'd like to sign</div>
-                        
-                        {/* Toggle Buttons */}
-                        <div style={{ display: "flex", gap: "8px", marginBottom: "20px" }}>
-                          <div onClick={() => setSignatureType("draw")} style={{ flex: 1, padding: "8px 0", background: signatureType === "draw" ? "#fff7ed" : "#fff", border: signatureType === "draw" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={signatureType === "draw" ? "#ea580c" : "#0f172a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-                            <span style={{ fontSize: "12px", fontWeight: 700, color: signatureType === "draw" ? "#0f172a" : "#0f172a" }}>Draw</span>
-                          </div>
-                          <div onClick={() => setSignatureType("type")} style={{ flex: 1, padding: "8px 0", background: signatureType === "type" ? "#fff7ed" : "#fff", border: signatureType === "type" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={signatureType === "type" ? "#ea580c" : "#0f172a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
-                            <span style={{ fontSize: "12px", fontWeight: 700, color: signatureType === "type" ? "#0f172a" : "#0f172a" }}>Type</span>
-                          </div>
-                          <div onClick={() => setSignatureType("upload")} style={{ flex: 1, padding: "8px 0", background: signatureType === "upload" ? "#fff7ed" : "#fff", border: signatureType === "upload" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={signatureType === "upload" ? "#ea580c" : "#0f172a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                            <span style={{ fontSize: "12px", fontWeight: 700, color: signatureType === "upload" ? "#0f172a" : "#0f172a" }}>Upload</span>
-                          </div>
-                        </div>
-
-                        {/* Signature Box */}
-                        {signatureType === "draw" && (
+                        {currentContract?.status === "signed" ? (
                           <div style={{ marginBottom: "16px" }}>
-                            <div style={{ border: "1px solid #f1f5f9", borderRadius: "8px", height: "130px", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", marginBottom: "8px" }}>
-                              <div style={{ fontSize: "40px", fontFamily: "'Brush Script MT', cursive, sans-serif", color: "#0f172a" }}>Viral Patel</div>
+                            <div style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, color: "#22c55e", background: "rgba(34, 197, 94, 0.1)", border: "1px solid rgba(34, 197, 94, 0.2)", padding: "4px 10px", borderRadius: "6px", marginBottom: "16px" }}>
+                              Contract Signed & Executed ✍️
                             </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#ea580c", cursor: "pointer", fontSize: "11px", fontWeight: 600 }}>
-                              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-                              <span>Clear</span>
+                            <div style={{ border: "1px solid #e2e8f0", borderRadius: "8px", height: "130px", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", marginBottom: "12px" }}>
+                              {currentContract.signature?.method === "type" ? (
+                                <div style={{ fontSize: "36px", fontFamily: "'Brush Script MT', cursive, sans-serif", color: "#0f172a" }}>{currentContract.signature.signatureValue}</div>
+                              ) : (
+                                <img src={currentContract.signature?.signatureValue} alt="Client Signature" style={{ maxHeight: "110px", maxWidth: "90%", objectFit: "contain" }} />
+                              )}
+                            </div>
+                            <div style={{ fontSize: "12px", color: "#334155", display: "flex", flexDirection: "column", gap: "4px", background: "#f8fafc", padding: "12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}>
+                              <div><strong>Signer:</strong> {currentContract.signature?.signerName || "—"}</div>
+                              <div><strong>Email:</strong> {currentContract.signature?.signerEmail || "—"}</div>
+                              <div><strong>Date:</strong> {currentContract.signature?.signedAt ? new Date(currentContract.signature.signedAt).toLocaleString() : "—"}</div>
+                              {currentContract.signature?.ipAddress && <div><strong>IP:</strong> {currentContract.signature.ipAddress}</div>}
                             </div>
                           </div>
-                        )}
-
-                        {signatureType === "type" && (
-                          <div style={{ marginBottom: "16px" }}>
-                            <input 
-                              type="text" 
-                              value={typedSignature} 
-                              onChange={(e) => setTypedSignature(e.target.value)} 
-                              placeholder="e.g. Viral Patel"
-                              style={{ width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid #f1f5f9", fontSize: "22px", fontFamily: "'Brush Script MT', cursive, sans-serif", outline: "none", color: "#0f172a", background: "#fff" }} 
-                            />
-                          </div>
-                        )}
-
-                        {signatureType === "upload" && (
-                          <div style={{ marginBottom: "16px" }}>
-                            <input 
-                              type="file" 
-                              ref={fileInputRef} 
-                              accept="image/*" 
-                              style={{ display: "none" }} 
-                              onChange={(e) => {
-                                if (e.target.files && e.target.files[0]) {
-                                  setUploadedSignature(URL.createObjectURL(e.target.files[0]));
-                                }
-                              }} 
-                            />
-                            {!uploadedSignature ? (
-                              <div onClick={() => fileInputRef.current?.click()} style={{ border: "2px dashed #cbd5e1", borderRadius: "8px", height: "150px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "pointer", background: "#fff", transition: "all 0.2s" }} onMouseEnter={e => e.currentTarget.style.borderColor = "#94a3b8"} onMouseLeave={e => e.currentTarget.style.borderColor = "#cbd5e1"}>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: "8px" }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                                <div style={{ fontSize: "12px", color: "#475569", fontWeight: 600 }}>Click to browse image</div>
+                        ) : (
+                          <>
+                            <div style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, color: "#ea580c", background: "#fff7ed", border: "1px solid #ffedd5", padding: "4px 10px", borderRadius: "6px", marginBottom: "16px" }}>
+                              Client Section (Disabled in Builder)
+                            </div>
+                            <div style={{ fontSize: "12px", color: "#64748b", marginBottom: "16px" }}>Choose how you'd like to sign</div>
+                            
+                            {/* Toggle Buttons */}
+                            <div style={{ display: "flex", gap: "8px", marginBottom: "20px" }}>
+                              <div onClick={() => setSignatureType("draw")} style={{ flex: 1, padding: "8px 0", background: signatureType === "draw" ? "#fff7ed" : "#fff", border: signatureType === "draw" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={signatureType === "draw" ? "#ea580c" : "#0f172a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                                <span style={{ fontSize: "12px", fontWeight: 700, color: signatureType === "draw" ? "#ea580c" : "#0f172a" }}>Draw</span>
                               </div>
-                            ) : (
-                              <div style={{ border: "1px solid #e2e8f0", borderRadius: "8px", height: "150px", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
-                                <img src={uploadedSignature} alt="Uploaded Signature" style={{ maxHeight: "100px", maxWidth: "90%", objectFit: "contain" }} />
-                                <button onClick={() => setUploadedSignature(null)} style={{ position: "absolute", top: "8px", right: "8px", background: "#ef4444", color: "#fff", border: "none", borderRadius: "50%", width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>✕</button>
+                              <div onClick={() => setSignatureType("type")} style={{ flex: 1, padding: "8px 0", background: signatureType === "type" ? "#fff7ed" : "#fff", border: signatureType === "type" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={signatureType === "type" ? "#ea580c" : "#0f172a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
+                                <span style={{ fontSize: "12px", fontWeight: 700, color: signatureType === "type" ? "#ea580c" : "#0f172a" }}>Type</span>
+                              </div>
+                              <div onClick={() => setSignatureType("upload")} style={{ flex: 1, padding: "8px 0", background: signatureType === "upload" ? "#fff7ed" : "#fff", border: signatureType === "upload" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={signatureType === "upload" ? "#ea580c" : "#0f172a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                <span style={{ fontSize: "12px", fontWeight: 700, color: signatureType === "upload" ? "#ea580c" : "#0f172a" }}>Upload</span>
+                              </div>
+                            </div>
+
+                            {/* Signature Box */}
+                            {signatureType === "draw" && (
+                              <div style={{ marginBottom: "16px" }}>
+                                <div style={{ border: "1px solid #f1f5f9", borderRadius: "8px", height: "130px", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", marginBottom: "8px", cursor: "not-allowed" }}>
+                                  <div style={{ fontSize: "24px", fontFamily: "'Brush Script MT', cursive, sans-serif", color: "#94a3b8" }}>Write signature here</div>
+                                </div>
+                                <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#cbd5e1", cursor: "not-allowed", fontSize: "11px", fontWeight: 600 }}>
+                                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                                  <span>Clear (Disabled in Builder)</span>
+                                </div>
                               </div>
                             )}
-                          </div>
+
+                            {signatureType === "type" && (
+                              <div style={{ marginBottom: "16px" }}>
+                                <input 
+                                  type="text" 
+                                  disabled={true}
+                                  placeholder={`e.g. ${clientName || "John Doe"}`}
+                                  style={{ width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "22px", fontFamily: "'Brush Script MT', cursive, sans-serif", outline: "none", color: "#94a3b8", background: "#f8fafc", cursor: "not-allowed" }} 
+                                />
+                              </div>
+                            )}
+
+                            {signatureType === "upload" && (
+                              <div style={{ marginBottom: "16px" }}>
+                                <div style={{ border: "2px dashed #e2e8f0", borderRadius: "8px", height: "150px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "not-allowed", background: "#f8fafc" }}>
+                                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: "8px" }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                  <div style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600 }}>Upload Disabled in Builder</div>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Agreement Checkbox */}
+                            <div style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "20px", cursor: "not-allowed" }}>
+                              <div style={{ width: "20px", height: "20px", borderRadius: "6px", background: "#fff", border: "1px solid #cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px" }}>
+                              </div>
+                              <div style={{ fontSize: "12px", color: "#64748b", fontWeight: 500, lineHeight: "1.5", userSelect: "none" }}>
+                                I have read, understood, and agree to be bound by this Agreement.
+                              </div>
+                            </div>
+
+                            {/* Sign & Complete Button */}
+                            <button disabled={true} style={{ width: "100%", background: "#e2e8f0", color: "#94a3b8", border: "none", borderRadius: "8px", padding: "12px", fontSize: "14px", fontWeight: 700, cursor: "not-allowed", marginBottom: "16px", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
+                              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                              Sign & Complete (Completed by Client)
+                            </button>
+                          </>
                         )}
-
-                        {/* Agreement Checkbox */}
-                        <div onClick={() => setAgreedToTerms(!agreedToTerms)} style={{ display: "flex", alignItems: "flex-start", gap: "12px", marginBottom: "20px", cursor: "pointer" }}>
-                          <div style={{ width: "20px", height: "20px", borderRadius: "6px", background: agreedToTerms ? "#ea580c" : "#fff", border: agreedToTerms ? "1px solid #ea580c" : "1px solid #cbd5e1", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: "1px", transition: "all 0.2s" }}>
-                            {agreedToTerms && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>}
-                          </div>
-                          <div style={{ fontSize: "12px", color: "#0f172a", fontWeight: 500, lineHeight: "1.5", userSelect: "none" }}>
-                            I have read, understood, and agree to be bound by this Agreement.
-                          </div>
-                        </div>
-
-                        {/* Sign & Complete Button */}
-                        <button style={{ width: "100%", background: agreedToTerms ? "#f97316" : "#fed7aa", color: "#fff", border: "none", borderRadius: "8px", padding: "12px", fontSize: "14px", fontWeight: 700, cursor: agreedToTerms ? "pointer" : "not-allowed", marginBottom: "16px", boxShadow: agreedToTerms ? "0 4px 14px rgba(249, 115, 22, 0.3)" : "none", transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
-                          Sign & Complete
-                        </button>
-
                         {/* Secure Badge */}
                         <div style={{ display: "flex", alignItems: "center", gap: "10px", background: "#f0fdf4", padding: "12px", borderRadius: "8px", color: "#16a34a" }}>
                           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
@@ -1067,6 +1133,215 @@ function ContractBuilderWorkspace() {
             </div>
         </div>
       </div>
+
+      {/* ── EMAIL TEMPLATE SHARE MODAL ── */}
+      {isEmailModalOpen && (
+        <div style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(9, 13, 22, 0.8)",
+          backdropFilter: "blur(4px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 99999
+        }}>
+          <div style={{
+            background: "#121212",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: "24px",
+            padding: "32px",
+            width: "600px",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "20px",
+            fontFamily: "'Inter', sans-serif"
+          }}>
+            {/* Header */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: "16px" }}>
+              <div>
+                <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 800, color: "#fff" }}>Client Outreach Email</h3>
+                <p style={{ margin: "4px 0 0 0", fontSize: "13px", color: "#94a3b8" }}>Send this pre-formatted email to your client to request their signature.</p>
+              </div>
+              <button 
+                onClick={() => setIsEmailModalOpen(false)} 
+                style={{ background: "rgba(255,255,255,0.04)", border: "none", color: "#94a3b8", borderRadius: "50%", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: "14px", fontWeight: "bold" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Subject Line */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>Subject Line</label>
+              <input 
+                type="text" 
+                value={emailSubject}
+                onChange={(e) => setEmailSubject(e.target.value)}
+                style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", background: "#0a0a0a", border: "1px solid rgba(255,255,255,0.08)", color: "#fff", fontSize: "13px", outline: "none", boxSizing: "border-box" }}
+              />
+            </div>
+
+            {/* Warning if Draft */}
+            {!isLocked && (
+              <div style={{ background: "rgba(234,88,12,0.1)", border: "1px solid rgba(234,88,12,0.2)", borderRadius: "8px", padding: "12px 16px", fontSize: "12px", color: "#fb923c", lineHeight: 1.5 }}>
+                <strong>Draft Mode:</strong> The email button/link will not be workable until the contract is published and active.
+              </div>
+            )}
+
+            {/* Preview Box */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+              <label style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>Email Content Preview</label>
+              <div style={{ background: "#fff", borderRadius: "12px", padding: "24px", color: "#333", maxHeight: "280px", overflowY: "auto", border: "1px solid #cbd5e1" }}>
+                <div style={{ fontFamily: "Arial, sans-serif", fontSize: "14px", lineHeight: "1.6" }}>
+                  <p>Hi {clientName || "[Client Name]"},</p>
+                  <p>I have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.</p>
+                  <p>We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!</p>
+                  
+                  <p>Please click the button below to view the full agreement and complete the secure e-signature process:</p>
+                  
+                  <div style={{ textAlign: "center", margin: "20px 0" }}>
+                    <span style={{ 
+                      background: isLocked ? "linear-gradient(135deg,#f97316,#ea580c)" : "#94a3b8", 
+                      color: "#fff", 
+                      padding: "10px 20px", 
+                      textDecoration: "none", 
+                      fontWeight: "bold", 
+                      borderRadius: "6px", 
+                      display: "inline-block",
+                      fontSize: "13px",
+                      cursor: isLocked ? "pointer" : "not-allowed"
+                    }}>
+                      Review & Sign Agreement
+                    </span>
+                  </div>
+
+                  <p style={{ fontSize: "11px", color: "#64748b", borderTop: "1px solid #e2e8f0", paddingTop: "12px", marginTop: "20px" }}>
+                    This is a secure, legally-binding electronic signature process. If you have any questions, please let us know.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "20px" }}>
+              <button
+                onClick={() => setIsEmailModalOpen(false)}
+                style={{ padding: "10px 20px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", background: "transparent", color: "#94a3b8", fontSize: "13px", fontWeight: 700, cursor: "pointer" }}
+              >
+                Close
+              </button>
+              
+              <button
+                onClick={copyRichEmail}
+                disabled={!isLocked}
+                style={{ 
+                  padding: "10px 24px", 
+                  border: "none", 
+                  borderRadius: "8px", 
+                  background: isLocked ? "linear-gradient(135deg,#f97316,#ea580c)" : "#4b5563", 
+                  color: "#fff", 
+                  fontSize: "13px", 
+                  fontWeight: 800, 
+                  cursor: isLocked ? "pointer" : "not-allowed",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  opacity: isLocked ? 1 : 0.6
+                }}
+              >
+                {emailCopied ? <Check size={15}/> : <Copy size={15}/>}
+                {emailCopied ? "Copied Email HTML!" : "Copy Formatted Email"}
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
+
+      {/* ── SUCCESS PUBLISH MODAL ── */}
+      {showSuccessModal && (
+        <div style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(9, 13, 22, 0.8)",
+          backdropFilter: "blur(4px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 99999
+        }}>
+          <div style={{
+            background: "#121212",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: "24px",
+            padding: "32px",
+            width: "500px",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+            fontFamily: "'Inter', sans-serif"
+          }}>
+            {/* Header */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: "16px" }}>
+              <div>
+                <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 800, color: "#fff" }}>Agreement Published!</h3>
+                <p style={{ margin: "4px 0 0 0", fontSize: "13px", color: "#94a3b8" }}>The contract has been locked and the e-signature workflow is now active.</p>
+              </div>
+              <button 
+                onClick={() => setShowSuccessModal(false)} 
+                style={{ background: "rgba(255,255,255,0.04)", border: "none", color: "#94a3b8", borderRadius: "50%", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: "14px", fontWeight: "bold" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Link Box */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <label style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>E-Sign Link for Client</label>
+              <div style={{ display: "flex", gap: "8px" }}>
+                <input 
+                  type="text" 
+                  readOnly 
+                  value={shareLink || ""} 
+                  style={{ flex: 1, padding: "10px 14px", borderRadius: "8px", background: "#0a0a0a", border: "1px solid rgba(255,255,255,0.08)", color: "#94a3b8", fontSize: "12px", outline: "none" }}
+                />
+                <button 
+                  onClick={copyLink} 
+                  style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "8px", border: "none", background: "rgba(255,255,255,0.04)", color: "#fff", cursor: "pointer", fontSize: "12px", fontWeight: 700, transition: "all 0.2s" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+                >
+                  {copied ? <Check size={14} color="#22c55e" /> : <Copy size={14} />}
+                  {copied ? "Copied" : "Copy Link"}
+                </button>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "20px" }}>
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                style={{ padding: "10px 20px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", background: "transparent", color: "#94a3b8", fontSize: "13px", fontWeight: 700, cursor: "pointer" }}
+              >
+                Close Editor
+              </button>
+              <button
+                onClick={() => {
+                  setShowSuccessModal(false);
+                  router.push(`/contract/${currentContract.id}`);
+                }}
+                style={{ padding: "10px 24px", border: "none", borderRadius: "8px", background: "linear-gradient(135deg,#f97316,#ea580c)", color: "#fff", fontSize: "13px", fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+              >
+                <Eye size={15}/> View Agreement
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 }

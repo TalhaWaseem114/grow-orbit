@@ -474,7 +474,7 @@ function LeadDetailPanel({
                           onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
                           onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
                         >
-                          Manage Agreement
+                          {["draft", "awaiting_review"].includes(contract.status) ? "Manage Agreement" : "View Agreement"}
                         </button>
                         <button
                           type="button"
@@ -1324,19 +1324,6 @@ export default function LeadsTab({
 
       {/* Advanced Filters (Date, Owner, Source) */}
       <div className="leads-advanced-filters" style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-        {/* Owner Filter */}
-        <select
-          value={ownerFilter}
-          onChange={e => setOwnerFilter(e.target.value)}
-          style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer" }}
-        >
-          <option value="all">All Owners</option>
-          <option value="unassigned">Unassigned</option>
-          {users.filter(u => u.role === "admin").map(u => (
-            <option key={u.id || u.uid} value={u.id || u.uid}>{u.fullName || u.displayName || u.email}</option>
-          ))}
-        </select>
-
         {/* Source Filter */}
         <select
           value={sourceFilter}
@@ -1475,15 +1462,6 @@ export default function LeadsTab({
               <option value="proposal_sent">Proposal Sent</option>
               <option value="won">Won 🎉</option>
               <option value="lost">Lost ❌</option>
-            </select>
-            <select
-              onChange={(e) => { if(e.target.value) performBulkAction("assign", e.target.value); e.target.value = ""; }}
-              style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none", cursor: "pointer" }}
-            >
-              <option value="">Assign Owner...</option>
-              {users.filter(u => u.role === "admin").map(u => (
-                <option key={u.id || u.uid} value={u.id || u.uid}>{u.fullName || u.displayName || u.email}</option>
-              ))}
             </select>
             <button
               onClick={() => performBulkAction("delete")}
@@ -1625,21 +1603,7 @@ export default function LeadsTab({
                     {/* Column 2: Status, Priority and Score Badges */}
                     <div style={{ flex: "1 1 180px", minWidth: 150, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
                       <StatusBadge status={status} />
-                      {ageDays > 7 && (
-                        <span style={{ 
-                          fontSize: 8, 
-                          fontWeight: 900, 
-                          color: "#22d3ee", 
-                          background: "rgba(34,211,238,0.10)", 
-                          border: "1px solid rgba(34,211,238,0.25)", 
-                          borderRadius: 4, 
-                          padding: "1.5px 5.5px", 
-                          textTransform: "uppercase",
-                          letterSpacing: "0.05em"
-                        }}>
-                          COLD ❄️
-                        </span>
-                      )}
+
                       {/* 
                       <span style={{ 
                         fontSize: 9, 
@@ -1704,17 +1668,7 @@ export default function LeadsTab({
                       </div>
                     </div>
 
-                    {/* Column 4: Owner details */}
-                    <div style={{ flex: "1 1 120px", minWidth: 100, display: "flex", alignItems: "center" }}>
-                      {lead.assignedName ? (
-                        <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                          <div style={{ width: 4, height: 4, borderRadius: "50%", background: "#4ade80" }} />
-                          <span style={{ fontSize: 9, fontWeight: 700, color: "#a3a3a3", textTransform: "uppercase" }}>{lead.assignedName}</span>
-                        </div>
-                      ) : (
-                        <span style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase" }}>Unassigned</span>
-                      )}
-                    </div>
+
 
                     {/* Column 5: Direct Outreach and Dates */}
                     <div style={{ display: "flex", alignItems: "center", gap: 12, flexShrink: 0 }}>
@@ -1846,7 +1800,6 @@ export default function LeadsTab({
                   <th style={{ padding: "16px 12px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", whiteSpace: "nowrap", width: 130 }}>Status</th>
                   <th style={{ padding: "16px 8px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", whiteSpace: "nowrap", width: 60 }}>Prio</th>
                   <th style={{ padding: "16px 16px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", minWidth: 220 }}>Client</th>
-                  <th style={{ padding: "16px 8px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", minWidth: 70, maxWidth: 90 }}>Owner</th>
                   <th style={{ padding: "16px 24px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", minWidth: 280 }}>Service & Source</th>
                   <th style={{ padding: "16px 12px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", whiteSpace: "nowrap", width: 100 }}>Date</th>
                   <th style={{ padding: "16px 24px", textAlign: "right", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", whiteSpace: "nowrap", width: 140 }}>Actions</th>
@@ -1889,21 +1842,7 @@ export default function LeadsTab({
                       <td style={{ padding: "14px 12px", whiteSpace: "nowrap", width: 130 }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                           <StatusBadge status={status} />
-                          {ageDays > 7 && (
-                            <span style={{ 
-                              fontSize: 8, 
-                              fontWeight: 900, 
-                              color: "#22d3ee", 
-                              background: "rgba(34,211,238,0.10)", 
-                              border: "1px solid rgba(34,211,238,0.25)", 
-                              borderRadius: 4, 
-                              padding: "1px 4px", 
-                              textTransform: "uppercase",
-                              letterSpacing: "0.05em"
-                            }}>
-                              COLD ❄️
-                            </span>
-                          )}
+
                         </div>
                       </td>
                       <td style={{ padding: "14px 8px", whiteSpace: "nowrap", width: 60 }}>
@@ -1942,20 +1881,6 @@ export default function LeadsTab({
                           )}
                         </div>
                         <div style={{ fontSize: 11, color: "#525252", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{lead.email}</div>
-                      </td>
-                      <td style={{ padding: "14px 8px", minWidth: 70, maxWidth: 90, whiteSpace: "nowrap" }}>
-                        <span style={{ 
-                          fontSize: 10, 
-                          fontWeight: 700, 
-                          color: lead.assignedName ? "#fff" : "#333",
-                          maxWidth: "100%",
-                          overflow: "hidden",
-                          textOverflow: "ellipsis",
-                          display: "inline-block",
-                          whiteSpace: "nowrap"
-                        }} title={lead.assignedName || "Unassigned"}>
-                          {lead.assignedName || "Unassigned"}
-                        </span>
                       </td>
                       <td style={{ padding: "14px 24px", minWidth: 280, whiteSpace: "nowrap" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>

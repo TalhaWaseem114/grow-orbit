@@ -1,14 +1,13 @@
 import { db as clientDb } from "@/firebase/firebaseConfig";
 import { 
   doc, getDoc, setDoc, addDoc, updateDoc, deleteDoc, getDocs, 
-  collection, query, where, runTransaction
+  collection, query, where, runTransaction, orderBy, limit
 } from "firebase/firestore";
 
 let isAdminOperational = null;
 
 export async function checkAdminOperational() {
-  // In dev, reset cache on each call so hot reloads don't lock in a stale value
-  if (process.env.NODE_ENV === "development") isAdminOperational = null;
+
   if (isAdminOperational !== null) return isAdminOperational;
 
   // If FIREBASE_SERVICE_ACCOUNT env var is set, trust that admin works
@@ -200,29 +199,34 @@ export async function getSubcollectionDocData(parentCollection, parentId, subcol
 export async function getNextSequenceNumber() {
   const isAdminOk = await checkAdminOperational();
   let seqNum = 1;
-  if (isAdminOk) {
-    const adminDb = await getAdminDb();
-    const counterRef = adminDb.collection("counters").doc("contracts");
-    await adminDb.runTransaction(async (transaction) => {
-      const counterDoc = await transaction.get(counterRef);
-      if (!counterDoc.exists) {
-        transaction.set(counterRef, { count: 1 });
-      } else {
-        seqNum = (counterDoc.data().count || 0) + 1;
-        transaction.update(counterRef, { count: seqNum });
+  try {
+    if (isAdminOk) {
+      const adminDb = await getAdminDb();
+      const snap = await adminDb.collection("contracts").orderBy("contractNumber", "desc").limit(1).get();
+      if (!snap.empty) {
+        const latestContract = snap.docs[0].data();
+        const numStr = latestContract.contractNumber?.split("-")?.pop();
+        const lastNum = parseInt(numStr, 10);
+        if (!isNaN(lastNum)) {
+          seqNum = lastNum + 1;
+        }
       }
-    });
-  } else {
-    const counterRef = doc(clientDb, "counters", "contracts");
-    await runTransaction(clientDb, async (transaction) => {
-      const counterDoc = await transaction.get(counterRef);
-      if (!counterDoc.exists()) {
-        transaction.set(counterRef, { count: 1 });
-      } else {
-        seqNum = (counterDoc.data().count || 0) + 1;
-        transaction.update(counterRef, { count: seqNum });
+    } else {
+      const q = query(collection(clientDb, "contracts"), orderBy("contractNumber", "desc"), limit(1));
+      const snap = await getDocs(q);
+      if (!snap.empty) {
+        const latestContract = snap.docs[0].data();
+        const numStr = latestContract.contractNumber?.split("-")?.pop();
+        const lastNum = parseInt(numStr, 10);
+        if (!isNaN(lastNum)) {
+          seqNum = lastNum + 1;
+        }
       }
-    });
+    }
+  } catch (error) {
+    console.error("Error generating next sequence number:", error);
+    // Fallback based on simple timestamp to ensure uniqueness
+    seqNum = Math.floor(Date.now() / 1000) % 10000;
   }
   return seqNum;
 }

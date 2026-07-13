@@ -1,25 +1,4 @@
 import { NextResponse } from "next/server";
-import { checkAdminOperational } from "@/utils/dbHelper";
-import { adminDb } from "@/firebase/firebaseAdmin";
-import { db as clientDb } from "@/firebase/firebaseConfig";
-import { collection, getDocs, addDoc } from "firebase/firestore";
-
-async function getAllTemplates() {
-  try {
-    const isAdmin = await checkAdminOperational();
-    if (isAdmin) {
-      const snap = await adminDb.collection("contractTemplates").get();
-      return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    } else {
-      const snap = await getDocs(collection(clientDb, "contractTemplates"));
-      return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    }
-  } catch (err) {
-    // Last resort: try client SDK directly
-    const snap = await getDocs(collection(clientDb, "contractTemplates"));
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
-  }
-}
 
 const DEFAULT_TEMPLATE_BODY = `<h2>AMAZON GROWTH PARTNERSHIP AGREEMENT</h2>
 <p>This Agreement is made between Grow Orbit ("Agency") and the Client ("Client") on the date above.</p>
@@ -52,33 +31,17 @@ const DEFAULT_TEMPLATE_BODY = `<h2>AMAZON GROWTH PARTNERSHIP AGREEMENT</h2>
 
 export async function GET(request) {
   try {
-    let templates = await getAllTemplates();
-
-    if (templates.length === 0) {
-      const defaultTemplate = {
-        name: "Standard Marketing Service Agreement",
-        category: "Marketing",
-        body: DEFAULT_TEMPLATE_BODY,
-        createdAt: new Date(),
-        updatedAt: new Date()
-      };
-      
-      try {
-        const ref = await addDoc(collection(clientDb, "contractTemplates"), defaultTemplate);
-        templates = [{ id: ref.id, ...defaultTemplate }];
-      } catch (e) {
-        // Even if saving fails, return the default so the contract can still be created
-        templates = [{ id: "default", ...defaultTemplate }];
-      }
-    }
-
+    const templates = [{
+      id: "default",
+      name: "Standard Marketing Service Agreement",
+      category: "Marketing",
+      body: DEFAULT_TEMPLATE_BODY,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }];
     return NextResponse.json({ success: true, templates });
   } catch (error) {
     console.error("GET templates route error:", error);
-    // Always return a usable default template even on error
-    return NextResponse.json({ 
-      success: true, 
-      templates: [{ id: "default", name: "Standard Agreement", body: DEFAULT_TEMPLATE_BODY }] 
-    });
+    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
   }
 }

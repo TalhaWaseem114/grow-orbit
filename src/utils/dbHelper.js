@@ -10,14 +10,8 @@ export async function checkAdminOperational() {
 
   if (isAdminOperational !== null) return isAdminOperational;
 
-  // If FIREBASE_SERVICE_ACCOUNT env var is set, trust that admin works
-  if (process.env.FIREBASE_SERVICE_ACCOUNT) {
-    isAdminOperational = true;
-    return true;
-  }
-
   try {
-    // Dynamically import to catch module-level init failures (e.g., missing ADC)
+    // Dynamically import to catch module-level init failures (e.g., ESM/CJS issues on Vercel)
     const { adminDb: db } = await import("@/firebase/firebaseAdmin");
     await db.collection("_ping").limit(1).get();
     isAdminOperational = true;
@@ -28,6 +22,7 @@ export async function checkAdminOperational() {
   }
   return isAdminOperational;
 }
+
 
 export async function verifyAdmin(request) {
   const authHeader = request.headers.get("Authorization");

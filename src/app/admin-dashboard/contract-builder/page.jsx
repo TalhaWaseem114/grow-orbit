@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { X, Save, Send, Eye, EyeOff, Copy, Check, Loader, FileText, ArrowLeft } from "lucide-react";
+import { X, Save, Send, Eye, EyeOff, Copy, Check, Loader, FileText, ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
 import { db } from "@/firebase/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
 
@@ -15,32 +15,33 @@ const BUILT_IN_TEMPLATES = [
     body: `<h2>AMAZON GROWTH PARTNERSHIP AGREEMENT</h2>
 <p>This Agreement is made between Grow Orbit ("Agency") and the Client ("Client") on the date above.</p>
 
-<h3>1. SCOPE OF SERVICES</h3>
-<p>Grow Orbit will provide the Amazon growth services as outlined in the Statement of Work (SOW) attached to this agreement.</p>
+{{services_list}}
 
-<h3>2. TERM & COMMITMENT</h3>
-<p>The initial term of this agreement is <strong>{{initial_term}}</strong> from the agreement date. After the initial term, the agreement will renew automatically on a month-to-month basis unless either party provides 30 days written notice.</p>
+<h3>1. TERM & COMMITMENT</h3>
+<p>The initial term is <strong>{{initial_term}}</strong> from the agreement date. After the initial term, the agreement renews automatically on a month-to-month basis unless either party provides 30 days written notice.</p>
 
-<h3>3. MONTHLY INVESTMENT</h3>
-<p>Client agrees to pay the monthly retainer fee as specified in the SOW. Payment is due in advance on the 1st of each month.</p>
+<h3>2. PAYMENT TERMS</h3>
+<p>Full payment of <strong>{{monthly_investment}}</strong> is due immediately upon execution of this agreement. All subsequent monthly payments are due on the 1st of each month. Late payments may incur a fee of 1.5% per month on the outstanding balance.</p>
 
-<h3>4. CLIENT RESPONSIBILITIES</h3>
-<p>Client agrees to provide necessary access to Amazon Seller Central, Advertising Console, Brand Registry and other relevant accounts required to perform the services.</p>
+<h3>3. CLIENT RESPONSIBILITIES</h3>
+<p>Client agrees to provide necessary access to Amazon Seller Central, Advertising Console, Brand Registry and other relevant accounts. Results may vary based on market conditions, inventory, competition and other factors outside our control.</p>
 
-<h3>5. PERFORMANCE & EXPECTATIONS</h3>
-<p>While Grow Orbit will use best efforts and proven strategies to grow your Amazon business, results may vary based on market conditions, inventory, competition and other factors outside our control.</p>
+<h3>4. CONFIDENTIALITY & TERMINATION</h3>
+<p>Both parties agree to keep all non-public information confidential. Either party may terminate with 30 days written notice after the initial term. Outstanding payments are due upon termination.</p>
 
-<h3>6. CONFIDENTIALITY</h3>
-<p>Both parties agree to keep confidential all non-public information shared during the course of this agreement.</p>
-
-<h3>7. TERMINATION</h3>
-<p>Either party may terminate this agreement with 30 days written notice after the initial term. Outstanding payments are due upon termination.</p>
-
-<h3>8. GOVERNING LAW</h3>
-<p>This agreement shall be governed by and construed in accordance with the laws of the jurisdiction in which Grow Orbit is registered.</p>
+<h3>5. GOVERNING LAW</h3>
+<p>This agreement shall be governed by the laws of the jurisdiction in which Grow Orbit is registered.</p>
 
 <p><em>IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.</em></p>`
   }
+];
+
+const SERVICE_PRESETS = [
+  { name: "Full Account Management", description: "End-to-end management of inventory, listing optimization, PPC, and daily store operations.", price: "2500" },
+  { name: "Amazon PPC Management", description: "Optimization, monitoring, and scaling of Sponsored Products, Brands, Display, and Video campaigns.", price: "1500" },
+  { name: "SEO & Listing Optimization", description: "In-depth keyword research, rewriting titles, bullet points, and backend search terms.", price: "500" },
+  { name: "Brand Store & A+ Design", description: "Design, layout, and implementation of premium A+ Content and customized storefront.", price: "800" },
+  { name: "Account Audit & Strategy", description: "In-depth account analysis, PPC auditing, inventory check, and custom growth road map.", price: "1000" }
 ];
 
 // ─── Variable chips ────────────────────────────────────────────────────────────
@@ -53,7 +54,61 @@ const VARIABLES = [
   { label: "Monthly Inv",  tag: "{{monthly_investment}}" },
   { label: "Auto Renewal", tag: "{{auto_renewal}}" },
   { label: "Date",         tag: "{{contract_date}}" },
+  { label: "Services",     tag: "{{services_list}}" },
 ];
+
+function buildServicesHtml(services, monthlyRetainer) {
+  const items = (services && services.length > 0) ? services : [];
+  if (items.length === 0 && !monthlyRetainer) return "";
+
+  let rows = "";
+  let total = 0;
+  items.forEach((s, i) => {
+    const price = Number(s.price) || 0;
+    total += price;
+    const descHtml = s.description ? `<div style="font-size: 11px; color: #64748b; font-weight: 400; margin-top: 4px; line-height: 1.4;">${s.description}</div>` : "";
+    rows += `
+      <tr>
+        <td style="padding: 14px 16px; font-size: 13px; color: #334155; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${i + 1}</td>
+        <td style="padding: 14px 16px; font-size: 13px; color: #0f172a; font-weight: 600; border-bottom: 1px solid #f1f5f9; vertical-align: top;">
+          <div>${s.name || "—"}</div>
+          ${descHtml}
+        </td>
+        <td style="padding: 14px 16px; font-size: 13px; color: #0f172a; font-weight: 700; text-align: right; border-bottom: 1px solid #f1f5f9; vertical-align: top;">$${price.toLocaleString()}</td>
+      </tr>`;
+  });
+
+  if (total === 0 && monthlyRetainer) total = Number(monthlyRetainer);
+
+  return `
+    <div style="margin: 8px 0 32px 0;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+        <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #fff7ed; border-radius: 10px; width: 40px; height: 40px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div>
+          <div style="font-size: 15px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em;">Services & Pricing</div>
+          <div style="font-size: 11px; color: #64748b;">The following services are included in this agreement</div>
+        </div>
+      </div>
+      <table style="width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+        <thead>
+          <tr style="background: #0f172a;">
+            <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #94a3b8; text-align: left; text-transform: uppercase; letter-spacing: 0.05em; width: 50px;">#</th>
+            <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #94a3b8; text-align: left; text-transform: uppercase; letter-spacing: 0.05em;">Service</th>
+            <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #94a3b8; text-align: right; text-transform: uppercase; letter-spacing: 0.05em; width: 120px;">Price</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+        <tfoot>
+          <tr style="background: #f8fafc;">
+            <td colspan="2" style="padding: 14px 16px; font-size: 14px; font-weight: 800; color: #0f172a; text-align: right;">Total Monthly Investment</td>
+            <td style="padding: 14px 16px; font-size: 16px; font-weight: 800; color: #ea580c; text-align: right;">$${total.toLocaleString()} USD</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>`;
+}
 
 function compilePreview(body, fields) {
   const fmt = (v) => {
@@ -76,7 +131,8 @@ function compilePreview(body, fields) {
     .split("{{initial_term}}").join(fields.termLength || "—")
     .split("{{contract_date}}").join(fmt(fields.contractDate))
     .split("{{start_date}}").join(fmt(fields.startDate))
-    .split("{{end_date}}").join(fmt(fields.endDate));
+    .split("{{end_date}}").join(fmt(fields.endDate))
+    .split("{{services_list}}").join(buildServicesHtml(fields.services, fields.monthlyRetainer));
 
   // Auto-format clauses
   html = html.replace(/<h3>(\d+)\.\s*(.*?)<\/h3>\s*<p>([\s\S]*?)<\/p>/g, (match, number, title, text) => {
@@ -241,6 +297,10 @@ function ContractBuilderWorkspace() {
   const [focusedField, setFocusedField] = useState(null);
   const [zoom, setZoom] = useState(0.65);
   const [error, setError] = useState("");
+  
+  const [clientDetailsOpen, setClientDetailsOpen] = useState(true);
+  const [agreementMetaOpen, setAgreementMetaOpen] = useState(true);
+  const [servicesOpen, setServicesOpen] = useState(true);
 
   // Contract fields
   const [clientName, setClientName]           = useState("");
@@ -256,6 +316,7 @@ function ContractBuilderWorkspace() {
   const [contractDate, setContractDate]       = useState("");
   const [startDate, setStartDate]             = useState("");
   const [templateBody, setTemplateBody]       = useState("");
+  const [services, setServices]               = useState([{ name: "", description: "", price: "" }]);
 
   const [signatureType, setSignatureType]     = useState("draw");
   const [typedSignature, setTypedSignature]   = useState("");
@@ -368,6 +429,7 @@ function ContractBuilderWorkspace() {
       parseDateToInputString(contractData.startDate) || ""
     );
     setTemplateBody(contractData.templateBody || BUILT_IN_TEMPLATES[0].body);
+    setServices(contractData.services && contractData.services.length > 0 ? contractData.services : [{ name: "", description: "", price: "" }]);
   };
 
   const isLocked = currentContract ? !["draft", "awaiting_review"].includes(currentContract.status) : false;
@@ -375,7 +437,7 @@ function ContractBuilderWorkspace() {
     ? `${typeof window !== "undefined" ? window.location.origin : ""}/contract/${currentContract.id}`
     : null;
 
-  const fields = { clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, termLength, paymentTerms, contractDate, startDate, location, autoRenewal };
+  const fields = { clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, termLength, paymentTerms, contractDate, startDate, location, autoRenewal, services };
 
   // ── Auto-save ──
   const triggerAutoSave = useCallback((extra = {}) => {
@@ -413,10 +475,9 @@ function ContractBuilderWorkspace() {
   // ── Apply template (with compiled variables) ──
   const applyTemplate = (tpl) => {
     if (isLocked) return;
-    const compiled = compilePreview(tpl.body, fields);
-    setTemplateBody(compiled);
+    setTemplateBody(tpl.body);
     setActiveTab("editor");
-    triggerAutoSave({ templateBody: compiled });
+    triggerAutoSave({ templateBody: tpl.body });
   };
 
   // ── Publish / Send for signature ──
@@ -428,7 +489,7 @@ function ContractBuilderWorkspace() {
       await fetch(`/api/contracts/${currentContract.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, termLength, paymentTerms, contractDate, startDate, templateBody })
+        body: JSON.stringify({ clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, termLength, paymentTerms, contractDate, startDate, templateBody, services })
       });
       // Then publish
       const res = await fetch(`/api/contracts/${currentContract.id}/send`, { method: "POST" });
@@ -553,6 +614,21 @@ function ContractBuilderWorkspace() {
           <div style={{ fontSize: "11px", color: "#64748b", marginTop: "1px" }}>{clientName || "—"} · {companyName || "—"}</div>
         </div>
 
+        {/* Reset Template */}
+        {!isLocked && (
+          <button 
+            onClick={() => {
+              if (window.confirm("Are you sure you want to reset this contract to the default template? This will restore the dynamic placeholders (like the services table) and overwrite any manual text edits you made to the template body.")) {
+                setTemplateBody(BUILT_IN_TEMPLATES[0].body);
+                triggerAutoSave({ templateBody: BUILT_IN_TEMPLATES[0].body });
+              }
+            }}
+            style={{ display: "flex", alignItems: "center", gap: "6px", padding: "6px 12px", borderRadius: "8px", border: "1px solid rgba(239,68,68,0.25)", background: "rgba(239,68,68,0.05)", color: "#ef4444", cursor: "pointer", fontSize: "11px", fontWeight: 700 }}
+          >
+            Reset Template
+          </button>
+        )}
+
         {/* Preview toggle */}
         <button onClick={() => setPreviewMode(p => !p)} style={{ display: "flex", alignItems: "center", gap: "6px", padding: "6px 12px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: previewMode ? "rgba(249,115,22,0.15)" : "rgba(255,255,255,0.03)", color: previewMode ? "#f97316" : "#94a3b8", cursor: "pointer", fontSize: "11px", fontWeight: 700 }}>
           {previewMode ? <EyeOff size={13}/> : <Eye size={13}/>}
@@ -601,7 +677,7 @@ function ContractBuilderWorkspace() {
       <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
 
         {/* Left: Input Fields */}
-        <div style={{ width: "320px", flexShrink: 0, overflowY: "auto", padding: "20px 24px", borderRight: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: "12px", background: "#121212" }}>
+        <div style={{ width: "380px", flexShrink: 0, overflowY: "auto", padding: "20px 24px", borderRight: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: "16px", background: "#121212" }}>
           
           {isLocked && (
             <div style={{ background: "rgba(234,88,12,0.1)", border: "1px solid rgba(234,88,12,0.3)", borderRadius: "8px", padding: "10px 12px", marginBottom: "8px", display: "flex", gap: "8px", alignItems: "center" }}>
@@ -612,71 +688,195 @@ function ContractBuilderWorkspace() {
             </div>
           )}
 
-          <div style={{ fontSize: "9px", fontWeight: 800, color: "#64748b", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: "4px" }}>Client Details</div>
+          <div 
+            onClick={() => setClientDetailsOpen(!clientDetailsOpen)} 
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", paddingBottom: "6px", borderBottom: "1px solid rgba(255,255,255,0.08)", marginTop: "4px" }}
+          >
+            <span style={{ fontSize: "10px", fontWeight: 800, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase" }}>Client Details</span>
+            {clientDetailsOpen ? <ChevronDown size={14} color="#64748b" /> : <ChevronRight size={14} color="#64748b" />}
+          </div>
           
-          <div>
-            <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Full Name</div>
-            <input type="text" value={clientName} disabled={isLocked} onChange={e => { setClientName(e.target.value); triggerAutoSave({ clientName: e.target.value }); }}
-              onFocus={() => setFocusedField("clientName")}
-              onBlur={() => setFocusedField(null)}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "clientName" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "clientName" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
+          {clientDetailsOpen && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div>
+                <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Full Name</div>
+                <input type="text" value={clientName} disabled={isLocked} onChange={e => { setClientName(e.target.value); triggerAutoSave({ clientName: e.target.value }); }}
+                  onFocus={() => setFocusedField("clientName")}
+                  onBlur={() => setFocusedField(null)}
+                  style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "clientName" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "clientName" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
+              </div>
+
+              <div>
+                <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Email Address</div>
+                <input type="email" value={clientEmail} disabled={isLocked} onChange={e => { setClientEmail(e.target.value); triggerAutoSave({ clientEmail: e.target.value }); }}
+                  onFocus={() => setFocusedField("clientEmail")}
+                  onBlur={() => setFocusedField(null)}
+                  style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "clientEmail" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "clientEmail" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
+              </div>
+
+              <div>
+                <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Company / Brand Name</div>
+                <input type="text" value={companyName} disabled={isLocked} onChange={e => { setCompanyName(e.target.value); triggerAutoSave({ companyName: e.target.value }); }}
+                  onFocus={() => setFocusedField("companyName")}
+                  onBlur={() => setFocusedField(null)}
+                  style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "companyName" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "companyName" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
+              </div>
+
+              <div>
+                <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Location</div>
+                <select value={location} disabled={isLocked} onChange={e => { setLocation(e.target.value); triggerAutoSave({ location: e.target.value }); }}
+                  style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#0a0a0a", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
+                  {["USA","UK","DE","CA","AU","FR","IT","ES","AE","Global"].map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+              </div>
+            </div>
+          )}
+
+          <div 
+            onClick={() => setAgreementMetaOpen(!agreementMetaOpen)} 
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", paddingBottom: "6px", borderBottom: "1px solid rgba(255,255,255,0.08)", marginTop: "12px" }}
+          >
+            <span style={{ fontSize: "10px", fontWeight: 800, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase" }}>Agreement Meta</span>
+            {agreementMetaOpen ? <ChevronDown size={14} color="#64748b" /> : <ChevronRight size={14} color="#64748b" />}
           </div>
 
-          <div>
-            <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Email Address</div>
-            <input type="email" value={clientEmail} disabled={isLocked} onChange={e => { setClientEmail(e.target.value); triggerAutoSave({ clientEmail: e.target.value }); }}
-              onFocus={() => setFocusedField("clientEmail")}
-              onBlur={() => setFocusedField(null)}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "clientEmail" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "clientEmail" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
-          </div>
+          {agreementMetaOpen && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              <div>
+                <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Agreement Date</div>
+                <input type="date" value={contractDate} disabled={isLocked} onChange={e => { setContractDate(e.target.value); triggerAutoSave({ contractDate: e.target.value }); }}
+                  style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.03)", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", colorScheme: "dark", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}/>
+              </div>
 
-          <div>
-            <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Company / Brand Name</div>
-            <input type="text" value={companyName} disabled={isLocked} onChange={e => { setCompanyName(e.target.value); triggerAutoSave({ companyName: e.target.value }); }}
-              onFocus={() => setFocusedField("companyName")}
-              onBlur={() => setFocusedField(null)}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "companyName" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "companyName" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
-          </div>
+              <div>
+                <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Initial Term</div>
+                <select value={termLength} disabled={isLocked} onChange={e => { setTermLength(e.target.value); triggerAutoSave({ termLength: e.target.value }); }}
+                  style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#0a0a0a", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
+                  {["3 Months","6 Months","12 Months","Month-to-month","Project-based"].map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+              </div>
 
-          <div>
-            <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Location</div>
-            <select value={location} disabled={isLocked} onChange={e => { setLocation(e.target.value); triggerAutoSave({ location: e.target.value }); }}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#0a0a0a", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
-              {["USA","UK","DE","CA","AU","FR","IT","ES","AE","Global"].map(o => <option key={o} value={o}>{o}</option>)}
-            </select>
-          </div>
+              <div>
+                <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Monthly Investment ($ USD)</div>
+                <input type="number" value={monthlyRetainer} disabled={isLocked} onChange={e => { setMonthlyRetainer(e.target.value); triggerAutoSave({ monthlyRetainer: e.target.value }); }}
+                  onFocus={() => setFocusedField("monthlyRetainer")}
+                  onBlur={() => setFocusedField(null)}
+                  style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "monthlyRetainer" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "monthlyRetainer" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
+              </div>
 
-          <div style={{ fontSize: "9px", fontWeight: 800, color: "#64748b", letterSpacing: "0.1em", textTransform: "uppercase", marginTop: "12px", marginBottom: "4px" }}>Agreement Meta</div>
+              <div>
+                <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Auto Renewal</div>
+                <select value={autoRenewal} disabled={isLocked} onChange={e => { setAutoRenewal(e.target.value); triggerAutoSave({ autoRenewal: e.target.value }); }}
+                  style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#090d16", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
+                  {["Yes, after 3 months","Yes, month-to-month","No","Custom"].map(o => <option key={o} value={o}>{o}</option>)}
+                </select>
+              </div>
+            </div>
+          )}
 
-          <div>
-            <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Agreement Date</div>
-            <input type="date" value={contractDate} disabled={isLocked} onChange={e => { setContractDate(e.target.value); triggerAutoSave({ contractDate: e.target.value }); }}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.03)", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", colorScheme: "dark", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}/>
+          {/* ─── Services & Pricing ─── */}
+          <div 
+            onClick={() => setServicesOpen(!servicesOpen)} 
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", paddingBottom: "6px", borderBottom: "1px solid rgba(255,255,255,0.08)", marginTop: "12px" }}
+          >
+            <span style={{ fontSize: "10px", fontWeight: 800, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase" }}>Services & Pricing</span>
+            {servicesOpen ? <ChevronDown size={14} color="#64748b" /> : <ChevronRight size={14} color="#64748b" />}
           </div>
+          
+          {servicesOpen && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              {/* Presets Row */}
+              {!isLocked && (
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "4px" }}>
+                  {SERVICE_PRESETS.map((p, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => {
+                        let updated = [...services];
+                        if (updated.length === 1 && !updated[0].name && !updated[0].price && !updated[0].description) {
+                          updated[0] = { ...p };
+                        } else {
+                          updated.push({ ...p });
+                        }
+                        setServices(updated);
+                      }}
+                      style={{ padding: "4px 8px", borderRadius: "100px", border: "1px solid rgba(249,115,22,0.2)", background: "rgba(249,115,22,0.05)", color: "#f97316", fontSize: "9px", fontWeight: 600, cursor: "pointer" }}
+                    >
+                      + {p.name.replace("Amazon ", "").replace(" Account", "").split(" & ")[0]}
+                    </button>
+                  ))}
+                </div>
+              )}
 
-          <div>
-            <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Initial Term</div>
-            <select value={termLength} disabled={isLocked} onChange={e => { setTermLength(e.target.value); triggerAutoSave({ termLength: e.target.value }); }}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#0a0a0a", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
-              {["3 Months","6 Months","12 Months","Month-to-month","Project-based"].map(o => <option key={o} value={o}>{o}</option>)}
-            </select>
-          </div>
-
-          <div>
-            <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Monthly Investment ($ USD)</div>
-            <input type="number" value={monthlyRetainer} disabled={isLocked} onChange={e => { setMonthlyRetainer(e.target.value); triggerAutoSave({ monthlyRetainer: e.target.value }); }}
-              onFocus={() => setFocusedField("monthlyRetainer")}
-              onBlur={() => setFocusedField(null)}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "monthlyRetainer" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "monthlyRetainer" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
-          </div>
-
-          <div>
-            <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Auto Renewal</div>
-            <select value={autoRenewal} disabled={isLocked} onChange={e => { setAutoRenewal(e.target.value); triggerAutoSave({ autoRenewal: e.target.value }); }}
-              style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#090d16", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
-              {["Yes, after 3 months","Yes, month-to-month","No","Custom"].map(o => <option key={o} value={o}>{o}</option>)}
-            </select>
-          </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px", marginBottom: "4px" }}>
+                {services.map((svc, idx) => (
+                  <div key={idx} style={{ padding: "8px", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "8px", background: "rgba(255,255,255,0.01)", display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
+                      <input 
+                        type="text" 
+                        placeholder="Service name" 
+                        value={svc.name} 
+                        disabled={isLocked}
+                        onChange={e => {
+                          const updated = [...services];
+                          updated[idx] = { ...updated[idx], name: e.target.value };
+                          setServices(updated);
+                        }}
+                        style={{ flex: 1, padding: "6px 8px", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.03)", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "11px", outline: "none", boxSizing: "border-box", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}
+                      />
+                      <input 
+                        type="number" 
+                        placeholder="$" 
+                        value={svc.price} 
+                        disabled={isLocked}
+                        onChange={e => {
+                          const updated = [...services];
+                          updated[idx] = { ...updated[idx], price: e.target.value };
+                          setServices(updated);
+                        }}
+                        style={{ width: "65px", padding: "6px 8px", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.03)", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "11px", outline: "none", boxSizing: "border-box", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}
+                      />
+                      {!isLocked && services.length > 1 && (
+                        <button 
+                          onClick={() => {
+                            const updated = services.filter((_, i) => i !== idx);
+                            setServices(updated);
+                          }}
+                          style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "14px", fontWeight: 700, padding: "0 4px", flexShrink: 0 }}
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                    <input 
+                      type="text" 
+                      placeholder="Detail (e.g. End-to-end PPC scaling)" 
+                      value={svc.description || ""} 
+                      disabled={isLocked}
+                      onChange={e => {
+                        const updated = [...services];
+                        updated[idx] = { ...updated[idx], description: e.target.value };
+                        setServices(updated);
+                      }}
+                      style={{ width: "100%", padding: "4px 6px", borderRadius: "4px", border: "1px solid rgba(255,255,255,0.05)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.02)", color: isLocked ? "#64748b" : "#94a3b8", fontSize: "9px", outline: "none", boxSizing: "border-box", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}
+                    />
+                  </div>
+                ))}
+              </div>
+              
+              {!isLocked && (
+                <button 
+                  onClick={() => {
+                    const updated = [...services, { name: "", description: "", price: "" }];
+                    setServices(updated);
+                  }}
+                  style={{ width: "100%", padding: "7px", borderRadius: "8px", border: "1px dashed rgba(249,115,22,0.3)", background: "rgba(249,115,22,0.05)", color: "#f97316", cursor: "pointer", fontSize: "11px", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}
+                >
+                  + Add Service
+                </button>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Center & Right: Editor / Preview Pane */}

@@ -1,6 +1,55 @@
 import { NextResponse } from "next/server";
 import { queryDocs, addDocData, setSubcollectionDoc, getNextSequenceNumber } from "@/utils/dbHelper";
 
+function buildServicesHtml(services, monthlyRetainer) {
+  const items = (services && services.length > 0) ? services : [];
+  if (items.length === 0 && !monthlyRetainer) return "";
+
+  let rows = "";
+  let total = 0;
+  items.forEach((s, i) => {
+    const price = Number(s.price) || 0;
+    total += price;
+    rows += `
+      <tr>
+        <td style="padding: 14px 16px; font-size: 13px; color: #334155; border-bottom: 1px solid #f1f5f9;">${i + 1}</td>
+        <td style="padding: 14px 16px; font-size: 13px; color: #0f172a; font-weight: 600; border-bottom: 1px solid #f1f5f9;">${s.name || "—"}</td>
+        <td style="padding: 14px 16px; font-size: 13px; color: #0f172a; font-weight: 700; text-align: right; border-bottom: 1px solid #f1f5f9;">$${price.toLocaleString()}</td>
+      </tr>`;
+  });
+
+  if (total === 0 && monthlyRetainer) total = Number(monthlyRetainer);
+
+  return `
+    <div style="margin: 8px 0 32px 0;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+        <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #fff7ed; border-radius: 10px; width: 40px; height: 40px;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div>
+          <div style="font-size: 15px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em;">Services & Pricing</div>
+          <div style="font-size: 11px; color: #64748b;">The following services are included in this agreement</div>
+        </div>
+      </div>
+      <table style="width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+        <thead>
+          <tr style="background: #0f172a;">
+            <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #94a3b8; text-align: left; text-transform: uppercase; letter-spacing: 0.05em; width: 50px;">#</th>
+            <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #94a3b8; text-align: left; text-transform: uppercase; letter-spacing: 0.05em;">Service</th>
+            <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #94a3b8; text-align: right; text-transform: uppercase; letter-spacing: 0.05em; width: 120px;">Price</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+        <tfoot>
+          <tr style="background: #f8fafc;">
+            <td colspan="2" style="padding: 14px 16px; font-size: 14px; font-weight: 800; color: #0f172a; text-align: right;">Total Monthly Investment</td>
+            <td style="padding: 14px 16px; font-size: 16px; font-weight: 800; color: #ea580c; text-align: right;">$${total.toLocaleString()} USD</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>`;
+}
+
 function compileContractBody(body, content) {
   let text = body || "";
   
@@ -26,6 +75,7 @@ function compileContractBody(body, content) {
     "{{contract_date}}": formatDate(content.contractDate),
     "{{start_date}}": formatDate(content.startDate),
     "{{end_date}}": formatDate(content.endDate),
+    "{{services_list}}": buildServicesHtml(content.services, content.monthlyRetainer),
   };
 
   Object.entries(replacements).forEach(([placeholder, value]) => {
@@ -110,7 +160,8 @@ export async function POST(request) {
       expirationDays,
       customExpirationDate,
       location,
-      autoRenewal
+      autoRenewal,
+      services
     } = body;
 
     if (!leadId) {
@@ -148,11 +199,11 @@ export async function POST(request) {
       startDate: new Date(),
       endDate: null,
       notes: "",
-      templateBody: templateBody || ""
+      templateBody: templateBody || "",
+      services: services || []
     };
 
-    contentFields.templateBody = compileContractBody(contentFields.templateBody, contentFields);
-    const renderedHtml = contentFields.templateBody;
+    const renderedHtml = compileContractBody(contentFields.templateBody, contentFields);
 
     const ip = request.headers.get("x-real-ip") || request.headers.get("x-forwarded-for")?.split(",")[0] || "127.0.0.1";
     const userAgent = request.headers.get("user-agent") || "Unknown";

@@ -1279,7 +1279,7 @@ export default function NewsletterTab({ isMobile }) {
           mergedBodyText += `
 <!-- Book Meeting Button -->
 <div style="text-align: center; margin-bottom: 28px; margin-top: 16px;">
-  <a href="${btnLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #ffffff !important; padding: 16px 60px; min-width: 260px; border-radius: 50px; font-size: 13px; font-weight: 800; text-decoration: none; box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25); border: 3px solid #fdba74; text-transform: uppercase; letter-spacing: 0.06em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <a href="${btnLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #ffffff !important; padding: 14px 36px; min-width: 240px; max-width: 100%; box-sizing: border-box; border-radius: 50px; font-size: 13px; font-weight: 800; text-decoration: none; box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25); border: 3px solid #fdba74; text-transform: uppercase; letter-spacing: 0.06em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center;">
     ${btnText}
   </a>
 </div>`;
@@ -1450,17 +1450,17 @@ export default function NewsletterTab({ isMobile }) {
     <div class="email-container" style="max-width: 600px; margin: 0 auto; background-color: ${containerBg}; border-radius: 16px; overflow: hidden; box-shadow: ${isNeumorphic ? "none" : containerShadow}; border: ${isNeumorphic ? "3px solid #ffffff" : `1px solid ${borderColor}`};">
       <!-- Header -->
       ${hideHeader ? "" : `
-      <div style="background: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 50%, #050505 100%); padding: 32px 24px; text-align: center; border-bottom: 3px solid #f97316; border-top-left-radius: 13px; border-top-right-radius: 13px;">
+      <div style="background: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 50%, #050505 100%); padding: 24px 16px; text-align: center; border-bottom: 3px solid #f97316; border-top-left-radius: 13px; border-top-right-radius: 13px;">
         <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto; border-collapse: collapse;">
           <tr>
-            <td valign="middle" style="padding-right: 16px;">
-              <img src="${absoluteLogoUrl}" alt="Grow Orbit" style="max-height: 52px; display: block;" />
+            <td valign="middle" style="padding-right: 12px;">
+              <img src="${absoluteLogoUrl}" alt="Grow Orbit" style="height: 42px; display: block;" />
             </td>
             <td valign="middle" style="text-align: left; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-              <div style="font-size: 26px; font-weight: 900; line-height: 1; letter-spacing: 0.03em; color: #ffffff;">
+              <div style="font-size: 22px; font-weight: 900; line-height: 1; letter-spacing: 0.03em; color: #ffffff;">
                 GROW <span style="color: #f97316;">ORBIT</span>
               </div>
-              <div style="font-size: 8px; font-weight: 700; color: #a1a1aa; letter-spacing: 0.16em; text-transform: uppercase; margin-top: 6px; line-height: 1.2;">
+              <div style="font-size: 8px; font-weight: 700; color: #a1a1aa; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; line-height: 1.2;">
                 WE RANK. YOU SELL. IT'S THAT SIMPLE.
               </div>
             </td>
@@ -1469,7 +1469,7 @@ export default function NewsletterTab({ isMobile }) {
       </div>
       `}
       <!-- Body -->
-      <div class="email-body" style="padding: 36px 32px; background-color: ${containerBg}; text-align: left;">
+      <div class="email-body" style="padding: 28px 20px; background-color: ${containerBg}; text-align: left;">
         ${headText ? `<h1 style="font-size: 22px; font-weight: 800; color: ${h1Color}; margin-top: 0; margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${headText}</h1>` : ""}
         <div style="font-size: 15px; color: ${isDark ? "#e4e4e7" : "#334155"}; line-height: 1.6; margin-bottom: 28px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${formattedBody}</div>
         

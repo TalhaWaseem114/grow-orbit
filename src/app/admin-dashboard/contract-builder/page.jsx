@@ -391,7 +391,7 @@ function ContractBuilderWorkspace() {
   const [confidentialityTerminationText, setConfidentialityTerminationText] = useState("Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term.");
   const [governingLawText, setGoverningLawText] = useState("This agreement is governed by the laws of the jurisdiction where Grow Orbit is registered.");
 
-  const [signatureType, setSignatureType]     = useState("draw");
+  const [signatureType, setSignatureType]     = useState("type");
   const [typedSignature, setTypedSignature]   = useState("");
   const [uploadedSignature, setUploadedSignature] = useState(null);
   const [agreedToTerms, setAgreedToTerms]     = useState(true);
@@ -1332,11 +1332,25 @@ function ContractBuilderWorkspace() {
                             <div style={{ display: "inline-block", fontSize: "10px", fontWeight: 700, color: "#22c55e", background: "rgba(34, 197, 94, 0.1)", border: "1px solid rgba(34, 197, 94, 0.2)", padding: "4px 10px", borderRadius: "6px", marginBottom: "16px" }}>
                               Contract Signed & Executed ✍️
                             </div>
-                            <div style={{ border: "1px solid #e2e8f0", borderRadius: "8px", height: "130px", background: "#fff", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", marginBottom: "12px" }}>
+                            <div style={{ border: "1px solid #e2e8f0", borderRadius: "12px", background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)", padding: "24px", position: "relative", overflow: "hidden", marginBottom: "12px" }}>
+                              {/* Subtle corner accent */}
+                              <div style={{ position: "absolute", top: 0, right: 0, width: "60px", height: "60px", background: "linear-gradient(135deg, transparent 50%, rgba(234,88,12,0.06) 50%)", borderRadius: "0 12px 0 0" }}></div>
+                              
                               {currentContract.signature?.method === "type" ? (
-                                <div style={{ fontSize: "36px", fontFamily: "'Brush Script MT', cursive, sans-serif", color: "#0f172a" }}>{currentContract.signature.signatureValue}</div>
+                                <>
+                                  <div style={{ textAlign: "center", padding: "16px 0" }}>
+                                    <div style={{ fontSize: "32px", fontFamily: "'Georgia', 'Times New Roman', serif", fontWeight: 400, color: "#0f172a", letterSpacing: "1px" }}>{currentContract.signature.signatureValue}</div>
+                                    <div style={{ width: "180px", height: "3px", background: "linear-gradient(90deg, transparent, #ea580c, transparent)", margin: "10px auto 0", borderRadius: "2px" }}></div>
+                                  </div>
+                                  <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", marginTop: "12px" }}>
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+                                    <span style={{ fontSize: "10px", fontWeight: 700, color: "#ea580c", textTransform: "uppercase", letterSpacing: "1.5px" }}>Digitally Signed</span>
+                                  </div>
+                                </>
                               ) : (
-                                <img src={currentContract.signature?.signatureValue} alt="Client Signature" style={{ maxHeight: "110px", maxWidth: "90%", objectFit: "contain" }} />
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", padding: "8px 0" }}>
+                                  <img src={currentContract.signature?.signatureValue} alt="Client Signature" style={{ maxHeight: "110px", maxWidth: "90%", objectFit: "contain" }} />
+                                </div>
                               )}
                             </div>
                             <div style={{ fontSize: "12px", color: "#334155", display: "flex", flexDirection: "column", gap: "4px", background: "#f8fafc", padding: "12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}>
@@ -1355,17 +1369,13 @@ function ContractBuilderWorkspace() {
                             
                             {/* Toggle Buttons */}
                             <div style={{ display: "flex", gap: "8px", marginBottom: "20px" }}>
-                              <div onClick={() => setSignatureType("draw")} style={{ flex: 1, padding: "8px 0", background: signatureType === "draw" ? "#fff7ed" : "#fff", border: signatureType === "draw" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={signatureType === "draw" ? "#ea580c" : "#0f172a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-                                <span style={{ fontSize: "12px", fontWeight: 700, color: signatureType === "draw" ? "#ea580c" : "#0f172a" }}>Draw</span>
-                              </div>
                               <div onClick={() => setSignatureType("type")} style={{ flex: 1, padding: "8px 0", background: signatureType === "type" ? "#fff7ed" : "#fff", border: signatureType === "type" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={signatureType === "type" ? "#ea580c" : "#0f172a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="4 7 4 4 20 4 20 7"></polyline><line x1="9" y1="20" x2="15" y2="20"></line><line x1="12" y1="4" x2="12" y2="20"></line></svg>
                                 <span style={{ fontSize: "12px", fontWeight: 700, color: signatureType === "type" ? "#ea580c" : "#0f172a" }}>Type</span>
                               </div>
-                              <div onClick={() => setSignatureType("upload")} style={{ flex: 1, padding: "8px 0", background: signatureType === "upload" ? "#fff7ed" : "#fff", border: signatureType === "upload" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={signatureType === "upload" ? "#ea580c" : "#0f172a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                                <span style={{ fontSize: "12px", fontWeight: 700, color: signatureType === "upload" ? "#ea580c" : "#0f172a" }}>Upload</span>
+                              <div onClick={() => setSignatureType("draw")} style={{ flex: 1, padding: "8px 0", background: signatureType === "draw" ? "#fff7ed" : "#fff", border: signatureType === "draw" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={signatureType === "draw" ? "#ea580c" : "#0f172a"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                                <span style={{ fontSize: "12px", fontWeight: 700, color: signatureType === "draw" ? "#ea580c" : "#0f172a" }}>Draw</span>
                               </div>
                             </div>
 
@@ -1373,7 +1383,7 @@ function ContractBuilderWorkspace() {
                             {signatureType === "draw" && (
                               <div style={{ marginBottom: "16px" }}>
                                 <div style={{ border: "1px solid #f1f5f9", borderRadius: "8px", height: "130px", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden", marginBottom: "8px", cursor: "not-allowed" }}>
-                                  <div style={{ fontSize: "24px", fontFamily: "'Brush Script MT', cursive, sans-serif", color: "#94a3b8" }}>Write signature here</div>
+                                  <div style={{ fontSize: "16px", color: "#94a3b8", fontWeight: 500 }}>Write signature here</div>
                                 </div>
                                 <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#cbd5e1", cursor: "not-allowed", fontSize: "11px", fontWeight: 600 }}>
                                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
@@ -1384,20 +1394,9 @@ function ContractBuilderWorkspace() {
 
                             {signatureType === "type" && (
                               <div style={{ marginBottom: "16px" }}>
-                                <input 
-                                  type="text" 
-                                  disabled={true}
-                                  placeholder={`e.g. ${clientName || "John Doe"}`}
-                                  style={{ width: "100%", padding: "12px", borderRadius: "8px", border: "1px solid #e2e8f0", fontSize: "22px", fontFamily: "'Brush Script MT', cursive, sans-serif", outline: "none", color: "#94a3b8", background: "#f8fafc", cursor: "not-allowed" }} 
-                                />
-                              </div>
-                            )}
-
-                            {signatureType === "upload" && (
-                              <div style={{ marginBottom: "16px" }}>
-                                <div style={{ border: "2px dashed #e2e8f0", borderRadius: "8px", height: "150px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", cursor: "not-allowed", background: "#f8fafc" }}>
-                                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: "8px" }}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
-                                  <div style={{ fontSize: "12px", color: "#94a3b8", fontWeight: 600 }}>Upload Disabled in Builder</div>
+                                <div style={{ border: "1.5px solid #e2e8f0", borderRadius: "12px", background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)", padding: "16px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+                                  <div style={{ fontSize: "24px", fontFamily: "'Georgia', 'Times New Roman', serif", fontWeight: 400, color: "#94a3b8", letterSpacing: "1px" }}>{clientName || "Client Name"}</div>
+                                  <div style={{ width: "120px", height: "2px", background: "linear-gradient(90deg, transparent, #cbd5e1, transparent)", marginTop: "8px" }}></div>
                                 </div>
                               </div>
                             )}
@@ -1428,14 +1427,27 @@ function ContractBuilderWorkspace() {
                         <div style={{ marginTop: "32px" }}>
                           <div style={{ display: "flex", gap: "10px", alignItems: "center", marginBottom: "12px" }}>
                             <div style={{ position: "relative" }}>
-                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+                              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
                               <div style={{ position: "absolute", bottom: "-3px", left: "2px", right: "2px", height: "2px", background: "#ea580c" }}></div>
                             </div>
-                            <h4 style={{ color: "#0f172a", fontSize: "14px", fontWeight: 800, margin: 0 }}>Agency Signature</h4>
+                            <h4 style={{ color: "#0f172a", fontSize: "14px", fontWeight: 800, margin: 0 }}>Agency Digital Signature</h4>
                           </div>
 
-                          <div style={{ border: "1px solid #f1f5f9", borderRadius: "8px", height: "130px", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center", position: "relative", overflow: "hidden" }}>
-                            <div style={{ fontSize: "40px", fontFamily: "'Brush Script MT', cursive, sans-serif", color: "#0f172a" }}>Ali Haider</div>
+                          <div style={{ border: "1px solid #e2e8f0", borderRadius: "12px", background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)", padding: "24px", position: "relative", overflow: "hidden" }}>
+                            {/* Subtle corner accent */}
+                            <div style={{ position: "absolute", top: 0, right: 0, width: "60px", height: "60px", background: "linear-gradient(135deg, transparent 50%, rgba(234,88,12,0.06) 50%)", borderRadius: "0 12px 0 0" }}></div>
+                            
+                            {/* Digital signature name */}
+                            <div style={{ textAlign: "center", padding: "16px 0" }}>
+                              <div style={{ fontSize: "32px", fontFamily: "'Georgia', 'Times New Roman', serif", fontWeight: 400, color: "#0f172a", letterSpacing: "1px" }}>Ali Haider</div>
+                              <div style={{ width: "180px", height: "3px", background: "linear-gradient(90deg, transparent, #ea580c, transparent)", margin: "10px auto 0", borderRadius: "2px" }}></div>
+                            </div>
+
+                            {/* Digital verification badge */}
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", marginTop: "12px" }}>
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
+                              <span style={{ fontSize: "10px", fontWeight: 700, color: "#ea580c", textTransform: "uppercase", letterSpacing: "1.5px" }}>Digitally Signed</span>
+                            </div>
                           </div>
                           
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "16px" }}>
@@ -1578,33 +1590,85 @@ function ContractBuilderWorkspace() {
             {/* Preview Box */}
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
               <label style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>Email Content Preview</label>
-              <div style={{ background: "#fff", borderRadius: "12px", padding: "24px", color: "#333", maxHeight: "280px", overflowY: "auto", border: "1px solid #cbd5e1" }}>
-                <div style={{ fontFamily: "Arial, sans-serif", fontSize: "14px", lineHeight: "1.6" }}>
-                  <p>Hi {clientName || "[Client Name]"},</p>
-                  <p>I have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.</p>
-                  <p>We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!</p>
-                  
-                  <p>Please click the button below to view the full agreement and complete the secure e-signature process:</p>
-                  
-                  <div style={{ textAlign: "center", margin: "20px 0" }}>
-                    <span style={{ 
-                      background: isLocked ? "linear-gradient(135deg,#f97316,#ea580c)" : "#94a3b8", 
-                      color: "#fff", 
-                      padding: "10px 20px", 
-                      textDecoration: "none", 
-                      fontWeight: "bold", 
-                      borderRadius: "6px", 
-                      display: "inline-block",
-                      fontSize: "13px",
-                      cursor: isLocked ? "pointer" : "not-allowed"
-                    }}>
-                      Review & Sign Agreement
-                    </span>
+              <div style={{ background: "#e2ebf5", borderRadius: "12px", padding: "16px", maxHeight: "320px", overflowY: "auto", border: "1px solid #cbd5e1" }}>
+                <div style={{
+                  maxWidth: "100%",
+                  margin: "0 auto",
+                  backgroundColor: "#f0f4f8",
+                  borderRadius: "16px",
+                  overflow: "hidden",
+                  border: "3px solid #ffffff",
+                  fontFamily: "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+                  color: "#333",
+                  textAlign: "left"
+                }}>
+                  {/* Header */}
+                  <div style={{ background: "linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 50%, #050505 100%)", padding: "16px", textAlign: "center", borderBottom: "3px solid #f97316" }}>
+                    <div style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "0.03em", color: "#ffffff", fontFamily: "'Montserrat', sans-serif" }}>
+                      GROW <span style={{ color: "#f97316" }}>ORBIT</span>
+                    </div>
+                    <div style={{ fontSize: "7px", fontWeight: 700, color: "#a1a1aa", letterSpacing: "0.12em", textTransform: "uppercase", marginTop: "2px" }}>
+                      WE RANK. YOU SELL. IT'S THAT SIMPLE.
+                    </div>
                   </div>
-
-                  <p style={{ fontSize: "11px", color: "#64748b", borderTop: "1px solid #e2e8f0", paddingTop: "12px", marginTop: "20px" }}>
-                    This is a secure, legally-binding electronic signature process. If you have any questions, please let us know.
-                  </p>
+                  
+                  {/* Body */}
+                  <div style={{ padding: "20px", backgroundColor: "#f0f4f8" }}>
+                    <h1 style={{ fontSize: "16px", fontWeight: 800, color: "#0f172a", marginTop: 0, marginBottom: "12px", fontFamily: "'Montserrat', sans-serif" }}>
+                      Growth Partnership Agreement
+                    </h1>
+                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#475569", marginTop: 0, marginBottom: "12px" }}>
+                      Hi {clientName || "[Client Name]"},
+                    </p>
+                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
+                      I have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.
+                    </p>
+                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
+                      We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!
+                    </p>
+                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "16px" }}>
+                      Please click the button below to view the full agreement and complete the secure e-signature process:
+                    </p>
+                    
+                    {/* CTA Button */}
+                    <div style={{ textAlign: "center", margin: "16px 0" }}>
+                      <span style={{
+                        display: "inline-block",
+                        background: "linear-gradient(135deg, #f97316, #ea580c)",
+                        color: "#ffffff",
+                        padding: "10px 24px",
+                        borderRadius: "50px",
+                        fontSize: "12px",
+                        fontWeight: 800,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.06em",
+                        boxShadow: "0 6px 15px rgba(234, 88, 12, 0.2)",
+                        border: "2px solid #fdba74"
+                      }}>
+                        ✍️ Review & Sign Agreement
+                      </span>
+                    </div>
+                    
+                    {/* Separator */}
+                    <div style={{ height: "1px", backgroundColor: "rgba(15, 23, 42, 0.06)", margin: "20px 0 16px 0" }}></div>
+                    
+                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
+                      Warm regards,<br />
+                      <strong style={{ color: "#0f172a", fontSize: "14px" }}>The Grow <span style={{ color: "#f97316" }}>Orbit</span> Team</strong>
+                    </p>
+                    
+                    <p style={{ fontSize: "10px", color: "#94a3b8", lineHeight: "1.4", marginTop: "16px", borderTop: "1px dashed rgba(15, 23, 42, 0.06)", paddingTop: "12px" }}>
+                      This is a secure, legally-binding electronic signature process. If you have any questions, please let us know.
+                    </p>
+                    
+                    <hr style={{ border: 0, borderTop: "1px solid transparent", margin: "24px 0 16px 0" }} />
+                    
+                    {/* Footer */}
+                    <div style={{ textAlign: "center", color: "#94a3b8", fontSize: "10px", lineHeight: "1.5" }}>
+                      <p style={{ fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>Grow Orbit Agency</p>
+                      <p style={{ margin: "2px 0 0 0" }}>support@groworbitofficial.com</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

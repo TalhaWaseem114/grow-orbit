@@ -464,11 +464,7 @@ function LeadDetailPanel({
                         <button
                           type="button"
                           onClick={() => {
-                            if (["draft", "awaiting_review"].includes(contract.status)) {
-                              router.push(`/admin-dashboard/contract-builder?id=${contract.id}`);
-                            } else {
-                              router.push(`/contract/${contract.id}`);
-                            }
+                            router.push(`/admin-dashboard/contract-builder?id=${contract.id}`);
                           }}
                           style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#fff", borderRadius: 6, padding: "5px 10px", fontSize: 9, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
                           onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}

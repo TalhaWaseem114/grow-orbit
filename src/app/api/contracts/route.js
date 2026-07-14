@@ -192,9 +192,12 @@ export async function POST(request) {
       return NextResponse.json({ success: false, error: "Missing leadId" }, { status: 400 });
     }
 
-    const seqNum = await getNextSequenceNumber();
-    const year = new Date().getFullYear();
-    const contractNumber = `GO-${year}-${String(seqNum).padStart(4, "0")}`;
+    const now = new Date();
+    const year = now.getFullYear();
+    const dateStr = String(now.getDate()).padStart(2, "0");
+    const monthStr = String(now.getMonth() + 1).padStart(2, "0");
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const contractNumber = `GO-${year}-${dateStr}${monthStr}-${randomNum}`;
 
     let expiresAt = null;
     if (expirationDays && expirationDays !== "none") {

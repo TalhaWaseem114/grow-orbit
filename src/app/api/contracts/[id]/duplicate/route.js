@@ -11,9 +11,12 @@ export async function POST(request, context) {
       return NextResponse.json({ success: false, error: "Contract not found" }, { status: 404 });
     }
 
-    const seqNum = await getNextSequenceNumber();
-    const year = new Date().getFullYear();
-    const contractNumber = `GO-${year}-${String(seqNum).padStart(4, "0")}`;
+    const now = new Date();
+    const year = now.getFullYear();
+    const dateStr = String(now.getDate()).padStart(2, "0");
+    const monthStr = String(now.getMonth() + 1).padStart(2, "0");
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const contractNumber = `GO-${year}-${dateStr}${monthStr}-${randomNum}`;
 
     const ip = request.headers.get("x-real-ip") || request.headers.get("x-forwarded-for")?.split(",")[0] || "127.0.0.1";
     const userAgent = request.headers.get("user-agent") || "Unknown";

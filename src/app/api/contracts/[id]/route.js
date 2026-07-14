@@ -12,11 +12,15 @@ function buildServicesHtml(services, monthlyRetainer) {
   items.forEach((s, i) => {
     const price = Number(s.price) || 0;
     total += price;
+    const descHtml = s.description ? `<div style="font-size: 11px; color: #64748b; font-weight: 400; margin-top: 4px; line-height: 1.4;">${s.description}</div>` : "";
     rows += `
       <tr>
-        <td style="padding: 14px 16px; font-size: 13px; color: #334155; border-bottom: 1px solid #f1f5f9;">${i + 1}</td>
-        <td style="padding: 14px 16px; font-size: 13px; color: #0f172a; font-weight: 600; border-bottom: 1px solid #f1f5f9;">${s.name || "—"}</td>
-        <td style="padding: 14px 16px; font-size: 13px; color: #0f172a; font-weight: 700; text-align: right; border-bottom: 1px solid #f1f5f9;">$${price.toLocaleString()}</td>
+        <td style="padding: 14px 16px; font-size: 13px; color: #334155; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${i + 1}</td>
+        <td style="padding: 14px 16px; font-size: 13px; color: #0f172a; font-weight: 600; border-bottom: 1px solid #f1f5f9; vertical-align: top;">
+          <div>${s.name || "—"}</div>
+          ${descHtml}
+        </td>
+        <td style="padding: 14px 16px; font-size: 13px; color: #0f172a; font-weight: 700; text-align: right; border-bottom: 1px solid #f1f5f9; vertical-align: top;">$${price.toLocaleString()}</td>
       </tr>`;
   });
 
@@ -44,7 +48,7 @@ function buildServicesHtml(services, monthlyRetainer) {
         <tbody>${rows}</tbody>
         <tfoot>
           <tr style="background: #f8fafc;">
-            <td colspan="2" style="padding: 14px 16px; font-size: 14px; font-weight: 800; color: #0f172a; text-align: right;">Total Monthly Investment</td>
+            <td colspan="2" style="padding: 14px 16px; font-size: 14px; font-weight: 800; color: #0f172a; text-align: right;">Total Amount</td>
             <td style="padding: 14px 16px; font-size: 16px; font-weight: 800; color: #ea580c; text-align: right;">$${total.toLocaleString()} USD</td>
           </tr>
         </tfoot>
@@ -62,6 +66,11 @@ function compileContractBody(body, content) {
   };
 
   const replacements = {
+    "{{term_commitment}}": content.termCommitmentText || "The initial term is <strong>{{initial_term}}</strong>, renewing monthly. Either party may terminate with 30 days written notice.",
+    "{{payment_terms_text}}": content.paymentTermsText || "Payment will be initiated immediately upon contract signature binding. Subsequent monthly investments are processed on the 1st of each billing cycle.",
+    "{{client_responsibilities}}": content.clientResponsibilitiesText || "Client will provide necessary access (Seller Central, Ads, Brand Registry). Performance depends on inventory, market, and factors beyond Agency control.",
+    "{{confidentiality_termination}}": content.confidentialityTerminationText || "Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term.",
+    "{{governing_law}}": content.governingLawText || "This agreement is governed by the laws of the jurisdiction where Grow Orbit is registered.",
     "{{client_name}}": content.clientName || "—",
     "{{company_name}}": content.companyName || "—",
     "{{client_email}}": content.clientEmail || "—",
@@ -79,6 +88,16 @@ function compileContractBody(body, content) {
     "{{end_date}}": formatDate(content.endDate),
     "{{services_list}}": buildServicesHtml(content.services, content.monthlyRetainer),
   };
+
+  // Fallback for older contracts that had "and the Client" instead of placeholders
+  if (!text.includes("{{client_name}}")) {
+    const clientStr = content.companyName 
+      ? `<strong>${content.clientName || "—"}</strong> of <strong>${content.companyName}</strong>`
+      : `<strong>${content.clientName || "—"}</strong>`;
+    text = text
+      .replace(/and\s+the\s+Client\s*\("Client"\)/gi, `and ${clientStr} ("Client")`)
+      .replace(/and\s+the\s+Client\s*\(“Client”\)/gi, `and ${clientStr} ("Client")`);
+  }
 
   Object.entries(replacements).forEach(([placeholder, value]) => {
     text = text.split(placeholder).join(value);
@@ -153,7 +172,9 @@ export async function PATCH(request, context) {
       requestedService, monthlyRetainer, termLength, paymentTerms,
       contractDate, startDate, endDate, notes, templateBody,
       expirationDays, customExpirationDate, status,
-      location, autoRenewal, services
+      location, autoRenewal, services,
+      termCommitmentText, paymentTermsText, clientResponsibilitiesText,
+      confidentialityTerminationText, governingLawText
     } = body;
 
     let expiresAt = contractData.expiresAt || null;
@@ -186,12 +207,17 @@ export async function PATCH(request, context) {
       endDate: endDate ? new Date(endDate) : (contractData.endDate ? new Date(contractData.endDate) : null),
       notes: notes !== undefined ? notes : (contractData.notes || ""),
       templateBody: templateBody !== undefined ? templateBody : (contractData.templateBody || ""),
-      services: services !== undefined ? services : (contractData.services || [])
+      services: services !== undefined ? services : (contractData.services || []),
+      termCommitmentText: termCommitmentText !== undefined ? termCommitmentText : (contractData.termCommitmentText || ""),
+      paymentTermsText: paymentTermsText !== undefined ? paymentTermsText : (contractData.paymentTermsText || ""),
+      clientResponsibilitiesText: clientResponsibilitiesText !== undefined ? clientResponsibilitiesText : (contractData.clientResponsibilitiesText || ""),
+      confidentialityTerminationText: confidentialityTerminationText !== undefined ? confidentialityTerminationText : (contractData.confidentialityTerminationText || ""),
+      governingLawText: governingLawText !== undefined ? governingLawText : (contractData.governingLawText || "")
     };
 
     const renderedHtml = compileContractBody(contentFields.templateBody, contentFields);
 
-    const updateData = { ...contentFields, expiresAt, updatedAt: new Date() };
+    const updateData = { ...contentFields, renderedHtml, expiresAt, updatedAt: new Date() };
 
     if (status && ["draft", "awaiting_review"].includes(status)) {
       updateData.status = status;

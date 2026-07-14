@@ -275,7 +275,7 @@ function parseHtmlToPdfElements(html) {
 }
 
 function compilePlainHtml(contract) {
-  let text = contract.templateBody || contract.renderedHtml || "";
+  let text = contract.renderedHtml || contract.templateBody || "";
   
   const formatDate = (val) => {
     if (!val) return "—";

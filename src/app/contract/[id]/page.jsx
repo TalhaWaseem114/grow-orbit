@@ -439,14 +439,14 @@ export default function ContractDetailsPage() {
         <div style={{ flex: 1, overflow: "auto", padding: "40px", background: "#090d16", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
           
           {/* Scaled Container Wrapper */}
-          <div className="contract-scaled-wrapper" style={{ width: 1440 * zoom, height: 1980 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
+          <div className="contract-scaled-wrapper" style={{ width: 1440 * zoom, height: 2100 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
             
             <div className="contract-paper-sheet" style={{ 
               position: "absolute",
               top: 0,
               left: 0,
               width: "1440px", 
-              height: "1980px", 
+              height: "2100px", 
               background: "#fff", 
               borderRadius: "24px", 
               overflow: "hidden",
@@ -562,7 +562,7 @@ export default function ContractDetailsPage() {
               <div className="contract-flex-row" style={{ display: "grid", gridTemplateColumns: "820px 420px", gap: "40px" }}>
                 
                 {/* Left Column (Contract Details) */}
-                <div className="contract-left-col" style={{ border: "1.5px solid #e2e8f0", borderRadius: "16px", padding: "40px", minHeight: "800px", background: "#fff", color: "#1e293b", fontFamily: "'Inter', sans-serif" }}>
+                <div className="contract-left-col" style={{ border: "1.5px solid #e2e8f0", borderRadius: "16px", padding: "40px", minHeight: "1000px", background: "#fff", color: "#1e293b", fontFamily: "'Inter', sans-serif" }}>
                   <div className="contract-preview-container">
                     <style>{`
                       .contract-preview-container h2 { text-align: left; font-size: 20px; font-weight: 800; letter-spacing: 0.02em; margin-bottom: 24px; color: #0f172a; text-transform: uppercase; position: relative; padding-bottom: 16px; }
@@ -593,7 +593,7 @@ export default function ContractDetailsPage() {
                 </div>
  
                 {/* Right Column (Client Information & Signatures) */}
-                <div className="contract-right-col" style={{ border: "1px solid #e2e8f0", borderRadius: "16px", minHeight: "800px", background: "#fff", display: "flex", flexDirection: "column", fontFamily: "'Inter', sans-serif", overflow: "hidden" }}>
+                <div className="contract-right-col" style={{ border: "1px solid #e2e8f0", borderRadius: "16px", minHeight: "1000px", background: "#fff", display: "flex", flexDirection: "column", fontFamily: "'Inter', sans-serif", overflow: "hidden" }}>
                   
                   {/* Header */}
                   <div style={{ background: "#0f172a", padding: "36px 24px", display: "flex", gap: "16px", alignItems: "center" }}>
@@ -606,7 +606,7 @@ export default function ContractDetailsPage() {
                     </div>
                     <div>
                       <h3 style={{ color: "#fff", fontSize: "15px", fontWeight: 700, marginBottom: "4px" }}>Client Information</h3>
-                      <p style={{ color: "#e2e8f0", fontSize: "12px", lineHeight: "1.4", margin: 0 }}>Please provide the required<br/>information and sign below.</p>
+                      <p style={{ color: "#e2e8f0", fontSize: "12px", lineHeight: "1.4", margin: 0 }}>Please read the information carefully<br/>and confirm your details below to sign.</p>
                     </div>
                   </div>
 
@@ -978,7 +978,7 @@ export default function ContractDetailsPage() {
                 <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
                   <div>
-                    <div style={{ fontSize: "13px", color: "#94a3b8", fontWeight: 500, marginBottom: "4px" }}>Monthly Investment</div>
+                    <div style={{ fontSize: "13px", color: "#94a3b8", fontWeight: 500, marginBottom: "4px" }}>Monthly Management Fee</div>
                     <div style={{ fontSize: "15px", color: "#f8fafc", fontWeight: 800 }}>{contract.monthlyRetainer ? `$${Number(contract.monthlyRetainer).toLocaleString()} USD` : "—"}</div>
                   </div>
                 </div>
@@ -1170,7 +1170,7 @@ export default function ContractDetailsPage() {
 
           .contract-scaled-wrapper {
             width: 1440px !important;
-            height: 1980px !important;
+            height: 2100px !important;
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
@@ -1184,7 +1184,7 @@ export default function ContractDetailsPage() {
             top: 0 !important;
             left: 0 !important;
             width: 1440px !important;
-            height: 1980px !important;
+            height: 2100px !important;
             padding: 80px !important;
             box-shadow: none !important;
             border-radius: 0 !important;
@@ -1206,14 +1206,14 @@ export default function ContractDetailsPage() {
             border: 1.5px solid #e2e8f0 !important;
             border-radius: 16px !important;
             padding: 40px !important;
-            min-height: 800px !important;
+            min-height: 1000px !important;
             background: #fff !important;
           }
 
           .contract-right-col {
             border: 1px solid #e2e8f0 !important;
             border-radius: 16px !important;
-            min-height: 800px !important;
+            min-height: 1000px !important;
             background: #fff !important;
             display: flex !important;
             flex-direction: column !important;

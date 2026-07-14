@@ -13,24 +13,24 @@ const BUILT_IN_TEMPLATES = [
     name: "Amazon Growth Partnership",
     category: "Amazon",
     body: `<h2>AMAZON GROWTH PARTNERSHIP AGREEMENT</h2>
-<p>This Agreement is made between Grow Orbit ("Agency") and the Client ("Client") on the date above.</p>
+<p>This Agreement is made between Grow Orbit ("Agency") and <strong>{{client_name}}</strong> of <strong>{{company_name}}</strong> ("Client") on the date above.</p>
 
 {{services_list}}
 
 <h3>1. TERM & COMMITMENT</h3>
-<p>The initial term is <strong>{{initial_term}}</strong> from the agreement date. After the initial term, the agreement renews automatically on a month-to-month basis unless either party provides 30 days written notice.</p>
+<p>The initial term is <strong>{{initial_term}}</strong>, renewing monthly. Either party may terminate with 30 days written notice.</p>
 
 <h3>2. PAYMENT TERMS</h3>
-<p>Full payment of <strong>{{monthly_investment}}</strong> is due immediately upon execution of this agreement. All subsequent monthly payments are due on the 1st of each month. Late payments may incur a fee of 1.5% per month on the outstanding balance.</p>
+<p>Payment will be initiated immediately upon contract signature binding. Subsequent monthly investments are processed on the 1st of each billing cycle.</p>
 
 <h3>3. CLIENT RESPONSIBILITIES</h3>
-<p>Client agrees to provide necessary access to Amazon Seller Central, Advertising Console, Brand Registry and other relevant accounts. Results may vary based on market conditions, inventory, competition and other factors outside our control.</p>
+<p>Client will provide necessary access (Seller Central, Ads, Brand Registry). Performance depends on inventory, market, and factors beyond Agency control.</p>
 
 <h3>4. CONFIDENTIALITY & TERMINATION</h3>
-<p>Both parties agree to keep all non-public information confidential. Either party may terminate with 30 days written notice after the initial term. Outstanding payments are due upon termination.</p>
+<p>Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term.</p>
 
 <h3>5. GOVERNING LAW</h3>
-<p>This agreement shall be governed by the laws of the jurisdiction in which Grow Orbit is registered.</p>
+<p>This agreement is governed by the laws of the jurisdiction where Grow Orbit is registered.</p>
 
 <p><em>IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.</em></p>`
   }
@@ -102,12 +102,57 @@ function buildServicesHtml(services, monthlyRetainer) {
         <tbody>${rows}</tbody>
         <tfoot>
           <tr style="background: #f8fafc;">
-            <td colspan="2" style="padding: 14px 16px; font-size: 14px; font-weight: 800; color: #0f172a; text-align: right;">Total Monthly Investment</td>
+            <td colspan="2" style="padding: 14px 16px; font-size: 14px; font-weight: 800; color: #0f172a; text-align: right;">Total Amount</td>
             <td style="padding: 14px 16px; font-size: 16px; font-weight: 800; color: #ea580c; text-align: right;">$${total.toLocaleString()} USD</td>
           </tr>
         </tfoot>
       </table>
     </div>`;
+}
+
+function migrateToPlaceholders(body) {
+  if (!body) return "";
+  let updated = body;
+  
+  // 1. Term & Commitment
+  updated = updated.replace(
+    /The\s+initial\s+term\s+is\s+<strong>\{\{initial_term\}\}<\/strong>,\s*renewing\s+monthly\.\s*Either\s+party\s+may\s+terminate\s+with\s+30\s+days\s+written\s+notice\./gi,
+    "{{term_commitment}}"
+  );
+  updated = updated.replace(
+    /The\s+initial\s+term\s+is\s+<strong>6\s+Months<\/strong>,\s*renewing\s+monthly\.\s*Either\s+party\s+may\s+terminate\s+with\s+30\s+days\s+written\s+notice\./gi,
+    "{{term_commitment}}"
+  );
+  updated = updated.replace(
+    /The\s+initial\s+term\s+is\s+<strong>3\s+Months<\/strong>,\s*renewing\s+monthly\.\s*Either\s+party\s+may\s+terminate\s+with\s+30\s+days\s+written\s+notice\./gi,
+    "{{term_commitment}}"
+  );
+
+  // 2. Payment Terms
+  updated = updated.replace(
+    /Payment\s+will\s+be\s+initiated\s+immediately\s+upon\s+contract\s+signature\s+binding\.\s*Subsequent\s+monthly\s+investments\s+are\s+processed\s+on\s+the\s+1st\s+of\s+each\s+billing\s+cycle\./gi,
+    "{{payment_terms_text}}"
+  );
+
+  // 3. Client Responsibilities
+  updated = updated.replace(
+    /Client\s+will\s+provide\s+necessary\s+access\s*\(Seller\s+Central,\s*Ads,\s*Brand\s+Registry\)\.\s*Performance\s+depends\s+on\s+inventory,\s*market,\s*and\s+factors\s+beyond\s+Agency\s+control\./gi,
+    "{{client_responsibilities}}"
+  );
+
+  // 4. Confidentiality & Termination
+  updated = updated.replace(
+    /Both\s+parties\s+agree\s+to\s+keep\s+all\s+non-public\s+information\s+confidential\.\s*Agreements\s+can\s+be\s+terminated\s+with\s+30\s+days\s+written\s+notice\s+after\s+the\s+initial\s+term\./gi,
+    "{{confidentiality_termination}}"
+  );
+
+  // 5. Governing Law
+  updated = updated.replace(
+    /This\s+agreement\s+is\s+governed\s+by\s+the\s+laws\s+of\s+the\s+jurisdiction\s+where\s+Grow\s+Orbit\s+is\s+registered\./gi,
+    "{{governing_law}}"
+  );
+
+  return updated;
 }
 
 function compilePreview(body, fields) {
@@ -116,7 +161,27 @@ function compilePreview(body, fields) {
     const d = new Date(v);
     return isNaN(d) ? v : d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
   };
-  let html = (body || "")
+  let html = (body || "");
+  html = migrateToPlaceholders(html);
+
+  // Fallback for older contracts that had "and the Client" instead of placeholders
+  if (!html.includes("{{client_name}}")) {
+    const clientStr = fields.companyName 
+      ? `<strong>${fields.clientName || "—"}</strong> of <strong>${fields.companyName}</strong>`
+      : `<strong>${fields.clientName || "—"}</strong>`;
+    html = html
+      .replace(/and\s+the\s+Client\s*\("Client"\)/gi, `and ${clientStr} ("Client")`)
+      .replace(/and\s+the\s+Client\s*\(“Client”\)/gi, `and ${clientStr} ("Client")`);
+  }
+
+  html = html
+    .split("{{term_commitment}}").join(fields.termCommitmentText || "The initial term is <strong>{{initial_term}}</strong>, renewing monthly. Either party may terminate with 30 days written notice.")
+    .split("{{payment_terms_text}}").join(fields.paymentTermsText || "Payment will be initiated immediately upon contract signature binding. Subsequent monthly investments are processed on the 1st of each billing cycle.")
+    .split("{{client_responsibilities}}").join(fields.clientResponsibilitiesText || "Client will provide necessary access (Seller Central, Ads, Brand Registry). Performance depends on inventory, market, and factors beyond Agency control.")
+    .split("{{confidentiality_termination}}").join(fields.confidentialityTerminationText || "Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term.")
+    .split("{{governing_law}}").join(fields.governingLawText || "This agreement is governed by the laws of the jurisdiction where Grow Orbit is registered.");
+
+  html = html
     .split("{{client_name}}").join(fields.clientName || "—")
     .split("{{company_name}}").join(fields.companyName || "—")
     .split("{{client_email}}").join(fields.clientEmail || "—")
@@ -301,6 +366,7 @@ function ContractBuilderWorkspace() {
   const [clientDetailsOpen, setClientDetailsOpen] = useState(true);
   const [agreementMetaOpen, setAgreementMetaOpen] = useState(true);
   const [servicesOpen, setServicesOpen] = useState(true);
+  const [clausesOpen, setClausesOpen] = useState(false);
 
   // Contract fields
   const [clientName, setClientName]           = useState("");
@@ -317,6 +383,13 @@ function ContractBuilderWorkspace() {
   const [startDate, setStartDate]             = useState("");
   const [templateBody, setTemplateBody]       = useState("");
   const [services, setServices]               = useState([{ name: "", description: "", price: "" }]);
+
+  // Clause fields
+  const [termCommitmentText, setTermCommitmentText] = useState("The initial term is <strong>{{initial_term}}</strong>, renewing monthly. Either party may terminate with 30 days written notice.");
+  const [paymentTermsText, setPaymentTermsText] = useState("Payment will be initiated immediately upon contract signature binding. Subsequent monthly investments are processed on the 1st of each billing cycle.");
+  const [clientResponsibilitiesText, setClientResponsibilitiesText] = useState("Client will provide necessary access (Seller Central, Ads, Brand Registry). Performance depends on inventory, market, and factors beyond Agency control.");
+  const [confidentialityTerminationText, setConfidentialityTerminationText] = useState("Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term.");
+  const [governingLawText, setGoverningLawText] = useState("This agreement is governed by the laws of the jurisdiction where Grow Orbit is registered.");
 
   const [signatureType, setSignatureType]     = useState("draw");
   const [typedSignature, setTypedSignature]   = useState("");
@@ -430,6 +503,11 @@ function ContractBuilderWorkspace() {
     );
     setTemplateBody(contractData.templateBody || BUILT_IN_TEMPLATES[0].body);
     setServices(contractData.services && contractData.services.length > 0 ? contractData.services : [{ name: "", description: "", price: "" }]);
+    setTermCommitmentText(contractData.termCommitmentText || "The initial term is <strong>{{initial_term}}</strong>, renewing monthly. Either party may terminate with 30 days written notice.");
+    setPaymentTermsText(contractData.paymentTermsText || "Payment will be initiated immediately upon contract signature binding. Subsequent monthly investments are processed on the 1st of each billing cycle.");
+    setClientResponsibilitiesText(contractData.clientResponsibilitiesText || "Client will provide necessary access (Seller Central, Ads, Brand Registry). Performance depends on inventory, market, and factors beyond Agency control.");
+    setConfidentialityTerminationText(contractData.confidentialityTerminationText || "Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term.");
+    setGoverningLawText(contractData.governingLawText || "This agreement is governed by the laws of the jurisdiction where Grow Orbit is registered.");
   };
 
   const isLocked = currentContract ? !["draft", "awaiting_review"].includes(currentContract.status) : false;
@@ -437,7 +515,11 @@ function ContractBuilderWorkspace() {
     ? `${typeof window !== "undefined" ? window.location.origin : ""}/contract/${currentContract.id}`
     : null;
 
-  const fields = { clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, termLength, paymentTerms, contractDate, startDate, location, autoRenewal, services };
+  const fields = { 
+    clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, 
+    termLength, paymentTerms, contractDate, startDate, location, autoRenewal, services,
+    termCommitmentText, paymentTermsText, clientResponsibilitiesText, confidentialityTerminationText, governingLawText
+  };
 
   // ── Auto-save ──
   const triggerAutoSave = useCallback((extra = {}) => {
@@ -449,7 +531,12 @@ function ContractBuilderWorkspace() {
         const res = await fetch(`/api/contracts/${currentContract.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, termLength, paymentTerms, contractDate, startDate, templateBody, location, autoRenewal, isAutoSave: true, ...extra })
+          body: JSON.stringify({ 
+            clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, 
+            termLength, paymentTerms, contractDate, startDate, templateBody, location, autoRenewal, services,
+            termCommitmentText, paymentTermsText, clientResponsibilitiesText, confidentialityTerminationText, governingLawText,
+            isAutoSave: true, ...extra 
+          })
         });
         const data = await res.json();
         if (data.success) { 
@@ -459,7 +546,11 @@ function ContractBuilderWorkspace() {
         else setSaveStatus("Error");
       } catch { setSaveStatus("Error"); }
     }, 1500);
-  }, [currentContract, clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, termLength, paymentTerms, contractDate, startDate, templateBody, location, autoRenewal, isLocked]);
+  }, [
+    currentContract, clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, 
+    termLength, paymentTerms, contractDate, startDate, templateBody, location, autoRenewal, services, isLocked,
+    termCommitmentText, paymentTermsText, clientResponsibilitiesText, confidentialityTerminationText, governingLawText
+  ]);
 
   // ── Insert variable tag at cursor ──
   const insertVar = (tag) => {
@@ -489,7 +580,11 @@ function ContractBuilderWorkspace() {
       await fetch(`/api/contracts/${currentContract.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, termLength, paymentTerms, contractDate, startDate, templateBody, services })
+        body: JSON.stringify({ 
+          clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, 
+          termLength, paymentTerms, contractDate, startDate, templateBody, services, location, autoRenewal,
+          termCommitmentText, paymentTermsText, clientResponsibilitiesText, confidentialityTerminationText, governingLawText
+        })
       });
       // Then publish
       const res = await fetch(`/api/contracts/${currentContract.id}/send`, { method: "POST" });
@@ -757,7 +852,7 @@ function ContractBuilderWorkspace() {
               </div>
 
               <div>
-                <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Monthly Investment ($ USD)</div>
+                <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Monthly Management Fee ($ USD)</div>
                 <input type="number" value={monthlyRetainer} disabled={isLocked} onChange={e => { setMonthlyRetainer(e.target.value); triggerAutoSave({ monthlyRetainer: e.target.value }); }}
                   onFocus={() => setFocusedField("monthlyRetainer")}
                   onBlur={() => setFocusedField(null)}
@@ -799,6 +894,7 @@ function ContractBuilderWorkspace() {
                           updated.push({ ...p });
                         }
                         setServices(updated);
+                        triggerAutoSave({ services: updated });
                       }}
                       style={{ padding: "4px 8px", borderRadius: "100px", border: "1px solid rgba(249,115,22,0.2)", background: "rgba(249,115,22,0.05)", color: "#f97316", fontSize: "9px", fontWeight: 600, cursor: "pointer" }}
                     >
@@ -821,6 +917,7 @@ function ContractBuilderWorkspace() {
                           const updated = [...services];
                           updated[idx] = { ...updated[idx], name: e.target.value };
                           setServices(updated);
+                          triggerAutoSave({ services: updated });
                         }}
                         style={{ flex: 1, padding: "6px 8px", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.03)", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "11px", outline: "none", boxSizing: "border-box", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}
                       />
@@ -833,6 +930,7 @@ function ContractBuilderWorkspace() {
                           const updated = [...services];
                           updated[idx] = { ...updated[idx], price: e.target.value };
                           setServices(updated);
+                          triggerAutoSave({ services: updated });
                         }}
                         style={{ width: "65px", padding: "6px 8px", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.03)", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "11px", outline: "none", boxSizing: "border-box", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}
                       />
@@ -841,6 +939,7 @@ function ContractBuilderWorkspace() {
                           onClick={() => {
                             const updated = services.filter((_, i) => i !== idx);
                             setServices(updated);
+                            triggerAutoSave({ services: updated });
                           }}
                           style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "14px", fontWeight: 700, padding: "0 4px", flexShrink: 0 }}
                         >
@@ -857,6 +956,7 @@ function ContractBuilderWorkspace() {
                         const updated = [...services];
                         updated[idx] = { ...updated[idx], description: e.target.value };
                         setServices(updated);
+                        triggerAutoSave({ services: updated });
                       }}
                       style={{ width: "100%", padding: "4px 6px", borderRadius: "4px", border: "1px solid rgba(255,255,255,0.05)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.02)", color: isLocked ? "#64748b" : "#94a3b8", fontSize: "9px", outline: "none", boxSizing: "border-box", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}
                     />
@@ -869,6 +969,7 @@ function ContractBuilderWorkspace() {
                   onClick={() => {
                     const updated = [...services, { name: "", description: "", price: "" }];
                     setServices(updated);
+                    triggerAutoSave({ services: updated });
                   }}
                   style={{ width: "100%", padding: "7px", borderRadius: "8px", border: "1px dashed rgba(249,115,22,0.3)", background: "rgba(249,115,22,0.05)", color: "#f97316", cursor: "pointer", fontSize: "11px", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}
                 >
@@ -892,13 +993,13 @@ function ContractBuilderWorkspace() {
               </div>
 
               {/* Scaled Container Wrapper */}
-              <div style={{ width: 1440 * zoom, height: 1930 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
+              <div style={{ width: 1440 * zoom, height: 2100 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
                 <div style={{ 
                   position: "absolute",
                   top: 0,
                   left: 0,
                   width: "1440px", 
-                  height: "1930px", 
+                  height: "2100px", 
                   background: "#fff", 
                   borderRadius: "24px", 
                   overflow: "hidden",
@@ -1007,7 +1108,7 @@ function ContractBuilderWorkspace() {
                 <div style={{ display: "grid", gridTemplateColumns: "820px 420px", gap: "40px" }}>
                   
                   {/* Left Column (Contract Details) */}
-                  <div style={{ border: "1.5px solid #e2e8f0", borderRadius: "16px", padding: "40px", minHeight: "800px", background: "#fff", color: "#1e293b", fontFamily: "'Inter', sans-serif" }}>
+                  <div style={{ border: "1.5px solid #e2e8f0", borderRadius: "16px", padding: "40px", minHeight: "1000px", background: "#fff", color: "#1e293b", fontFamily: "'Inter', sans-serif" }}>
                     {previewMode ? (
                       <div className="contract-preview-container">
                         <style>{`
@@ -1033,7 +1134,7 @@ function ContractBuilderWorkspace() {
                         style={{
                           width: "100%",
                           height: "100%",
-                          minHeight: "700px",
+                          minHeight: "900px",
                           border: "none",
                           resize: "none",
                           outline: "none",
@@ -1068,7 +1169,7 @@ function ContractBuilderWorkspace() {
                   </div>
                   
                   {/* Right Column (Client Information) */}
-                  <div style={{ border: "1px solid #e2e8f0", borderRadius: "16px", minHeight: "800px", background: "#fff", display: "flex", flexDirection: "column", fontFamily: "'Inter', sans-serif", overflow: "hidden" }}>
+                  <div style={{ border: "1px solid #e2e8f0", borderRadius: "16px", minHeight: "1000px", background: "#fff", display: "flex", flexDirection: "column", fontFamily: "'Inter', sans-serif", overflow: "hidden" }}>
                     
                     {/* Header */}
                     <div style={{ background: "#0f172a", padding: "36px 24px", display: "flex", gap: "16px", alignItems: "center" }}>
@@ -1081,7 +1182,7 @@ function ContractBuilderWorkspace() {
                       </div>
                       <div>
                         <h3 style={{ color: "#fff", fontSize: "15px", fontWeight: 700, marginBottom: "4px" }}>Client Information</h3>
-                        <p style={{ color: "#e2e8f0", fontSize: "12px", lineHeight: "1.4", margin: 0 }}>Please provide the required<br/>information and sign below.</p>
+                        <p style={{ color: "#e2e8f0", fontSize: "12px", lineHeight: "1.4", margin: 0 }}>Please read the information carefully<br/>and confirm your details below to sign.</p>
                       </div>
                     </div>
 
@@ -1299,7 +1400,7 @@ function ContractBuilderWorkspace() {
                   <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
                     <div>
-                      <div style={{ fontSize: "13px", color: "#94a3b8", fontWeight: 500, marginBottom: "4px" }}>Monthly Investment</div>
+                      <div style={{ fontSize: "13px", color: "#94a3b8", fontWeight: 500, marginBottom: "4px" }}>Monthly Management Fee</div>
                       <div style={{ fontSize: "15px", color: "#f8fafc", fontWeight: 800 }}>{monthlyRetainer ? `$${Number(monthlyRetainer).toLocaleString()} USD` : "—"}</div>
                     </div>
                   </div>

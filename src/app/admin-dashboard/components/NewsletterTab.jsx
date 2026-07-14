@@ -2943,124 +2943,7 @@ export default function NewsletterTab({ isMobile }) {
               />
             </div>
 
-            <div>
-              <label style={{ fontSize: 10, fontWeight: 700, color: "#737373", letterSpacing: "0.15em", textTransform: "uppercase", marginBottom: 8, display: "block" }}>Body (HTML / Text)</label>
-              
-              <div style={{ 
-                width: "100%",
-                borderRadius: 10, 
-                background: focusedField === "body" ? "#0a0a0c" : "rgba(255,255,255,0.02)", 
-                border: `1px solid ${focusedField === "body" ? "#f97316" : "rgba(255,255,255,0.08)"}`, 
-                boxShadow: focusedField === "body" ? "0 0 0 3px rgba(249, 115, 22, 0.15)" : "none",
-                overflow: "hidden",
-                transition: "all 0.2s"
-              }}>
-                {/* Integrated Editor Toolbar */}
-                <div style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: 12,
-                  flexWrap: "wrap",
-                  padding: "8px 12px",
-                  background: "rgba(255, 255, 255, 0.02)",
-                  borderBottom: "1px solid rgba(255, 255, 255, 0.06)"
-                }}>
-                  {/* HTML helper buttons */}
-                  <div style={{ display: "flex", gap: 5, flexWrap: "wrap" }}>
-                    {[
-                      { label: "¶ P", action: () => insertBodyTag('<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-bottom: 20px;">', "</p>") },
-                      { label: "B", action: () => insertBodyTag("<strong>", "</strong>"), bold: true },
-                      { label: "I", action: () => insertBodyTag("<em>", "</em>"), italic: true },
-                      { label: "H2", action: () => insertBodyTag('<h2 style="font-size: 18px; font-weight: 800; color: #0f172a; margin: 24px 0 12px;">', "</h2>") },
-                      { label: "• List", action: () => insertBodyTag('<ul style="padding-left: 20px; margin-bottom: 20px;">\n  <li style="font-size: 14px; line-height: 1.8; color: #475569;">', "</li>\n</ul>") },
-                      { label: "—", action: () => insertBodyTag('<hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;">') },
-                      { label: "↵", action: () => insertBodyTag("<br />") },
-                      { label: "🔗", action: () => {
-                        const url = prompt("Enter Link URL:", "https://");
-                        if (url) insertBodyTag(`<a href="${url}" style="color: #f97316; font-weight: 700; text-decoration: underline;" target="_blank">`, "</a>");
-                      }},
-                      { label: "🖼️", action: () => {
-                        const url = prompt("Enter Image URL:", "https://");
-                        if (url) insertBodyTag(`<img src="${url}" alt="" style="width: 100%; max-width: 560px; height: auto; border-radius: 8px; display: block; margin: 16px 0;" />`);
-                      }},
-                    ].map((btn, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        onClick={btn.action}
-                        style={{ 
-                          background: "rgba(255,255,255,0.04)", 
-                          border: "1px solid rgba(255,255,255,0.08)", 
-                          borderRadius: 6, 
-                          padding: "2px 7px", 
-                          fontSize: 9, 
-                          fontWeight: btn.bold ? 900 : 700, 
-                          fontStyle: btn.italic ? "italic" : "normal",
-                          color: "#fff", 
-                          cursor: "pointer",
-                          transition: "all 0.15s",
-                          lineHeight: "18px",
-                          minWidth: 24,
-                          textAlign: "center"
-                        }}
-                        onMouseEnter={e => { e.currentTarget.style.background = "rgba(249,115,22,0.15)"; e.currentTarget.style.borderColor = "rgba(249,115,22,0.3)"; }}
-                        onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
-                      >
-                        {btn.label}
-                      </button>
-                    ))}
-                  </div>
 
-                  {/* Action button */}
-                  {activeTemplate === "tempEmail" && (
-                    <button
-                      type="button"
-                      onClick={handlePasteBody}
-                      style={{ 
-                        background: "rgba(249,115,22,0.1)", 
-                        border: "1px solid rgba(249,115,22,0.3)", 
-                        borderRadius: 6, 
-                        padding: "3px 8px", 
-                        fontSize: 9, 
-                        fontWeight: 800, 
-                        color: "#f97316", 
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 4,
-                        transition: "all 0.2s"
-                      }}
-                      onMouseEnter={e => e.currentTarget.style.background="rgba(249,115,22,0.2)"}
-                      onMouseLeave={e => e.currentTarget.style.background="rgba(249,115,22,0.1)"}
-                    >
-                      <Clipboard size={10} /> Paste HTML
-                    </button>
-                  )}
-                </div>
-
-                {/* Textarea inside the card */}
-                <CodeEditor 
-                  id="newsletter-body-textarea"
-                  refTextarea={bodyTextareaRef}
-                  value={body} 
-                  onChange={e => handleBodyChange(e.target.value)} 
-                  onFocus={() => setFocusedField("body")}
-                  onBlur={() => setFocusedField(null)}
-                  placeholder="Write body copy or HTML segments here..."
-                  rows={12}
-                />
-              </div>
-              {/* Character & Word Count */}
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: 12, marginTop: 6 }}>
-                <span style={{ fontSize: 10, color: "#525252", fontWeight: 600 }}>
-                  {body.replace(/<[^>]*>/g, "").trim().length} chars
-                </span>
-                <span style={{ fontSize: 10, color: "#525252", fontWeight: 600 }}>
-                  {body.replace(/<[^>]*>/g, "").trim() ? body.replace(/<[^>]*>/g, "").trim().split(/\s+/).length : 0} words
-                </span>
-              </div>
-            </div>
 
             {/* Widget Stack — Visual sequence builder */}
             {activeTemplate === "tempEmail" && (
@@ -3176,26 +3059,28 @@ export default function NewsletterTab({ isMobile }) {
 
                           {/* Reorder up/down + edit + remove */}
                           <div style={{ display: "flex", alignItems: "center", gap: 2, flexShrink: 0 }}>
-                            <button 
-                              type="button" 
-                              onClick={() => setEditingWidget(w)}
-                              style={{ 
-                                background: "rgba(249,115,22,0.08)", 
-                                border: "1px solid rgba(249,115,22,0.25)", 
-                                borderRadius: 5, 
-                                padding: "4px 8px", 
-                                color: "#f97316", 
-                                cursor: "pointer", 
-                                fontSize: 10, 
-                                fontWeight: 800,
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 4,
-                                marginRight: 4
-                              }}
-                            >
-                              ⚙️ Edit
-                            </button>
+                            {!isSandbox && (
+                              <button 
+                                type="button" 
+                                onClick={() => setEditingWidget(w)}
+                                style={{ 
+                                  background: "rgba(249,115,22,0.08)", 
+                                  border: "1px solid rgba(249,115,22,0.25)", 
+                                  borderRadius: 5, 
+                                  padding: "4px 8px", 
+                                  color: "#f97316", 
+                                  cursor: "pointer", 
+                                  fontSize: 10, 
+                                  fontWeight: 800,
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 4,
+                                  marginRight: 4
+                                }}
+                              >
+                                ⚙️ Edit
+                              </button>
+                            )}
                             <button 
                               type="button" 
                               disabled={index === 0}

@@ -682,7 +682,7 @@ function ContractBuilderWorkspace() {
           <p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 16px;">Hi ${clientName || "Partner"},</p>
           
           <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
-            I have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.
+            We have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.
           </p>
           
           <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
@@ -1644,7 +1644,7 @@ function ContractBuilderWorkspace() {
                       Hi {clientName || "[Client Name]"},
                     </p>
                     <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
-                      I have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.
+                      We have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.
                     </p>
                     <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
                       We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!

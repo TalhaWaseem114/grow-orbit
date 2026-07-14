@@ -351,27 +351,24 @@ export default function ContractDetailsPage() {
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#0a0a0a", color: "#fff", fontFamily: "'Inter', sans-serif" }}>
       
-      {/* ── Top Header Bar ── */}
-      <div className="no-print" style={{ display: "flex", alignItems: "center", gap: "16px", padding: "14px 20px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0, background: "#121212" }}>
-
-
-        <FileText size={18} color="#f97316" />
-        <div style={{ flex: 1 }}>
+      <div className="no-print contract-header-bar" style={{ display: "flex", alignItems: "center", gap: "16px", padding: "14px 20px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0, background: "#121212" }}>
+        <FileText size={18} color="#f97316" style={{ flexShrink: 0 }} />
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <span style={{ color: "#f1f5f9", fontWeight: 800, fontSize: "14px" }}>{contract.contractNumber}</span>
-            <span style={{ fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "100px", background: statusCfg.bg, color: statusCfg.color, border: `1px solid ${statusCfg.color}35` }}>
+            <span className="contract-id-text" style={{ color: "#f1f5f9", fontWeight: 800, fontSize: "14px", whiteSpace: "nowrap" }}>{contract.contractNumber}</span>
+            <span style={{ fontSize: "10px", fontWeight: 700, padding: "2px 8px", borderRadius: "100px", background: statusCfg.bg, color: statusCfg.color, border: `1px solid ${statusCfg.color}35`, whiteSpace: "nowrap" }}>
               {statusCfg.label}
             </span>
           </div>
-          <div style={{ fontSize: "11px", color: "#64748b", marginTop: "1px" }}>
+          <div style={{ fontSize: "11px", color: "#64748b", marginTop: "1px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
             {contract.clientName || "—"} · {contract.companyName || "—"}
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        <div className="contract-header-actions" style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           {/* Zoom Controls */}
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "3px 8px", background: "rgba(255,255,255,0.02)", marginRight: "12px" }}>
+          <div className="zoom-controls-wrapper" style={{ display: "flex", alignItems: "center", gap: "8px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "3px 8px", background: "rgba(255,255,255,0.02)", marginRight: "12px" }}>
             <button 
               onClick={() => setZoom(z => Math.max(0.35, z - 0.05))} 
               style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: "16px", fontWeight: "bold", padding: "0 4px" }}
@@ -389,9 +386,8 @@ export default function ContractDetailsPage() {
             </button>
           </div>
 
-
-
           <button 
+            className="download-pdf-btn"
             disabled={!isExecuted}
             onClick={isExecuted ? handleDownloadPDF : undefined}
             style={{ 
@@ -411,10 +407,12 @@ export default function ContractDetailsPage() {
             title={!isExecuted ? "Please sign the contract to download a copy" : "Download signed agreement PDF"}
           >
             <Download size={13}/>
-            Download PDF
+            <span className="download-pdf-text-desktop">Download PDF</span>
+            <span className="download-pdf-text-mobile" style={{ display: "none" }}>Download</span>
           </button>
 
           <a 
+            className="contact-support-btn"
             href="https://wa.me/19128205916"
             target="_blank"
             rel="noopener noreferrer"
@@ -434,15 +432,16 @@ export default function ContractDetailsPage() {
             }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: "2px" }}><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-            Contact Support: +1 (912) 820-5916
+            <span className="contact-support-text-desktop">Contact Support: +1 (912) 820-5916</span>
+            <span className="contact-support-text-mobile" style={{ display: "none" }}>Contact Support</span>
           </a>
         </div>
       </div>
 
       {/* ── Workspace body ── */}
-      <div style={{ flex: 1, display: "flex", overflow: "hidden", height: "calc(100vh - 69px)" }}>
+      <div className="contract-workspace-body" style={{ flex: 1, display: "flex", overflow: "hidden", height: "calc(100vh - 69px)" }}>
         
-        <div style={{ flex: 1, overflow: "auto", padding: "40px", background: "#090d16", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
+        <div className="contract-workspace-scroll" style={{ flex: 1, overflow: "auto", padding: "40px", background: "#090d16", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
           
           {/* Scaled Container Wrapper */}
           <div className="contract-scaled-wrapper" style={{ width: 1440 * zoom, height: 2100 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
@@ -473,7 +472,7 @@ export default function ContractDetailsPage() {
 
             <div style={{ position: "relative", zIndex: 1 }}>
               {/* Brand Banner */}
-              <div style={{ 
+              <div className="contract-brand-banner" style={{ 
                 display: "flex", 
                 alignItems: "stretch", 
                 justifyContent: "space-between",
@@ -484,25 +483,25 @@ export default function ContractDetailsPage() {
                 borderBottom: "1px solid #e2e8f0"
               }}>
                 {/* Left Content */}
-                <div style={{ display: "flex", alignItems: "center", padding: "0 80px", zIndex: 2 }}>
+                <div className="brand-banner-left" style={{ display: "flex", alignItems: "center", padding: "0 80px", zIndex: 2 }}>
                   {/* Logo */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div className="brand-logo-container" style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                     <img src="/logo.png" alt="Grow Orbit Logo" style={{ height: "48px", objectFit: "contain" }} />
                     <span style={{ fontSize: "22px", fontWeight: 900, fontFamily: "'Montserrat', sans-serif", letterSpacing: "-0.5px" }}><span style={{ color: "#1e293b" }}>GROW</span> <span style={{ color: "#ea580c" }}>ORBIT</span></span>
                   </div>
                   
                   {/* Divider */}
-                  <div style={{ width: "2px", height: "56px", background: "#e2e8f0", margin: "0 32px" }}></div>
+                  <div className="brand-divider" style={{ width: "2px", height: "56px", background: "#e2e8f0", margin: "0 32px" }}></div>
                   
                   {/* Title & ID */}
-                  <div>
+                  <div className="brand-title-container">
                     <div style={{ fontSize: "24px", fontWeight: 800, color: "#0f172a", marginBottom: "4px", fontFamily: "'Montserrat', sans-serif" }}>Contract for Amazon Growth Partnership</div>
                     <div style={{ fontSize: "14px", color: "#64748b", fontWeight: 500 }}>Contract ID: <span style={{ color: "#f97316" }}>{contract.contractNumber || "—"}</span></div>
                   </div>
                 </div>
 
                 {/* Right Dark Section */}
-                <div style={{ 
+                <div className="brand-banner-right-dark" style={{ 
                   position: "absolute", 
                   top: 0, 
                   right: 0, 
@@ -531,34 +530,34 @@ export default function ContractDetailsPage() {
               </div>
               
               {/* Stepper */}
-              <div className="no-print" style={{ display: "flex", justifyContent: "center", marginBottom: "48px" }}>
-                <div style={{ display: "flex", alignItems: "flex-start", width: "100%", maxWidth: "800px", justifyContent: "space-between", position: "relative" }}>
+              <div className="no-print contract-stepper-wrapper" style={{ display: "flex", justifyContent: "center", marginBottom: "48px" }}>
+                <div className="contract-stepper-container" style={{ display: "flex", alignItems: "flex-start", width: "100%", maxWidth: "800px", justifyContent: "space-between", position: "relative" }}>
                   
                   {/* Connecting Lines */}
-                  <div style={{ position: "absolute", top: "24px", left: "12%", right: "12%", height: "2px", background: "#f1f5f9", zIndex: 0 }}></div>
+                  <div className="stepper-connecting-line" style={{ position: "absolute", top: "24px", left: "12%", right: "12%", height: "2px", background: "#f1f5f9", zIndex: 0 }}></div>
 
                   {/* Step 1 */}
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 1, gap: "12px", width: "120px" }}>
-                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#f97316", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 700, boxShadow: "0 0 0 4px #fff" }}>1</div>
-                    <div style={{ color: "#f97316", fontSize: "15px", fontWeight: 600, textAlign: "center" }}>Review Contract</div>
+                  <div className="stepper-step-item" style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 1, gap: "12px", width: "120px" }}>
+                    <div className="stepper-step-circle" style={{ width: "48px", height: "48px", borderRadius: "50%", background: "#f97316", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 700, boxShadow: "0 0 0 4px #fff" }}>1</div>
+                    <div className="stepper-step-label" style={{ color: "#f97316", fontSize: "15px", fontWeight: 600, textAlign: "center" }}>Review Contract</div>
                   </div>
 
                    {/* Step 2 */}
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 1, gap: "12px", width: "120px" }}>
-                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: isDetailsActive ? "#f97316" : "#f8fafc", color: isDetailsActive ? "#fff" : "#475569", border: isDetailsActive ? "none" : "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 600, boxShadow: "0 0 0 4px #fff" }}>2</div>
-                    <div style={{ color: isDetailsActive ? "#f97316" : "#64748b", fontSize: "15px", fontWeight: isDetailsActive ? 600 : 500, textAlign: "center" }}>Your Details</div>
+                  <div className="stepper-step-item" style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 1, gap: "12px", width: "120px" }}>
+                    <div className="stepper-step-circle" style={{ width: "48px", height: "48px", borderRadius: "50%", background: isDetailsActive ? "#f97316" : "#f8fafc", color: isDetailsActive ? "#fff" : "#475569", border: isDetailsActive ? "none" : "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 600, boxShadow: "0 0 0 4px #fff" }}>2</div>
+                    <div className="stepper-step-label" style={{ color: isDetailsActive ? "#f97316" : "#64748b", fontSize: "15px", fontWeight: isDetailsActive ? 600 : 500, textAlign: "center" }}>Your Details</div>
                   </div>
 
                   {/* Step 3 */}
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 1, gap: "12px", width: "120px" }}>
-                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: isExecuted ? "#f97316" : "#f8fafc", color: isExecuted ? "#fff" : "#475569", border: isExecuted ? "none" : "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 600, boxShadow: "0 0 0 4px #fff" }}>3</div>
-                    <div style={{ color: isExecuted ? "#f97316" : "#64748b", fontSize: "15px", fontWeight: isExecuted ? 600 : 500, textAlign: "center" }}>Sign Contract</div>
+                  <div className="stepper-step-item" style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 1, gap: "12px", width: "120px" }}>
+                    <div className="stepper-step-circle" style={{ width: "48px", height: "48px", borderRadius: "50%", background: isExecuted ? "#f97316" : "#f8fafc", color: isExecuted ? "#fff" : "#475569", border: isExecuted ? "none" : "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 600, boxShadow: "0 0 0 4px #fff" }}>3</div>
+                    <div className="stepper-step-label" style={{ color: isExecuted ? "#f97316" : "#64748b", fontSize: "15px", fontWeight: isExecuted ? 600 : 500, textAlign: "center" }}>Sign Contract</div>
                   </div>
 
                   {/* Step 4 */}
-                  <div style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 1, gap: "12px", width: "120px" }}>
-                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: isExecuted ? "#22c55e" : "#f8fafc", color: isExecuted ? "#fff" : "#475569", border: isExecuted ? "none" : "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 600, boxShadow: "0 0 0 4px #fff" }}>4</div>
-                    <div style={{ color: isExecuted ? "#22c55e" : "#64748b", fontSize: "15px", fontWeight: isExecuted ? 600 : 500, textAlign: "center" }}>Completed</div>
+                  <div className="stepper-step-item" style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 1, gap: "12px", width: "120px" }}>
+                    <div className="stepper-step-circle" style={{ width: "48px", height: "48px", borderRadius: "50%", background: isExecuted ? "#22c55e" : "#f8fafc", color: isExecuted ? "#fff" : "#475569", border: isExecuted ? "none" : "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 600, boxShadow: "0 0 0 4px #fff" }}>4</div>
+                    <div className="stepper-step-label" style={{ color: isExecuted ? "#22c55e" : "#64748b", fontSize: "15px", fontWeight: isExecuted ? 600 : 500, textAlign: "center" }}>Completed</div>
                   </div>
 
                 </div>
@@ -1155,8 +1154,44 @@ export default function ContractDetailsPage() {
         </div>
       )}
 
-      {/* Print Styles Overlay for 100% exact design matching */}
       <style dangerouslySetInnerHTML={{ __html: `
+        /* Responsive Header Bar Styles */
+        @media (max-width: 768px) {
+          .contract-header-bar {
+            flex-wrap: wrap !important;
+            gap: 12px !important;
+            padding: 10px 14px !important;
+          }
+          .contract-header-actions {
+            width: 100% !important;
+            justify-content: space-between !important;
+            gap: 8px !important;
+          }
+          .zoom-controls-wrapper {
+            margin-right: 0 !important;
+            flex-shrink: 0 !important;
+          }
+          .download-pdf-btn, .contact-support-btn {
+            flex: 1 !important;
+            justify-content: center !important;
+            font-size: 10px !important;
+            padding: 6px 10px !important;
+            white-space: nowrap !important;
+          }
+          .download-pdf-text-desktop {
+            display: none !important;
+          }
+          .download-pdf-text-mobile {
+            display: inline !important;
+          }
+          .contact-support-text-desktop {
+            display: none !important;
+          }
+          .contact-support-text-mobile {
+            display: inline !important;
+          }
+        }
+
         @media print {
           @page {
             size: A4 portrait;

@@ -57,6 +57,20 @@ const VARIABLES = [
   { label: "Services",     tag: "{{services_list}}" },
 ];
 
+function formatRetainerValue(val) {
+  if (!val) return "—";
+  const clean = String(val).trim().replace(/[\$,]/g, "");
+  const num = Number(clean);
+  return (!isNaN(num) && clean !== "") ? `$${num.toLocaleString()}` : val;
+}
+
+function formatInvestmentValue(val) {
+  if (!val) return "—";
+  const clean = String(val).trim().replace(/[\$,]/g, "");
+  const num = Number(clean);
+  return (!isNaN(num) && clean !== "") ? `$${num.toLocaleString()} USD` : val;
+}
+
 function buildServicesHtml(services, monthlyRetainer) {
   const items = (services && services.length > 0) ? services : [];
   if (items.length === 0 && !monthlyRetainer) return "";
@@ -78,7 +92,11 @@ function buildServicesHtml(services, monthlyRetainer) {
       </tr>`;
   });
 
-  if (total === 0 && monthlyRetainer) total = Number(monthlyRetainer);
+  if (total === 0 && monthlyRetainer) {
+    const clean = String(monthlyRetainer).trim().replace(/[\$,]/g, "");
+    const num = Number(clean);
+    total = (!isNaN(num) && clean !== "") ? num : 0;
+  }
 
   return `
     <div style="margin: 8px 0 32px 0;">
@@ -187,12 +205,12 @@ function compilePreview(body, fields) {
     .split("{{client_email}}").join(fields.clientEmail || "—")
     .split("{{client_phone}}").join(fields.clientPhone || "—")
     .split("{{requested_service}}").join(fields.requestedService || "—")
-    .split("{{monthly_retainer}}").join(fields.monthlyRetainer ? `$${Number(fields.monthlyRetainer).toLocaleString()}` : "—")
+    .split("{{monthly_retainer}}").join(formatRetainerValue(fields.monthlyRetainer))
     .split("{{term_length}}").join(fields.termLength || "—")
     .split("{{payment_terms}}").join(fields.paymentTerms || "—")
     .split("{{location}}").join(fields.location || "—")
     .split("{{auto_renewal}}").join(fields.autoRenewal || "—")
-    .split("{{monthly_investment}}").join(fields.monthlyRetainer ? `$${Number(fields.monthlyRetainer).toLocaleString()} USD` : "—")
+    .split("{{monthly_investment}}").join(formatInvestmentValue(fields.monthlyRetainer))
     .split("{{initial_term}}").join(fields.termLength || "—")
     .split("{{contract_date}}").join(fmt(fields.contractDate))
     .split("{{start_date}}").join(fmt(fields.startDate))
@@ -937,9 +955,10 @@ function ContractBuilderWorkspace() {
 
               <div>
                 <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Monthly Management Fee ($ USD)</div>
-                <input type="number" value={monthlyRetainer} disabled={isLocked} onChange={e => { setMonthlyRetainer(e.target.value); triggerAutoSave({ monthlyRetainer: e.target.value }); }}
+                <input type="text" value={monthlyRetainer} disabled={isLocked} onChange={e => { setMonthlyRetainer(e.target.value); triggerAutoSave({ monthlyRetainer: e.target.value }); }}
                   onFocus={() => setFocusedField("monthlyRetainer")}
                   onBlur={() => setFocusedField(null)}
+                  placeholder="e.g. 1500 or Will start after 3 months"
                   style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: `1px solid ${focusedField === "monthlyRetainer" ? "#f97316" : "rgba(255,255,255,0.08)"}`, background: isLocked ? "rgba(255,255,255,0.01)" : (focusedField === "monthlyRetainer" ? "#0a0a0a" : "rgba(255,255,255,0.03)"), color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", boxSizing: "border-box", outline: "none", transition: "all 0.15s", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }} />
               </div>
 
@@ -1497,7 +1516,7 @@ function ContractBuilderWorkspace() {
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
                     <div>
                       <div style={{ fontSize: "13px", color: "#94a3b8", fontWeight: 500, marginBottom: "4px" }}>Monthly Management Fee</div>
-                      <div style={{ fontSize: "15px", color: "#f8fafc", fontWeight: 800 }}>{monthlyRetainer ? `$${Number(monthlyRetainer).toLocaleString()} USD` : "—"}</div>
+                      <div style={{ fontSize: "15px", color: "#f8fafc", fontWeight: 800 }}>{formatInvestmentValue(monthlyRetainer)}</div>
                     </div>
                   </div>
 

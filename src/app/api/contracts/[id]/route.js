@@ -3,6 +3,20 @@ import {
   getDocData, updateDocData, deleteDocData, setSubcollectionDoc, getSubcollectionDocs 
 } from "@/utils/dbHelper";
 
+function formatRetainerValue(val) {
+  if (!val) return "—";
+  const clean = String(val).trim().replace(/[\$,]/g, "");
+  const num = Number(clean);
+  return (!isNaN(num) && clean !== "") ? `$${num.toLocaleString()}` : val;
+}
+
+function formatInvestmentValue(val) {
+  if (!val) return "—";
+  const clean = String(val).trim().replace(/[\$,]/g, "");
+  const num = Number(clean);
+  return (!isNaN(num) && clean !== "") ? `$${num.toLocaleString()} USD` : val;
+}
+
 function buildServicesHtml(services, monthlyRetainer) {
   const items = (services && services.length > 0) ? services : [];
   if (items.length === 0 && !monthlyRetainer) return "";
@@ -24,7 +38,11 @@ function buildServicesHtml(services, monthlyRetainer) {
       </tr>`;
   });
 
-  if (total === 0 && monthlyRetainer) total = Number(monthlyRetainer);
+  if (total === 0 && monthlyRetainer) {
+    const clean = String(monthlyRetainer).trim().replace(/[\$,]/g, "");
+    const num = Number(clean);
+    total = (!isNaN(num) && clean !== "") ? num : 0;
+  }
 
   return `
     <div style="margin: 8px 0 32px 0;">
@@ -76,12 +94,12 @@ function compileContractBody(body, content) {
     "{{client_email}}": content.clientEmail || "—",
     "{{client_phone}}": content.clientPhone || "—",
     "{{requested_service}}": content.requestedService || "—",
-    "{{monthly_retainer}}": content.monthlyRetainer ? `$${Number(content.monthlyRetainer).toLocaleString()}` : "—",
+    "{{monthly_retainer}}": formatRetainerValue(content.monthlyRetainer),
     "{{term_length}}": content.termLength || "—",
     "{{payment_terms}}": content.paymentTerms || "—",
     "{{location}}": content.location || "—",
     "{{auto_renewal}}": content.autoRenewal || "—",
-    "{{monthly_investment}}": content.monthlyRetainer ? `$${Number(content.monthlyRetainer).toLocaleString()} USD` : "—",
+    "{{monthly_investment}}": formatInvestmentValue(content.monthlyRetainer),
     "{{initial_term}}": content.termLength || "—",
     "{{contract_date}}": formatDate(content.contractDate),
     "{{start_date}}": formatDate(content.startDate),
@@ -197,7 +215,7 @@ export async function PATCH(request, context) {
       clientEmail: clientEmail !== undefined ? clientEmail : (contractData.clientEmail || ""),
       clientPhone: clientPhone !== undefined ? clientPhone : (contractData.clientPhone || ""),
       requestedService: requestedService !== undefined ? requestedService : (contractData.requestedService || ""),
-      monthlyRetainer: monthlyRetainer !== undefined ? Number(monthlyRetainer) : (contractData.monthlyRetainer || 0),
+      monthlyRetainer: monthlyRetainer !== undefined ? (monthlyRetainer !== null ? String(monthlyRetainer) : "") : (contractData.monthlyRetainer !== undefined && contractData.monthlyRetainer !== null ? String(contractData.monthlyRetainer) : ""),
       termLength: termLength !== undefined ? termLength : (contractData.termLength || "3 Months"),
       paymentTerms: paymentTerms !== undefined ? paymentTerms : (contractData.paymentTerms || "Net 15"),
       location: location !== undefined ? location : (contractData.location || "USA"),

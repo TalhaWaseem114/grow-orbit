@@ -35,14 +35,22 @@ export async function POST(request, context) {
       clientEmail: sourceData.clientEmail || "",
       clientPhone: sourceData.clientPhone || "",
       requestedService: sourceData.requestedService || "",
-      monthlyRetainer: Number(sourceData.monthlyRetainer) || 0,
+      monthlyRetainer: sourceData.monthlyRetainer !== undefined && sourceData.monthlyRetainer !== null ? String(sourceData.monthlyRetainer) : "",
       termLength: sourceData.termLength || "Month-to-month",
       paymentTerms: sourceData.paymentTerms || "Net 15",
       contractDate: new Date(),
       startDate: new Date(),
       endDate: sourceData.endDate ? new Date(sourceData.endDate) : null,
       notes: sourceData.notes || "",
-      templateBody: sourceData.templateBody || ""
+      templateBody: sourceData.templateBody || "",
+      location: sourceData.location || "USA",
+      autoRenewal: sourceData.autoRenewal || "Yes, after 3 months",
+      services: sourceData.services || [],
+      termCommitmentText: sourceData.termCommitmentText || "",
+      paymentTermsText: sourceData.paymentTermsText || "",
+      clientResponsibilitiesText: sourceData.clientResponsibilitiesText || "",
+      confidentialityTerminationText: sourceData.confidentialityTerminationText || "",
+      governingLawText: sourceData.governingLawText || ""
     };
 
     const duplicateContractData = {

@@ -689,6 +689,10 @@ function ContractBuilderWorkspace() {
             We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!
           </p>
           
+          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
+            If you have any questions or queries, please feel free to reply directly to this email.
+          </p>
+          
           <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
             Please click the button below to view the full agreement and complete the secure e-signature process:
           </p>
@@ -1644,6 +1648,9 @@ function ContractBuilderWorkspace() {
                     </p>
                     <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
                       We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!
+                    </p>
+                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
+                      If you have any questions or queries, please feel free to reply directly to this email.
                     </p>
                     <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "16px" }}>
                       Please click the button below to view the full agreement and complete the secure e-signature process:

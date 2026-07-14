@@ -344,6 +344,10 @@ export default function ContractDetailsPage() {
   const isExecuted = contract.status === "signed";
   const canVoid = !["signed", "completed", "void", "expired"].includes(contract.status);
 
+  // Check if all input fields are filled
+  const areDetailsFilled = signerName.trim() !== "" && signerEmail.trim() !== "" && companyName.trim() !== "";
+  const isDetailsActive = contract.status === "viewed" || isExecuted || areDetailsFilled;
+
   return (
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", background: "#0a0a0a", color: "#fff", fontFamily: "'Inter', sans-serif" }}>
       
@@ -539,10 +543,10 @@ export default function ContractDetailsPage() {
                     <div style={{ color: "#f97316", fontSize: "15px", fontWeight: 600, textAlign: "center" }}>Review Contract</div>
                   </div>
 
-                  {/* Step 2 */}
+                   {/* Step 2 */}
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", zIndex: 1, gap: "12px", width: "120px" }}>
-                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: (contract.status === "viewed" || isExecuted) ? "#f97316" : "#f8fafc", color: (contract.status === "viewed" || isExecuted) ? "#fff" : "#475569", border: (contract.status === "viewed" || isExecuted) ? "none" : "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 600, boxShadow: "0 0 0 4px #fff" }}>2</div>
-                    <div style={{ color: (contract.status === "viewed" || isExecuted) ? "#f97316" : "#64748b", fontSize: "15px", fontWeight: (contract.status === "viewed" || isExecuted) ? 600 : 500, textAlign: "center" }}>Your Details</div>
+                    <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: isDetailsActive ? "#f97316" : "#f8fafc", color: isDetailsActive ? "#fff" : "#475569", border: isDetailsActive ? "none" : "1px solid #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px", fontWeight: 600, boxShadow: "0 0 0 4px #fff" }}>2</div>
+                    <div style={{ color: isDetailsActive ? "#f97316" : "#64748b", fontSize: "15px", fontWeight: isDetailsActive ? 600 : 500, textAlign: "center" }}>Your Details</div>
                   </div>
 
                   {/* Step 3 */}
@@ -994,7 +998,13 @@ export default function ContractDetailsPage() {
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
                   <div>
                     <div style={{ fontSize: "13px", color: "#94a3b8", fontWeight: 500, marginBottom: "4px" }}>Monthly Management Fee</div>
-                    <div style={{ fontSize: "15px", color: "#f8fafc", fontWeight: 800 }}>{contract.monthlyRetainer ? `$${Number(contract.monthlyRetainer).toLocaleString()} USD` : "—"}</div>
+                    <div style={{ fontSize: "15px", color: "#f8fafc", fontWeight: 800 }}>
+                      {contract.monthlyRetainer ? (() => {
+                        const clean = String(contract.monthlyRetainer).trim().replace(/[\$,]/g, "");
+                        const num = Number(clean);
+                        return (!isNaN(num) && clean !== "") ? `$${num.toLocaleString()} USD` : contract.monthlyRetainer;
+                      })() : "—"}
+                    </div>
                   </div>
                 </div>
 

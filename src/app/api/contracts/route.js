@@ -215,7 +215,7 @@ export async function POST(request) {
     const dateStr = String(now.getDate()).padStart(2, "0");
     const monthStr = String(now.getMonth() + 1).padStart(2, "0");
     const randomNum = Math.floor(1000 + Math.random() * 9000);
-    const contractNumber = `GO-${year}-${dateStr}${monthStr}-${randomNum}`;
+    const contractNumber = `GO-${year}-${dateStr}-${monthStr}-${randomNum}`;
 
     let expiresAt = null;
     if (expirationDays && expirationDays !== "none") {

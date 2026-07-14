@@ -283,18 +283,32 @@ function compilePlainHtml(contract) {
     return isNaN(d.getTime()) ? val : d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
   };
 
+  const formatRetainerValue = (val) => {
+    if (!val) return "—";
+    const clean = String(val).trim().replace(/[\$,]/g, "");
+    const num = Number(clean);
+    return (!isNaN(num) && clean !== "") ? `$${num.toLocaleString()}` : val;
+  };
+
+  const formatInvestmentValue = (val) => {
+    if (!val) return "—";
+    const clean = String(val).trim().replace(/[\$,]/g, "");
+    const num = Number(clean);
+    return (!isNaN(num) && clean !== "") ? `$${num.toLocaleString()} USD` : val;
+  };
+
   const replacements = {
     "{{client_name}}": contract.clientName || "—",
     "{{company_name}}": contract.companyName || "—",
     "{{client_email}}": contract.clientEmail || "—",
     "{{client_phone}}": contract.clientPhone || "—",
     "{{requested_service}}": contract.requestedService || "—",
-    "{{monthly_retainer}}": contract.monthlyRetainer ? `$${Number(contract.monthlyRetainer).toLocaleString()}` : "—",
+    "{{monthly_retainer}}": formatRetainerValue(contract.monthlyRetainer),
     "{{term_length}}": contract.termLength || "—",
     "{{payment_terms}}": contract.paymentTerms || "—",
     "{{location}}": contract.location || "—",
     "{{auto_renewal}}": contract.autoRenewal || "—",
-    "{{monthly_investment}}": contract.monthlyRetainer ? `$${Number(contract.monthlyRetainer).toLocaleString()} USD` : "—",
+    "{{monthly_investment}}": formatInvestmentValue(contract.monthlyRetainer),
     "{{initial_term}}": contract.termLength || "—",
     "{{contract_date}}": formatDate(contract.contractDate),
     "{{start_date}}": formatDate(contract.startDate),

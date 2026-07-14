@@ -45,6 +45,13 @@ export default function ContractDetailsPage() {
     }
   }, [id]);
 
+  useEffect(() => {
+    if (contract) {
+      document.title = "Grow Orbit Contract for Amazon Growth Partnership";
+    }
+  }, [contract]);
+
+
   const loadContract = async () => {
     setLoading(true);
     try {
@@ -239,6 +246,7 @@ export default function ContractDetailsPage() {
   };
 
   const handleDownloadPDF = () => {
+    document.title = "Grow Orbit Contract for Amazon Growth Partnership";
     window.print();
   };
 

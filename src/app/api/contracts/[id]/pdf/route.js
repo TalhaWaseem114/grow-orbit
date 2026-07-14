@@ -36,7 +36,7 @@ export async function GET(request, context) {
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="Contract-${contract.contractNumber}.pdf"`,
+        "Content-Disposition": `attachment; filename="Grow Orbit Contract for Amazon Growth Partnership.pdf"`,
       },
     });
   } catch (error) {

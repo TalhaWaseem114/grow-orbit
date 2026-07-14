@@ -46,6 +46,18 @@ export default function ContractDetailsPage() {
   }, [id]);
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 768) {
+        setZoom(0.25);
+      } else if (window.innerWidth < 1024) {
+        setZoom(0.45);
+      } else {
+        setZoom(0.65);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
     if (contract) {
       document.title = "Grow Orbit Contract for Amazon Growth Partnership";
     }
@@ -370,7 +382,7 @@ export default function ContractDetailsPage() {
           {/* Zoom Controls */}
           <div className="zoom-controls-wrapper" style={{ display: "flex", alignItems: "center", gap: "8px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "3px 8px", background: "rgba(255,255,255,0.02)", marginRight: "12px" }}>
             <button 
-              onClick={() => setZoom(z => Math.max(0.35, z - 0.05))} 
+              onClick={() => setZoom(z => Math.max(0.2, z - 0.05))} 
               style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer", fontSize: "16px", fontWeight: "bold", padding: "0 4px" }}
             >
               -

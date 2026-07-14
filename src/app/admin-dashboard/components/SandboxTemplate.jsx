@@ -1,15 +1,15 @@
-export const sandboxId = "sandbox-reschedule-grooming";
-export const sandboxSubject = "Rescheduling our discussion - Grow Orbit";
-export const sandboxHeadline = "Let's reschedule our discussion.";
-export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi there,</p>
+export const sandboxId = "sandbox-contract-proceed-viral";
+export const sandboxSubject = "Next Steps: Contract Agreement - Grow Orbit";
+export const sandboxHeadline = "Proceeding with Your Amazon Growth Partnership";
+export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi Viral,</p>
 <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 20px;">
-  No worries at all about rescheduling our chat—<strong>family always comes first</strong>.
+  I hope you are doing well. I have sent over the contract for our Amazon Growth Partnership for your review so we can officially kick off the process.
 </p>
 <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 20px;">
-  We have been doing some research on your <strong> grooming brand</strong> and would love to know: are you looking to scale your current setup, <strong>launch new products</strong>, or do you have another focus in mind?
+  Please look it over when you get a moment. If everything is in order, we can move forward with the next steps.
 </p>
 <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-  Whenever things settle down, please pick a convenient slot below to reconnect:
+  Should you have any questions, require further clarity, or want to schedule another quick session to sync up, please feel free to reply directly to this email or book a slot:
 </p>`;
 
 

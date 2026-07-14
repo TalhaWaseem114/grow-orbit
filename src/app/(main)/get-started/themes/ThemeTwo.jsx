@@ -7,7 +7,7 @@ import dynamic from "next/dynamic";
 import ServicesMarquee from "@/components/ui/ServicesMarquee";
 import StickyNavbar from "../components/StickyNavbar";
 import HeroSectionThemeTwo from "../components/HeroSectionThemeTwo";
-import DiagnosesSection from "../components/DiagnosesSection";
+import CeoSourcingSection from "../components/CeoSourcingSection";
 import SellerCentralShowcase from "../components/SellerCentralShowcase";
 import OrbitBridgeCTA from "@/components/sections/OrbitBridgeCTA";
 
@@ -64,7 +64,7 @@ export default function ThemeTwo({ scrolled, activeSections = {} }) {
     <>
       {activeSections.Navbar !== false && <StickyNavbar scrolled={scrolled} scrollToForm={scrollToForm} />}
       {activeSections.Hero !== false && <HeroSectionThemeTwo scrollToForm={scrollToForm} formRef={formRef} />}
-      {activeSections.Diagnoses !== false && <DiagnosesSection />}
+      {activeSections.Diagnoses !== false && <CeoSourcingSection />}
       <SellerCentralShowcase />
       {activeSections.Marquee !== false && <ServicesMarquee />}
 

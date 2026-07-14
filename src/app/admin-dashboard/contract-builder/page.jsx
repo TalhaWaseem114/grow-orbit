@@ -612,22 +612,106 @@ function ContractBuilderWorkspace() {
   const copyRichEmail = async () => {
     if (!shareLink || !isLocked) return;
     
-    const htmlEmail = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; color: #333333; line-height: 1.6;">
-        <p style="font-size: 15px;">Hi ${clientName || "Partner"},</p>
-        <p style="font-size: 15px;">I have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.</p>
-        <p style="font-size: 15px;">We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!</p>
-        
-        <p style="font-size: 15px; margin-bottom: 24px;">Please click the button below to view the full agreement and complete the secure e-signature process:</p>
-        
-        <div style="margin: 28px 0;">
-          <a href="${shareLink}" target="_blank" style="background: linear-gradient(135deg,#f97316,#ea580c); background-color: #ea580c; color: #ffffff; padding: 14px 28px; text-decoration: none; font-weight: bold; border-radius: 8px; display: inline-block; font-size: 14px; box-shadow: 0 4px 12px rgba(234,88,12,0.25);">Review & Sign Agreement</a>
-        </div>
-
-        <p style="font-size: 11px; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 12px; margin-top: 28px;">
-          This is a secure, legally-binding electronic signature process. If you have any questions, please let us know.
-        </p>
+    const htmlEmail = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #e2ebf5;
+      font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      color: #333333;
+    }
+    @media only screen and (max-width: 600px) {
+      .email-container {
+        width: 100% !important;
+      }
+      .email-body {
+        padding: 24px 16px !important;
+      }
+    }
+  </style>
+</head>
+<body style="margin: 0; padding: 0; background-color: #e2ebf5;">
+  <div style="width: 100%; background-color: #e2ebf5; padding: 24px 20px; box-sizing: border-box; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <div class="email-container" style="max-width: 600px; margin: 0 auto; background-color: #f0f4f8; border-radius: 16px; overflow: hidden; box-shadow: none; border: 3px solid #ffffff;">
+      <!-- Header -->
+      <div style="background: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 50%, #050505 100%); padding: 24px 16px; text-align: center; border-bottom: 3px solid #f97316; border-top-left-radius: 13px; border-top-right-radius: 13px;">
+        <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto; border-collapse: collapse;">
+          <tr>
+            <td valign="middle" style="text-align: center; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+              <div style="font-size: 22px; font-weight: 900; line-height: 1; letter-spacing: 0.03em; color: #ffffff;">
+                GROW <span style="color: #f97316;">ORBIT</span>
+              </div>
+              <div style="font-size: 8px; font-weight: 700; color: #a1a1aa; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; line-height: 1.2;">
+                WE RANK. YOU SELL. IT'S THAT SIMPLE.
+              </div>
+            </td>
+          </tr>
+        </table>
       </div>
+      
+      <!-- Body -->
+      <div class="email-body" style="padding: 28px 20px; background-color: #f0f4f8; text-align: left;">
+        <h1 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Growth Partnership Agreement</h1>
+        
+        <div style="font-size: 15px; color: #334155; line-height: 1.6; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 16px;">Hi ${clientName || "Partner"},</p>
+          
+          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
+            I have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.
+          </p>
+          
+          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
+            We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!
+          </p>
+          
+          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
+            Please click the button below to view the full agreement and complete the secure e-signature process:
+          </p>
+          
+          <!-- CTA Button -->
+          <div style="text-align: center; margin-bottom: 28px; margin-top: 16px;">
+            <a href="${shareLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #ffffff !important; padding: 14px 36px; min-width: 240px; max-width: 100%; box-sizing: border-box; border-radius: 50px; font-size: 13px; font-weight: 800; text-decoration: none; box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25); border: 3px solid #fdba74; text-transform: uppercase; letter-spacing: 0.06em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center;">
+              ✍️ Review & Sign Agreement
+            </a>
+          </div>
+          
+          <!-- Separator -->
+          <div style="height: 1px; background-color: rgba(15, 23, 42, 0.06); margin: 30px 0 24px 0; border-radius: 1px;"></div>
+          
+          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 20px;">
+            Warm regards,<br />
+            <strong style="color: #0f172a; font-size: 16px;">The Grow <span style="color: #f97316;">Orbit</span> Team</strong>
+          </p>
+          
+          <p style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin-top: 24px; border-top: 1px dashed rgba(15, 23, 42, 0.06); padding-top: 16px;">
+            This is a secure, legally-binding electronic signature process. If you have any questions, please let us know.
+          </p>
+        </div>
+        
+        <hr style="border: 0; border-top: 1px solid transparent; margin: 36px 0 24px 0;">
+        
+        <!-- Footer -->
+        <div style="text-align: center; color: #94a3b8; font-size: 11px; line-height: 1.6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+          <p style="font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0; margin-bottom: 4px;">Grow Orbit Agency</p>
+          <p style="margin: 0; color: #94A3B8;">
+            support@groworbitofficial.com &middot; +1 (912) 820-5916
+          </p>
+          <p style="margin: 4px 0 0; color: #94A3B8;">
+            2583 Lundigan Dr, Mississauga, ON L5J 3W2, Canada
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
     `;
 
     const plainText = `Hi ${clientName || "Partner"},\n\nI have drafted our Amazon Growth Partnership Agreement and it is ready for your signature. We are incredibly excited to partner with you and help grow your brand. Let's sign this contract and begin this amazing journey together!\n\nReview & Sign Agreement: ${shareLink}\n\nBest regards,\nGrow Orbit Team`;

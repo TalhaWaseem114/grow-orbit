@@ -23,7 +23,7 @@ const PANELS_LIST = [
   { id: "leads", label: "Lead Pipeline" },
   { id: "users", label: "User Directory" },
   { id: "team", label: "Agency Team" },
-  { id: "invoices", label: "Invoice Manager" },
+  { id: "invoices", label: "Invoices & Contracts" },
   { id: "blog", label: "Blog Manager" },
   { id: "newsletter", label: "Newsletter Manager" },
   { id: "settings", label: "Settings Tab" }
@@ -35,6 +35,10 @@ export default function TeamTab({ users, handleRoleChange, currentUserId, trigge
   const [selectedUser, setSelectedUser] = useState(null);
   const [selectedPanels, setSelectedPanels] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const currentUser = useMemo(() => users.find(usr => usr.id === currentUserId), [users, currentUserId]);
+  const currentUserEmail = currentUser?.email?.toLowerCase() || "";
+  const isPrimaryOwner = currentUserEmail === "alisps2025@gmail.com" || currentUserEmail === "talhawaseem114@gmail.com";
 
   const admins = useMemo(() => {
     const rawAdmins = users.filter(u => u.role?.trim() === "admin");
@@ -125,6 +129,8 @@ export default function TeamTab({ users, handleRoleChange, currentUserId, trigge
             : PANELS_LIST.map(p => p.id);
 
           const isSuper = uAllowed.length === PANELS_LIST.length;
+          const targetEmail = u.email?.toLowerCase() || "";
+          const isTargetOwner = targetEmail === "alisps2025@gmail.com" || targetEmail === "talhawaseem114@gmail.com";
 
           return (
             <div key={u.id} style={{
@@ -165,8 +171,8 @@ export default function TeamTab({ users, handleRoleChange, currentUserId, trigge
                   : "radial-gradient(circle at top right, rgba(249, 115, 22, 0.1), transparent 70%)"
               }} />
               
-              {/* Show Revoke/Configure Access buttons if not the current logged-in user and not a Super Admin */}
-              {currentUserId !== u.id && !isSuper && (
+              {/* Show Revoke/Configure Access buttons if not the current logged-in user and not a protected target owner, AND (is not a Super Admin OR the logged-in user is a Primary Owner) */}
+              {currentUserId !== u.id && !isTargetOwner && (isPrimaryOwner || !isSuper) && (
                 <div style={{ position: "absolute", top: 20, right: 20, display: "flex", gap: 6, zIndex: 20 }}>
                   <button
                     onClick={() => {

@@ -10,6 +10,11 @@ const fmt = d => {
   return !isNaN(date.getTime()) ? date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—";
 };
 
+const checkIsTargetOwner = (email) => {
+  const clean = email?.toLowerCase() || "";
+  return clean === "alisps2025@gmail.com" || clean === "talhawaseem114@gmail.com";
+};
+
 export default function UsersTab({
   users,
   leads,
@@ -22,6 +27,9 @@ export default function UsersTab({
 }) {
   const [typeFilter, setTypeFilter] = useState("all"); // "all", "auth_user", "form_lead"
   const [activeSegment, setActiveSegment] = useState("users"); // "users" | "clients"
+
+  const currentUser = useMemo(() => (users || []).find(usr => usr.id === currentUserId), [users, currentUserId]);
+  const isPrimaryOwner = checkIsTargetOwner(currentUser?.email);
 
   // 1. Combine users and form leads into a unified identities array
   const combinedIdentities = useMemo(() => {
@@ -262,7 +270,7 @@ export default function UsersTab({
                 <div style={{ textAlign: "right" }}>
                   {u.id === currentUserId ? (
                     <span style={{ fontSize: 8, fontWeight: 700, color: "#525252", background: "rgba(255,255,255,0.04)", padding: "4px 8px", borderRadius: 6, textTransform: "uppercase" }}>You</span>
-                  ) : u.role === "admin" ? (
+                  ) : u.role === "admin" && (!isPrimaryOwner || checkIsTargetOwner(u.email)) ? (
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 4 }} title="Demote from Team panel first">
                       <Shield size={13} color="#f97316" />
                       <span style={{ fontSize: 8, fontWeight: 700, color: "#525252", textTransform: "uppercase" }}>Protected</span>

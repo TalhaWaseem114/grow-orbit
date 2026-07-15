@@ -49,6 +49,14 @@ const CONTRACT_STATUS_CONFIG = {
   completed: { label: "Completed 🎉", color: "#10b981", bg: "rgba(16,185,129,0.15)", border: "rgba(16,185,129,0.25)" }
 };
 
+const INVOICE_STATUS_CONFIG = {
+  draft:     { label: "Draft",     color: "#a3a3a3", bg: "rgba(163,163,163,0.12)", border: "rgba(163,163,163,0.25)" },
+  sent:      { label: "Sent",      color: "#3b82f6", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.25)" },
+  paid:      { label: "Paid",      color: "#22c55e", bg: "rgba(34,197,94,0.12)",   border: "rgba(34,197,94,0.25)" },
+  overdue:   { label: "Overdue",   color: "#ef4444", bg: "rgba(239,68,68,0.12)",   border: "rgba(239,68,68,0.25)" },
+  cancelled: { label: "Cancelled", color: "#71717a", bg: "rgba(113,113,122,0.10)", border: "rgba(113,113,122,0.2)" },
+};
+
 const fmt = d => d?.toDate ? d.toDate().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—";
 const fmtTime = d => d?.toDate ? d.toDate().toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }) : "";
 
@@ -122,14 +130,41 @@ function LeadDetailPanel({
     }
   };
 
+  // Invoice states
+  const [invoices, setInvoices] = useState([]);
+  const [loadingInvoices, setLoadingInvoices] = useState(false);
+
+  const fetchInvoices = async () => {
+    if (!lead.id) return;
+    setLoadingInvoices(true);
+    try {
+      const res = await fetch(`/api/invoices?leadId=${lead.id}`);
+      const data = await res.json();
+      if (data.success) {
+        setInvoices(data.invoices);
+      }
+    } catch (err) {
+      console.warn("Failed to load lead invoices:", err);
+    } finally {
+      setLoadingInvoices(false);
+    }
+  };
+
   useEffect(() => {
     setContracts([]);
+    setInvoices([]);
     fetchContracts();
+    fetchInvoices();
   }, [lead.id]);
 
   const handleGenerateNewContract = () => {
     if (!lead.id) return;
     router.push(`/admin-dashboard/contract-builder?leadId=${lead.id}`);
+  };
+
+  const handleGenerateNewInvoice = () => {
+    if (!lead.id) return;
+    router.push(`/admin-dashboard/invoice-builder?leadId=${lead.id}`);
   };
 
   const handleDeleteContract = async (contractId, contractNum) => {
@@ -147,6 +182,24 @@ function LeadDetailPanel({
       }
     } catch (err) {
       alert("Error deleting contract: " + err.message);
+    }
+  };
+
+  const handleDeleteInvoice = async (invoiceId, invoiceNum) => {
+    if (!window.confirm(`Are you sure you want to permanently delete invoice ${invoiceNum}?`)) return;
+    try {
+      const res = await fetch(`/api/invoices/${invoiceId}`, {
+        method: "DELETE"
+      });
+      const data = await res.json();
+      if (data.success) {
+        alert("Invoice deleted successfully!");
+        fetchInvoices();
+      } else {
+        alert("Failed to delete invoice: " + data.error);
+      }
+    } catch (err) {
+      alert("Error deleting invoice: " + err.message);
     }
   };
 
@@ -493,6 +546,100 @@ function LeadDetailPanel({
                   onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#a3a3a3'; }}
                 >
                   + Create New Version/Draft
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* Lead Invoices Widget */}
+          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <span>Lead Invoices</span>
+              {loadingInvoices && <Loader size={10} className="animate-spin text-zinc-500" />}
+            </div>
+            
+            {invoices.length === 0 ? (
+              <div>
+                <div style={{ fontSize: 10, color: "#525252", fontStyle: "italic", marginBottom: 8 }}>No invoices created yet.</div>
+                <button
+                  type="button"
+                  onClick={handleGenerateNewInvoice}
+                  style={{ width: "100%", background: "#ea580c", color: "#fff", border: "none", borderRadius: 8, padding: "6px 12px", fontSize: 10, fontWeight: 800, cursor: "pointer", textTransform: "uppercase" }}
+                >
+                  Generate Invoice
+                </button>
+              </div>
+            ) : (
+              <div>
+                {invoices.map(inv => {
+                  const statusCfg = INVOICE_STATUS_CONFIG[inv.status] || INVOICE_STATUS_CONFIG.draft;
+                  const items = inv.items || [];
+                  const subtotal = items.reduce((acc, it) => acc + (Number(it.price) || 0) * (Number(it.quantity) || 1), 0);
+                  const discountAmount = Number(inv.discount) || 0;
+                  const taxAmount = (subtotal - discountAmount) * ((Number(inv.taxRate) || 0) / 100);
+                  const total = subtotal - discountAmount + taxAmount;
+                  const currencySymbol = { USD: "$", GBP: "£", EUR: "€", PKR: "Rs", AED: "AED ", CAD: "C$", AUD: "A$" }[inv.currency] || "$";
+                  const formattedTotal = `${currencySymbol}${total.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+                  return (
+                    <div key={inv.id} style={{ display: "flex", flexDirection: "column", gap: 8, background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 8, padding: "10px", marginBottom: 6 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <span style={{ fontSize: 11, fontWeight: 800, color: "#fff" }}>{inv.invoiceNumber}</span>
+                        <span style={{ fontSize: 8, fontWeight: 900, textTransform: "uppercase", color: statusCfg.color, background: statusCfg.bg, border: `1px solid ${statusCfg.border}`, padding: "2px 6px", borderRadius: 4 }}>
+                          {statusCfg.label}
+                        </span>
+                      </div>
+                      
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", fontSize: 9, color: "#737373" }}>
+                        <div>Issued: <span style={{ color: "#fff", fontWeight: 600 }}>{fmt(inv.issueDate)}</span></div>
+                        <div>Due: <span style={{ color: "#fff", fontWeight: 600 }}>{fmt(inv.dueDate)}</span></div>
+                        <div style={{ gridColumn: "span 2" }}>Total: <span style={{ color: "#fff", fontWeight: 800 }}>{formattedTotal}</span></div>
+                      </div>
+
+                      <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            router.push(`/admin-dashboard/invoice-builder?id=${inv.id}`);
+                          }}
+                          style={{ flex: 1, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#fff", borderRadius: 6, padding: "5px 10px", fontSize: 9, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
+                        >
+                          Edit Invoice
+                        </button>
+                        
+                        <a href={`/api/invoices/${inv.id}/pdf`} download style={{ textDecoration: "none", display: "flex" }}>
+                          <button
+                            type="button"
+                            style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", color: "#fff", borderRadius: 6, padding: "5px 8px", fontSize: 9, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                            title="Download PDF"
+                          >
+                            <Download size={12} />
+                          </button>
+                        </a>
+
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteInvoice(inv.id, inv.invoiceNumber)}
+                          style={{ background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.25)", color: "#ef4444", borderRadius: 6, padding: "5px 8px", fontSize: 9, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                          title="Delete Invoice"
+                        >
+                          <Trash2 size={12} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+                
+                <button
+                  type="button"
+                  onClick={handleGenerateNewInvoice}
+                  style={{ width: "100%", background: "none", border: "1.5px dashed rgba(255,255,255,0.1)", color: "#a3a3a3", borderRadius: 8, padding: "6px 12px", fontSize: 9, fontWeight: 800, cursor: "pointer", transition: "all 0.2s", marginTop: 4 }}
+                  onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#ea580c'; e.currentTarget.style.color = '#fff'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)'; e.currentTarget.style.color = '#a3a3a3'; }}
+                >
+                  + Generate New Invoice
                 </button>
               </div>
             )}

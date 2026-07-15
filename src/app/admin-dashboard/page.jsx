@@ -116,6 +116,25 @@ export default function AdminDashboard() {
   const [sourceFilter, setSourceFilter] = useState("all");
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("adminSidebarCollapsed");
+      if (saved !== null) {
+        setIsSidebarCollapsed(saved === "true");
+      }
+    }
+  }, []);
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed(prev => {
+      const next = !prev;
+      if (typeof window !== "undefined") {
+        localStorage.setItem("adminSidebarCollapsed", String(next));
+      }
+      return next;
+    });
+  };
+
   /* PWA/Responsive state variables */
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
@@ -667,7 +686,7 @@ export default function AdminDashboard() {
       }}>
         {/* Toggle Button */}
         <button
-          onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+          onClick={toggleSidebar}
           style={{
             position: "absolute",
             right: -12,
@@ -742,7 +761,7 @@ export default function AdminDashboard() {
                   <SidebarItem id="team" label="Agency Team" icon={Shield} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
                 )}
                 {allowedPanels.includes("invoices") && (
-                  <SidebarItem id="invoices" label="Invoices" icon={Receipt} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
+                  <SidebarItem id="invoices" label="Invoices & Contracts" icon={Receipt} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />
                 )}
               </>
             )}
@@ -1042,7 +1061,7 @@ export default function AdminDashboard() {
             {allowedPanels.includes("invoices") && (
               <button className={`mobile-menu-item ${activeTab === "invoices" ? "active" : ""}`}
                 onClick={() => { setActiveTab("invoices"); setMobileMenuOpen(false); }}>
-                <Receipt size={18} /> Invoices
+                <Receipt size={18} /> Invoices & Contracts
               </button>
             )}
             {allowedPanels.includes("blog") && (

@@ -154,6 +154,18 @@ export async function queryDocs(collectionName, field, operator, value) {
   }
 }
 
+export async function getAllDocs(collectionName) {
+  const isAdminOk = await checkAdminOperational();
+  if (isAdminOk) {
+    const adminDb = await getAdminDb();
+    const snap = await adminDb.collection(collectionName).get();
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  } else {
+    const snap = await getDocs(collection(clientDb, collectionName));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  }
+}
+
 export async function getSubcollectionDocs(parentCollection, parentId, subcollectionName) {
   const isAdminOk = await checkAdminOperational();
   if (isAdminOk) {
@@ -221,6 +233,40 @@ export async function getNextSequenceNumber() {
   } catch (error) {
     console.error("Error generating next sequence number:", error);
     // Fallback based on simple timestamp to ensure uniqueness
+    seqNum = Math.floor(Date.now() / 1000) % 10000;
+  }
+  return seqNum;
+}
+
+export async function getNextInvoiceSequenceNumber() {
+  const isAdminOk = await checkAdminOperational();
+  let seqNum = 1;
+  try {
+    if (isAdminOk) {
+      const adminDb = await getAdminDb();
+      const snap = await adminDb.collection("invoices").orderBy("invoiceNumber", "desc").limit(1).get();
+      if (!snap.empty) {
+        const latestInvoice = snap.docs[0].data();
+        const numStr = latestInvoice.invoiceNumber?.split("-")?.pop();
+        const lastNum = parseInt(numStr, 10);
+        if (!isNaN(lastNum)) {
+          seqNum = lastNum + 1;
+        }
+      }
+    } else {
+      const q = query(collection(clientDb, "invoices"), orderBy("invoiceNumber", "desc"), limit(1));
+      const snap = await getDocs(q);
+      if (!snap.empty) {
+        const latestInvoice = snap.docs[0].data();
+        const numStr = latestInvoice.invoiceNumber?.split("-")?.pop();
+        const lastNum = parseInt(numStr, 10);
+        if (!isNaN(lastNum)) {
+          seqNum = lastNum + 1;
+        }
+      }
+    }
+  } catch (error) {
+    console.error("Error generating next invoice sequence number:", error);
     seqNum = Math.floor(Date.now() / 1000) % 10000;
   }
   return seqNum;

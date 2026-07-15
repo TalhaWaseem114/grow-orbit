@@ -1435,18 +1435,21 @@ export default function NewsletterTab({ isMobile }) {
       color: ${isDark ? "#ffffff" : "#333333"};
     }
     @media only screen and (max-width: 600px) {
+      .outer-wrapper {
+        padding: 10px 8px !important;
+      }
       .email-container {
         width: 100% !important;
-        ${isNeumorphic ? "" : "border-radius: 0 !important; border: none !important;"}
+        border-radius: 12px !important;
       }
       .email-body {
-        padding: 24px 16px !important;
+        padding: 20px 14px !important;
       }
     }
   </style>
 </head>
 <body style="margin: 0; padding: 0; background-color: ${outerBg};">
-  <div style="width: 100%; background-color: ${outerBg}; padding: 24px 20px; box-sizing: border-box; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  <div class="outer-wrapper" style="width: 100%; background-color: ${outerBg}; padding: 24px 20px; box-sizing: border-box; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
     <div class="email-container" style="max-width: 600px; margin: 0 auto; background-color: ${containerBg}; border-radius: 16px; overflow: hidden; box-shadow: ${isNeumorphic ? "none" : containerShadow}; border: ${isNeumorphic ? "3px solid #ffffff" : `1px solid ${borderColor}`};">
       <!-- Header -->
       ${hideHeader ? "" : `

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import { 
   Users, Briefcase, Activity, TrendingUp, AlertCircle, ArrowUpRight, Calendar,
-  Flame, Clock, CheckCircle2, MessageSquare, Terminal
+  Flame, Clock, CheckCircle2, MessageSquare, Terminal, Search, Download, Trash2, RefreshCw
 } from "lucide-react";
-import { collection, query, orderBy, limit, where, onSnapshot, doc, updateDoc, serverTimestamp } from "firebase/firestore";
+import { collection, query, orderBy, limit, where, onSnapshot, doc, updateDoc, serverTimestamp, getDocs, writeBatch } from "firebase/firestore";
 
 /* ─────────────────────────────────────────
    HELPERS & CONFIGS
@@ -55,8 +55,12 @@ const fmt = d => d?.toDate ? d.toDate().toLocaleDateString("en-US", { month: "sh
 
 function OverviewMiniCalendar({ leads }) {
   const today = new Date();
-  const currentMonth = today.getMonth();
-  const currentYear = today.getFullYear();
+  const [currentDate, setCurrentDate] = useState(() => new Date());
+  const [hoveredDay, setHoveredDay] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null); // { dateStr, date, leads: [], meetings: [] }
+  
+  const currentMonth = currentDate.getMonth();
+  const currentYear = currentDate.getFullYear();
   
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 0 (Sun) to 6 (Sat)
@@ -67,6 +71,14 @@ function OverviewMiniCalendar({ leads }) {
     return null;
   });
 
+  const handlePrevMonth = () => {
+    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
+  };
+  
+  const handleNextMonth = () => {
+    setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
+  };
+
   // Pre-bucket leads and meetings by date string for O(1) lookups
   const { leadsMap, meetingsMap } = React.useMemo(() => {
     const lMap = {};
@@ -75,18 +87,21 @@ function OverviewMiniCalendar({ leads }) {
     (leads || []).forEach(l => {
       if (l.createdAt?.toDate) {
         const dStr = l.createdAt.toDate().toDateString();
-        lMap[dStr] = (lMap[dStr] || 0) + 1;
+        if (!lMap[dStr]) lMap[dStr] = [];
+        lMap[dStr].push(l);
       }
       if (l.meetingBooked) {
         if (l.followUpDate) {
           const mDate = new Date(l.followUpDate);
           if (!isNaN(mDate.getTime())) {
             const mDateStr = mDate.toDateString();
-            mMap[mDateStr] = (mMap[mDateStr] || 0) + 1;
+            if (!mMap[mDateStr]) mMap[mDateStr] = [];
+            mMap[mDateStr].push(l);
           }
         } else if (l.createdAt?.toDate) {
           const dStr = l.createdAt.toDate().toDateString();
-          mMap[dStr] = (mMap[dStr] || 0) + 1;
+          if (!mMap[dStr]) mMap[dStr] = [];
+          mMap[dStr].push(l);
         }
       }
     });
@@ -94,21 +109,50 @@ function OverviewMiniCalendar({ leads }) {
   }, [leads]);
 
   const getDayData = (day) => {
-    if (!day) return { leads: 0, meetings: 0 };
+    if (!day) return { leads: [], meetings: [] };
     const dateStr = new Date(currentYear, currentMonth, day).toDateString();
     return { 
-      leads: leadsMap[dateStr] || 0, 
-      meetings: meetingsMap[dateStr] || 0 
+      leads: leadsMap[dateStr] || [], 
+      meetings: meetingsMap[dateStr] || [] 
     };
   };
 
-  const monthName = today.toLocaleString('default', { month: 'long' });
+  const monthName = currentDate.toLocaleString('default', { month: 'long' });
+  const isCurrentMonth = currentMonth === today.getMonth() && currentYear === today.getFullYear();
 
   return (
     <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px", flex: 1, display: "flex", flexDirection: "column" }}>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em" }}>Activity Calendar</div>
-        <div style={{ fontSize: 12, fontWeight: 800, color: "#fff" }}>{monthName} {currentYear}</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {!isCurrentMonth && (
+            <button 
+              onClick={() => setCurrentDate(new Date())}
+              style={{ background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 6, cursor: "pointer", color: "#f97316", padding: "3px 8px", fontSize: 9, fontWeight: 800, transition: "all 0.15s" }}
+              onMouseEnter={e => e.currentTarget.style.background = "rgba(249,115,22,0.15)"}
+              onMouseLeave={e => e.currentTarget.style.background = "rgba(249,115,22,0.1)"}
+            >
+              Today
+            </button>
+          )}
+          <button 
+            onClick={handlePrevMonth}
+            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 6, cursor: "pointer", color: "#a3a3a3", display: "flex", alignItems: "center", justifyContent: "center", width: 22, height: 22, fontSize: 10, fontWeight: 900, transition: "all 0.15s" }}
+            onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+            onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}
+          >
+            ◀
+          </button>
+          <div style={{ fontSize: 12, fontWeight: 800, color: "#fff", minWidth: 90, textAlign: "center", letterSpacing: "0.05em" }}>{monthName} {currentYear}</div>
+          <button 
+            onClick={handleNextMonth}
+            style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 6, cursor: "pointer", color: "#a3a3a3", display: "flex", alignItems: "center", justifyContent: "center", width: 22, height: 22, fontSize: 10, fontWeight: 900, transition: "all 0.15s" }}
+            onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+            onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}
+          >
+            ▶
+          </button>
+        </div>
       </div>
       
       {/* Legend */}
@@ -126,28 +170,52 @@ function OverviewMiniCalendar({ leads }) {
           <div key={d} style={{ textAlign: "center", fontSize: 9, fontWeight: 800, color: "#525252", paddingBottom: 8 }}>{d}</div>
         ))}
         {daysArray.map((day, i) => {
-          const { leads, meetings } = getDayData(day);
-          const isToday = day === today.getDate();
+          const { leads: dayLeads, meetings: dayMeetings } = getDayData(day);
+          const leadsCount = dayLeads.length;
+          const meetingsCount = dayMeetings.length;
+
+          const isToday = day && 
+            day === today.getDate() && 
+            currentMonth === today.getMonth() && 
+            currentYear === today.getFullYear();
           
           return (
-            <div key={i} style={{ 
-              aspectRatio: "1", 
-              background: day ? "rgba(255,255,255,0.02)" : "transparent",
-              border: isToday ? "1px solid rgba(249,115,22,0.5)" : "1px solid rgba(255,255,255,0.02)",
-              borderRadius: 8,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              padding: "4px 2px",
-              position: "relative"
-            }}>
+            <div 
+              key={i} 
+              onMouseEnter={() => day && setHoveredDay(i)}
+              onMouseLeave={() => day && setHoveredDay(null)}
+              onClick={() => {
+                if (!day) return;
+                const dateObj = new Date(currentYear, currentMonth, day);
+                const dateStr = dateObj.toDateString();
+                setSelectedDay({
+                  dateStr,
+                  date: dateObj,
+                  leads: dayLeads,
+                  meetings: dayMeetings
+                });
+              }}
+              style={{ 
+                aspectRatio: "1", 
+                background: day ? (hoveredDay === i ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.02)") : "transparent",
+                border: isToday ? "1px solid rgba(249,115,22,0.5)" : "1px solid rgba(255,255,255,0.02)",
+                borderRadius: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                padding: "4px 2px",
+                position: "relative",
+                cursor: day ? "pointer" : "default",
+                transition: "all 0.15s ease"
+              }}
+            >
               {day && (
                 <>
                   <span style={{ fontSize: 10, fontWeight: 700, color: isToday ? "#f97316" : "#a3a3a3" }}>{day}</span>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 2, marginTop: "auto", paddingBottom: 2, width: "100%", justifyContent: "center" }}>
-                    {leads > 0 && <div style={{ minWidth: 16, padding: "0 3px", height: 14, borderRadius: 4, background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.3)", color: "#f97316", fontSize: 8, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }} title={`${leads} leads`}>{leads}L</div>}
-                    {meetings > 0 && <div style={{ minWidth: 16, padding: "0 3px", height: 14, borderRadius: 4, background: "rgba(34,197,94,0.15)", border: "1px solid rgba(34,197,94,0.3)", color: "#22c55e", fontSize: 8, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }} title={`${meetings} meetings`}>{meetings}M</div>}
+                    {leadsCount > 0 && <div style={{ minWidth: 16, padding: "0 3px", height: 14, borderRadius: 4, background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.3)", color: "#f97316", fontSize: 8, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }} title={`${leadsCount} leads`}>{leadsCount}L</div>}
+                    {meetingsCount > 0 && <div style={{ minWidth: 16, padding: "0 3px", height: 14, borderRadius: 4, background: "rgba(34,197,94,0.15)", border: "1px solid rgba(34,197,94,0.3)", color: "#22c55e", fontSize: 8, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center" }} title={`${meetingsCount} meetings`}>{meetingsCount}M</div>}
                   </div>
                 </>
               )}
@@ -155,6 +223,148 @@ function OverviewMiniCalendar({ leads }) {
           );
         })}
       </div>
+
+      {/* Modal Overlay */}
+      {selectedDay && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          background: "rgba(0, 0, 0, 0.75)",
+          backdropFilter: "blur(4px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 9999,
+          padding: 16,
+          boxSizing: "border-box"
+        }}>
+          <div style={{
+            background: "#0d0d0d",
+            border: "1px solid rgba(255,255,255,0.08)",
+            borderRadius: 20,
+            width: "100%",
+            maxWidth: 480,
+            maxHeight: "90vh",
+            display: "flex",
+            flexDirection: "column",
+            boxShadow: "0 24px 48px rgba(0,0,0,0.8)",
+            overflow: "hidden"
+          }}>
+            {/* Modal Header */}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "16px 20px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Calendar size={16} color="#f97316" />
+                <span style={{ fontSize: 13, fontWeight: 800, color: "#fff", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+                  {selectedDay.date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric" })}
+                </span>
+              </div>
+              <button
+                onClick={() => setSelectedDay(null)}
+                style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 8, cursor: "pointer", color: "#a3a3a3", display: "flex", alignItems: "center", justifyContent: "center", width: 24, height: 24, fontSize: 12, fontWeight: 900, transition: "all 0.15s" }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+                onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div style={{ padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 20 }}>
+              
+              {/* Leads Section */}
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
+                  <div style={{ width: 16, height: 16, borderRadius: 4, background: "rgba(249,115,22,0.15)", border: "1px solid rgba(249,115,22,0.3)", color: "#f97316", fontSize: 8, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center" }}>L</div>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    New Leads ({selectedDay.leads.length})
+                  </span>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {selectedDay.leads.length === 0 ? (
+                    <div style={{ fontSize: 11, color: "#525252", fontStyle: "italic", padding: "10px 0" }}>
+                      No new leads generated on this day.
+                    </div>
+                  ) : (
+                    selectedDay.leads.map(l => (
+                      <div key={l.id} style={{ padding: 12, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 12, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                            {l.fullName || "Unknown Lead"}
+                          </div>
+                          <div style={{ fontSize: 10, color: "#525252", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                            {l.email || "No Email"} &middot; {l.source || "Direct"}
+                          </div>
+                        </div>
+                        <StatusBadge status={l.status || "new"} />
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+              {/* Meetings Section */}
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
+                  <div style={{ width: 16, height: 16, borderRadius: 4, background: "rgba(34,197,94,0.15)", border: "1px solid rgba(34,197,94,0.3)", color: "#22c55e", fontSize: 8, fontWeight: 900, display: "flex", alignItems: "center", justifyContent: "center" }}>M</div>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    Meetings Scheduled ({selectedDay.meetings.length})
+                  </span>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {selectedDay.meetings.length === 0 ? (
+                    <div style={{ fontSize: 11, color: "#525252", fontStyle: "italic", padding: "10px 0" }}>
+                      No strategy sessions scheduled on this day.
+                    </div>
+                  ) : (
+                    selectedDay.meetings.map(m => (
+                      <div key={m.id} style={{ padding: 12, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 12, display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                        <div style={{ minWidth: 0 }}>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                            {m.fullName || "Unknown Lead"}
+                          </div>
+                          <div style={{ fontSize: 10, color: "#525252", marginTop: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                            {m.email || "No Email"} &middot; {m.followUpDate ? new Date(m.followUpDate).toLocaleDateString() : "Scheduled"}
+                          </div>
+                        </div>
+                        <StatusBadge status={m.status || "new"} />
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+
+            </div>
+
+            {/* Modal Footer */}
+            <div style={{ padding: "14px 20px", borderTop: "1px solid rgba(255,255,255,0.05)", display: "flex", justifyContent: "flex-end", background: "rgba(255,255,255,0.01)" }}>
+              <button
+                onClick={() => setSelectedDay(null)}
+                style={{
+                  background: "#f97316",
+                  border: "none",
+                  borderRadius: 10,
+                  padding: "8px 16px",
+                  fontSize: 11,
+                  fontWeight: 800,
+                  color: "#fff",
+                  cursor: "pointer",
+                  transition: "all 0.15s"
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
+                onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+              >
+                Close Details
+              </button>
+            </div>
+
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -264,11 +474,14 @@ export default function OverviewTab({
   isMobile,
   setActiveTab,
   db,
-  currentAdmin
+  currentAdmin,
+  triggerConfirm,
+  logActivity
 }) {
   const [activityLogs, setActivityLogs] = useState([]);
   const [myTasks, setMyTasks] = useState([]);
   const [dateRange, setDateRange] = useState("all");
+  const [logSearch, setLogSearch] = useState("");
 
   const leads = React.useMemo(() => {
     if (dateRange === "all") return rawLeads || [];
@@ -378,6 +591,118 @@ export default function OverviewTab({
 
     return timeline.slice(0, 50);
   }, [activityLogs, leads]);
+
+  // Filter timeline based on search query
+  const filteredTimeline = React.useMemo(() => {
+    if (!logSearch.trim()) return mergedTimeline;
+    const q = logSearch.toLowerCase();
+    return mergedTimeline.filter(log => 
+      log.action?.toLowerCase().includes(q) ||
+      log.adminName?.toLowerCase().includes(q) ||
+      log.details?.toLowerCase().includes(q)
+    );
+  }, [mergedTimeline, logSearch]);
+
+  // Group logs by Date (with robust parsing)
+  const groupedTimeline = React.useMemo(() => {
+    const groups = {};
+    filteredTimeline.forEach(log => {
+      let dateObj;
+      const t = log.timestamp;
+      if (!t) return;
+      if (t.toDate && typeof t.toDate === "function") {
+        dateObj = t.toDate();
+      } else if (typeof t === "object" && typeof t.seconds === "number") {
+        dateObj = new Date(t.seconds * 1000);
+      } else {
+        dateObj = new Date(t);
+      }
+      
+      if (isNaN(dateObj.getTime())) return;
+
+      const dateStr = dateObj.toLocaleDateString("en-US", { 
+        weekday: "short", 
+        year: "numeric", 
+        month: "short", 
+        day: "numeric" 
+      });
+      if (!groups[dateStr]) groups[dateStr] = [];
+      groups[dateStr].push(log);
+    });
+    return groups;
+  }, [filteredTimeline]);
+
+  const exportLogsToCSV = () => {
+    const headers = ["Timestamp", "Action", "Admin User", "Details"];
+    const rows = filteredTimeline.map(log => {
+      let timeStr = "—";
+      if (log.timestamp) {
+        let dateObj;
+        const t = log.timestamp;
+        if (t.toDate && typeof t.toDate === "function") {
+          dateObj = t.toDate();
+        } else if (typeof t === "object" && typeof t.seconds === "number") {
+          dateObj = new Date(t.seconds * 1000);
+        } else {
+          dateObj = new Date(t);
+        }
+        if (!isNaN(dateObj.getTime())) {
+          timeStr = dateObj.toLocaleString();
+        }
+      }
+      return [
+        timeStr,
+        log.action || "—",
+        log.adminName || "—",
+        `"${(log.details || "").replace(/"/g, '""')}"`
+      ];
+    });
+
+    const csvContent = [headers, ...rows].map(e => e.join(",")).join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Orbit_Overview_Activity_Logs_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleClearLogs = () => {
+    if (!triggerConfirm || !logActivity) {
+      const ok = window.confirm("Are you sure you want to delete all activity logs from the database? This action is permanent.");
+      if (ok) {
+        clearDbLogs();
+      }
+      return;
+    }
+    triggerConfirm(
+      "Clear System Logs",
+      "Are you sure you want to delete all activity logs from the database? This action is permanent.",
+      async () => {
+        await clearDbLogs();
+      },
+      true
+    );
+  };
+
+  const clearDbLogs = async () => {
+    try {
+      const snap = await getDocs(collection(db, "activity_logs"));
+      const batch = writeBatch(db);
+      snap.docs.forEach(d => {
+        batch.delete(d.ref);
+      });
+      await batch.commit();
+      if (logActivity) {
+        await logActivity("CLEAR_LOGS", "Cleared the system activity audit log");
+      }
+    } catch (e) {
+      alert("Failed to clear logs: " + e.message);
+    }
+  };
 
   const handleToggleTask = async (taskId, currentStatus) => {
     try {
@@ -804,58 +1129,160 @@ export default function OverviewTab({
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {/* Recent audit activity feed */}
           <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px", display: "flex", flexDirection: "column", gap: 16, flex: 1, minHeight: 400 }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, paddingBottom: 12, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, paddingBottom: 12, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <Activity size={16} color="#f97316" />
                 <div style={{ fontSize: 12, fontWeight: 800, color: "#fff", textTransform: "uppercase", letterSpacing: "0.2em" }}>Activity Timeline</div>
               </div>
-              <div style={{ fontSize: 10, color: "#525252", marginLeft: "auto", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em" }}>Live Updates</div>
+              
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                {/* Export CSV */}
+                <button
+                  onClick={exportLogsToCSV}
+                  disabled={filteredTimeline.length === 0}
+                  style={{
+                    background: "transparent",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: 10,
+                    padding: "6px 12px",
+                    fontSize: 10,
+                    fontWeight: 800,
+                    color: "#a3a3a3",
+                    cursor: filteredTimeline.length === 0 ? "not-allowed" : "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    transition: "all 0.15s"
+                  }}
+                  onMouseEnter={e => { if (filteredTimeline.length > 0) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
+                >
+                  <Download size={12} /> Export CSV
+                </button>
+
+                {/* Clear (only deletes activity_logs collection) */}
+                {activityLogs.length > 0 && (
+                  <button
+                    onClick={handleClearLogs}
+                    style={{
+                      background: "transparent",
+                      border: "1px solid rgba(239,68,68,0.2)",
+                      borderRadius: 10,
+                      padding: "6px 12px",
+                      fontSize: 10,
+                      fontWeight: 800,
+                      color: "#ef4444",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      transition: "all 0.15s"
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = "rgba(239,68,68,0.1)"}
+                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+                  >
+                    <Trash2 size={12} /> Clear
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Search Logs */}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 12px" }}>
+              <Search size={13} color="#525252" />
+              <input
+                type="text"
+                placeholder="Search audit trail by action, admin, details..."
+                value={logSearch}
+                onChange={e => setLogSearch(e.target.value)}
+                style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 500, width: "100%", outline: "none" }}
+              />
             </div>
             
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxHeight: 500, overflowY: "auto", paddingRight: 8, paddingLeft: 8 }}>
-              {mergedTimeline.length === 0 ? (
-                <div style={{ fontSize: 11, color: "#3f3f46", fontStyle: "italic", padding: "10px 0" }}>No recent activity.</div>
-              ) : (
-                <div style={{ position: "relative", paddingLeft: 16, borderLeft: "2px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: 20 }}>
-                  {mergedTimeline.map((log, idx) => {
-                    const badge = getLogBadgeStyle(log.action);
-                    return (
-                      <div key={log.id} style={{ position: "relative", display: "flex", flexDirection: "column", gap: 6 }}>
-                        {/* Timeline Node */}
-                        <div style={{ position: "absolute", left: -21, top: 4, width: 8, height: 8, borderRadius: "50%", background: badge.color, boxShadow: `0 0 8px ${badge.color}`, border: "2px solid #0d0d0d" }} />
-                        
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
-                          <span style={{
-                            background: badge.bg,
-                            border: `1px solid ${badge.border}`,
-                            color: badge.color,
-                            fontSize: 9,
-                            fontWeight: 800,
-                            borderRadius: 6,
-                            padding: "2px 6px",
-                            letterSpacing: "0.05em",
-                            display: "inline-flex",
-                            alignItems: "center"
-                          }}>
-                            {log.action.replace(/_/g, " ")}
-                          </span>
-                          <span style={{ color: "#525252", fontSize: 9, fontWeight: 600 }}>
-                            {log.timestamp?.toDate ? log.timestamp.toDate().toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }) : "Just now"}
-                          </span>
-                        </div>
-                        <div style={{ color: "#d4d4d8", fontSize: 11, lineHeight: 1.5, fontWeight: 500 }}>
-                          {log.details}
-                        </div>
-                        <div style={{ color: "#71717a", fontSize: 9, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
-                          <span style={{ width: 14, height: 14, borderRadius: "50%", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8 }}>
-                            {(log.adminName || "A")[0].toUpperCase()}
-                          </span>
-                          {log.adminName || "System"}
-                        </div>
-                      </div>
-                    );
-                  })}
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxHeight: 360, overflowY: "auto", paddingRight: 8, paddingLeft: 8, paddingBottom: 20 }}>
+              {filteredTimeline.length === 0 ? (
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "150px", color: "#3f3f46", fontSize: 11, fontStyle: "italic" }}>
+                  {logSearch ? "No matching logs found." : "No recent activity."}
                 </div>
+              ) : (
+                Object.entries(groupedTimeline).map(([dateStr, dayLogs]) => (
+                  <div key={dateStr} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                    {/* Sticky Date Label */}
+                    <div style={{ 
+                      fontSize: 9, 
+                      fontWeight: 900, 
+                      color: "#f97316", 
+                      textTransform: "uppercase", 
+                      letterSpacing: "0.15em", 
+                      padding: "8px 0 4px", 
+                      borderBottom: "1px dashed rgba(249,115,22,0.15)",
+                      position: "sticky",
+                      top: 0,
+                      background: "#0d0d0d",
+                      zIndex: 10,
+                      marginBottom: 8
+                    }}>
+                      {dateStr}
+                    </div>
+
+                    <div style={{ position: "relative", paddingLeft: 16, borderLeft: "2px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: 20 }}>
+                      {dayLogs.map((log) => {
+                        const badge = getLogBadgeStyle(log.action);
+                        let time = "—";
+                        if (log.timestamp) {
+                          let dateObj;
+                          const t = log.timestamp;
+                          if (t.toDate && typeof t.toDate === "function") {
+                            dateObj = t.toDate();
+                          } else if (typeof t === "object" && typeof t.seconds === "number") {
+                            dateObj = new Date(t.seconds * 1000);
+                          } else {
+                            dateObj = new Date(t);
+                          }
+                          if (!isNaN(dateObj.getTime())) {
+                            time = dateObj.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+                          }
+                        }
+
+                        return (
+                          <div key={log.id} style={{ position: "relative", display: "flex", flexDirection: "column", gap: 6 }}>
+                            {/* Timeline Node */}
+                            <div style={{ position: "absolute", left: -21, top: 4, width: 8, height: 8, borderRadius: "50%", background: badge.color, boxShadow: `0 0 8px ${badge.color}`, border: "2px solid #0d0d0d" }} />
+                            
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                              <span style={{
+                                background: badge.bg,
+                                border: `1px solid ${badge.border}`,
+                                color: badge.color,
+                                fontSize: 9,
+                                fontWeight: 800,
+                                borderRadius: 6,
+                                padding: "2px 6px",
+                                letterSpacing: "0.05em",
+                                display: "inline-flex",
+                                alignItems: "center"
+                              }}>
+                                {log.action.replace(/_/g, " ")}
+                              </span>
+                              <span style={{ color: "#525252", fontSize: 9, fontWeight: 600 }}>
+                                {time}
+                              </span>
+                            </div>
+                            <div style={{ color: "#d4d4d8", fontSize: 11, lineHeight: 1.5, fontWeight: 500 }}>
+                              {log.details}
+                            </div>
+                            <div style={{ color: "#71717a", fontSize: 9, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
+                              <span style={{ width: 14, height: 14, borderRadius: "50%", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8 }}>
+                                {(log.adminName || "A")[0].toUpperCase()}
+                              </span>
+                              {log.adminName || "System"}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))
               )}
             </div>
           </div>
@@ -909,6 +1336,394 @@ export default function OverviewTab({
           </div>
         </div>
 
+      </div>
+
+      {/* Performance Analytics Trend Chart */}
+      <OverviewPerformanceChart leads={leads} />
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
+   PERFORMANCE TREND CHART COMPONENT
+───────────────────────────────────────── */
+function OverviewPerformanceChart({ leads }) {
+  const [hoveredPoint, setHoveredPoint] = useState(null);
+  const [viewRange, setViewRange] = useState(15);
+  const [timeOffset, setTimeOffset] = useState(0); // offset days back in time
+  
+  const analyticsData = useMemo(() => {
+    const dates = [];
+    for (let i = viewRange - 1; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - (i + timeOffset));
+      dates.push({
+        dateObj: d,
+        dateStr: d.toDateString(),
+        label: d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+      });
+    }
+
+    const lCountMap = {};
+    const mMap = {};
+    (leads || []).forEach(l => {
+      if (l.createdAt?.toDate) {
+        const dStr = l.createdAt.toDate().toDateString();
+        if (!lCountMap[dStr]) lCountMap[dStr] = 0;
+        lCountMap[dStr]++;
+      }
+      if (l.meetingBooked) {
+        if (l.followUpDate) {
+          const mDate = new Date(l.followUpDate);
+          if (!isNaN(mDate.getTime())) {
+            const mDateStr = mDate.toDateString();
+            if (!mMap[mDateStr]) mMap[mDateStr] = 0;
+            mMap[mDateStr]++;
+          }
+        } else if (l.createdAt?.toDate) {
+          const dStr = l.createdAt.toDate().toDateString();
+          if (!mMap[dStr]) mMap[dStr] = 0;
+          mMap[dStr]++;
+        }
+      }
+    });
+
+    return dates.map(d => ({
+      label: d.label,
+      leads: lCountMap[d.dateStr] || 0,
+      meetings: mMap[d.dateStr] || 0
+    }));
+  }, [leads, viewRange, timeOffset]);
+
+  const maxVal = useMemo(() => {
+    let max = 0;
+    analyticsData.forEach(d => {
+      if (d.leads > max) max = d.leads;
+      if (d.meetings > max) max = d.meetings;
+    });
+    return Math.max(max + 1, 4); 
+  }, [analyticsData]);
+
+  const handleRangeChange = (range) => {
+    setViewRange(range);
+    setTimeOffset(0);
+    setHoveredPoint(null);
+  };
+
+  const handlePrevTimeline = () => {
+    setTimeOffset(prev => prev + viewRange);
+    setHoveredPoint(null);
+  };
+
+  const handleNextTimeline = () => {
+    setTimeOffset(prev => Math.max(0, prev - viewRange));
+    setHoveredPoint(null);
+  };
+
+  const handleTodayReset = () => {
+    setTimeOffset(0);
+    setHoveredPoint(null);
+  };
+
+  const chartWidth = 900;
+  const chartHeight = 200;
+  const startX = 60;
+  const startY = 30;
+  const endY = 230;
+  
+  const getCurvePath = (key) => {
+    if (analyticsData.length === 0) return "";
+    const points = analyticsData.map((d, i) => {
+      const x = startX + (i * (chartWidth / (analyticsData.length - 1)));
+      const y = endY - (d[key] / maxVal) * chartHeight;
+      return { x, y };
+    });
+    
+    let path = `M ${points[0].x} ${points[0].y}`;
+    for (let i = 0; i < points.length - 1; i++) {
+      const cpX1 = points[i].x + (points[i+1].x - points[i].x) / 3;
+      const cpY1 = points[i].y;
+      const cpX2 = points[i].x + 2 * (points[i+1].x - points[i].x) / 3;
+      const cpY2 = points[i+1].y;
+      path += ` C ${cpX1} ${cpY1}, ${cpX2} ${cpY2}, ${points[i+1].x} ${points[i+1].y}`;
+    }
+    return path;
+  };
+
+  const leadsPath = getCurvePath("leads");
+  const meetingsPath = getCurvePath("meetings");
+
+  const getAreaPath = (curvePath) => {
+    if (!curvePath) return "";
+    const lastX = startX + chartWidth;
+    return `${curvePath} L ${lastX} ${endY} L ${startX} ${endY} Z`;
+  };
+
+  const leadsArea = getAreaPath(leadsPath);
+  const meetingsArea = getAreaPath(meetingsPath);
+
+  // Y-axis grid ticks (4 segments)
+  const yTicks = [0, 0.25, 0.5, 0.75, 1];
+
+  return (
+    <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "24px", marginTop: 14, display: "flex", flexDirection: "column", gap: 20, position: "relative" }}>
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em" }}>Lead Acquisition & Bookings Trend</div>
+          <div style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>Daily Activity Performance</div>
+        </div>
+        
+        {/* Dynamic Controls Panel */}
+        <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+          {/* Time Range Selector */}
+          <div style={{ display: "flex", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 10, padding: 2 }}>
+            {[7, 15, 30].map(range => (
+              <button
+                key={range}
+                onClick={() => handleRangeChange(range)}
+                style={{
+                  background: viewRange === range ? "#f97316" : "transparent",
+                  border: "none",
+                  borderRadius: 8,
+                  padding: "4px 10px",
+                  fontSize: 10,
+                  fontWeight: 800,
+                  color: viewRange === range ? "#fff" : "#a3a3a3",
+                  cursor: "pointer",
+                  transition: "all 0.15s"
+                }}
+              >
+                {range}D
+              </button>
+            ))}
+          </div>
+
+          {/* Timeline Shifter Controls */}
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <button
+              onClick={handlePrevTimeline}
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.05)",
+                borderRadius: 8,
+                padding: "6px 12px",
+                fontSize: 10,
+                fontWeight: 800,
+                color: "#a3a3a3",
+                cursor: "pointer",
+                transition: "all 0.15s",
+                display: "flex",
+                alignItems: "center",
+                gap: 4
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+              onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}
+            >
+              ◀ Back
+            </button>
+            
+            {timeOffset > 0 && (
+              <button
+                onClick={handleTodayReset}
+                style={{
+                  background: "rgba(249,115,22,0.1)",
+                  border: "1px solid rgba(249,115,22,0.2)",
+                  borderRadius: 8,
+                  padding: "6px 12px",
+                  fontSize: 10,
+                  fontWeight: 800,
+                  color: "#f97316",
+                  cursor: "pointer",
+                  transition: "all 0.15s"
+                }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(249,115,22,0.15)"}
+                onMouseLeave={e => e.currentTarget.style.background = "rgba(249,115,22,0.1)"}
+              >
+                Reset
+              </button>
+            )}
+
+            <button
+              onClick={handleNextTimeline}
+              disabled={timeOffset === 0}
+              style={{
+                background: timeOffset === 0 ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.05)",
+                borderRadius: 8,
+                padding: "6px 12px",
+                fontSize: 10,
+                fontWeight: 800,
+                color: timeOffset === 0 ? "#444" : "#a3a3a3",
+                cursor: timeOffset === 0 ? "not-allowed" : "pointer",
+                transition: "all 0.15s",
+                display: "flex",
+                alignItems: "center",
+                gap: 4
+              }}
+              onMouseEnter={e => { if (timeOffset > 0) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+              onMouseLeave={e => { if (timeOffset > 0) e.currentTarget.style.background = "rgba(255,255,255,0.03)"; }}
+            >
+              Forward ▶
+            </button>
+          </div>
+
+          {/* Legend */}
+          <div style={{ display: "flex", gap: 12, fontSize: 10, fontWeight: 800, marginLeft: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#f97316", boxShadow: "0 0 6px #f97316" }} />
+              <span style={{ color: "#a3a3a3" }}>Leads</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+              <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 6px #22c55e" }} />
+              <span style={{ color: "#a3a3a3" }}>Meetings</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* SVG Chart Container */}
+      <div style={{ position: "relative", width: "100%", overflowX: "auto" }}>
+        <svg viewBox="0 0 1000 270" style={{ width: "100%", height: "auto", minWidth: 700 }}>
+          <defs>
+            {/* Area Fills Gradients */}
+            <linearGradient id="leads-area-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#f97316" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="#f97316" stopOpacity="0.00" />
+            </linearGradient>
+            <linearGradient id="meetings-area-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#22c55e" stopOpacity="0.22" />
+              <stop offset="100%" stopColor="#22c55e" stopOpacity="0.00" />
+            </linearGradient>
+          </defs>
+
+          {/* Grid lines & Y Axis Ticks */}
+          {yTicks.map((t, idx) => {
+            const y = endY - t * chartHeight;
+            const val = Math.round(t * maxVal);
+            return (
+              <g key={idx}>
+                <line x1={startX} y1={y} x2={startX + chartWidth} y2={y} stroke="rgba(255,255,255,0.03)" strokeWidth={1} />
+                <text x={startX - 15} y={y + 4} textAnchor="end" fill="#525252" style={{ fontSize: 10, fontWeight: 700, fontFamily: "monospace" }}>
+                  {val}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* X Axis Line */}
+          <line x1={startX} y1={endY} x2={startX + chartWidth} y2={endY} stroke="rgba(255,255,255,0.08)" strokeWidth={1.5} />
+
+          {/* Glowing Area Fills */}
+          <path d={leadsArea} fill="url(#leads-area-grad)" />
+          <path d={meetingsArea} fill="url(#meetings-area-grad)" />
+
+          {/* Curve Lines */}
+          <path d={leadsPath} fill="none" stroke="#f97316" strokeWidth={3} strokeLinecap="round" />
+          <path d={meetingsPath} fill="none" stroke="#22c55e" strokeWidth={3} strokeLinecap="round" />
+
+          {/* Date Labels (X Axis Ticks) */}
+          {analyticsData.map((d, i) => {
+            const isLabelVisible = 
+              viewRange === 7 || 
+              (viewRange === 15 && i % 2 === 0) || 
+              (viewRange === 30 && i % 4 === 0) ||
+              i === analyticsData.length - 1;
+              
+            if (!isLabelVisible) return null;
+
+            const x = startX + i * (chartWidth / (analyticsData.length - 1));
+            return (
+              <text key={i} x={x} y={endY + 20} textAnchor="middle" fill="#525252" style={{ fontSize: 9, fontWeight: 800 }}>
+                {d.label}
+              </text>
+            );
+          })}
+
+          {/* Hover Guide Indicator */}
+          {hoveredPoint !== null && (() => {
+            const d = analyticsData[hoveredPoint];
+            const x = startX + hoveredPoint * (chartWidth / (analyticsData.length - 1));
+            const yLeads = endY - (d.leads / maxVal) * chartHeight;
+            const yMeetings = endY - (d.meetings / maxVal) * chartHeight;
+            
+            return (
+              <g>
+                <line x1={x} y1={startY} x2={x} y2={endY} stroke="rgba(255,255,255,0.15)" strokeWidth={1} strokeDasharray="4 4" />
+                
+                {/* Leads Dot */}
+                <circle cx={x} cy={yLeads} r={7} fill="#f97316" stroke="#0d0d0d" strokeWidth={2} style={{ filter: "drop-shadow(0 0 6px #f97316)" }} />
+                
+                {/* Meetings Dot */}
+                <circle cx={x} cy={yMeetings} r={7} fill="#22c55e" stroke="#0d0d0d" strokeWidth={2} style={{ filter: "drop-shadow(0 0 6px #22c55e)" }} />
+              </g>
+            );
+          })()}
+
+          {/* Interactive Mouse Hover Segments */}
+          {analyticsData.map((d, i) => {
+            const x = startX + i * (chartWidth / (analyticsData.length - 1));
+            const segmentWidth = chartWidth / (analyticsData.length - 1);
+            return (
+              <rect
+                key={i}
+                x={x - segmentWidth / 2}
+                y={startY}
+                width={segmentWidth}
+                height={chartHeight + 20}
+                fill="transparent"
+                style={{ cursor: "pointer" }}
+                onMouseEnter={() => setHoveredPoint(i)}
+                onMouseLeave={() => setHoveredPoint(null)}
+              />
+            );
+          })}
+        </svg>
+
+        {/* Floating Glassmorphic Tooltip */}
+        {hoveredPoint !== null && (() => {
+          const d = analyticsData[hoveredPoint];
+          const x = startX + hoveredPoint * (chartWidth / (analyticsData.length - 1));
+          
+          // Position relative percentage left
+          const pctLeft = (x / 1000) * 100;
+          
+          return (
+            <div style={{
+              position: "absolute",
+              left: `${pctLeft}%`,
+              transform: "translateX(-50%)",
+              bottom: "78%",
+              background: "rgba(13, 13, 13, 0.9)",
+              backdropFilter: "blur(8px)",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: 12,
+              padding: "10px 14px",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.6)",
+              display: "flex",
+              flexDirection: "column",
+              gap: 6,
+              zIndex: 50,
+              pointerEvents: "none",
+              minWidth: 130,
+              boxSizing: "border-box"
+            }}>
+              <div style={{ fontSize: 9, fontWeight: 900, color: "#f97316", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                {d.label}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                  <span style={{ fontSize: 10, color: "#a3a3a3", fontWeight: 600 }}>Leads:</span>
+                  <span style={{ fontSize: 11, color: "#fff", fontWeight: 800 }}>{d.leads}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                  <span style={{ fontSize: 10, color: "#a3a3a3", fontWeight: 600 }}>Bookings:</span>
+                  <span style={{ fontSize: 11, color: "#22c55e", fontWeight: 800 }}>{d.meetings}</span>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
       </div>
     </div>
   );

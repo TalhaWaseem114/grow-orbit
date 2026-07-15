@@ -90,6 +90,11 @@ export async function POST(request) {
       taxRate: Number(taxRate) || 0,
       discount: Number(discount) || 0,
       notes: notes || "",
+      agreementId: body.agreementId || "",
+      startDate: body.startDate || "",
+      paymentTerms: body.paymentTerms || "",
+      clientLabel1: body.clientLabel1 || "",
+      clientLabel2: body.clientLabel2 || "",
       createdAt: now.toISOString(),
       updatedAt: now.toISOString(),
       createdBy: admin.uid

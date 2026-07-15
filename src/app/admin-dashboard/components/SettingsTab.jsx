@@ -614,8 +614,7 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
             padding: "20px",
             display: "flex",
             flexDirection: "column",
-            gap: 16,
-            fontFamily: "monospace"
+            gap: 16
           }}>
             {loadingLogs ? (
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#525252", fontSize: 11 }}>
@@ -627,7 +626,7 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
               </div>
             ) : (
               Object.entries(groupedLogs).map(([dateStr, dayLogs]) => (
-                <div key={dateStr} style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div key={dateStr} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                   {/* Date grouping label */}
                   <div style={{ 
                     fontSize: 9, 
@@ -638,57 +637,70 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
                     padding: "8px 0 4px", 
                     borderBottom: "1px dashed rgba(249,115,22,0.15)",
                     position: "sticky",
-                    top: -20,
+                    top: 0,
                     background: "#060606",
-                    zIndex: 10
+                    zIndex: 10,
+                    marginBottom: 8
                   }}>
                     {dateStr}
                   </div>
 
-                  {dayLogs.map(log => {
-                    const badge = getBadgeStyle(log.action);
-                    let time = "—";
-                    if (log.timestamp) {
-                      let dateObj;
-                      const t = log.timestamp;
-                      if (t.toDate && typeof t.toDate === "function") {
-                        dateObj = t.toDate();
-                      } else if (typeof t === "object" && typeof t.seconds === "number") {
-                        dateObj = new Date(t.seconds * 1000);
-                      } else {
-                        dateObj = new Date(t);
+                  <div style={{ position: "relative", paddingLeft: 16, borderLeft: "2px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: 20 }}>
+                    {dayLogs.map(log => {
+                      const badge = getBadgeStyle(log.action);
+                      let time = "—";
+                      if (log.timestamp) {
+                        let dateObj;
+                        const t = log.timestamp;
+                        if (t.toDate && typeof t.toDate === "function") {
+                          dateObj = t.toDate();
+                        } else if (typeof t === "object" && typeof t.seconds === "number") {
+                          dateObj = new Date(t.seconds * 1000);
+                        } else {
+                          dateObj = new Date(t);
+                        }
+                        if (!isNaN(dateObj.getTime())) {
+                          time = dateObj.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
+                        }
                       }
-                      if (!isNaN(dateObj.getTime())) {
-                        time = dateObj.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
-                      }
-                    }
 
-                    return (
-                      <div key={log.id} style={{ fontSize: 11, borderBottom: "1px solid rgba(255,255,255,0.02)", paddingBottom: 8, display: "flex", flexDirection: "column", gap: 4 }}>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 6 }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                            <span style={{ color: "#525252", fontSize: 10 }}>[{time}]</span>
+                      return (
+                        <div key={log.id} style={{ position: "relative", display: "flex", flexDirection: "column", gap: 6 }}>
+                          {/* Timeline Node */}
+                          <div style={{ position: "absolute", left: -21, top: 4, width: 8, height: 8, borderRadius: "50%", background: badge.color, boxShadow: `0 0 8px ${badge.color}`, border: "2px solid #060606" }} />
+                          
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
                             <span style={{
                               background: badge.bg,
                               border: `1px solid ${badge.border}`,
                               color: badge.color,
                               fontSize: 9,
-                              fontWeight: 700,
-                              borderRadius: 4,
-                              padding: "1px 5px",
-                              display: "inline-block"
+                              fontWeight: 800,
+                              borderRadius: 6,
+                              padding: "2px 6px",
+                              letterSpacing: "0.05em",
+                              display: "inline-flex",
+                              alignItems: "center"
                             }}>
-                              {log.action}
+                              {log.action.replace(/_/g, " ")}
+                            </span>
+                            <span style={{ color: "#525252", fontSize: 9, fontWeight: 600 }}>
+                              {time}
                             </span>
                           </div>
-                          <span style={{ color: "#71717a", fontSize: 10 }}>by {log.adminName}</span>
+                          <div style={{ color: "#d4d4d8", fontSize: 11, lineHeight: 1.5, fontWeight: 500 }}>
+                            {log.details}
+                          </div>
+                          <div style={{ color: "#71717a", fontSize: 9, fontWeight: 700, display: "flex", alignItems: "center", gap: 4 }}>
+                            <span style={{ width: 14, height: 14, borderRadius: "50%", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 8 }}>
+                              {(log.adminName || "A")[0].toUpperCase()}
+                            </span>
+                            {log.adminName || "System"}
+                          </div>
                         </div>
-                        <div style={{ color: "#d4d4d8", paddingLeft: 8, marginTop: 2, lineHeight: 1.4 }}>
-                          {log.details}
-                        </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               ))
             )}

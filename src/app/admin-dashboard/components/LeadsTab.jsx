@@ -782,6 +782,7 @@ function LeadCalendarView({
   handleAssignLead,
   handleUpdatePriority,
   handleAddLeadNote,
+  handleDeleteLeadNote,
   handleUpdateFollowUp,
   leadsCollectionName,
   handleStatusChange,
@@ -932,7 +933,17 @@ function LeadCalendarView({
         <h2 style={{ fontSize: 16, fontWeight: 900, color: "#fff", margin: 0 }}>
           {monthNames[month]} {year}
         </h2>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          {!(month === new Date().getMonth() && year === new Date().getFullYear()) && (
+            <button 
+              onClick={() => { setCurrentDate(new Date()); setSelectedDateStr(null); }}
+              style={{ background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)", color: "#f97316", padding: "6px 12px", borderRadius: 8, fontSize: 11, fontWeight: 800, cursor: "pointer", transition: "all 0.2s" }}
+              onMouseEnter={e => e.currentTarget.style.background = "rgba(249,115,22,0.15)"}
+              onMouseLeave={e => e.currentTarget.style.background = "rgba(249,115,22,0.1)"}
+            >
+              Today
+            </button>
+          )}
           <button 
             onClick={handlePrevMonth}
             style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", color: "#fff", padding: "6px 12px", borderRadius: 8, fontSize: 11, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
@@ -973,7 +984,7 @@ function LeadCalendarView({
                             new Date().getMonth() === month && 
                             new Date().getFullYear() === year;
 
-            const isSelected = cell.dateStr === selectedDateStr;
+            const isSelected = cell.dateStr && cell.dateStr === selectedDateStr;
 
             return (
               <div 
@@ -1041,108 +1052,165 @@ function LeadCalendarView({
         </div>
       </div>
 
-      {/* Selected Day Panel */}
+      {/* Selected Day Modal */}
       {selectedDateStr && (
-        <div ref={panelRef} style={{ background: "linear-gradient(180deg, #111111 0%, #0a0a0a 100%)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 18, padding: 20, marginTop: 16, boxShadow: "0 10px 40px rgba(0,0,0,0.5)" }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-            <h3 style={{ fontSize: 13, fontWeight: 900, color: "#fff", textTransform: "uppercase", letterSpacing: "0.12em", margin: 0 }}>
-              📅 Leads for {new Date(selectedDateStr + "T00:00:00").toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
-            </h3>
-            <button 
-              onClick={() => { setSelectedDateStr(null); setExpandedLead(null); }}
-              style={{ background: "none", border: "none", color: "#525252", cursor: "pointer", fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em" }}
-              onMouseEnter={e => e.currentTarget.style.color = "#fff"}
-              onMouseLeave={e => e.currentTarget.style.color = "#525252"}
-            >
-              Close Panel ✕
-            </button>
-          </div>
-          
-          {dayLeads.length === 0 ? (
-            <div style={{ color: "#525252", fontStyle: "italic", fontSize: 11, fontWeight: 600 }}>No leads received on this day.</div>
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {dayLeads.map(lead => {
-                const isLeadOpen = expandedLead === lead.id;
-                const status = lead.status || "new";
-                const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.new;
-                return (
-                  <div key={lead.id} style={{ background: "rgba(255,255,255,0.01)", border: `1px solid ${isLeadOpen ? cfg.border : "rgba(255,255,255,0.03)"}`, borderRadius: 14, overflow: "hidden", transition: "all 0.2s" }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", gap: 12, flexWrap: "wrap" }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                        <div style={{ width: 34, height: 34, borderRadius: 8, background: `linear-gradient(135deg, ${cfg.color}33, ${cfg.color}11)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 900, color: cfg.color }}>
-                          {lead.fullName?.[0] || "L"}
-                        </div>
-                        <div style={{ display: "flex", flexDirection: "column" }}>
-                          <span style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{lead.fullName || "Unknown"}</span>
-                          <span style={{ fontSize: 10, color: "#525252" }}>{lead.email}</span>
-                        </div>
-                      </div>
-                      
-                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                        <StatusBadge status={status} />
-                        <span style={{ fontSize: 10, color: "#f97316", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em" }}>{lead.requestedService || "General enquiry"}</span>
-                        
-                        <div style={{ display: "flex", gap: 6 }}>
-                          {lead.whatsapp && lead.whatsapp !== "N/A" && (
-                            <a 
-                              href={`https://wa.me/${lead.whatsapp.replace(/\D/g,"")}?text=${encodeURIComponent(
-                                `Hi ${lead.fullName || ""}, I'm reaching out from Grow Orbit regarding your interest in ${lead.requestedService || "our services"}. I'd love to connect and see how we can help you scale!`
-                              )}`} 
-                              target="_blank" 
-                              rel="noreferrer"
-                              style={{ width: 26, height: 26, borderRadius: 6, background: "rgba(74,222,128,0.08)", border: "1px solid rgba(74,222,128,0.15)", color: "#4ade80", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s" }}
-                              onMouseEnter={e => { e.currentTarget.style.background = "rgba(74,222,128,0.15)"; }}
-                              onMouseLeave={e => { e.currentTarget.style.background = "rgba(74,222,128,0.08)"; }}
-                              title="WhatsApp outreach"
-                            >
-                              <Phone size={11} />
-                            </a>
-                          )}
-                          <a 
-                            href={`mailto:${lead.email}`}
-                            style={{ width: 26, height: 26, borderRadius: 6, background: "rgba(56,189,248,0.08)", border: "1px solid rgba(56,189,248,0.15)", color: "#38bdf8", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s" }}
-                            onMouseEnter={e => { e.currentTarget.style.background = "rgba(56,189,248,0.15)"; }}
-                            onMouseLeave={e => { e.currentTarget.style.background = "rgba(56,189,248,0.08)"; }}
-                            title="Email outreach"
-                          >
-                            <Mail size={11} />
-                          </a>
-                          <button 
-                            onClick={() => { setExpandedLead(isLeadOpen ? null : lead.id); setCrmNote(""); }}
-                            style={{ padding: "5px 10px", borderRadius: 8, background: isLeadOpen ? "#f97316" : "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", color: isLeadOpen ? "#fff" : "#a3a3a3", fontSize: 9, fontWeight: 700, cursor: "pointer" }}
-                          >
-                            {isLeadOpen ? "CLOSE" : "VIEW"}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    
-                    {isLeadOpen && (
-                      <div style={{ borderTop: "1px solid rgba(255,255,255,0.03)", background: "rgba(255,255,255,0.005)" }}>
-                        <LeadDetailPanel
-                          lead={lead}
-                          users={users}
-                          currentAdmin={currentAdmin}
-                          crmNote={crmNote}
-                          setCrmNote={setCrmNote}
-                          handleAssignLead={handleAssignLead}
-                          handleUpdatePriority={handleUpdatePriority}
-                          handleAddLeadNote={handleAddLeadNote}
-                          handleDeleteLeadNote={handleDeleteLeadNote}
-                          handleUpdateFollowUp={handleUpdateFollowUp}
-                          leadsCollectionName={leadsCollectionName}
-                          handleStatusChange={handleStatusChange}
-                          handleDeleteLead={handleDeleteLead}
-                          logActivity={logActivity}
-                        />
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          background: "rgba(0, 0, 0, 0.75)",
+          backdropFilter: "blur(4px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 9999,
+          padding: 16,
+          boxSizing: "border-box"
+        }}>
+          <div 
+            ref={panelRef} 
+            style={{ 
+              background: "#0d0d0d", 
+              border: "1px solid rgba(255,255,255,0.08)", 
+              borderRadius: 20, 
+              width: "100%",
+              maxWidth: 850,
+              maxHeight: "90vh",
+              display: "flex",
+              flexDirection: "column",
+              boxShadow: "0 24px 48px rgba(0,0,0,0.8)",
+              overflow: "hidden"
+            }}
+          >
+            {/* Modal Header */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "16px 20px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+              <h3 style={{ fontSize: 13, fontWeight: 900, color: "#fff", textTransform: "uppercase", letterSpacing: "0.12em", margin: 0, display: "flex", alignItems: "center", gap: 8 }}>
+                <Calendar size={16} color="#f97316" />
+                Leads for {new Date(selectedDateStr + "T00:00:00").toLocaleDateString("en-US", { weekday: "short", month: "long", day: "numeric", year: "numeric" })}
+              </h3>
+              <button 
+                onClick={() => { setSelectedDateStr(null); setExpandedLead(null); }}
+                style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 8, cursor: "pointer", color: "#a3a3a3", display: "flex", alignItems: "center", justifyContent: "center", width: 24, height: 24, fontSize: 12, fontWeight: 900, transition: "all 0.15s" }}
+                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+                onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}
+              >
+                ✕
+              </button>
             </div>
-          )}
+            
+            {/* Modal Body */}
+            <div style={{ padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 12 }}>
+              {dayLeads.length === 0 ? (
+                <div style={{ color: "#525252", fontStyle: "italic", fontSize: 11, fontWeight: 600 }}>No leads received on this day.</div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {dayLeads.map(lead => {
+                    const isLeadOpen = expandedLead === lead.id;
+                    const status = lead.status || "new";
+                    const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.new;
+                    return (
+                      <div key={lead.id} style={{ background: "rgba(255,255,255,0.01)", border: `1px solid ${isLeadOpen ? cfg.border : "rgba(255,255,255,0.03)"}`, borderRadius: 14, overflow: "hidden", transition: "all 0.2s" }}>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px", gap: 12, flexWrap: "wrap" }}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                            <div style={{ width: 34, height: 34, borderRadius: 8, background: `linear-gradient(135deg, ${cfg.color}33, ${cfg.color}11)`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 900, color: cfg.color }}>
+                              {lead.fullName?.[0] || "L"}
+                            </div>
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                              <span style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{lead.fullName || "Unknown"}</span>
+                              <span style={{ fontSize: 10, color: "#525252" }}>{lead.email}</span>
+                            </div>
+                          </div>
+                          
+                          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                            <StatusBadge status={status} />
+                            <span style={{ fontSize: 10, color: "#f97316", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em" }}>{lead.requestedService || "General enquiry"}</span>
+                            
+                            <div style={{ display: "flex", gap: 6 }}>
+                              {lead.whatsapp && lead.whatsapp !== "N/A" && (
+                                <a 
+                                  href={`https://wa.me/${lead.whatsapp.replace(/\D/g,"")}?text=${encodeURIComponent(
+                                    `Hi ${lead.fullName || ""}, I'm reaching out from Grow Orbit regarding your interest in ${lead.requestedService || "our services"}. I'd love to connect and see how we can help you scale!`
+                                  )}`} 
+                                  target="_blank" 
+                                  rel="noreferrer"
+                                  style={{ width: 26, height: 26, borderRadius: 6, background: "rgba(74,222,128,0.08)", border: "1px solid rgba(74,222,128,0.15)", color: "#4ade80", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s" }}
+                                  onMouseEnter={e => { e.currentTarget.style.background = "rgba(74,222,128,0.15)"; }}
+                                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(74,222,128,0.08)"; }}
+                                  title="WhatsApp outreach"
+                                >
+                                  <Phone size={11} />
+                                </a>
+                              )}
+                              <a 
+                                href={`mailto:${lead.email}`}
+                                style={{ width: 26, height: 26, borderRadius: 6, background: "rgba(56,189,248,0.08)", border: "1px solid rgba(56,189,248,0.15)", color: "#38bdf8", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s" }}
+                                onMouseEnter={e => { e.currentTarget.style.background = "rgba(56,189,248,0.15)"; }}
+                                onMouseLeave={e => { e.currentTarget.style.background = "rgba(56,189,248,0.08)"; }}
+                                title="Email outreach"
+                              >
+                                <Mail size={11} />
+                              </a>
+                              <button 
+                                onClick={() => { setExpandedLead(isLeadOpen ? null : lead.id); setCrmNote(""); }}
+                                style={{ padding: "5px 10px", borderRadius: 8, background: isLeadOpen ? "#f97316" : "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", color: isLeadOpen ? "#fff" : "#a3a3a3", fontSize: 9, fontWeight: 700, cursor: "pointer" }}
+                              >
+                                {isLeadOpen ? "CLOSE" : "VIEW"}
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {isLeadOpen && (
+                          <div style={{ borderTop: "1px solid rgba(255,255,255,0.03)", background: "rgba(255,255,255,0.005)" }}>
+                            <LeadDetailPanel
+                              lead={lead}
+                              users={users}
+                              currentAdmin={currentAdmin}
+                              crmNote={crmNote}
+                              setCrmNote={setCrmNote}
+                              handleAssignLead={handleAssignLead}
+                              handleUpdatePriority={handleUpdatePriority}
+                              handleAddLeadNote={handleAddLeadNote}
+                              handleDeleteLeadNote={handleDeleteLeadNote}
+                              handleUpdateFollowUp={handleUpdateFollowUp}
+                              leadsCollectionName={leadsCollectionName}
+                              handleStatusChange={handleStatusChange}
+                              handleDeleteLead={handleDeleteLead}
+                              logActivity={logActivity}
+                            />
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div style={{ padding: "14px 20px", borderTop: "1px solid rgba(255,255,255,0.05)", display: "flex", justifyContent: "flex-end", background: "rgba(255,255,255,0.01)" }}>
+              <button
+                onClick={() => { setSelectedDateStr(null); setExpandedLead(null); }}
+                style={{
+                  background: "#f97316",
+                  border: "none",
+                  borderRadius: 10,
+                  padding: "8px 16px",
+                  fontSize: 11,
+                  fontWeight: 800,
+                  color: "#fff",
+                  cursor: "pointer",
+                  transition: "all 0.15s"
+                }}
+                onMouseEnter={e => e.currentTarget.style.opacity = "0.85"}
+                onMouseLeave={e => e.currentTarget.style.opacity = "1"}
+              >
+                Close Panel
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
@@ -1656,6 +1724,7 @@ export default function LeadsTab({
             handleAssignLead={handleAssignLead}
             handleUpdatePriority={handleUpdatePriority}
             handleAddLeadNote={handleAddLeadNote}
+            handleDeleteLeadNote={handleDeleteLeadNote}
             handleUpdateFollowUp={handleUpdateFollowUp}
             leadsCollectionName={leadsCollectionName}
             handleStatusChange={handleStatusChange}

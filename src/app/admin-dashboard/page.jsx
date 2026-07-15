@@ -8,7 +8,7 @@ import {
 import {
   Briefcase, ChevronRight, Globe, Layout, LogOut, Settings,
   Shield, Users, Zap, ExternalLink, MoreHorizontal, Download,
-  Home, FileText, Mail, HelpCircle, Receipt
+  Home, FileText, Mail, HelpCircle, Receipt, Bell
 } from "lucide-react";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
@@ -862,21 +862,7 @@ export default function AdminDashboard() {
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: isMobile ? 10 : 14 }}>
-            {!isMobile && (
-              <div style={{
-                fontSize: 9,
-                fontWeight: 800,
-                color: allowedPanels.length === 7 ? "#4ade80" : "#f97316",
-                background: allowedPanels.length === 7 ? "rgba(74,222,128,0.1)" : "rgba(249,115,22,0.1)",
-                border: `1px solid ${allowedPanels.length === 7 ? "rgba(74,222,128,0.2)" : "rgba(249,115,22,0.2)"}`,
-                borderRadius: 8,
-                padding: "4px 8px",
-                textTransform: "uppercase",
-                letterSpacing: "0.08em"
-              }}>
-                {allowedPanels.length === 7 ? "Super Admin" : "Limited Access"}
-              </div>
-            )}
+
             {!isMobile && (
               <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 100, padding: "6px 14px" }}>
                 <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#4ade80", animation: "pulse 2s infinite" }} />
@@ -884,7 +870,53 @@ export default function AdminDashboard() {
                 <span style={{ fontSize: 10, color: "#525252", fontFamily: "monospace" }}>{dateStr}</span>
               </div>
             )}
-            <div style={{ width: 32, height: 32, borderRadius: "50%", background: "linear-gradient(135deg, #3f3f46, #1f1f23)", border: "1px solid rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, color: "#f97316" }}>
+            {/* Notifications Bell Button */}
+            <button
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.05)",
+                borderRadius: 10,
+                width: 32,
+                height: 32,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: "pointer",
+                color: "#a3a3a3",
+                transition: "all 0.15s",
+                position: "relative"
+              }}
+              onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+              onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}
+              title="Notifications"
+            >
+              <Bell size={14} />
+              <div style={{
+                position: "absolute",
+                top: 7,
+                right: 7,
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                background: "#f97316",
+                boxShadow: "0 0 6px #f97316"
+              }} />
+            </button>
+
+            <div style={{ 
+              width: 32, 
+              height: 32, 
+              borderRadius: "50%", 
+              background: "linear-gradient(135deg, #f97316, #ea580c)", 
+              border: "1px solid rgba(255,255,255,0.15)", 
+              display: "flex", 
+              alignItems: "center", 
+              justifyContent: "center", 
+              fontSize: 11, 
+              fontWeight: 900, 
+              color: "#fff",
+              boxShadow: "0 0 10px rgba(249,115,22,0.2)"
+            }}>
               {adminInitials}
             </div>
           </div>
@@ -911,6 +943,8 @@ export default function AdminDashboard() {
                   setActiveTab={setActiveTab}
                   db={db}
                   currentAdmin={currentAdminData}
+                  triggerConfirm={triggerConfirm}
+                  logActivity={logActivity}
                 />
               )}
 

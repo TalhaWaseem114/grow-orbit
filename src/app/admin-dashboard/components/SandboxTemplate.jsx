@@ -4,7 +4,7 @@ export const sandboxHeadline = "Tailored Amazon Product Research & Growth Bluepr
 export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi Kiran,</p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
-  Following up on our discussions regarding your interest in the <strong>Automotive & Auto Parts industry</strong> on Amazon, our research team has completed a deep-dive product hunting phase.
+  Following up on our discussions regarding your interest in the <strong> Automotive & Auto Parts industry</strong> on Amazon, our research team has completed a deep-dive product hunting phase.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">

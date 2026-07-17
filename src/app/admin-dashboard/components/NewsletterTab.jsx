@@ -1113,7 +1113,6 @@ export default function NewsletterTab({ isMobile }) {
   const [showWidgetsModal, setShowWidgetsModal] = useState(false);
   const [editingWidget, setEditingWidget] = useState(null);
   const [widgets, setWidgets] = useState([
-    { id: "meeting-cta", type: "meetingButton", content: { text: "🗓️ Book Meeting", link: "https://www.groworbitofficial.com/get-started/#lead-form" } },
     { id: "signature", type: "teamSignature", content: { line1: "Warm regards,", line2: "The Grow Orbit Team" } }
   ]);
   const [draggingIndex, setDraggingIndex] = useState(null);
@@ -1332,7 +1331,7 @@ export default function NewsletterTab({ isMobile }) {
           mergedBodyText += `
 <!-- Proposal PDF Button Widget -->
 <div style="text-align: center; margin-bottom: 24px; margin-top: 16px;">
-  <a href="${w.content?.link || '#'}" target="_blank" style="display: block; background-color: #ffffff; border: 1.5px dashed #fdba74; border-radius: 16px; padding: 18px 24px; text-decoration: none; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.015);">
+  <a href="${w.content?.link || '#'}" target="_blank" style="display: block; background-color: #ffffff; border: 3px solid #fed7aa; border-radius: 16px; padding: 18px 24px; text-decoration: none; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.015);">
     <table cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto;">
       <tr>
         <td style="vertical-align: middle; padding-right: 12px;">
@@ -1344,7 +1343,7 @@ export default function NewsletterTab({ isMobile }) {
             <line x1="4" y1="21" x2="11" y2="21" stroke="#b0a4e3" stroke-width="1.8" stroke-linecap="round"/>
           </svg>
         </td>
-        <td style="vertical-align: middle; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 15px; font-weight: 800; color: #0f172a; letter-spacing: -0.01em;">
+        <td style="vertical-align: middle; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 12px; font-weight: 600; color: #0f172a; letter-spacing: -0.01em;">
           ${blueprintLabel}
         </td>
       </tr>
@@ -1521,7 +1520,6 @@ export default function NewsletterTab({ isMobile }) {
     const isTemp = template.id === "tempEmail";
     if (isTemp) {
       setWidgets([
-        { id: "meeting-cta", type: "meetingButton", content: { text: "🗓️ Book Meeting", link: "https://www.groworbitofficial.com/get-started/#lead-form" } },
         { id: "signature", type: "teamSignature", content: { line1: "Warm regards,", line2: "The Grow Orbit Team" } }
       ]);
     } else {

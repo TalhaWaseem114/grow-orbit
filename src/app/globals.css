@@ -151,3 +151,48 @@ button {
   }
 }
 
+/* Sleek Premium Scrollbars */
+::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: #090d16 !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(234, 88, 12, 0.35) !important;
+  border-radius: 100px !important;
+  border: 2px solid #090d16 !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(234, 88, 12, 0.8) !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 8px !important;
+  height: 8px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #090d16 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(234, 88, 12, 0.35) !important;
+  border-radius: 100px !important;
+  border: 2px solid #090d16 !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(234, 88, 12, 0.8) !important;
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(234, 88, 12, 0.35) #090d16 !important;
+}
+

@@ -1,5 +1,5 @@
 import React from "react";
-import { Document, Page, Text, View, StyleSheet, Image } from "@react-pdf/renderer";
+import { Document, Page, Text, View, StyleSheet, Image, Svg, Path } from "@react-pdf/renderer";
 import path from "path";
 
 // Professional invoice styles matching the HTML template
@@ -13,16 +13,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
   header: {
+    height: 110,
+    marginTop: -45,
+    marginLeft: -45,
+    marginRight: -45,
     marginBottom: 20,
-    borderBottomWidth: 2,
+    borderBottomWidth: 1.5,
     borderBottomColor: "#ea580c",
-    paddingBottom: 15,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    position: "relative",
+    overflow: "hidden",
   },
   logoContainer: {
+    position: "absolute",
+    left: 45,
+    top: 32,
     display: "flex",
     flexDirection: "column",
   },
@@ -31,36 +35,50 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   logoTextPrimary: {
-    fontSize: 16,
+    fontSize: 19,
     fontWeight: "bold",
     color: "#0f172a",
     letterSpacing: 1.5,
   },
   logoTextSecondary: {
-    fontSize: 16,
+    fontSize: 19,
     fontWeight: "bold",
     color: "#ea580c",
     letterSpacing: 1.5,
   },
   tagline: {
-    fontSize: 7.5,
-    color: "#64748b",
-    marginTop: 3,
+    fontSize: 8.5,
+    color: "#475569",
+    marginTop: 5,
     fontWeight: "bold",
     letterSpacing: 0.5,
   },
+  bannerContainer: {
+    position: "absolute",
+    right: 0,
+    top: 0,
+    width: 420,
+    height: 110,
+  },
+  bannerTextContainer: {
+    position: "absolute",
+    right: 45,
+    top: 26,
+  },
   invoiceMetaTitle: {
-    fontSize: 22,
-    color: "#0f172a",
+    fontSize: 26,
+    color: "#ffffff",
     fontWeight: "bold",
     textAlign: "right",
+    letterSpacing: 2,
   },
   invoiceNumber: {
     fontSize: 12,
     color: "#ea580c",
     fontWeight: "bold",
     textAlign: "right",
-    marginTop: 2,
+    marginTop: 4,
+    letterSpacing: 0.5,
   },
   metaGrid: {
     display: "flex",
@@ -445,21 +463,38 @@ export const InvoicePdfDocument = ({ invoice }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header */}
+        {/* Refined Invoice Header Section */}
         <View style={styles.header}>
+          {/* Wave Banner SVG Graphic */}
+          <View style={styles.bannerContainer}>
+            <Svg width="420" height="110" viewBox="0 0 420 110">
+              {/* Layer 1: Beige background curve */}
+              <Path d="M 80 0 C 130 35, 110 75, 160 110 L 420 110 L 420 0 Z" fill="#fff7ed" />
+              
+              {/* Layer 2: Orange curve */}
+              <Path d="M 120 0 C 145 28, 175 35, 195 0 Z" fill="#ea580c" />
+              
+              {/* Layer 3: Dark overlay curve */}
+              <Path d="M 155 0 C 185 28, 150 82, 205 110 L 420 110 L 420 0 Z" fill="#0f172a" />
+            </Svg>
+            
+            {/* Invoice Text Overlay */}
+            <View style={styles.bannerTextContainer}>
+              <Text style={styles.invoiceMetaTitle}>INVOICE</Text>
+              <Text style={styles.invoiceNumber}>#{invoice.invoiceNumber}</Text>
+            </View>
+          </View>
+
+          {/* Logo & Tagline */}
           <View style={styles.logoContainer}>
             <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-              <Image src={logoPath} style={{ width: 25, height: 25, marginRight: 6 }} />
+              <Image src={logoPath} style={{ width: 30, height: 30, marginRight: 8 }} />
               <View style={styles.logoTextRow}>
                 <Text style={styles.logoTextPrimary}>GROW</Text>
                 <Text style={styles.logoTextSecondary}> ORBIT</Text>
               </View>
             </View>
             <Text style={styles.tagline}>Amazon Growth. Your Orbit.</Text>
-          </View>
-          <View>
-            <Text style={styles.invoiceMetaTitle}>INVOICE</Text>
-            <Text style={styles.invoiceNumber}>#{invoice.invoiceNumber}</Text>
           </View>
         </View>
 
@@ -581,18 +616,18 @@ export const InvoicePdfDocument = ({ invoice }) => {
             {/* Left: Bank Transfer */}
             <View style={styles.pmCol1}>
               <Text style={styles.pmSubTitle}>BANK TRANSFER</Text>
-              <Text style={styles.pmText}>Bank Name: Wise (TransferWise)</Text>
-              <Text style={styles.pmText}>Account Name: Grow Orbit LLC</Text>
-              <Text style={styles.pmText}>Account Number: 831245678</Text>
-              <Text style={styles.pmText}>Routing Number: 026073150</Text>
-              <Text style={styles.pmText}>SWIFT / BIC: TRWIBEB1XXX</Text>
+              <Text style={styles.pmText}>Bank Name: {invoice.bankName || "Wise (TransferWise)"}</Text>
+              <Text style={styles.pmText}>Account Name: {invoice.bankAccountName || "Grow Orbit LLC"}</Text>
+              <Text style={styles.pmText}>Account Number: {invoice.bankAccountNumber || "831245678"}</Text>
+              <Text style={styles.pmText}>Routing Number: {invoice.bankRoutingNumber || "026073150"}</Text>
+              <Text style={styles.pmText}>SWIFT / BIC: {invoice.bankSwiftBic || "TRWIBEB1XXX"}</Text>
             </View>
 
             {/* Center: PayPal */}
             <View style={styles.pmCol2}>
               <Text style={styles.pmSubTitle}>PAYPAL</Text>
               <Text style={styles.pmText}>Recipient:</Text>
-              <Text style={[styles.pmText, { color: "#1d4ed8", fontWeight: "bold" }]}>support@groworbitofficial.com</Text>
+              <Text style={[styles.pmText, { color: "#1d4ed8", fontWeight: "bold" }]}>{invoice.paypalEmail || "support@groworbitofficial.com"}</Text>
             </View>
 
             {/* Right: Info cards */}

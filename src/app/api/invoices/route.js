@@ -95,6 +95,12 @@ export async function POST(request) {
       paymentTerms: body.paymentTerms || "",
       clientLabel1: body.clientLabel1 || "",
       clientLabel2: body.clientLabel2 || "",
+      bankName: body.bankName || "",
+      bankAccountName: body.bankAccountName || "",
+      bankAccountNumber: body.bankAccountNumber || "",
+      bankRoutingNumber: body.bankRoutingNumber || "",
+      bankSwiftBic: body.bankSwiftBic || "",
+      paypalEmail: body.paypalEmail || "",
       createdAt: now.toISOString(),
       updatedAt: now.toISOString(),
       createdBy: admin.uid

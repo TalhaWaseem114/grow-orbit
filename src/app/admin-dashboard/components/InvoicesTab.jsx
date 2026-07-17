@@ -2,11 +2,11 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import {
-  Plus, Search, Download, Trash2, Edit3, Eye, X, Copy, Check, ExternalLink, FileText, AlertCircle, RefreshCw
+  Plus, Search, Download, Trash2, Edit3, Eye, X, Copy, Check, ExternalLink, FileText, AlertCircle, RefreshCw, Settings
 } from "lucide-react";
 import { db } from "../../../firebase/firebaseConfig";
 import {
-  collection, query, orderBy, onSnapshot, doc, deleteDoc
+  collection, query, orderBy, onSnapshot, doc, deleteDoc, getDoc, setDoc
 } from "firebase/firestore";
 import Link from "next/link";
 
@@ -56,6 +56,59 @@ export default function InvoicesTab() {
   const [invoiceFilter, setInvoiceFilter] = useState("all"); // "all", "draft", "sent", "paid", "overdue", "cancelled"
   const [contractFilter, setContractFilter] = useState("all"); // "all", "draft", "awaiting_signature", "viewed", "signed", "void"
   const [copiedId, setCopiedId] = useState(null);
+
+  // Default Payment Settings states
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [savingSettings, setSavingSettings] = useState(false);
+  const [defaultBankName, setDefaultBankName] = useState("Wise (TransferWise)");
+  const [defaultBankAccountName, setDefaultBankAccountName] = useState("Grow Orbit LLC");
+  const [defaultBankAccountNumber, setDefaultBankAccountNumber] = useState("831245678");
+  const [defaultBankRoutingNumber, setDefaultBankRoutingNumber] = useState("026073150");
+  const [defaultBankSwiftBic, setDefaultBankSwiftBic] = useState("TRWIBEB1XXX");
+  const [defaultPaypalEmail, setDefaultPaypalEmail] = useState("support@groworbitofficial.com");
+
+  useEffect(() => {
+    const fetchDefaults = async () => {
+      try {
+        const docSnap = await getDoc(doc(db, "settings", "invoiceDefaults"));
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.bankName) setDefaultBankName(data.bankName);
+          if (data.bankAccountName) setDefaultBankAccountName(data.bankAccountName);
+          if (data.bankAccountNumber) setDefaultBankAccountNumber(data.bankAccountNumber);
+          if (data.bankRoutingNumber) setDefaultBankRoutingNumber(data.bankRoutingNumber);
+          if (data.bankSwiftBic) setDefaultBankSwiftBic(data.bankSwiftBic);
+          if (data.paypalEmail) setDefaultPaypalEmail(data.paypalEmail);
+        }
+      } catch (err) {
+        console.warn("Failed to load invoice payment defaults:", err);
+      }
+    };
+    fetchDefaults();
+  }, []);
+
+  const handleSaveDefaults = async (e) => {
+    e.preventDefault();
+    setSavingSettings(true);
+    try {
+      await setDoc(doc(db, "settings", "invoiceDefaults"), {
+        bankName: defaultBankName,
+        bankAccountName: defaultBankAccountName,
+        bankAccountNumber: defaultBankAccountNumber,
+        bankRoutingNumber: defaultBankRoutingNumber,
+        bankSwiftBic: defaultBankSwiftBic,
+        paypalEmail: defaultPaypalEmail,
+        updatedAt: new Date()
+      });
+      alert("Default payment settings updated successfully!");
+      setShowSettingsModal(false);
+    } catch (err) {
+      alert("Failed to save defaults: " + err.message);
+    } finally {
+      setSavingSettings(false);
+    }
+  };
+
 
   useEffect(() => {
     // 1. Listen to Invoices
@@ -190,11 +243,20 @@ export default function InvoicesTab() {
 
           {/* Quick Create buttons */}
           {activeSegment === "invoices" ? (
-            <Link href="/admin-dashboard/invoice-builder" style={{ textDecoration: "none" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#ea580c", color: "#fff", border: "none", borderRadius: 12, padding: "10px 16px", fontSize: 11, fontWeight: 800, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                <Plus size={14} /> New Invoice
-              </div>
-            </Link>
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <button
+                onClick={() => setShowSettingsModal(true)}
+                style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "10px 16px", fontSize: 11, fontWeight: 800, cursor: "pointer", color: "#fff", textTransform: "uppercase", letterSpacing: "0.08em" }}
+                title="Manage Default Payment Settings"
+              >
+                <Settings size={14} /> Defaults
+              </button>
+              <Link href="/admin-dashboard/invoice-builder" style={{ textDecoration: "none" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#ea580c", color: "#fff", border: "none", borderRadius: 12, padding: "10px 16px", fontSize: 11, fontWeight: 800, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  <Plus size={14} /> New Invoice
+                </div>
+              </Link>
+            </div>
           ) : (
             <Link href="/admin-dashboard/contract-builder" style={{ textDecoration: "none" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#3b82f6", color: "#fff", border: "none", borderRadius: 12, padding: "10px 16px", fontSize: 11, fontWeight: 800, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em" }}>
@@ -463,6 +525,112 @@ export default function InvoicesTab() {
             </div>
           )}
         </>
+      )}
+      {/* Defaults Payment Modal */}
+      {showSettingsModal && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", backdropFilter: "blur(6px)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 100, padding: 20 }}>
+          <div style={{ background: "#0b0f19", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, width: "100%", maxWidth: 540, padding: 24, boxShadow: "0 20px 50px rgba(0,0,0,0.5)", position: "relative" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <Settings size={18} color="#ea580c" />
+                <h3 style={{ fontSize: 16, fontWeight: 850, color: "#fff", margin: 0 }}>Manage Invoice Payment Defaults</h3>
+              </div>
+              <button
+                onClick={() => setShowSettingsModal(false)}
+                style={{ background: "none", border: "none", color: "#71717a", cursor: "pointer", display: "flex", alignItems: "center" }}
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveDefaults} style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Bank Name</label>
+                <input
+                  type="text"
+                  required
+                  value={defaultBankName}
+                  onChange={e => setDefaultBankName(e.target.value)}
+                  style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
+                />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Account Name</label>
+                <input
+                  type="text"
+                  required
+                  value={defaultBankAccountName}
+                  onChange={e => setDefaultBankAccountName(e.target.value)}
+                  style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
+                />
+              </div>
+
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Account Number</label>
+                  <input
+                    type="text"
+                    required
+                    value={defaultBankAccountNumber}
+                    onChange={e => setDefaultBankAccountNumber(e.target.value)}
+                    style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
+                  />
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Routing Number</label>
+                  <input
+                    type="text"
+                    required
+                    value={defaultBankRoutingNumber}
+                    onChange={e => setDefaultBankRoutingNumber(e.target.value)}
+                    style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
+                  />
+                </div>
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>SWIFT / BIC</label>
+                <input
+                  type="text"
+                  required
+                  value={defaultBankSwiftBic}
+                  onChange={e => setDefaultBankSwiftBic(e.target.value)}
+                  style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
+                />
+              </div>
+
+              <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 8 }}>
+                <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>PayPal Recipient Email</label>
+                <input
+                  type="email"
+                  required
+                  value={defaultPaypalEmail}
+                  onChange={e => setDefaultPaypalEmail(e.target.value)}
+                  style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
+                />
+              </div>
+
+              <div style={{ display: "flex", justifyContent: "flex-end", gap: 10, borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 16 }}>
+                <button
+                  type="button"
+                  onClick={() => setShowSettingsModal(false)}
+                  style={{ background: "none", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 16px", color: "#c0c0c0", fontSize: 11, fontWeight: 700, cursor: "pointer" }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={savingSettings}
+                  style={{ background: "#ea580c", border: "none", borderRadius: 8, padding: "8px 20px", color: "#fff", fontSize: 11, fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}
+                >
+                  {savingSettings ? <RefreshCw size={12} className="animate-spin" /> : null}
+                  Save Default Settings
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       )}
     </div>
   );

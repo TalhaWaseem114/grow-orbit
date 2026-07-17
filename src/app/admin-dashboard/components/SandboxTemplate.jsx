@@ -8,7 +8,7 @@ export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: 
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
-  We specifically focused on sourcing product opportunities that match our strict scaling criteria: <strong>exceptionally high profit margins</strong>, <strong>consistent sales velocity</strong>, and <strong>low-to-moderate competitor strength</strong> to ensure a high probability of success.
+  We specifically focused on sourcing product opportunities that match our strict scaling criteria: <strong> exceptionally high profit margins</strong>, <strong>consistent sales velocity</strong>, and <strong>low-to-moderate competitor strength</strong> to ensure a high probability of success.
 </p>
 
 <!-- Highlights Card -->

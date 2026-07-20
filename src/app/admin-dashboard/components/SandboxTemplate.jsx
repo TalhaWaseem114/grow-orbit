@@ -1,7 +1,7 @@
-export const sandboxId = "sandbox-amir-proposal";
+export const sandboxId = "sandbox-rehan-proposal";
 export const sandboxSubject = "Your Custom Product Sourcing & Market Analysis Proposal 🚀";
 export const sandboxHeadline = "Custom Product Sourcing & Market Analysis Blueprint";
-export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Dear Amir,</p>
+export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Dear Rehan,</p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
   I hope you're doing well.
@@ -20,9 +20,7 @@ export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: 
   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.7; color: #475569; border-collapse: collapse; margin: 0;">
     <tr>
       <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
-        <div style="background-color: rgba(249, 115, 22, 0.08); border: 1.5px solid rgba(249, 115, 22, 0.25); width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 20px; font-weight: 800; color: #f97316; font-size: 10px; font-family: 'Montserrat', sans-serif;">
-          1
-        </div>
+        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
       </td>
       <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
         Market size and category revenue
@@ -30,9 +28,7 @@ export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: 
     </tr>
     <tr>
       <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
-        <div style="background-color: rgba(249, 115, 22, 0.08); border: 1.5px solid rgba(249, 115, 22, 0.25); width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 20px; font-weight: 800; color: #f97316; font-size: 10px; font-family: 'Montserrat', sans-serif;">
-          2
-        </div>
+        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
       </td>
       <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
         Competitor pricing and sales performance
@@ -40,9 +36,7 @@ export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: 
     </tr>
     <tr>
       <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
-        <div style="background-color: rgba(249, 115, 22, 0.08); border: 1.5px solid rgba(249, 115, 22, 0.25); width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 20px; font-weight: 800; color: #f97316; font-size: 10px; font-family: 'Montserrat', sans-serif;">
-          3
-        </div>
+        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
       </td>
       <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
         Estimated unit economics and profit margins
@@ -50,9 +44,7 @@ export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: 
     </tr>
     <tr>
       <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
-        <div style="background-color: rgba(249, 115, 22, 0.08); border: 1.5px solid rgba(249, 115, 22, 0.25); width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 20px; font-weight: 800; color: #f97316; font-size: 10px; font-family: 'Montserrat', sans-serif;">
-          4
-        </div>
+        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
       </td>
       <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
         Reference ASINs and competitive benchmarks
@@ -60,9 +52,7 @@ export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: 
     </tr>
     <tr>
       <td style="vertical-align: top; width: 32px;">
-        <div style="background-color: rgba(249, 115, 22, 0.08); border: 1.5px solid rgba(249, 115, 22, 0.25); width: 22px; height: 22px; border-radius: 50%; text-align: center; line-height: 20px; font-weight: 800; color: #f97316; font-size: 10px; font-family: 'Montserrat', sans-serif;">
-          5
-        </div>
+        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
       </td>
       <td style="padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
         A transparent breakdown of the opportunity behind each product
@@ -81,7 +71,7 @@ export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: 
 
 <!-- Centered Button Container -->
 <div style="text-align: center; margin: 35px 0;">
-  <a href="https://drive.google.com/file/d/15q2p64pMMRs7vW4xiONv24keNI87lMM8/view?usp=drive_link" style="background-color: #f97316; color: #ffffff !important; text-decoration: none; padding: 12px 32px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; box-shadow: 0 6px 18px rgba(249, 115, 22, 0.25); font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; border: 3px solid #fed7aa; box-sizing: border-box; max-width: 100%;">
+  <a href="https://drive.google.com/file/d/1-4xpU4aWDAkU4fSy2xAWg_AvlhL9L38M/view?usp=drive_link" style="background-color: #f97316; color: #ffffff !important; text-decoration: none; padding: 12px 32px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; box-shadow: 0 6px 18px rgba(249, 115, 22, 0.25); font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; border: 3px solid #fed7aa; box-sizing: border-box; max-width: 100%;">
     Review Research Proposal
   </a>
 </div>

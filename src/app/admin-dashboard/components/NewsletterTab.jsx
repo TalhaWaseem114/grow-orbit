@@ -1452,19 +1452,25 @@ export default function NewsletterTab({ isMobile }) {
     <div class="email-container" style="max-width: 600px; margin: 0 auto; background-color: ${containerBg}; border-radius: 16px; overflow: hidden; box-shadow: ${isNeumorphic ? "none" : containerShadow}; border: ${isNeumorphic ? "3px solid #ffffff" : `1px solid ${borderColor}`};">
       <!-- Header -->
       ${hideHeader ? "" : `
-      <div style="background: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 50%, #050505 100%); padding: 24px 16px; text-align: center; border-bottom: 3px solid #f97316; border-top-left-radius: 13px; border-top-right-radius: 13px;">
-        <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto; border-collapse: collapse;">
+      <div style="background: #0d0d0d; background: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 50%, #050505 100%); padding: 24px 16px; border-bottom: 3px solid #f97316; border-top-left-radius: 13px; border-top-right-radius: 13px;">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
           <tr>
-            <td valign="middle" style="padding-right: 12px;">
-              <img src="${absoluteLogoUrl}" alt="Grow Orbit" style="height: 42px; display: block;" />
-            </td>
-            <td valign="middle" style="text-align: left; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-              <div style="font-size: 22px; font-weight: 900; line-height: 1; letter-spacing: 0.03em; color: #ffffff;">
-                GROW <span style="color: #f97316;">ORBIT</span>
-              </div>
-              <div style="font-size: 8px; font-weight: 700; color: #a1a1aa; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; line-height: 1.2;">
-                WE RANK. YOU SELL. IT'S THAT SIMPLE.
-              </div>
+            <td align="center" valign="middle">
+              <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto; border-collapse: collapse;">
+                <tr>
+                  <td valign="middle" style="padding-right: 12px; text-align: right;">
+                    <img src="${absoluteLogoUrl}" alt="Grow Orbit" style="height: 42px; display: block; border: 0;" />
+                  </td>
+                  <td valign="middle" style="text-align: left; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                    <div style="font-size: 22px; font-weight: 900; line-height: 1; letter-spacing: 0.03em; color: #ffffff;">
+                      GROW <span style="color: #f97316;">ORBIT</span>
+                    </div>
+                    <div style="font-size: 8px; font-weight: 700; color: #a1a1aa; letter-spacing: 0.12em; text-transform: uppercase; margin-top: 4px; line-height: 1.2;">
+                      WE RANK. YOU SELL. IT'S THAT SIMPLE.
+                    </div>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </table>

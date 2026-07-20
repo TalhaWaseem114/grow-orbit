@@ -57,6 +57,12 @@ function SidebarItem({ id, label, icon: Icon, activeTab, setActiveTab, badge, is
           {badge}
         </span>
       )}
+      {isCollapsed && badge > 0 && (
+        <span className="absolute top-1 right-2 min-w-[14px] h-[14px] rounded-full text-[8px] font-black flex items-center justify-center"
+          style={{ background: "#f97316", color: "#fff", padding: "0 2px" }}>
+          {badge}
+        </span>
+      )}
       {active && <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0.5 h-5 bg-orange-500 rounded-l" />}
     </button>
   );
@@ -109,8 +115,14 @@ export default function AdminDashboard() {
   const [expandedLead, setExpandedLead] = useState(null);
   const [crmNote, setCrmNote] = useState("");
   const [userSearch, setUserSearch] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(() => {
+    const now = new Date();
+    const past30 = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
+    return past30.toISOString().split("T")[0];
+  });
+  const [endDate, setEndDate] = useState(() => {
+    return new Date().toISOString().split("T")[0];
+  });
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [ownerFilter, setOwnerFilter] = useState("all");
   const [sourceFilter, setSourceFilter] = useState("all");
@@ -366,7 +378,9 @@ export default function AdminDashboard() {
     if (skipConfirm) {
       await executeDelete();
     } else {
-      triggerConfirm("Delete Lead", `Are you sure you want to permanently delete lead "${label}"? This action cannot be undone.`, executeDelete, true);
+      if (window.confirm(`Are you sure you want to permanently delete lead "${label}"? This action cannot be undone.`)) {
+        await executeDelete();
+      }
     }
   };
 
@@ -475,8 +489,31 @@ export default function AdminDashboard() {
       const name = targetLead ? (targetLead.fullName || targetLead.email) : leadId;
       const updatedLead = { ...targetLead, status: newStatus };
       const score = calculateLeadScore(updatedLead);
-      await updateDoc(doc(db, leadsCollectionName, leadId), { status: newStatus, score });
-      setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStatus, score } : l));
+      const now = new Date();
+
+      // Build phase timestamp updates — auto-fill previous phases
+      const tsUpdates = {};
+      
+      // Phase 2: Research Done (qualified)
+      if (["qualified", "contacted", "hot", "proposal_sent", "won"].includes(newStatus)) {
+        if (!targetLead?.researchCompletedAt) tsUpdates.researchCompletedAt = now;
+      }
+      // Phase 3: Contacted / Meeting (contacted, hot)
+      if (["contacted", "hot", "proposal_sent", "won"].includes(newStatus)) {
+        if (!targetLead?.contactedAt) tsUpdates.contactedAt = now;
+      }
+      // Phase 4: Proposal Sent
+      if (["proposal_sent", "won"].includes(newStatus)) {
+        if (!targetLead?.proposalSentAt) tsUpdates.proposalSentAt = now;
+      }
+      // Phase 5: Won/Lost
+      if (["won", "lost"].includes(newStatus)) {
+        if (!targetLead?.closedAt) tsUpdates.closedAt = now;
+      }
+
+      const updatePayload = { status: newStatus, score, ...tsUpdates };
+      await updateDoc(doc(db, leadsCollectionName, leadId), updatePayload);
+      setLeads(prev => prev.map(l => l.id === leadId ? { ...l, ...updatePayload } : l));
       logActivity("UPDATE_LEAD_STATUS", `Changed status for lead "${name}" to ${newStatus.toUpperCase()}`);
     } catch (e) { console.warn("Status change failed:", e.message); }
   };
@@ -544,7 +581,26 @@ export default function AdminDashboard() {
   };
 
 
-  const newLeadsCount = leads.filter(l => (l.status || "new") === "new").length;
+  const recent3dLeadsCount = useMemo(() => {
+    const now = new Date();
+    const threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+    return (leads || []).filter(l => {
+      if (!l.createdAt) return false;
+      const created = l.createdAt?.toDate ? l.createdAt.toDate() : new Date(l.createdAt);
+      return (now - created) <= threeDaysMs;
+    }).length;
+  }, [leads]);
+  const newLeadsCount = recent3dLeadsCount;
+
+  const recent3dUsersCount = useMemo(() => {
+    const now = new Date();
+    const threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+    return (users || []).filter(u => {
+      const created = u.createdAt?.toDate ? u.createdAt.toDate() : (u.createdAt ? new Date(u.createdAt) : null);
+      if (!created) return false;
+      return (now - created) <= threeDaysMs;
+    }).length;
+  }, [users]);
   const currentAdmin = users.find(u => u.id === auth.currentUser?.uid);
   const adminInitials = currentAdmin?.displayName
     ? currentAdmin.displayName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
@@ -752,10 +808,10 @@ export default function AdminDashboard() {
               <>
                 {isSidebarCollapsed ? <div style={{ width: 24, height: 1, background: "rgba(255,255,255,0.06)", margin: "6px auto", borderRadius: 1 }} /> : <div style={{ fontSize: 9, fontWeight: 700, color: "#333", letterSpacing: "0.25em", textTransform: "uppercase", padding: "0 4px", marginTop: 16, marginBottom: 6 }}>Management</div>}
                 {allowedPanels.includes("leads") && (
-                  <SidebarItem id="leads" label="Lead Pipeline" icon={Briefcase} activeTab={activeTab} setActiveTab={setActiveTab} badge={newLeadsCount} isCollapsed={isSidebarCollapsed} />
+                  <SidebarItem id="leads" label="Lead Pipeline" icon={Briefcase} activeTab={activeTab} setActiveTab={setActiveTab} badge={recent3dLeadsCount} isCollapsed={isSidebarCollapsed} />
                 )}
                 {allowedPanels.includes("users") && (
-                  <SidebarItem id="users" label="User Directory" icon={Users} activeTab={activeTab} setActiveTab={setActiveTab} badge={users.length} isCollapsed={isSidebarCollapsed} />
+                  <SidebarItem id="users" label="User Directory" icon={Users} activeTab={activeTab} setActiveTab={setActiveTab} badge={recent3dUsersCount} isCollapsed={isSidebarCollapsed} />
                 )}
                 {allowedPanels.includes("team") && (
                   <SidebarItem id="team" label="Agency Team" icon={Shield} activeTab={activeTab} setActiveTab={setActiveTab} isCollapsed={isSidebarCollapsed} />

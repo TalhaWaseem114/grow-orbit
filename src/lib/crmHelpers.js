@@ -33,24 +33,15 @@ export const calculateLeadScore = (lead) => {
 
 /**
  * Calculates lead priority dynamically based on rules:
- * - High: meetingBooked === true OR requestedService includes "Full Account Management" / "PPC Management"
- * - Otherwise: low/medium (or stored value)
+ * - Admin manual override: lead.priority (low, medium, high)
+ * - Meeting Booked (meetingBooked: true or status === 'hot'): "high"
+ * - Form submission without meeting booked: "low" by default
  */
 export const calculateLeadPriority = (lead) => {
   if (!lead) return "low";
-  if (lead.meetingBooked) return "high";
-  
-  const service = (lead.requestedService || "").toLowerCase();
-  if (
-    service.includes("full account management") || 
-    service.includes("ppc management") || 
-    service.includes("full/amazon-management") ||
-    service.includes("ppc-efficiency")
-  ) {
-    return "high";
-  }
-  
-  return lead.priority || "low";
+  if (lead.priority) return lead.priority;
+  if (lead.meetingBooked || lead.status === "hot") return "high";
+  return "low";
 };
 
 /**

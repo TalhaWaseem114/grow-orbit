@@ -484,13 +484,7 @@ async function handleLeadIntake(body, webhookUrl) {
   const { adminDb, FieldValue } = await getAdmin();
 
   const requestedService = cleanString(body.requestedService, "Not specified") || "Not specified";
-  const serviceLower = requestedService.toLowerCase();
-  const initialPriority = (
-    serviceLower.includes("full account management") ||
-    serviceLower.includes("ppc management") ||
-    serviceLower.includes("full/amazon-management") ||
-    serviceLower.includes("ppc-efficiency")
-  ) ? "high" : "low";
+  const initialPriority = body.meetingBooked ? "high" : "low";
 
   const leadDoc = {
     fullName: normalizedFullName,

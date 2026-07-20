@@ -5,17 +5,17 @@ import { calculateLeadScore, getScoreCategory, calculateLeadPriority } from "@/l
 import { Phone, Mail } from "lucide-react";
 
 const STATUS_CONFIG = {
-  new:           { label: "New",            color: "#f97316", bg: "rgba(249,115,22,0.12)",  border: "rgba(249,115,22,0.25)" },
-  contacted:     { label: "Contacted",      color: "#3b82f6", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.25)" },
-  qualified:     { label: "Qualified",      color: "#10b981", bg: "rgba(16,185,129,0.12)",  border: "rgba(16,185,129,0.25)" },
-  hot:           { label: "Hot (Booked) 🔥", color: "#ef4444", bg: "rgba(239,68,68,0.12)",   border: "rgba(239,68,68,0.25)"  },
-  proposal_sent: { label: "Proposal Sent",  color: "#a855f7", bg: "rgba(168,85,247,0.12)",  border: "rgba(168,85,247,0.25)" },
-  won:           { label: "Won 🎉",          color: "#22c55e", bg: "rgba(34,197,94,0.12)",   border: "rgba(34,197,94,0.25)"  },
-  lost:          { label: "Lost ❌",         color: "#ef4444", bg: "rgba(239,68,68,0.08)",   border: "rgba(239,68,68,0.2)"   },
-  cold:          { label: "Cold (New) ❄️",    color: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.25)" },
+  new:           { label: "Lead In",          color: "#f97316", bg: "rgba(249,115,22,0.12)",  border: "rgba(249,115,22,0.25)" },
+  contacted:     { label: "Contacted",        color: "#3b82f6", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.25)" },
+  qualified:     { label: "Researched",       color: "#10b981", bg: "rgba(16,185,129,0.12)",  border: "rgba(16,185,129,0.25)" },
+  hot:           { label: "Meeting Booked 🔥", color: "#ef4444", bg: "rgba(239,68,68,0.12)",   border: "rgba(239,68,68,0.25)"  },
+  proposal_sent: { label: "Proposal Sent",    color: "#a855f7", bg: "rgba(168,85,247,0.12)",  border: "rgba(168,85,247,0.25)" },
+  won:           { label: "Won 🎉",            color: "#22c55e", bg: "rgba(34,197,94,0.12)",   border: "rgba(34,197,94,0.25)"  },
+  lost:          { label: "Lost ❌",           color: "#ef4444", bg: "rgba(239,68,68,0.08)",   border: "rgba(239,68,68,0.2)"   },
+  cold:          { label: "Cold ❄️",           color: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.25)" },
   // Fallbacks
-  replied:       { label: "Replied",        color: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.25)" },
-  archived:      { label: "Archived",       color: "#71717a", bg: "rgba(113,113,122,0.10)", border: "rgba(113,113,122,0.2)"  },
+  replied:       { label: "Replied",          color: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.25)" },
+  archived:      { label: "Archived",         color: "#71717a", bg: "rgba(113,113,122,0.10)", border: "rgba(113,113,122,0.2)"  },
 };
 
 export default function KanbanBoard({ 
@@ -24,7 +24,7 @@ export default function KanbanBoard({
   setExpandedLead, 
   setLeadViewMode 
 }) {
-  const columns = ["new", "contacted", "qualified", "hot", "proposal_sent", "won", "lost"];
+  const columns = ["new", "hot", "qualified", "contacted", "proposal_sent", "won", "lost"];
   const [dragOverColumn, setDragOverColumn] = useState(null);
   const [draggingId, setDraggingId] = useState(null);
 
@@ -71,10 +71,9 @@ export default function KanbanBoard({
       {columns.map(status => {
         const columnLeads = leads.filter(l => {
           const s = l.status || "new";
-          // Map archived/replied to contacted/lost/archived fallback just in case
           if (s === "replied" && status === "contacted") return true;
-          if (s === "archived" && status === "lost") return true;
-          if (s === "cold" && status === "lost") return true;
+          if (s === "cold" && status === "new") return true;
+          if (s === "archived" && status === "new") return true;
           return s === status;
         });
         const cfg = STATUS_CONFIG[status] || STATUS_CONFIG.new;

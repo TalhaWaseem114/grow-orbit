@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useMemo, useRef, useState, useEffect } from "react";
-import { 
-  LayoutGrid, List, KanbanSquare, Download, Search, Calendar, ChevronRight, 
+import {
+  LayoutGrid, List, KanbanSquare, Download, Search, Calendar, ChevronRight,
   Phone, Mail, Trash2, History, AlertCircle, X, RotateCcw, Inbox, HelpCircle,
-  Copy, Check
+  Copy, Check, Bell, ClipboardCheck, Send, Trophy, XCircle
 } from "lucide-react";
 
 import KanbanBoard from "./KanbanBoard";
@@ -19,17 +19,44 @@ import { Loader } from "lucide-react";
    CONFIGS & HELPERS
 ───────────────────────────────────────── */
 const STATUS_CONFIG = {
-  new:           { label: "New",            color: "#f97316", bg: "rgba(249,115,22,0.12)",  border: "rgba(249,115,22,0.25)" },
-  contacted:     { label: "Contacted",      color: "#3b82f6", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.25)" },
-  qualified:     { label: "Qualified",      color: "#10b981", bg: "rgba(16,185,129,0.12)",  border: "rgba(16,185,129,0.25)" },
-  hot:           { label: "Hot (Booked) 🔥", color: "#ef4444", bg: "rgba(239,68,68,0.12)",   border: "rgba(239,68,68,0.25)"  },
-  proposal_sent: { label: "Proposal Sent",  color: "#a855f7", bg: "rgba(168,85,247,0.12)",  border: "rgba(168,85,247,0.25)" },
-  won:           { label: "Won 🎉",          color: "#22c55e", bg: "rgba(34,197,94,0.12)",   border: "rgba(34,197,94,0.25)"  },
-  lost:          { label: "Lost ❌",         color: "#ef4444", bg: "rgba(239,68,68,0.08)",   border: "rgba(239,68,68,0.2)"   },
-  cold:          { label: "Cold (New) ❄️",    color: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.25)" },
+  new:           { label: "Lead In",          color: "#f97316", bg: "rgba(249,115,22,0.12)",  border: "rgba(249,115,22,0.25)" },
+  contacted:     { label: "Contacted",        color: "#3b82f6", bg: "rgba(59,130,246,0.12)",  border: "rgba(59,130,246,0.25)" },
+  qualified:     { label: "Researched",       color: "#10b981", bg: "rgba(16,185,129,0.12)",  border: "rgba(16,185,129,0.25)" },
+  hot:           { label: "Meeting Booked 🔥", color: "#ef4444", bg: "rgba(239,68,68,0.12)",   border: "rgba(239,68,68,0.25)"  },
+  proposal_sent: { label: "Proposal Sent",    color: "#a855f7", bg: "rgba(168,85,247,0.12)",  border: "rgba(168,85,247,0.25)" },
+  won:           { label: "Won 🎉",            color: "#22c55e", bg: "rgba(34,197,94,0.12)",   border: "rgba(34,197,94,0.25)"  },
+  lost:          { label: "Lost ❌",           color: "#ef4444", bg: "rgba(239,68,68,0.08)",   border: "rgba(239,68,68,0.2)"   },
+  cold:          { label: "Cold ❄️",           color: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.25)" },
   // Fallbacks
-  replied:       { label: "Replied",        color: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.25)" },
-  archived:      { label: "Archived",       color: "#71717a", bg: "rgba(113,113,122,0.10)", border: "rgba(113,113,122,0.2)"  },
+  replied:       { label: "Replied",          color: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.25)" },
+  archived:      { label: "Archived",         color: "#71717a", bg: "rgba(113,113,122,0.10)", border: "rgba(113,113,122,0.2)"  },
+};
+
+/* ─────── Pipeline Phase Config ─────── */
+const PIPELINE_PHASES = [
+  { key: "lead_in",        label: "Lead In",          statusMatch: ["new", "cold"],       icon: "Inbox",          color: "#f97316", linearLevel: 0, tsField: null },
+  { key: "meeting_booked", label: "Meeting Booked",   statusMatch: ["hot"],               icon: "Calendar",       color: "#ef4444", linearLevel: null, isOptional: true, tsField: null },
+  { key: "research",       label: "Researched",       statusMatch: ["qualified"],         icon: "ClipboardCheck", color: "#10b981", linearLevel: 1, tsField: "researchCompletedAt" },
+  { key: "contact",        label: "Contacted",        statusMatch: ["contacted", "replied"], icon: "Phone",      color: "#3b82f6", linearLevel: 2, tsField: "contactedAt" },
+  { key: "proposal",       label: "Proposal Sent",    statusMatch: ["proposal_sent"],     icon: "Send",           color: "#a855f7", linearLevel: 3, tsField: "proposalSentAt" },
+  { key: "outcome",        label: "Won / Lost",       statusMatch: ["won", "lost"],       icon: "Trophy",         color: "#22c55e", linearLevel: 4, tsField: "closedAt" },
+];
+
+const getLinearLevel = (status) => {
+  if (["new", "cold"].includes(status)) return 0;
+  if (status === "qualified") return 1;
+  if (["contacted", "replied"].includes(status)) return 2;
+  if (status === "proposal_sent") return 3;
+  if (["won", "lost"].includes(status)) return 4;
+  return 0;
+};
+
+const LINEAR_STATUS_MAP = {
+  0: "new",
+  1: "qualified",
+  2: "contacted",
+  3: "proposal_sent",
+  4: "won",
 };
 
 const PRIORITY_CONFIG = {
@@ -67,6 +94,190 @@ function StatusBadge({ status }) {
       style={{ color: cfg.color, background: cfg.bg, border: `1px solid ${cfg.border}`, whiteSpace: "nowrap" }}>
       {cfg.label}
     </span>
+  );
+}
+
+/* ─────────────────────────────────────────
+   PIPELINE TIMELINE TRACKER
+───────────────────────────────────────── */
+const phaseIcons = { Inbox, Calendar, ClipboardCheck, Phone, Send, Trophy };
+
+function PipelineTimeline({ lead, handleStatusChange }) {
+  const status = lead.status || "new";
+  const currentLinearLevel = getLinearLevel(status);
+  const isFinal = status === "won" || status === "lost";
+  const hasMeeting = Boolean(lead.meetingBooked || status === "hot");
+
+  const fmtTs = (ts) => {
+    if (!ts) return null;
+    const d = ts?.toDate ? ts.toDate() : (ts instanceof Date ? ts : new Date(ts));
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  };
+
+  const handleAdvanceClick = (targetLevel) => {
+    if (isFinal) return;
+    if (targetLevel === 4) {
+      handleStatusChange(lead.id, "won");
+    } else {
+      const targetStatus = LINEAR_STATUS_MAP[targetLevel];
+      if (targetStatus) handleStatusChange(lead.id, targetStatus);
+    }
+  };
+
+  return (
+    <div style={{ marginBottom: 20 }}>
+      <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 12 }}>Pipeline Progress</div>
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 0, position: "relative" }}>
+        {PIPELINE_PHASES.map((phase, idx) => {
+          const IconComp = phaseIcons[phase.icon] || Inbox;
+
+          // For the optional Meeting Booked phase:
+          if (phase.isOptional) {
+            return (
+              <div key={phase.key} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", position: "relative" }}
+                title={hasMeeting ? "Meeting scheduled by lead" : "No meeting booked (Optional step)"}
+              >
+                {/* Connector line before circle */}
+                <div style={{
+                  position: "absolute", top: 16, right: "50%", width: "100%", height: 2,
+                  background: hasMeeting ? "linear-gradient(to right, #f97316, #ef4444)" : "rgba(255,255,255,0.06)",
+                  zIndex: 0
+                }} />
+
+                {/* Circle */}
+                <div style={{
+                  width: 32, height: 32, borderRadius: "50%",
+                  background: hasMeeting ? "rgba(239,68,68,0.18)" : "rgba(255,255,255,0.03)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  zIndex: 1, position: "relative",
+                  boxShadow: hasMeeting ? "0 0 12px rgba(239,68,68,0.35)" : "none",
+                  border: hasMeeting ? "2px solid #ef4444" : "1.5px dashed rgba(255,255,255,0.15)",
+                  transition: "all 0.3s ease"
+                }}>
+                  <IconComp size={14} color={hasMeeting ? "#ef4444" : "#525252"} />
+                </div>
+
+                {/* Label */}
+                <div style={{
+                  marginTop: 8, fontSize: 9, fontWeight: hasMeeting ? 900 : 600,
+                  color: hasMeeting ? "#ef4444" : "#525252",
+                  textTransform: "uppercase", letterSpacing: "0.1em", textAlign: "center",
+                  lineHeight: 1.3, maxWidth: 90
+                }}>
+                  {hasMeeting ? "Meeting Booked 🔥" : "Meeting (Optional)"}
+                </div>
+
+                {/* Subtext */}
+                <div style={{ fontSize: 8, color: hasMeeting ? "#ef4444" : "#525252", marginTop: 3, fontWeight: 700 }}>
+                  {hasMeeting ? "● BOOKED" : "SKIPPED"}
+                </div>
+              </div>
+            );
+          }
+
+          // For standard linear phases (0, 1, 2, 3, 4):
+          const lvl = phase.linearLevel;
+          const isCompleted = lvl < currentLinearLevel;
+          const isActive = lvl === currentLinearLevel;
+          const isFuture = lvl > currentLinearLevel;
+          const ts = lead[phase.tsField];
+          const isWon = status === "won" && lvl === 4;
+          const isLost = status === "lost" && lvl === 4;
+          const circleColor = isCompleted ? "#22c55e" : isActive ? phase.color : isLost ? "#ef4444" : "rgba(255,255,255,0.08)";
+          const circleGlow = isActive ? `0 0 16px ${phase.color}44` : isCompleted ? "0 0 8px rgba(34,197,94,0.3)" : "none";
+
+          return (
+            <div key={phase.key} style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", position: "relative", cursor: isFuture && !isFinal ? "pointer" : "default" }}
+              onClick={() => isFuture && handleAdvanceClick(lvl)}
+              title={isFuture && !isFinal ? `Advance to ${phase.label}` : ""}
+            >
+              {/* Connector line before circle */}
+              {idx > 0 && (
+                <div style={{
+                  position: "absolute", top: 16, right: "50%", width: "100%", height: 2,
+                  background: isCompleted || isActive ? `linear-gradient(to right, #22c55e, ${isActive ? phase.color : '#22c55e'})` : "rgba(255,255,255,0.06)",
+                  zIndex: 0,
+                  transition: "all 0.4s ease"
+                }} />
+              )}
+
+              {/* Circle */}
+              <div style={{
+                width: 32, height: 32, borderRadius: "50%",
+                background: circleColor,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 1, position: "relative",
+                boxShadow: circleGlow,
+                border: isActive ? `2px solid ${phase.color}` : isFuture ? "2px solid rgba(255,255,255,0.08)" : "2px solid #22c55e",
+                transition: "all 0.3s ease",
+                animation: isActive ? "timelinePulse 2s infinite" : "none"
+              }}>
+                {isCompleted ? (
+                  <svg width="14" height="10" viewBox="0 0 14 10" fill="none"><path d="M1.5 5L5.5 9L12.5 1" stroke="#fff" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                ) : (
+                  <IconComp size={14} color={isActive ? "#fff" : isFuture ? "#525252" : "#fff"} />
+                )}
+              </div>
+
+              {/* Label */}
+              <div style={{
+                marginTop: 8, fontSize: 9, fontWeight: isActive ? 900 : 700,
+                color: isCompleted ? "#22c55e" : isActive ? phase.color : "#525252",
+                textTransform: "uppercase", letterSpacing: "0.1em", textAlign: "center",
+                lineHeight: 1.3, maxWidth: 90
+              }}>
+                {lvl === 4 && isLost ? "Lost ❌" : lvl === 4 && isWon ? "Won 🎉" : phase.label}
+              </div>
+
+              {/* Timestamp */}
+              {(isCompleted || isActive) && ts && (
+                <div style={{ fontSize: 8, color: "#737373", marginTop: 3, fontFamily: "monospace" }}>
+                  {fmtTs(ts)}
+                </div>
+              )}
+              {isActive && !ts && (
+                <div style={{ fontSize: 8, color: phase.color, marginTop: 3, fontWeight: 700 }}>● CURRENT</div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Won / Lost toggle for final phase */}
+      {currentLinearLevel === 4 && (
+        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 12 }}>
+          <button onClick={() => handleStatusChange(lead.id, "won")}
+            style={{ padding: "6px 16px", borderRadius: 8, border: `1.5px solid ${status === "won" ? "rgba(34,197,94,0.4)" : "rgba(255,255,255,0.06)"}`, background: status === "won" ? "rgba(34,197,94,0.15)" : "transparent", color: status === "won" ? "#22c55e" : "#525252", fontSize: 9, fontWeight: 900, cursor: "pointer", textTransform: "uppercase", transition: "all 0.2s" }}
+          >🎉 Won</button>
+          <button onClick={() => handleStatusChange(lead.id, "lost")}
+            style={{ padding: "6px 16px", borderRadius: 8, border: `1.5px solid ${status === "lost" ? "rgba(239,68,68,0.4)" : "rgba(255,255,255,0.06)"}`, background: status === "lost" ? "rgba(239,68,68,0.15)" : "transparent", color: status === "lost" ? "#ef4444" : "#525252", fontSize: 9, fontWeight: 900, cursor: "pointer", textTransform: "uppercase", transition: "all 0.2s" }}
+          >❌ Lost</button>
+        </div>
+      )}
+
+      {/* Quick advance buttons when not at outcome */}
+      {!isFinal && currentLinearLevel < 4 && (
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10, gap: 6 }}>
+          <button onClick={() => handleAdvanceClick(currentLinearLevel + 1)}
+            style={{ padding: "5px 14px", borderRadius: 8, background: "linear-gradient(135deg,#f97316,#ea580c)", color: "#fff", border: "none", fontSize: 9, fontWeight: 800, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.05em", boxShadow: "0 2px 8px rgba(249,115,22,0.25)", transition: "all 0.2s" }}
+          >
+            Advance to → {PIPELINE_PHASES.find(p => p.linearLevel === currentLinearLevel + 1)?.label}
+          </button>
+          <button onClick={() => handleStatusChange(lead.id, "lost")}
+            style={{ padding: "5px 12px", borderRadius: 8, background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", color: "#ef4444", fontSize: 9, fontWeight: 800, cursor: "pointer", textTransform: "uppercase" }}
+          >
+            Mark Lost
+          </button>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes timelinePulse {
+          0%, 100% { box-shadow: 0 0 8px rgba(249,115,22,0.3); }
+          50% { box-shadow: 0 0 20px rgba(249,115,22,0.5); }
+        }
+      `}</style>
+    </div>
   );
 }
 
@@ -217,7 +428,7 @@ function LeadDetailPanel({
       return;
     }
     const q = query(
-      collection(db, "tasks"), 
+      collection(db, "tasks"),
       where("leadId", "==", lead.id),
       orderBy("createdAt", "asc")
     );
@@ -303,6 +514,9 @@ function LeadDetailPanel({
 
   return (
     <div className="lead-expanded" style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "20px" }}>
+      {/* Pipeline Timeline Tracker */}
+      <PipelineTimeline lead={lead} handleStatusChange={handleStatusChange} />
+
       {/* CRM Controls Bar */}
       <div className="lead-crm-bar" style={{ display: "flex", justifyContent: "flex-end", paddingBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.02)", marginBottom: 16 }}>
         {/* Priority Select */}
@@ -438,7 +652,7 @@ function LeadDetailPanel({
             <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Next Follow Up</div>
 
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <input 
+              <input
                 type="date"
                 value={lead.nextFollowUp || ""}
                 onChange={(e) => handleUpdateFollowUp(lead.id, e.target.value)}
@@ -460,7 +674,7 @@ function LeadDetailPanel({
               <span>Digital Contracts</span>
               {loadingContracts && <Loader size={10} className="animate-spin text-zinc-500" />}
             </div>
-            
+
             {contracts.length === 0 ? (
               <div>
                 <div style={{ fontSize: 10, color: "#525252", fontStyle: "italic", marginBottom: 8 }}>No contracts drafted yet.</div>
@@ -476,7 +690,7 @@ function LeadDetailPanel({
               <div>
                 {contracts.map(contract => {
                   const statusCfg = CONTRACT_STATUS_CONFIG[contract.status] || CONTRACT_STATUS_CONFIG.draft;
-                  const expiresStr = contract.expiresAt 
+                  const expiresStr = contract.expiresAt
                     ? new Date(contract.expiresAt.toDate ? contract.expiresAt.toDate() : contract.expiresAt).toLocaleDateString("en-US", { month: "short", day: "numeric" })
                     : "Never";
 
@@ -488,7 +702,7 @@ function LeadDetailPanel({
                           {statusCfg.label}
                         </span>
                       </div>
-                      
+
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", fontSize: 9, color: "#737373" }}>
                         <div>Created: <span style={{ color: "#fff", fontWeight: 600 }}>{fmt(contract.createdAt)}</span></div>
                         <div>Expires: <span style={{ color: "#fff", fontWeight: 600 }}>{expiresStr}</span></div>
@@ -520,7 +734,7 @@ function LeadDetailPanel({
                     </div>
                   );
                 })}
-                
+
                 <button
                   type="button"
                   onClick={handleGenerateNewContract}
@@ -540,7 +754,7 @@ function LeadDetailPanel({
               <span>Lead Invoices</span>
               {loadingInvoices && <Loader size={10} className="animate-spin text-zinc-500" />}
             </div>
-            
+
             {invoices.length === 0 ? (
               <div>
                 <div style={{ fontSize: 10, color: "#525252", fontStyle: "italic", marginBottom: 8 }}>No invoices created yet.</div>
@@ -572,7 +786,7 @@ function LeadDetailPanel({
                           {statusCfg.label}
                         </span>
                       </div>
-                      
+
                       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px", fontSize: 9, color: "#737373" }}>
                         <div>Issued: <span style={{ color: "#fff", fontWeight: 600 }}>{fmt(inv.issueDate)}</span></div>
                         <div>Due: <span style={{ color: "#fff", fontWeight: 600 }}>{fmt(inv.dueDate)}</span></div>
@@ -591,7 +805,7 @@ function LeadDetailPanel({
                         >
                           Edit Invoice
                         </button>
-                        
+
                         <a href={`/api/invoices/${inv.id}/pdf`} download style={{ textDecoration: "none", display: "flex" }}>
                           <button
                             type="button"
@@ -614,7 +828,7 @@ function LeadDetailPanel({
                     </div>
                   );
                 })}
-                
+
                 <button
                   type="button"
                   onClick={handleGenerateNewInvoice}
@@ -631,17 +845,17 @@ function LeadDetailPanel({
           {/* Tasks Checklist Widget */}
           <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
             <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Actionable Tasks</div>
-            
+
             <form onSubmit={handleAddTask} style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 10 }}>
               <div style={{ display: "flex", gap: 6 }}>
-                <input 
+                <input
                   type="text"
                   placeholder="Add new task..."
                   value={newTaskTitle}
                   onChange={(e) => setNewTaskTitle(e.target.value)}
                   style={{ flex: 1, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
                 />
-                <button 
+                <button
                   type="submit"
                   disabled={addingTask || !newTaskTitle.trim()}
                   style={{ background: "#f97316", color: "#fff", border: "none", borderRadius: 8, padding: "6px 12px", fontSize: 10, fontWeight: 800, cursor: "pointer", textTransform: "uppercase" }}
@@ -651,7 +865,7 @@ function LeadDetailPanel({
               </div>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <span style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.05em" }}>Due Date:</span>
-                <input 
+                <input
                   type="date"
                   value={newTaskDueDate}
                   onChange={(e) => setNewTaskDueDate(e.target.value)}
@@ -667,7 +881,7 @@ function LeadDetailPanel({
                 tasks.map(t => (
                   <div key={t.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 8, padding: "6px 8px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-                      <div 
+                      <div
                         onClick={() => handleToggleTask(t.id, t.status)}
                         style={{
                           width: 14,
@@ -693,7 +907,7 @@ function LeadDetailPanel({
                         {t.title}
                       </span>
                     </div>
-                    <button 
+                    <button
                       type="button"
                       onClick={() => handleDeleteTask(t.id)}
                       style={{ background: "none", border: "none", color: "#525252", cursor: "pointer", fontSize: 10, padding: 0 }}
@@ -729,22 +943,10 @@ function LeadDetailPanel({
             </div>
           )}
 
-          {/* Pipeline Status */}
-          <div style={{ marginTop: "10px" }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Move Stage</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
-              {["new", "contacted", "qualified", "hot", "proposal_sent", "won", "lost"].map(s => (
-                <button key={s} onClick={() => handleStatusChange(lead.id, s)}
-                  style={{ padding: "6px 12px", borderRadius: 8, border: "1px solid", cursor: "pointer", fontSize: 9, fontWeight: 700, textTransform: "uppercase", transition: "all 0.15s",
-                    background: status === s ? STATUS_CONFIG[s].bg : "transparent",
-                    color: status === s ? STATUS_CONFIG[s].color : "#525252",
-                    borderColor: status === s ? STATUS_CONFIG[s].border : "rgba(255,255,255,0.06)",
-                  }}
-                >{s}</button>
-              ))}
-              <button onClick={() => handleDeleteLead(lead.id)}
-                style={{ width: 32, height: 32, borderRadius: 8, background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", color: "#ef4444", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><Trash2 size={14} /></button>
-            </div>
+          {/* Quick Actions */}
+          <div style={{ marginTop: "10px", display: "flex", gap: 8, justifyContent: "flex-end" }}>
+            <button onClick={() => handleDeleteLead(lead.id)}
+              style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 14px", borderRadius: 8, background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", color: "#ef4444", cursor: "pointer", fontSize: 9, fontWeight: 800, textTransform: "uppercase" }}><Trash2 size={12} /> Delete Lead</button>
           </div>
         </div>
       </div>
@@ -795,7 +997,7 @@ function LeadCalendarView({
 
   // Month names
   const monthNames = [
-    "January", "February", "March", "April", "May", "June", 
+    "January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
   ];
 
@@ -804,8 +1006,8 @@ function LeadCalendarView({
     const stats = {};
     leads.forEach(lead => {
       if (lead.type === "booking_confirmation") return;
-      const createdDate = lead.createdAt?.toDate 
-        ? lead.createdAt.toDate() 
+      const createdDate = lead.createdAt?.toDate
+        ? lead.createdAt.toDate()
         : (lead.createdAt ? new Date(lead.createdAt) : null);
       if (createdDate) {
         const y = createdDate.getFullYear();
@@ -828,8 +1030,8 @@ function LeadCalendarView({
     if (!selectedDateStr) return [];
     return leads.filter(lead => {
       if (lead.type === "booking_confirmation") return false;
-      const createdDate = lead.createdAt?.toDate 
-        ? lead.createdAt.toDate() 
+      const createdDate = lead.createdAt?.toDate
+        ? lead.createdAt.toDate()
         : (lead.createdAt ? new Date(lead.createdAt) : null);
       if (!createdDate) return false;
       const y = createdDate.getFullYear();
@@ -870,14 +1072,14 @@ function LeadCalendarView({
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
       {/* Notice Banner */}
-      <div style={{ 
-        background: "rgba(249,115,22,0.08)", 
-        border: "1px solid rgba(249,115,22,0.18)", 
-        borderRadius: 12, 
-        padding: "12px 16px", 
-        display: "flex", 
-        alignItems: "center", 
-        justifyContent: "space-between", 
+      <div style={{
+        background: "rgba(249,115,22,0.08)",
+        border: "1px solid rgba(249,115,22,0.18)",
+        borderRadius: 12,
+        padding: "12px 16px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
         flexWrap: "wrap",
         gap: 12
       }}>
@@ -887,22 +1089,22 @@ function LeadCalendarView({
             Please see Calendly for exact meeting dates and times.
           </span>
         </div>
-        <a 
-          href="https://calendly.com/app/scheduled_events/user/me" 
-          target="_blank" 
+        <a
+          href="https://calendly.com/app/scheduled_events/user/me"
+          target="_blank"
           rel="noreferrer"
-          style={{ 
-            background: "#f97316", 
-            color: "#fff", 
-            border: "none", 
-            padding: "6px 14px", 
-            borderRadius: 8, 
-            fontSize: 10, 
-            fontWeight: 800, 
-            textTransform: "uppercase", 
+          style={{
+            background: "#f97316",
+            color: "#fff",
+            border: "none",
+            padding: "6px 14px",
+            borderRadius: 8,
+            fontSize: 10,
+            fontWeight: 800,
+            textTransform: "uppercase",
             textDecoration: "none",
             letterSpacing: "0.05em",
-            transition: "all 0.2s" 
+            transition: "all 0.2s"
           }}
           onMouseEnter={e => e.currentTarget.style.background = "#ea580c"}
           onMouseLeave={e => e.currentTarget.style.background = "#f97316"}
@@ -918,7 +1120,7 @@ function LeadCalendarView({
         </h2>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           {!(month === new Date().getMonth() && year === new Date().getFullYear()) && (
-            <button 
+            <button
               onClick={() => { setCurrentDate(new Date()); setSelectedDateStr(null); }}
               style={{ background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)", color: "#f97316", padding: "6px 12px", borderRadius: 8, fontSize: 11, fontWeight: 800, cursor: "pointer", transition: "all 0.2s" }}
               onMouseEnter={e => e.currentTarget.style.background = "rgba(249,115,22,0.15)"}
@@ -927,7 +1129,7 @@ function LeadCalendarView({
               Today
             </button>
           )}
-          <button 
+          <button
             onClick={handlePrevMonth}
             style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", color: "#fff", padding: "6px 12px", borderRadius: 8, fontSize: 11, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
             onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
@@ -935,7 +1137,7 @@ function LeadCalendarView({
           >
             ← Previous
           </button>
-          <button 
+          <button
             onClick={handleNextMonth}
             style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.06)", color: "#fff", padding: "6px 12px", borderRadius: 8, fontSize: 11, fontWeight: 700, cursor: "pointer", transition: "all 0.2s" }}
             onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
@@ -961,30 +1163,30 @@ function LeadCalendarView({
             const dayStats = cell.dateStr ? statsByDate[cell.dateStr] : null;
             const hasLeads = dayStats && dayStats.leads > 0;
             const hasBookings = dayStats && dayStats.bookings > 0;
-            
-            const isToday = cell.day && 
-                            new Date().getDate() === cell.day && 
-                            new Date().getMonth() === month && 
+
+            const isToday = cell.day &&
+                            new Date().getDate() === cell.day &&
+                            new Date().getMonth() === month &&
                             new Date().getFullYear() === year;
 
             const isSelected = cell.dateStr && cell.dateStr === selectedDateStr;
 
             return (
-              <div 
-                key={idx} 
+              <div
+                key={idx}
                 onClick={() => {
                   if (cell.day) {
                     setSelectedDateStr(isSelected ? null : cell.dateStr);
                   }
                 }}
-                style={{ 
+                style={{
                   aspectRatio: "1.2/1",
-                  background: isSelected ? "linear-gradient(135deg, rgba(249,115,22,0.15) 0%, rgba(249,115,22,0.05) 100%)" : (isToday ? "linear-gradient(135deg, rgba(249,115,22,0.05) 0%, rgba(255,255,255,0.01) 100%)" : (cell.day ? "rgba(255,255,255,0.015)" : "transparent")), 
-                  border: `1.5px solid ${isSelected ? "#f97316" : (isToday ? "rgba(249,115,22,0.3)" : (cell.day ? "rgba(255,255,255,0.04)" : "transparent"))}`, 
-                  borderRadius: 14, 
-                  padding: "10px", 
-                  display: "flex", 
-                  flexDirection: "column", 
+                  background: isSelected ? "linear-gradient(135deg, rgba(249,115,22,0.15) 0%, rgba(249,115,22,0.05) 100%)" : (isToday ? "linear-gradient(135deg, rgba(249,115,22,0.05) 0%, rgba(255,255,255,0.01) 100%)" : (cell.day ? "rgba(255,255,255,0.015)" : "transparent")),
+                  border: `1.5px solid ${isSelected ? "#f97316" : (isToday ? "rgba(249,115,22,0.3)" : (cell.day ? "rgba(255,255,255,0.04)" : "transparent"))}`,
+                  borderRadius: 14,
+                  padding: "10px",
+                  display: "flex",
+                  flexDirection: "column",
                   justifyContent: "space-between",
                   minHeight: 70,
                   transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -1052,12 +1254,12 @@ function LeadCalendarView({
           padding: 16,
           boxSizing: "border-box"
         }}>
-          <div 
-            ref={panelRef} 
-            style={{ 
-              background: "#0d0d0d", 
-              border: "1px solid rgba(255,255,255,0.08)", 
-              borderRadius: 20, 
+          <div
+            ref={panelRef}
+            style={{
+              background: "#0d0d0d",
+              border: "1px solid rgba(255,255,255,0.08)",
+              borderRadius: 20,
               width: "100%",
               maxWidth: 850,
               maxHeight: "90vh",
@@ -1073,7 +1275,7 @@ function LeadCalendarView({
                 <Calendar size={16} color="#f97316" />
                 Leads for {new Date(selectedDateStr + "T00:00:00").toLocaleDateString("en-US", { weekday: "short", month: "long", day: "numeric", year: "numeric" })}
               </h3>
-              <button 
+              <button
                 onClick={() => { setSelectedDateStr(null); setExpandedLead(null); }}
                 style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 8, cursor: "pointer", color: "#a3a3a3", display: "flex", alignItems: "center", justifyContent: "center", width: 24, height: 24, fontSize: 12, fontWeight: 900, transition: "all 0.15s" }}
                 onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
@@ -1082,7 +1284,7 @@ function LeadCalendarView({
                 ✕
               </button>
             </div>
-            
+
             {/* Modal Body */}
             <div style={{ padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 12 }}>
               {dayLeads.length === 0 ? (
@@ -1105,18 +1307,18 @@ function LeadCalendarView({
                               <span style={{ fontSize: 10, color: "#525252" }}>{lead.email}</span>
                             </div>
                           </div>
-                          
+
                           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                             <StatusBadge status={status} />
                             <span style={{ fontSize: 10, color: "#f97316", fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.05em" }}>{lead.requestedService || "General enquiry"}</span>
-                            
+
                             <div style={{ display: "flex", gap: 6 }}>
                               {lead.whatsapp && lead.whatsapp !== "N/A" && (
-                                <a 
+                                <a
                                   href={`https://wa.me/${lead.whatsapp.replace(/\D/g,"")}?text=${encodeURIComponent(
                                     `Hi ${lead.fullName || ""}, I'm reaching out from Grow Orbit regarding your interest in ${lead.requestedService || "our services"}. I'd love to connect and see how we can help you scale!`
-                                  )}`} 
-                                  target="_blank" 
+                                  )}`}
+                                  target="_blank"
                                   rel="noreferrer"
                                   style={{ width: 26, height: 26, borderRadius: 6, background: "rgba(74,222,128,0.08)", border: "1px solid rgba(74,222,128,0.15)", color: "#4ade80", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s" }}
                                   onMouseEnter={e => { e.currentTarget.style.background = "rgba(74,222,128,0.15)"; }}
@@ -1126,7 +1328,7 @@ function LeadCalendarView({
                                   <Phone size={11} />
                                 </a>
                               )}
-                              <a 
+                              <a
                                 href={`mailto:${lead.email}`}
                                 style={{ width: 26, height: 26, borderRadius: 6, background: "rgba(56,189,248,0.08)", border: "1px solid rgba(56,189,248,0.15)", color: "#38bdf8", display: "flex", alignItems: "center", justifyContent: "center", transition: "all 0.15s" }}
                                 onMouseEnter={e => { e.currentTarget.style.background = "rgba(56,189,248,0.15)"; }}
@@ -1135,7 +1337,7 @@ function LeadCalendarView({
                               >
                                 <Mail size={11} />
                               </a>
-                              <button 
+                              <button
                                 onClick={() => { setExpandedLead(isLeadOpen ? null : lead.id); setCrmNote(""); }}
                                 style={{ padding: "5px 10px", borderRadius: 8, background: isLeadOpen ? "#f97316" : "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", color: isLeadOpen ? "#fff" : "#a3a3a3", fontSize: 9, fontWeight: 700, cursor: "pointer" }}
                               >
@@ -1144,7 +1346,7 @@ function LeadCalendarView({
                             </div>
                           </div>
                         </div>
-                        
+
                         {isLeadOpen && (
                           <div style={{ borderTop: "1px solid rgba(255,255,255,0.03)", background: "rgba(255,255,255,0.005)" }}>
                             <LeadDetailPanel
@@ -1258,17 +1460,55 @@ export default function LeadsTab({
   // Compute lead counts per status dynamically for visual filters
   const countsByStatus = useMemo(() => {
     const counts = { all: (leads || []).length };
-    ["new", "contacted", "qualified", "hot", "proposal_sent", "won", "lost"].forEach(f => {
+    ["new", "hot", "qualified", "contacted", "proposal_sent", "won", "lost"].forEach(f => {
       counts[f] = (leads || []).filter(l => {
         const s = l.status || "new";
         if (s === "replied" && f === "contacted") return true;
-        if (s === "archived" && f === "lost") return true;
-        if (s === "cold" && f === "lost") return true;
+        if (s === "cold" && f === "new") return true;
+        if (s === "archived" && f === "new") return true;
         return s === f;
       }).length;
     });
     return counts;
   }, [leads]);
+
+  // Compute recent (last 3 days) counts for Lead In & Meeting Booked
+  const recent3dCounts = useMemo(() => {
+    const now = new Date();
+    const threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+    const isRecent = (l) => {
+      if (!l.createdAt) return false;
+      const created = l.createdAt?.toDate ? l.createdAt.toDate() : new Date(l.createdAt);
+      return (now - created) <= threeDaysMs;
+    };
+
+    return {
+      new: (leads || []).filter(l => (l.status === "new" || l.status === "cold") && isRecent(l)).length,
+      hot: (leads || []).filter(l => (l.status === "hot" || l.meetingBooked) && isRecent(l)).length,
+    };
+  }, [leads]);
+
+  const applyDatePreset = (preset) => {
+    if (preset === "ALL") {
+      setStartDate("");
+      setEndDate("");
+      return;
+    }
+    const now = new Date();
+    const endDateStr = now.toISOString().split("T")[0];
+    let days = 7;
+    if (preset === "1W") days = 7;
+    if (preset === "1M") days = 30;
+    if (preset === "3M") days = 90;
+    if (preset === "6M") days = 180;
+    if (preset === "1Y") days = 365;
+
+    const pastDate = new Date(now.getTime() - days * 24 * 60 * 60 * 1000);
+    const startDateStr = pastDate.toISOString().split("T")[0];
+
+    setStartDate(startDateStr);
+    setEndDate(endDateStr);
+  };
 
   const toggleLeadSelection = (leadId) => {
     setSelectedLeads(prev => prev.includes(leadId) ? prev.filter(id => id !== leadId) : [...prev, leadId]);
@@ -1329,8 +1569,8 @@ export default function LeadsTab({
       res = res.filter(l => {
         const s = l.status || "new";
         if (s === "replied" && leadFilter === "contacted") return true;
-        if (s === "archived" && leadFilter === "lost") return true;
-        if (s === "cold" && leadFilter === "lost") return true;
+        if (s === "cold" && leadFilter === "new") return true;
+        if (s === "archived" && leadFilter === "new") return true;
         return s === leadFilter;
       });
     }
@@ -1358,9 +1598,9 @@ export default function LeadsTab({
     // Search query match
     if (leadSearch.trim()) {
       const q = leadSearch.toLowerCase();
-      res = res.filter(l => 
-        l.fullName?.toLowerCase().includes(q) || 
-        l.email?.toLowerCase().includes(q) || 
+      res = res.filter(l =>
+        l.fullName?.toLowerCase().includes(q) ||
+        l.email?.toLowerCase().includes(q) ||
         l.requestedService?.toLowerCase().includes(q)
       );
     }
@@ -1450,150 +1690,346 @@ export default function LeadsTab({
             <Download size={14} />
             Export CSV
           </button>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(249,115,22,0.08)", border: "1px solid rgba(249,115,22,0.18)", borderRadius: 10, padding: "7px 12px" }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", background: "#f97316", animation: "pulse 2s infinite" }} />
-            <span style={{ fontSize: 10, fontWeight: 700, color: "#f97316", textTransform: "uppercase", letterSpacing: "0.15em" }}>{newLeadsCount} Unread</span>
-          </div>
         </div>
       </div>
 
       {/* Analytics Mini-Dashboard */}
-      <div className="leads-analytics" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 16 }}>
-        <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, padding: "16px 20px" }}>
+      <div className="leads-analytics" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 16 }}>
+        <div style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.005) 100%)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 16, padding: "16px 20px" }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Total Leads</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: "#fff" }}>{filteredLeads.length}</div>
         </div>
-        <div style={{ background: "rgba(16,185,129,0.05)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 16, padding: "16px 20px" }}>
+        <div style={{ background: "linear-gradient(135deg, rgba(16,185,129,0.08) 0%, rgba(16,185,129,0.01) 100%)", border: "1px solid rgba(16,185,129,0.2)", borderRadius: 16, padding: "16px 20px" }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "#10b981", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Meetings Booked</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: "#10b981" }}>{filteredLeads.filter(l => l.meetingBooked).length}</div>
         </div>
-        <div style={{ background: "rgba(249,115,22,0.05)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 16, padding: "16px 20px" }}>
+        <div style={{ background: "linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(249,115,22,0.01) 100%)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 16, padding: "16px 20px" }}>
           <div style={{ fontSize: 10, fontWeight: 700, color: "#f97316", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8 }}>Conversion Rate</div>
           <div style={{ fontSize: 24, fontWeight: 900, color: "#f97316" }}>
             {filteredLeads.length ? Math.round((filteredLeads.filter(l => l.meetingBooked).length / filteredLeads.length) * 100) : 0}%
           </div>
         </div>
+        {/* Needs Attention stat */}
+        {(() => {
+          const overdueCount = filteredLeads.filter(l => {
+            const s = l.status || "new";
+            if (s !== "new" && s !== "cold") return false;
+            const created = l.createdAt?.toDate ? l.createdAt.toDate() : new Date();
+            return (new Date() - created) / (1000 * 60 * 60) > 24;
+          }).length;
+          return overdueCount > 0 ? (
+            <div style={{ background: "linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(239,68,68,0.01) 100%)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 16, padding: "16px 20px", position: "relative" }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "#ef4444", textTransform: "uppercase", letterSpacing: "0.1em", marginBottom: 8, display: "flex", alignItems: "center", gap: 6 }}>
+                <Bell size={12} /> Needs Attention
+              </div>
+              <div style={{ fontSize: 24, fontWeight: 900, color: "#ef4444" }}>{overdueCount}</div>
+              <div style={{ fontSize: 9, color: "#a3a3a3", marginTop: 2 }}>Research overdue (&gt;24h)</div>
+            </div>
+          ) : null;
+        })()}
       </div>
 
       <div className="leads-controls" style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-        <div style={{ flex: 1, minWidth: "280px", display: "flex", alignItems: "center", gap: 10, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "10px 16px" }}>
-          <Search size={14} color="#525252" />
-          <input
-            type="text"
-            placeholder="Search leads by name, email, or service…"
-            value={leadSearch}
-            onChange={e => setLeadSearch(e.target.value)}
-            style={{ flex: 1, background: "none", border: "none", color: "#fff", fontSize: 12, fontWeight: 500, outline: "none" }}
-          />
-        </div>
-         <div className="leads-filters" style={{ display: "flex", gap: 6, flexWrap: "wrap", width: "100%", maxWidth: "100%" }}>
-          {["all", "new", "contacted", "qualified", "hot", "proposal_sent", "won", "lost"].map(f => (
-            <button key={f} onClick={() => setLeadFilter(f)}
-              style={{ padding: "8px 14px", borderRadius: 10, border: "1px solid", cursor: "pointer", fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.12em", transition: "all 0.15s",
-                background: leadFilter === f ? (f === "all" ? "rgba(255,255,255,0.08)" : STATUS_CONFIG[f]?.bg || "rgba(255,255,255,0.08)") : "transparent",
-                color: leadFilter === f ? (f === "all" ? "#fff" : STATUS_CONFIG[f]?.color || "#fff") : "#525252",
-                borderColor: leadFilter === f ? (f === "all" ? "rgba(255,255,255,0.15)" : STATUS_CONFIG[f]?.border || "rgba(255,255,255,0.1)") : "rgba(255,255,255,0.04)",
-              }}
-            >
-              {f === "all" ? `All (${countsByStatus.all})` : `${STATUS_CONFIG[f]?.label || f} (${countsByStatus[f]})`}
-            </button>
-          ))}
-        </div>
-
-        {/* Priority Filter */}
-        <div className="leads-priority-filter" style={{ display: "flex", gap: 4, background: "rgba(255,255,255,0.02)", padding: "4px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.04)" }}>
-          {["all", "low", "medium", "high"].map(p => (
-            <button key={p} onClick={() => setPriorityFilter(p)}
-              style={{
-                padding: "6px 12px", borderRadius: 10, border: "none", cursor: "pointer", fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.1em", transition: "all 0.15s",
-                background: priorityFilter === p ? (p === "all" ? "rgba(255,255,255,0.15)" : PRIORITY_CONFIG[p].bg) : "transparent",
-                color: priorityFilter === p ? (p === "all" ? "#fff" : PRIORITY_CONFIG[p].color) : "#525252",
-              }}
-            >
-              {p}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Advanced Filters (Date, Owner, Source) */}
-      <div className="leads-advanced-filters" style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
-        {/* Source Filter */}
-        <select
-          value={sourceFilter}
-          onChange={e => setSourceFilter(e.target.value)}
-          style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer" }}
-        >
-          <option value="all">All Sources</option>
-          <option value="Landing Page Form">Landing Page Form</option>
-          <option value="Design & Creative Landing Page">Design & Creative Landing Page</option>
-          <option value="Design & Creative Bottom Form">Design & Creative Bottom Form</option>
-          <option value="Direct">Direct</option>
-        </select>
-
-        {/* Follow Up Filter */}
-        <select
-          value={followUpFilter}
-          onChange={e => setFollowUpFilter(e.target.value)}
-          style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer" }}
-        >
-          <option value="all">All Follow-ups</option>
-          <option value="today">Due Today</option>
-          <option value="overdue">Overdue</option>
-          <option value="upcoming">Upcoming</option>
-        </select>
-
-        {/* Sort Order Selector */}
-        <select
-          value={sortOrder}
-          onChange={e => setSortOrder(e.target.value)}
-          style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer" }}
-        >
-          <option value="desc">Sort: New to Old</option>
-          <option value="asc">Sort: Old to New</option>
-        </select>
-
-        <div className="leads-date-filter" style={{ display: "flex", gap: 10, alignItems: "center" }}>
-          <div
-            onClick={() => startInputRef.current?.showPicker()}
-            style={{ display: "flex", alignItems: "center", gap: 12, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", cursor: "pointer" }}
-            onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(249,115,22,0.3)"}
-            onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"}
-          >
-            <Calendar size={14} color="#525252" />
-            <span style={{ fontSize: 9, fontWeight: 800, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.15em" }}>From</span>
+        {/* Search Bar Row with Integrated Priority Filter */}
+        <div style={{ flex: 1, minWidth: "280px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 10, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "6px 8px 6px 16px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flex: 1 }}>
+            <Search size={14} color="#525252" />
             <input
-              ref={startInputRef}
-              type="date"
-              value={startDate}
-              onChange={e => setStartDate(e.target.value)}
-              onClick={(e) => e.stopPropagation()}
-              style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer", colorScheme: "dark" }}
+              type="text"
+              placeholder="Search leads by name, email, or service…"
+              value={leadSearch}
+              onChange={e => setLeadSearch(e.target.value)}
+              style={{ flex: 1, background: "none", border: "none", color: "#fff", fontSize: 12, fontWeight: 500, outline: "none" }}
             />
           </div>
 
-          <div
-            onClick={() => endInputRef.current?.showPicker()}
-            style={{ display: "flex", alignItems: "center", gap: 12, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", cursor: "pointer" }}
+          {/* Integrated Priority Filter */}
+          <div className="leads-priority-filter" style={{ display: "flex", gap: 3, background: "rgba(255,255,255,0.03)", padding: "3px", borderRadius: 10, border: "1px solid rgba(255,255,255,0.05)" }}>
+            {["all", "low", "medium", "high"].map(p => (
+              <button key={p} onClick={() => setPriorityFilter(p)}
+                style={{
+                  padding: "5px 11px", borderRadius: 8, border: "none", cursor: "pointer", fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", transition: "all 0.15s",
+                  background: priorityFilter === p ? (p === "all" ? "rgba(255,255,255,0.15)" : PRIORITY_CONFIG[p].bg) : "transparent",
+                  color: priorityFilter === p ? (p === "all" ? "#fff" : PRIORITY_CONFIG[p].color) : "#525252",
+                }}
+              >
+                {p}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Pipeline Stepper Filter Bar */}
+        <div className="leads-filters" style={{ display: "flex", alignItems: "center", gap: 6, width: "100%", padding: "8px 12px", borderRadius: 14, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", overflowX: "auto", whiteSpace: "nowrap", scrollbarWidth: "none" }}>
+          {/* Master ALL Filter Button */}
+          <button
+            onClick={() => setLeadFilter("all")}
+            style={{
+              padding: "6px 14px",
+              borderRadius: 8,
+              border: `1px solid ${leadFilter === "all" ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.06)"}`,
+              cursor: "pointer",
+              fontSize: 11,
+              fontWeight: leadFilter === "all" ? 900 : 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.08em",
+              transition: "all 0.2s ease",
+              background: leadFilter === "all" ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.02)",
+              color: leadFilter === "all" ? "#fff" : "#71717a",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              flexShrink: 0
+            }}
+          >
+            <span>All</span>
+            <span style={{ fontSize: 9, fontWeight: 900, padding: "1px 6px", borderRadius: 100, background: leadFilter === "all" ? "rgba(255,255,255,0.2)" : "rgba(255,255,255,0.08)", color: "#fff" }}>
+              {countsByStatus.all}
+            </span>
+          </button>
+
+          <div style={{ width: 1, height: 20, background: "rgba(255,255,255,0.08)", margin: "0 4px", flexShrink: 0 }} />
+
+          {/* Sequential Phase Stepper Bar */}
+          {["new", "hot", "qualified", "contacted", "proposal_sent", "won", "lost"].map((f, idx) => {
+            const isSelected = leadFilter === f;
+            const cfg = STATUS_CONFIG[f] || STATUS_CONFIG.new;
+            const count = countsByStatus[f] || 0;
+
+            return (
+              <React.Fragment key={f}>
+                {idx > 0 && (
+                  <ChevronRight size={13} color="rgba(255,255,255,0.2)" style={{ margin: "0 1px", flexShrink: 0 }} />
+                )}
+                <button
+                  onClick={() => setLeadFilter(f)}
+                  style={{
+                    padding: "6px 12px",
+                    borderRadius: 8,
+                    border: `1px solid ${isSelected ? `${cfg.color}66` : "rgba(255,255,255,0.05)"}`,
+                    cursor: "pointer",
+                    fontSize: 10,
+                    fontWeight: isSelected ? 900 : 700,
+                    textTransform: "uppercase",
+                    letterSpacing: "0.06em",
+                    transition: "all 0.2s ease",
+                    background: isSelected ? `${cfg.color}15` : "rgba(255,255,255,0.02)",
+                    color: cfg.color,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 6,
+                    boxShadow: isSelected ? `0 0 12px ${cfg.color}25` : "none",
+                    flexShrink: 0
+                  }}
+                  onMouseEnter={e => {
+                    if (!isSelected) {
+                      e.currentTarget.style.background = `${cfg.color}10`;
+                      e.currentTarget.style.borderColor = `${cfg.color}40`;
+                    }
+                  }}
+                  onMouseLeave={e => {
+                    if (!isSelected) {
+                      e.currentTarget.style.background = "rgba(255,255,255,0.02)";
+                      e.currentTarget.style.borderColor = "rgba(255,255,255,0.05)";
+                    }
+                  }}
+                >
+                  {/* Step Number Badge */}
+                  <span style={{
+                    fontSize: 8,
+                    fontWeight: 900,
+                    width: 16,
+                    height: 16,
+                    borderRadius: "50%",
+                    background: isSelected ? cfg.color : "rgba(255,255,255,0.08)",
+                    color: isSelected ? "#000000" : cfg.color,
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexShrink: 0
+                  }}>
+                    {idx + 1}
+                  </span>
+
+                  {/* Step Label */}
+                  <span>{cfg.label}</span>
+
+                  {/* Count Pill */}
+                  <span style={{
+                    fontSize: 9,
+                    fontWeight: 900,
+                    padding: "1px 6px",
+                    borderRadius: 100,
+                    background: isSelected ? `${cfg.color}30` : "rgba(255,255,255,0.06)",
+                    color: isSelected ? "#ffffff" : "#a3a3a3"
+                  }}>
+                    {count}
+                  </span>
+
+                  {/* Recent Indicator Badges */}
+                  {f === "new" && recent3dCounts.new > 0 && (
+                    <span style={{ fontSize: 8, fontWeight: 900, background: "rgba(34,211,238,0.18)", color: "#22d3ee", border: "1px solid rgba(34,211,238,0.4)", borderRadius: 100, padding: "1px 5px", letterSpacing: "0.05em", animation: "pulse 2s infinite", flexShrink: 0 }}>
+                      ✨ +{recent3dCounts.new} NEW
+                    </span>
+                  )}
+                  {f === "hot" && recent3dCounts.hot > 0 && (
+                    <span style={{ fontSize: 8, fontWeight: 900, background: "rgba(34,211,238,0.18)", color: "#22d3ee", border: "1px solid rgba(34,211,238,0.4)", borderRadius: 100, padding: "1px 5px", letterSpacing: "0.05em", animation: "pulse 2s infinite", flexShrink: 0 }}>
+                      ✨ +{recent3dCounts.hot} NEW
+                    </span>
+                  )}
+                </button>
+              </React.Fragment>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Advanced Filters (Date Preset Bar & Sort) */}
+      <div className="leads-advanced-filters" style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
+        <div className="leads-date-filter" style={{ display: "flex", gap: 10, alignItems: "center" }}>
+          {/* Quick Date Range Preset Buttons (ALL, 1W, 1M, 3M, 6M, 1Y) */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 4,
+            background: "#0d0d0d",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: 12,
+            padding: "3px 5px",
+            flexWrap: "nowrap"
+          }}>
+            {(() => {
+              // Determine active preset
+              let activePreset = "ALL";
+              if (!startDate && !endDate) {
+                activePreset = "ALL";
+              } else if (startDate && endDate) {
+                const start = new Date(startDate);
+                const end = new Date(endDate);
+                const diffDays = Math.round((end - start) / (1000 * 60 * 60 * 24));
+                if (diffDays >= 6 && diffDays <= 8) activePreset = "1W";
+                else if (diffDays >= 28 && diffDays <= 32) activePreset = "1M";
+                else if (diffDays >= 88 && diffDays <= 92) activePreset = "3M";
+                else if (diffDays >= 175 && diffDays <= 185) activePreset = "6M";
+                else if (diffDays >= 360 && diffDays <= 370) activePreset = "1Y";
+                else activePreset = "CUSTOM";
+              } else {
+                activePreset = "CUSTOM";
+              }
+
+              const presets = [
+                { label: "ALL", preset: "ALL" },
+                { label: "1W", preset: "1W" },
+                { label: "1M", preset: "1M" },
+                { label: "3M", preset: "3M" },
+                { label: "6M", preset: "6M" },
+                { label: "1Y", preset: "1Y" },
+              ];
+
+              if (activePreset === "CUSTOM") {
+                presets.push({ label: "CUSTOM", preset: "CUSTOM" });
+              }
+
+              return presets.map(({ label, preset }) => {
+                const isPresetActive = activePreset === preset;
+
+                return (
+                  <button
+                    key={preset}
+                    onClick={() => {
+                      if (preset !== "CUSTOM") {
+                        applyDatePreset(preset);
+                      }
+                    }}
+                    style={{
+                      background: isPresetActive ? "#f97316" : "rgba(255,255,255,0.03)",
+                      color: isPresetActive ? "#ffffff" : "#a3a3a3",
+                      border: `1px solid ${isPresetActive ? "#f97316" : "rgba(255,255,255,0.04)"}`,
+                      borderRadius: 8,
+                      padding: "5px 10px",
+                      fontSize: 10,
+                      fontWeight: isPresetActive ? 900 : 700,
+                      letterSpacing: "0.05em",
+                      cursor: preset === "CUSTOM" ? "default" : "pointer",
+                      transition: "all 0.15s ease",
+                      boxShadow: isPresetActive ? "0 0 10px rgba(249,115,22,0.3)" : "none"
+                    }}
+                    onMouseEnter={e => {
+                      if (!isPresetActive && preset !== "CUSTOM") {
+                        e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+                        e.currentTarget.style.color = "#fff";
+                      }
+                    }}
+                    onMouseLeave={e => {
+                      if (!isPresetActive && preset !== "CUSTOM") {
+                        e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                        e.currentTarget.style.color = "#a3a3a3";
+                      }
+                    }}
+                  >
+                    {label}
+                  </button>
+                );
+              });
+            })()}
+          </div>
+
+          {/* Grouped From & To Date Picker Unit */}
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            background: "#0d0d0d",
+            border: "1px solid rgba(255,255,255,0.06)",
+            borderRadius: 12,
+            padding: "8px 16px",
+            transition: "border-color 0.2s"
+          }}
             onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(249,115,22,0.3)"}
             onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)"}
           >
-            <Calendar size={14} color="#525252" />
-            <span style={{ fontSize: 9, fontWeight: 800, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.15em" }}>To</span>
-            <input
-              ref={endInputRef}
-              type="date"
-              value={endDate}
-              onChange={e => setEndDate(e.target.value)}
-              onClick={(e) => e.stopPropagation()}
-              style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer", colorScheme: "dark" }}
-            />
+            {/* From Date picker part */}
+            <div
+              onClick={() => startInputRef.current?.showPicker()}
+              style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}
+            >
+              <Calendar size={14} color="#525252" style={{ marginRight: 2 }} />
+              <span style={{ fontSize: 9, fontWeight: 800, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.1em" }}>From</span>
+              <input
+                ref={startInputRef}
+                type="date"
+                value={startDate}
+                onChange={e => setStartDate(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+                style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer", colorScheme: "dark" }}
+              />
+            </div>
+
+            {/* Separator Divider Line */}
+            <div style={{ width: 1, height: 16, background: "rgba(255,255,255,0.1)" }} />
+
+            {/* To Date picker part */}
+            <div
+              onClick={() => endInputRef.current?.showPicker()}
+              style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}
+            >
+              <Calendar size={14} color="#525252" style={{ marginRight: 2 }} />
+              <span style={{ fontSize: 9, fontWeight: 800, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.1em" }}>To</span>
+              <input
+                ref={endInputRef}
+                type="date"
+                value={endDate}
+                onChange={e => setEndDate(e.target.value)}
+                onClick={(e) => e.stopPropagation()}
+                style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer", colorScheme: "dark" }}
+              />
+            </div>
           </div>
 
           {(startDate || endDate) && (
             <button
               onClick={() => { setStartDate(""); setEndDate(""); }}
-              style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", color: "#ef4444", fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer", padding: "8px 16px", borderRadius: 10, marginLeft: 6, transition: "all 0.2s" }}
+              style={{ background: "rgba(239,68,68,0.08)", border: "1px solid rgba(239,68,68,0.15)", color: "#ef4444", fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.15em", cursor: "pointer", padding: "8px 16px", borderRadius: 10, marginLeft: 2, transition: "all 0.2s" }}
               onMouseEnter={e => { e.currentTarget.style.background = "rgba(239,68,68,0.12)"; }}
               onMouseLeave={e => { e.currentTarget.style.background = "rgba(239,68,68,0.08)"; }}
             >
@@ -1601,13 +2037,23 @@ export default function LeadsTab({
             </button>
           )}
         </div>
+
+        {/* Sort Order Selector */}
+        <select
+          value={sortOrder}
+          onChange={e => setSortOrder(e.target.value)}
+          style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 16px", color: "#fff", fontSize: 11, fontWeight: 700, outline: "none", cursor: "pointer", marginLeft: "auto" }}
+        >
+          <option value="desc">Sort: New to Old</option>
+          <option value="asc">Sort: Old to New</option>
+        </select>
       </div>
 
       {/* Reset All Filters Pill */}
-      {(leadSearch || leadFilter !== "all" || priorityFilter !== "all" || ownerFilter !== "all" || sourceFilter !== "all" || startDate || endDate || sortOrder !== "desc") && (
+      {(leadSearch || leadFilter !== "all" || priorityFilter !== "all" || ownerFilter !== "all" || sourceFilter !== "all" || sortOrder !== "desc") && (
         <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
           <button
-            onClick={() => { setLeadSearch(""); setLeadFilter("all"); setPriorityFilter("all"); setOwnerFilter("all"); setSourceFilter("all"); setStartDate(""); setEndDate(""); setSortOrder("desc"); }}
+            onClick={() => { setLeadSearch(""); setLeadFilter("all"); setPriorityFilter("all"); setOwnerFilter("all"); setSourceFilter("all"); setSortOrder("desc"); }}
             style={{
               display: "inline-flex", alignItems: "center", gap: 6,
               background: "rgba(249,115,22,0.08)", border: "1px solid rgba(249,115,22,0.15)",
@@ -1626,8 +2072,7 @@ export default function LeadsTab({
               leadFilter !== "all" && `Status: ${leadFilter}`,
               priorityFilter !== "all" && `Priority: ${priorityFilter}`,
               ownerFilter !== "all" && "Owner",
-              sourceFilter !== "all" && "Source",
-              (startDate || endDate) && "Date range"
+              sourceFilter !== "all" && "Source"
             ].filter(Boolean).join(" · ")}
           </span>
         </div>
@@ -1649,10 +2094,10 @@ export default function LeadsTab({
               style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none", cursor: "pointer" }}
             >
               <option value="">Change Status...</option>
-              <option value="new">New</option>
+              <option value="new">Lead In</option>
+              <option value="qualified">Researched</option>
               <option value="contacted">Contacted</option>
-              <option value="qualified">Qualified</option>
-              <option value="hot">Hot 🔥</option>
+              <option value="hot">Meeting Booked 🔥</option>
               <option value="proposal_sent">Proposal Sent</option>
               <option value="won">Won 🎉</option>
               <option value="lost">Lost ❌</option>
@@ -1691,14 +2136,14 @@ export default function LeadsTab({
         </div>
       ) : (
         leadViewMode === "kanban" ? (
-          <KanbanBoard 
+          <KanbanBoard
             leads={filteredLeads}
             handleStatusChange={handleStatusChange}
             setExpandedLead={setExpandedLead}
             setLeadViewMode={setLeadViewMode}
           />
         ) : leadViewMode === "calendar" ? (
-          <LeadCalendarView 
+          <LeadCalendarView
             leads={filteredLeads}
             users={users}
             currentAdmin={currentAdmin}
@@ -1724,29 +2169,29 @@ export default function LeadsTab({
               const priority = calculateLeadPriority(lead);
               const cfg = STATUS_CONFIG[status];
               const isOverdue = lead.nextFollowUp && new Date(lead.nextFollowUp) < new Date(new Date().setHours(0,0,0,0)) && status !== "archived" && status !== "hot";
-              
+
               // Calculate lead age in days
               const created = lead.createdAt?.toDate ? lead.createdAt.toDate() : new Date();
               const ageDays = (new Date() - created) / (1000 * 60 * 60 * 24);
 
               return (
-                <div key={lead.id} style={{ 
-                  background: "#0d0d0d", 
-                  border: `1px solid ${isOpen ? cfg.border : (isOverdue ? "rgba(239,68,68,0.35)" : "rgba(255,255,255,0.05)")}`, 
+                <div key={lead.id} style={{
+                  background: "#0d0d0d",
+                  border: `1px solid ${isOpen ? cfg.border : (isOverdue ? "rgba(239,68,68,0.35)" : "rgba(255,255,255,0.05)")}`,
                   boxShadow: isOverdue && !isOpen ? "0 0 12px rgba(239,68,68,0.05)" : "none",
-                  borderRadius: 18, 
-                  overflow: "hidden", 
-                  transition: "all 0.2s" 
+                  borderRadius: 18,
+                  overflow: "hidden",
+                  transition: "all 0.2s"
                 }}>
                   {/* Card header — always visible */}
                   <div
                     className="lead-card-header"
                     onClick={() => { setExpandedLead(isOpen ? null : lead.id); setCrmNote(""); }}
-                    style={{ 
-                      display: "flex", 
-                      alignItems: "center", 
-                      justifyContent: "space-between", 
-                      padding: "16px 20px", 
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "16px 20px",
                       cursor: "pointer",
                       gap: 16,
                       flexWrap: "wrap"
@@ -1757,7 +2202,7 @@ export default function LeadsTab({
                     {/* Column 1: Selection, Avatar, and Basic Info */}
                     <div style={{ display: "flex", alignItems: "center", gap: 12, minWidth: 220, flex: "0 0 250px" }}>
                       {/* Checkbox */}
-                      <div 
+                      <div
                         onClick={(e) => {
                           e.stopPropagation();
                           toggleLeadSelection(lead.id);
@@ -1791,30 +2236,22 @@ export default function LeadsTab({
                       {/* Name & Email */}
                       <div style={{ display: "flex", flexDirection: "column", gap: 2, minWidth: 0 }}>
                         <span style={{ fontSize: 13, fontWeight: 700, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{lead.fullName || "Unknown"}</span>
-                        <span style={{ fontSize: 11, color: "#525252", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{lead.email}</span>
+                        <span style={{ fontSize: 11, color: "#737373", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{lead.email}</span>
                       </div>
                     </div>
 
                     {/* Column 2: Status, Priority and Score Badges */}
-                    <div style={{ flex: "1 1 180px", minWidth: 150, display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                    <div style={{ flex: "1 1 240px", minWidth: 240, display: "flex", alignItems: "center", gap: 6, flexWrap: "nowrap" }}>
                       <StatusBadge status={status} />
 
-                      {/* 
-                      <span style={{ 
-                        fontSize: 9, 
-                        fontWeight: 900, 
-                        color: getScoreCategory(calculateLeadScore(lead)).color, 
-                        background: getScoreCategory(calculateLeadScore(lead)).bg, 
-                        border: `1px solid ${getScoreCategory(calculateLeadScore(lead)).border}`, 
-                        borderRadius: 100, 
-                        padding: "2px 8px", 
-                        textTransform: "uppercase", 
-                        letterSpacing: "0.12em" 
-                      }}>
-                        Score: {calculateLeadScore(lead)}
-                      </span>
-                      */}
-                      {lead.meetingBooked && (
+                      {/* Recent Status Badge */}
+                      {((status === "new" || status === "cold" || status === "hot" || lead.meetingBooked) && ageDays <= 3) && (
+                        <span style={{ fontSize: 8, fontWeight: 900, color: "#22d3ee", background: "rgba(34,211,238,0.15)", border: "1px solid rgba(34,211,238,0.4)", borderRadius: 100, padding: "2px 7px", textTransform: "uppercase", letterSpacing: "0.05em", animation: "pulse 2s infinite", whiteSpace: "nowrap", flexShrink: 0 }}>
+                          ✨ NEW
+                        </span>
+                      )}
+
+                      {lead.meetingBooked && status !== "hot" && (
                         <span style={{ fontSize: 9, fontWeight: 700, color: "#10b981", background: "rgba(16,185,129,0.12)", border: "1px solid rgba(16,185,129,0.25)", borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.12em" }}>
                           Booked
                         </span>
@@ -1832,15 +2269,15 @@ export default function LeadsTab({
                         <span style={{ fontSize: 9, fontWeight: 800, color: "#a3a3a3", textTransform: "uppercase", letterSpacing: "0.05em", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 100, padding: "2px 8px" }}>
                           {lead.source || "Direct"}
                         </span>
-                        <span style={{ 
-                          fontSize: 9, 
-                          fontWeight: 700, 
-                          color: ageDays > 2 ? "#ef4444" : "#525252", 
-                          background: "rgba(255,255,255,0.03)", 
+                        <span style={{
+                          fontSize: 9,
+                          fontWeight: 700,
+                          color: ageDays > 2 ? "#ef4444" : "#525252",
+                          background: "rgba(255,255,255,0.03)",
                           border: `1px solid ${ageDays > 2 ? "rgba(239,68,68,0.25)" : "rgba(255,255,255,0.06)"}`,
-                          borderRadius: 100, 
-                          padding: "2px 8px", 
-                          textTransform: "uppercase", 
+                          borderRadius: 100,
+                          padding: "2px 8px",
+                          textTransform: "uppercase",
                           letterSpacing: "0.12em",
                           display: "inline-flex",
                           alignItems: "center",
@@ -1850,6 +2287,18 @@ export default function LeadsTab({
                         </span>
                       </div>
                       <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                        {/* Research Overdue Alert */}
+                        {(status === "new" || status === "cold") && ageDays > 1 && (
+                          <span style={{ fontSize: 8, fontWeight: 900, color: "#ef4444", background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 100, padding: "1px 6px", textTransform: "uppercase", animation: "pulse 2s infinite" }}>
+                            ⚠️ Research Overdue
+                          </span>
+                        )}
+                        {/* Needs Proposal Alert */}
+                        {(status === "contacted" || status === "qualified") && ageDays > 3 && (
+                          <span style={{ fontSize: 8, fontWeight: 900, color: "#a855f7", background: "rgba(168,85,247,0.12)", border: "1px solid rgba(168,85,247,0.25)", borderRadius: 100, padding: "1px 6px", textTransform: "uppercase" }}>
+                            📋 Needs Proposal
+                          </span>
+                        )}
                         {ageDays > 7 && (
                           <span style={{ fontSize: 8, fontWeight: 900, color: "#22d3ee", background: "rgba(34,211,238,0.10)", border: "1px solid rgba(34,211,238,0.25)", borderRadius: 100, padding: "1px 6px", textTransform: "uppercase" }}>
                             Cold Risk ❄️
@@ -1877,16 +2326,16 @@ export default function LeadsTab({
                             target="_blank"
                             rel="noreferrer"
                             onClick={e => e.stopPropagation()}
-                            style={{ 
-                              width: 28, 
-                              height: 28, 
-                              borderRadius: 8, 
-                              background: "rgba(74,222,128,0.08)", 
-                              border: "1px solid rgba(74,222,128,0.15)", 
-                              color: "#4ade80", 
-                              display: "flex", 
-                              alignItems: "center", 
-                              justifyContent: "center", 
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: 8,
+                              background: "rgba(74,222,128,0.08)",
+                              border: "1px solid rgba(74,222,128,0.15)",
+                              color: "#4ade80",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
                               textDecoration: "none",
                               transition: "all 0.15s"
                             }}
@@ -1900,16 +2349,16 @@ export default function LeadsTab({
                         <a
                           href={`mailto:${lead.email}`}
                           onClick={e => e.stopPropagation()}
-                          style={{ 
-                            width: 28, 
-                            height: 28, 
-                            borderRadius: 8, 
-                            background: "rgba(56,189,248,0.08)", 
-                            border: "1px solid rgba(56,189,248,0.15)", 
-                            color: "#38bdf8", 
-                            display: "flex", 
-                            alignItems: "center", 
-                            justifyContent: "center", 
+                          style={{
+                            width: 28,
+                            height: 28,
+                            borderRadius: 8,
+                            background: "rgba(56,189,248,0.08)",
+                            border: "1px solid rgba(56,189,248,0.15)",
+                            color: "#38bdf8",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
                             textDecoration: "none",
                             transition: "all 0.15s"
                           }}
@@ -1924,7 +2373,7 @@ export default function LeadsTab({
                       {/* Timestamp */}
                       <div style={{ textAlign: "right", minWidth: 70, display: "flex", flexDirection: "column", gap: 1 }}>
                         <span style={{ fontSize: 9, color: "#525252", fontWeight: 700 }}>{fmt(lead.createdAt)}</span>
-                        <span style={{ fontSize: 8, color: "#3f3f46", fontWeight: 500 }}>{fmtTime(lead.createdAt)}</span>
+                        <span style={{ fontSize: 8, color: "#737373", fontWeight: 500 }}>{fmtTime(lead.createdAt)}</span>
                       </div>
 
                       {/* Expand Chevron */}
@@ -1962,37 +2411,8 @@ export default function LeadsTab({
             <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 1150 }}>
               <thead>
                 <tr style={{ background: "rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-                  <th style={{ padding: "16px 8px", width: 30, textAlign: "center" }}>
-                    <div 
-                      onClick={() => {
-                        const allSelected = filteredLeads.length > 0 && selectedLeads.length === filteredLeads.length;
-                        if (allSelected) {
-                          setSelectedLeads([]);
-                        } else {
-                          setSelectedLeads(filteredLeads.map(l => l.id));
-                        }
-                      }}
-                      style={{
-                        width: 16,
-                        height: 16,
-                        borderRadius: 4,
-                        border: `1.5px solid ${filteredLeads.length > 0 && selectedLeads.length === filteredLeads.length ? "#f97316" : "rgba(255,255,255,0.25)"}`,
-                        background: filteredLeads.length > 0 && selectedLeads.length === filteredLeads.length ? "#f97316" : "rgba(255,255,255,0.02)",
-                        display: "inline-flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        cursor: "pointer",
-                        transition: "all 0.2s ease"
-                      }}
-                    >
-                      {filteredLeads.length > 0 && selectedLeads.length === filteredLeads.length && (
-                        <svg width="10" height="8" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M1.5 4L4 6.5L8.5 1.5" stroke="white" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                      )}
-                    </div>
-                  </th>
-                  <th style={{ padding: "16px 12px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", whiteSpace: "nowrap", width: 130 }}>Status</th>
+                  <th style={{ padding: "16px 8px", width: 30, textAlign: "center" }}></th>
+                  <th style={{ padding: "16px 12px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", whiteSpace: "nowrap", width: 240 }}>Status</th>
                   <th style={{ padding: "16px 8px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", whiteSpace: "nowrap", width: 60 }}>Prio</th>
                   <th style={{ padding: "16px 16px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", minWidth: 220 }}>Client</th>
                   <th style={{ padding: "16px 24px", textAlign: "left", fontSize: 10, fontWeight: 900, color: "#333", textTransform: "uppercase", letterSpacing: "0.2em", minWidth: 280 }}>Service & Source</th>
@@ -2011,7 +2431,7 @@ export default function LeadsTab({
                     <React.Fragment key={lead.id}>
                       <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.02)", transition: "background 0.2s" }} onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.01)"} onMouseLeave={e => e.currentTarget.style.background = "none"}>
                       <td style={{ padding: "14px 8px", textAlign: "center" }}>
-                        <div 
+                        <div
                           onClick={() => toggleLeadSelection(lead.id)}
                           style={{
                             width: 16,
@@ -2034,10 +2454,14 @@ export default function LeadsTab({
                           )}
                         </div>
                       </td>
-                      <td style={{ padding: "14px 12px", whiteSpace: "nowrap", width: 130 }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <td style={{ padding: "14px 12px", whiteSpace: "nowrap", width: 240 }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "nowrap" }}>
                           <StatusBadge status={status} />
-
+                          {((status === "new" || status === "cold" || status === "hot" || lead.meetingBooked) && ageDays <= 3) && (
+                            <span style={{ fontSize: 8, fontWeight: 900, color: "#22d3ee", background: "rgba(34,211,238,0.15)", border: "1px solid rgba(34,211,238,0.4)", borderRadius: 100, padding: "2px 7px", textTransform: "uppercase", letterSpacing: "0.05em", animation: "pulse 2s infinite", whiteSpace: "nowrap", flexShrink: 0 }}>
+                              ✨ NEW
+                            </span>
+                          )}
                         </div>
                       </td>
                       <td style={{ padding: "14px 8px", whiteSpace: "nowrap", width: 60 }}>
@@ -2050,14 +2474,14 @@ export default function LeadsTab({
                       <td style={{ padding: "14px 16px", minWidth: 220, whiteSpace: "nowrap" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 8, overflow: "hidden" }}>
                           <span style={{ fontSize: 13, fontWeight: 700, color: "#fff", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{lead.fullName || "Unknown"}</span>
-                          {/* 
-                          <span style={{ 
-                            fontSize: 8, 
-                            fontWeight: 900, 
-                            color: getScoreCategory(calculateLeadScore(lead)).color, 
-                            background: getScoreCategory(calculateLeadScore(lead)).bg, 
-                            border: `1px solid ${getScoreCategory(calculateLeadScore(lead)).border}`, 
-                            borderRadius: 100, 
+                          {/*
+                          <span style={{
+                            fontSize: 8,
+                            fontWeight: 900,
+                            color: getScoreCategory(calculateLeadScore(lead)).color,
+                            background: getScoreCategory(calculateLeadScore(lead)).bg,
+                            border: `1px solid ${getScoreCategory(calculateLeadScore(lead)).border}`,
+                            borderRadius: 100,
                             padding: "1.5px 5.5px",
                             flexShrink: 0
                           }} title={`Lead Score: ${calculateLeadScore(lead)}`}>
@@ -2075,16 +2499,16 @@ export default function LeadsTab({
                             </span>
                           )}
                         </div>
-                        <div style={{ fontSize: 11, color: "#525252", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{lead.email}</div>
+                        <div style={{ fontSize: 11, color: "#737373", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>{lead.email}</div>
                       </td>
                       <td style={{ padding: "14px 24px", minWidth: 280, whiteSpace: "nowrap" }}>
                         <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-                          <span style={{ 
-                            fontSize: 10, 
-                            fontWeight: 800, 
-                            color: "#f97316", 
-                            textTransform: "uppercase", 
-                            letterSpacing: "0.05em", 
+                          <span style={{
+                            fontSize: 10,
+                            fontWeight: 800,
+                            color: "#f97316",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.05em",
                             maxWidth: "100%",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
@@ -2093,15 +2517,15 @@ export default function LeadsTab({
                           }} title={lead.requestedService || "General"}>
                             {lead.requestedService || "General"}
                           </span>
-                          <span style={{ 
-                            fontSize: 10, 
-                            fontWeight: 750, 
+                          <span style={{
+                            fontSize: 10,
+                            fontWeight: 750,
                             color: "#525252",
                             maxWidth: "100%",
                             overflow: "hidden",
                             textOverflow: "ellipsis",
                             display: "inline-block",
-                            whiteSpace: "nowrap" 
+                            whiteSpace: "nowrap"
                           }} title={lead.source || "Inbound"}>
                             {lead.source || "Inbound"}
                           </span>
@@ -2109,26 +2533,45 @@ export default function LeadsTab({
                       </td>
                       <td style={{ padding: "14px 24px", whiteSpace: "nowrap", width: 120 }}>
                         <div style={{ fontSize: 11, color: "#fff", fontFamily: "monospace" }}>{fmt(lead.createdAt)}</div>
-                        <div style={{ fontSize: 9, color: "#333", fontFamily: "monospace" }}>{fmtTime(lead.createdAt)}</div>
-                        <div style={{ 
-                          fontSize: 9, 
-                          fontWeight: 700, 
-                          color: ageDays > 2 ? "#ef4444" : "#525252", 
+                        <div style={{ fontSize: 9, color: "#737373", fontFamily: "monospace" }}>{fmtTime(lead.createdAt)}</div>
+                        <div style={{
+                          fontSize: 9,
+                          fontWeight: 700,
+                          color: ageDays > 2 ? "#ef4444" : "#525252",
                           marginTop: 4,
                           display: "flex",
                           alignItems: "center",
                           gap: 3
                         }}>
                           {ageDays > 2 && "⚠️ "}{ageDays.toFixed(1)}d old
+                          {(status === "new" || status === "cold") && ageDays > 1 && (
+                            <span style={{
+                              fontSize: 8, fontWeight: 900, color: "#ef4444",
+                              background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.3)",
+                              borderRadius: 4, padding: "1px 4px", textTransform: "uppercase",
+                              animation: "pulse 2s infinite"
+                            }}>
+                              OVERDUE
+                            </span>
+                          )}
+                          {(status === "contacted" || status === "qualified") && ageDays > 3 && (
+                            <span style={{
+                              fontSize: 8, fontWeight: 900, color: "#a855f7",
+                              background: "rgba(168,85,247,0.12)", border: "1px solid rgba(168,85,247,0.25)",
+                              borderRadius: 4, padding: "1px 4px", textTransform: "uppercase"
+                            }}>
+                              PROPOSAL
+                            </span>
+                          )}
                           {ageDays > 7 && (
-                            <span style={{ 
-                              fontSize: 8, 
-                              fontWeight: 900, 
-                              color: "#22d3ee", 
-                              background: "rgba(34,211,238,0.10)", 
-                              border: "1px solid rgba(34,211,238,0.25)", 
-                              borderRadius: 4, 
-                              padding: "1px 4px", 
+                            <span style={{
+                              fontSize: 8,
+                              fontWeight: 900,
+                              color: "#22d3ee",
+                              background: "rgba(34,211,238,0.10)",
+                              border: "1px solid rgba(34,211,238,0.25)",
+                              borderRadius: 4,
+                              padding: "1px 4px",
                               textTransform: "uppercase"
                             }}>
                               COLD ❄️
@@ -2139,22 +2582,22 @@ export default function LeadsTab({
                       <td style={{ padding: "14px 24px", textAlign: "right", whiteSpace: "nowrap", width: 140 }}>
                         <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", alignItems: "center" }}>
                           {lead.whatsapp && lead.whatsapp !== "N/A" && (
-                            <a 
+                            <a
                               href={`https://wa.me/${lead.whatsapp.replace(/\D/g,"")}?text=${encodeURIComponent(
                                 `Hi ${lead.fullName || ""}, I'm reaching out from Grow Orbit regarding your interest in ${lead.requestedService || "our services"}. I'd love to connect and see how we can help you scale!`
-                              )}`} 
-                              target="_blank" 
+                              )}`}
+                              target="_blank"
                               rel="noreferrer"
-                              style={{ 
-                                width: 28, 
-                                height: 28, 
-                                borderRadius: 8, 
-                                background: "rgba(74,222,128,0.08)", 
-                                border: "1px solid rgba(74,222,128,0.15)", 
-                                color: "#4ade80", 
-                                display: "flex", 
-                                alignItems: "center", 
-                                justifyContent: "center", 
+                              style={{
+                                width: 28,
+                                height: 28,
+                                borderRadius: 8,
+                                background: "rgba(74,222,128,0.08)",
+                                border: "1px solid rgba(74,222,128,0.15)",
+                                color: "#4ade80",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 textDecoration: "none",
                                 fontSize: 12,
                                 transition: "all 0.15s"
@@ -2166,18 +2609,18 @@ export default function LeadsTab({
                               <Phone size={14} />
                             </a>
                           )}
-                          <a 
-                            href={`mailto:${lead.email}`} 
-                            style={{ 
-                              width: 28, 
-                              height: 28, 
-                              borderRadius: 8, 
-                              background: "rgba(56,189,248,0.08)", 
-                              border: "1px solid rgba(56,189,248,0.15)", 
-                              color: "#38bdf8", 
-                              display: "flex", 
-                              alignItems: "center", 
-                              justifyContent: "center", 
+                          <a
+                            href={`mailto:${lead.email}`}
+                            style={{
+                              width: 28,
+                              height: 28,
+                              borderRadius: 8,
+                              background: "rgba(56,189,248,0.08)",
+                              border: "1px solid rgba(56,189,248,0.15)",
+                              color: "#38bdf8",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
                               textDecoration: "none",
                               fontSize: 12,
                               transition: "all 0.15s"
@@ -2197,9 +2640,9 @@ export default function LeadsTab({
                     </tr>
                     {isTableOpen && (
                       <tr>
-                        <td colSpan={8} style={{ 
-                          padding: "20px 24px", 
-                          background: "rgba(255,255,255,0.01)", 
+                        <td colSpan={8} style={{
+                          padding: "20px 24px",
+                          background: "rgba(255,255,255,0.01)",
                           borderBottom: "1px solid rgba(255,255,255,0.04)"
                         }}>
                           <LeadDetailPanel

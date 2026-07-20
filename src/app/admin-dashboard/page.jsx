@@ -3,7 +3,7 @@
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import {
   collection, deleteDoc, doc, getDocs,
-  orderBy, query, getDoc, updateDoc, onSnapshot, arrayUnion, addDoc
+  orderBy, query, getDoc, updateDoc, onSnapshot, arrayUnion, addDoc, where
 } from "firebase/firestore";
 import {
   Briefcase, ChevronRight, Globe, Layout, LogOut, Settings,
@@ -213,6 +213,37 @@ export default function AdminDashboard() {
     const t = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(t);
   }, []);
+
+  /* Auto-pruning Audit Logs older than 30 days */
+  useEffect(() => {
+    if (authChecking || !db) return;
+    
+    const pruneOldLogs = async () => {
+      try {
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        
+        const q = query(
+          collection(db, "activity_logs"),
+          where("timestamp", "<", thirtyDaysAgo)
+        );
+        
+        const snapshot = await getDocs(q);
+        if (!snapshot.empty) {
+          console.log(`[Audit Trail] Pruning ${snapshot.size} logs older than 30 days...`);
+          const deletePromises = snapshot.docs.map(d => deleteDoc(d.ref));
+          await Promise.all(deletePromises);
+          console.log("[Audit Trail] Pruning completed successfully.");
+        }
+      } catch (e) {
+        console.warn("[Audit Trail] Pruning failed:", e.message);
+      }
+    };
+    
+    // Run pruning 5 seconds after loading
+    const timer = setTimeout(pruneOldLogs, 5000);
+    return () => clearTimeout(timer);
+  }, [authChecking, db]);
 
   /* Database Fetch mounting pipeline */
   useEffect(() => {
@@ -1094,6 +1125,7 @@ export default function AdminDashboard() {
                 <SettingsTab
                   triggerConfirm={triggerConfirm}
                   logActivity={logActivity}
+                  leads={leads}
                 />
               )}
             </>

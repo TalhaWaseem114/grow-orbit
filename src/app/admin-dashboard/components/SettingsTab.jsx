@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useMemo } from "react";
-import { collection, query, orderBy, limit, getDocs, writeBatch, doc, getDoc, setDoc, where } from "firebase/firestore";
+import { collection, query, orderBy, limit, getDocs, writeBatch, doc, getDoc, setDoc, where, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
 import { Shield, Clock, Trash2, RefreshCw, Activity, Terminal, Save, Sliders, ToggleLeft, ToggleRight, Search, Download, Database, Image as ImageIcon, Cpu } from "lucide-react";
 
@@ -21,12 +21,20 @@ const getBadgeStyle = (action) => {
       return { bg: "rgba(59,130,246,0.1)", border: "rgba(59,130,246,0.2)", color: "#3b82f6" };
     case "SEND_NEWSLETTER":
       return { bg: "rgba(16,185,129,0.1)", border: "rgba(16,185,129,0.2)", color: "#10b981" };
+    case "CONVERT_CLIENT":
+      return { bg: "rgba(34,197,94,0.12)", border: "rgba(34,197,94,0.25)", color: "#22c55e" };
+    case "UPDATE_LEAD_STATUS":
+      return { bg: "rgba(168,85,247,0.1)", border: "rgba(168,85,247,0.2)", color: "#a855f7" };
+    case "NEW_LEAD":
+      return { bg: "rgba(249,115,22,0.1)", border: "rgba(249,115,22,0.2)", color: "#f97316" };
+    case "MEETING_BOOKED":
+      return { bg: "rgba(34,197,94,0.1)", border: "rgba(34,197,94,0.2)", color: "#22c55e" };
     default:
       return { bg: "rgba(255,255,255,0.05)", border: "rgba(255,255,255,0.08)", color: "#a3a3a3" };
   }
 };
 
-export default function SettingsTab({ triggerConfirm, logActivity }) {
+export default function SettingsTab({ triggerConfirm, logActivity, leads }) {
   const [logs, setLogs] = useState([]);
   const [loadingLogs, setLoadingLogs] = useState(true);
   const [logSearch, setLogSearch] = useState("");
@@ -67,6 +75,7 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
   };
 
   // One-time fetch of activity logs
+  // One-time fetch of activity logs (as fallback)
   const fetchLogs = async () => {
     setLoadingLogs(true);
     try {
@@ -80,8 +89,51 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
     }
   };
 
+  // Real-time log listener
   useEffect(() => {
-    fetchLogs();
+    if (!db) return;
+    setLoadingLogs(true);
+    const q = query(collection(db, "activity_logs"), orderBy("timestamp", "desc"), limit(100));
+    const unsub = onSnapshot(q, (snap) => {
+      setLogs(snap.docs.map(d => ({ id: d.id, ...d.data() })));
+      setLoadingLogs(false);
+    }, err => {
+      console.warn("Real-time snapshot failed in settings, falling back:", err.message);
+      fetchLogs();
+    });
+    return () => unsub();
+  }, [db]);
+
+  // Clean up logs older than 30 days on mount
+  useEffect(() => {
+    if (!db) return;
+    const cleanupOldLogs = async () => {
+      try {
+        const thirtyDaysAgo = new Date();
+        thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+        
+        const oldLogsQuery = query(
+          collection(db, "activity_logs"),
+          where("timestamp", "<", thirtyDaysAgo)
+        );
+        const snapshot = await getDocs(oldLogsQuery);
+        
+        if (!snapshot.empty) {
+          const batch = writeBatch(db);
+          snapshot.docs.forEach(doc => {
+            batch.delete(doc.ref);
+          });
+          await batch.commit();
+          console.log(`Cleaned up ${snapshot.size} logs older than 30 days.`);
+        }
+      } catch (err) {
+        console.warn("Failed to cleanup old logs:", err);
+      }
+    };
+    cleanupOldLogs();
+  }, [db]);
+
+  useEffect(() => {
     fetchUsageAndConfig();
   }, []);
 
@@ -111,9 +163,60 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
     fetchSettings();
   }, []);
 
+  // Combine DB activity logs with Leads and Meetings
+  const mergedLogs = useMemo(() => {
+    let timeline = [...logs];
+
+    (leads || []).forEach(l => {
+      // Add NEW_LEAD event
+      if (l.createdAt) {
+        timeline.push({
+          id: `lead_${l.id}_created`,
+          action: "NEW_LEAD",
+          details: `New lead generated: ${l.fullName || l.email || "Unknown"} (${l.source || "Direct"})`,
+          timestamp: l.createdAt,
+          adminName: l.source || "System"
+        });
+      }
+
+      // Add MEETING_BOOKED event if meetingBooked is true
+      if (l.meetingBooked) {
+        if (l.followUpDate) {
+          const d = new Date(l.followUpDate);
+          if (!isNaN(d.valueOf())) {
+            timeline.push({
+              id: `lead_${l.id}_meeting`,
+              action: "MEETING_BOOKED",
+              details: `Meeting booked with ${l.fullName || l.email || "Unknown"}`,
+              timestamp: { toDate: () => d },
+              adminName: "System"
+            });
+          }
+        } else if (l.createdAt) {
+          timeline.push({
+            id: `lead_${l.id}_meeting`,
+            action: "MEETING_BOOKED",
+            details: `Meeting booked with ${l.fullName || l.email || "Unknown"}`,
+            timestamp: l.createdAt,
+            adminName: "System"
+          });
+        }
+      }
+    });
+
+    // Sort descending by timestamp
+    timeline.sort((a, b) => {
+      const timeA = a.timestamp?.toDate ? a.timestamp.toDate().getTime() : 0;
+      const timeB = b.timestamp?.toDate ? b.timestamp.toDate().getTime() : 0;
+      return timeB - timeA;
+    });
+
+    return timeline.slice(0, 100);
+  }, [logs, leads]);
+
   // Search/filter logs
   const filteredLogs = useMemo(() => {
-    let res = logs;
+    let res = mergedLogs;
     if (logSearch.trim()) {
       const q = logSearch.toLowerCase();
       res = res.filter(log => 
@@ -123,7 +226,7 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
       );
     }
     return res;
-  }, [logs, logSearch]);
+  }, [mergedLogs, logSearch]);
 
   // Group logs by Date (with robust parsing)
   const groupedLogs = useMemo(() => {
@@ -606,15 +709,14 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
           </div>
 
           <div style={{
-            background: "#060606",
-            border: "1px solid rgba(255,255,255,0.03)",
-            borderRadius: 16,
-            height: "400px",
-            overflowY: "auto",
-            padding: "20px",
             display: "flex",
             flexDirection: "column",
-            gap: 16
+            gap: 16,
+            maxHeight: 520,
+            overflowY: "auto",
+            paddingRight: 8,
+            paddingLeft: 8,
+            paddingBottom: 20
           }}>
             {loadingLogs ? (
               <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#525252", fontSize: 11 }}>
@@ -638,7 +740,7 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
                     borderBottom: "1px dashed rgba(249,115,22,0.15)",
                     position: "sticky",
                     top: 0,
-                    background: "#060606",
+                    background: "#0d0d0d",
                     zIndex: 10,
                     marginBottom: 8
                   }}>
@@ -667,7 +769,7 @@ export default function SettingsTab({ triggerConfirm, logActivity }) {
                       return (
                         <div key={log.id} style={{ position: "relative", display: "flex", flexDirection: "column", gap: 6 }}>
                           {/* Timeline Node */}
-                          <div style={{ position: "absolute", left: -21, top: 4, width: 8, height: 8, borderRadius: "50%", background: badge.color, boxShadow: `0 0 8px ${badge.color}`, border: "2px solid #060606" }} />
+                          <div style={{ position: "absolute", left: -21, top: 4, width: 8, height: 8, borderRadius: "50%", background: badge.color, boxShadow: `0 0 8px ${badge.color}`, border: "2px solid #0d0d0d" }} />
                           
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
                             <span style={{

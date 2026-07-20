@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState, useRef, useMemo } from "react";
-import { 
+import {
   Users, Briefcase, Activity, TrendingUp, AlertCircle, ArrowUpRight, Calendar,
   Flame, Clock, CheckCircle2, MessageSquare, Terminal, Search, Download, Trash2, RefreshCw
 } from "lucide-react";
@@ -58,13 +58,13 @@ function OverviewMiniCalendar({ leads }) {
   const [currentDate, setCurrentDate] = useState(() => new Date());
   const [hoveredDay, setHoveredDay] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null); // { dateStr, date, leads: [], meetings: [] }
-  
+
   const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
-  
+
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 0 (Sun) to 6 (Sat)
-  
+
   const daysArray = Array.from({ length: 42 }, (_, i) => {
     const day = i - firstDay + 1;
     if (day > 0 && day <= daysInMonth) return day;
@@ -74,7 +74,7 @@ function OverviewMiniCalendar({ leads }) {
   const handlePrevMonth = () => {
     setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() - 1, 1));
   };
-  
+
   const handleNextMonth = () => {
     setCurrentDate(prev => new Date(prev.getFullYear(), prev.getMonth() + 1, 1));
   };
@@ -83,7 +83,7 @@ function OverviewMiniCalendar({ leads }) {
   const { leadsMap, meetingsMap } = React.useMemo(() => {
     const lMap = {};
     const mMap = {};
-    
+
     (leads || []).forEach(l => {
       if (l.createdAt?.toDate) {
         const dStr = l.createdAt.toDate().toDateString();
@@ -111,9 +111,9 @@ function OverviewMiniCalendar({ leads }) {
   const getDayData = (day) => {
     if (!day) return { leads: [], meetings: [] };
     const dateStr = new Date(currentYear, currentMonth, day).toDateString();
-    return { 
-      leads: leadsMap[dateStr] || [], 
-      meetings: meetingsMap[dateStr] || [] 
+    return {
+      leads: leadsMap[dateStr] || [],
+      meetings: meetingsMap[dateStr] || []
     };
   };
 
@@ -126,7 +126,7 @@ function OverviewMiniCalendar({ leads }) {
         <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em" }}>Activity Calendar</div>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           {!isCurrentMonth && (
-            <button 
+            <button
               onClick={() => setCurrentDate(new Date())}
               style={{ background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.2)", borderRadius: 6, cursor: "pointer", color: "#f97316", padding: "3px 8px", fontSize: 9, fontWeight: 800, transition: "all 0.15s" }}
               onMouseEnter={e => e.currentTarget.style.background = "rgba(249,115,22,0.15)"}
@@ -135,7 +135,7 @@ function OverviewMiniCalendar({ leads }) {
               Today
             </button>
           )}
-          <button 
+          <button
             onClick={handlePrevMonth}
             style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 6, cursor: "pointer", color: "#a3a3a3", display: "flex", alignItems: "center", justifyContent: "center", width: 22, height: 22, fontSize: 10, fontWeight: 900, transition: "all 0.15s" }}
             onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
@@ -144,7 +144,7 @@ function OverviewMiniCalendar({ leads }) {
             ◀
           </button>
           <div style={{ fontSize: 12, fontWeight: 800, color: "#fff", minWidth: 90, textAlign: "center", letterSpacing: "0.05em" }}>{monthName} {currentYear}</div>
-          <button 
+          <button
             onClick={handleNextMonth}
             style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 6, cursor: "pointer", color: "#a3a3a3", display: "flex", alignItems: "center", justifyContent: "center", width: 22, height: 22, fontSize: 10, fontWeight: 900, transition: "all 0.15s" }}
             onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
@@ -154,7 +154,7 @@ function OverviewMiniCalendar({ leads }) {
           </button>
         </div>
       </div>
-      
+
       {/* Legend */}
       <div style={{ display: "flex", gap: 12, marginBottom: 16, fontSize: 10, color: "#a3a3a3", fontWeight: 600 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
@@ -174,14 +174,14 @@ function OverviewMiniCalendar({ leads }) {
           const leadsCount = dayLeads.length;
           const meetingsCount = dayMeetings.length;
 
-          const isToday = day && 
-            day === today.getDate() && 
-            currentMonth === today.getMonth() && 
+          const isToday = day &&
+            day === today.getDate() &&
+            currentMonth === today.getMonth() &&
             currentYear === today.getFullYear();
-          
+
           return (
-            <div 
-              key={i} 
+            <div
+              key={i}
               onMouseEnter={() => day && setHoveredDay(i)}
               onMouseLeave={() => day && setHoveredDay(null)}
               onClick={() => {
@@ -195,8 +195,8 @@ function OverviewMiniCalendar({ leads }) {
                   meetings: dayMeetings
                 });
               }}
-              style={{ 
-                aspectRatio: "1", 
+              style={{
+                aspectRatio: "1",
                 background: day ? (hoveredDay === i ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.02)") : "transparent",
                 border: isToday ? "1px solid rgba(249,115,22,0.5)" : "1px solid rgba(255,255,255,0.02)",
                 borderRadius: 8,
@@ -273,7 +273,7 @@ function OverviewMiniCalendar({ leads }) {
 
             {/* Modal Body */}
             <div style={{ padding: 20, overflowY: "auto", display: "flex", flexDirection: "column", gap: 20 }}>
-              
+
               {/* Leads Section */}
               <div>
                 <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 12 }}>
@@ -401,9 +401,9 @@ function StatCard({ title, value, sub, icon: Icon, accent, delta, sparkData }) {
 
   return (
     <div className="relative rounded-2xl p-6 overflow-hidden border"
-      style={{ 
-        background: accent ? "rgba(249,115,22,0.06)" : "#0d0d0d", 
-        borderColor: accent ? "rgba(249,115,22,0.2)" : "rgba(255,255,255,0.05)" 
+      style={{
+        background: accent ? "rgba(249,115,22,0.06)" : "#0d0d0d",
+        borderColor: accent ? "rgba(249,115,22,0.2)" : "rgba(255,255,255,0.05)"
       }}
     >
       {accent && <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(249,115,22,0.08),transparent_60%)]" />}
@@ -411,9 +411,9 @@ function StatCard({ title, value, sub, icon: Icon, accent, delta, sparkData }) {
         <div className="flex items-center justify-between mb-4">
           <span className="text-[10px] font-black uppercase tracking-[0.2em]" style={{ color: accent ? "#f9a06a" : "#525252" }}>{title}</span>
           <div className="w-8 h-8 rounded-xl flex items-center justify-center"
-            style={{ 
-              background: accent ? "rgba(249,115,22,0.15)" : "rgba(255,255,255,0.04)", 
-              color: accent ? "#f97316" : "#525252" 
+            style={{
+              background: accent ? "rgba(249,115,22,0.15)" : "rgba(255,255,255,0.04)",
+              color: accent ? "#f97316" : "#525252"
             }}
           >
             <Icon size={15} />
@@ -485,18 +485,18 @@ export default function OverviewTab({
 
   const leads = React.useMemo(() => {
     if (dateRange === "all") return rawLeads || [];
-    
+
     const now = new Date();
     const rangeMap = { "7d": 7, "30d": 30 };
-    
+
     return (rawLeads || []).filter(l => {
       if (!l.createdAt?.toDate) return true;
       const created = l.createdAt.toDate();
-      
+
       if (dateRange === "this_month") {
         return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
       }
-      
+
       const daysAgo = (now - created) / (1000 * 60 * 60 * 24);
       return daysAgo <= rangeMap[dateRange];
     });
@@ -509,9 +509,9 @@ export default function OverviewTab({
     : "0%";
 
   const hotLeadsCount = leads.filter(l => (l.status || "new") === "hot").length;
-  const overdueLeads = leads.filter(l => 
-    l.nextFollowUp && 
-    new Date(l.nextFollowUp) < new Date(new Date().setHours(0,0,0,0)) && 
+  const overdueLeads = leads.filter(l =>
+    l.nextFollowUp &&
+    new Date(l.nextFollowUp) < new Date(new Date().setHours(0,0,0,0)) &&
     l.status !== "won" && l.status !== "lost"
   );
 
@@ -544,7 +544,7 @@ export default function OverviewTab({
   // Combine DB activity logs with Leads and Meetings
   const mergedTimeline = React.useMemo(() => {
     let timeline = [...activityLogs];
-    
+
     leads.forEach(l => {
       // Add NEW_LEAD event
       if (l.createdAt) {
@@ -556,7 +556,7 @@ export default function OverviewTab({
           adminName: l.source || "System"
         });
       }
-      
+
       // Add MEETING_BOOKED event if meetingBooked is true
       if (l.meetingBooked) {
         if (l.followUpDate) {
@@ -589,14 +589,14 @@ export default function OverviewTab({
       return timeB - timeA;
     });
 
-    return timeline.slice(0, 50);
+    return timeline.slice(0, 100);
   }, [activityLogs, leads]);
 
   // Filter timeline based on search query
   const filteredTimeline = React.useMemo(() => {
     if (!logSearch.trim()) return mergedTimeline;
     const q = logSearch.toLowerCase();
-    return mergedTimeline.filter(log => 
+    return mergedTimeline.filter(log =>
       log.action?.toLowerCase().includes(q) ||
       log.adminName?.toLowerCase().includes(q) ||
       log.details?.toLowerCase().includes(q)
@@ -617,14 +617,14 @@ export default function OverviewTab({
       } else {
         dateObj = new Date(t);
       }
-      
+
       if (isNaN(dateObj.getTime())) return;
 
-      const dateStr = dateObj.toLocaleDateString("en-US", { 
-        weekday: "short", 
-        year: "numeric", 
-        month: "short", 
-        day: "numeric" 
+      const dateStr = dateObj.toLocaleDateString("en-US", {
+        weekday: "short",
+        year: "numeric",
+        month: "short",
+        day: "numeric"
       });
       if (!groups[dateStr]) groups[dateStr] = [];
       groups[dateStr].push(log);
@@ -756,13 +756,13 @@ export default function OverviewTab({
       {/* Greeting */}
       <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", flexWrap: "wrap", gap: 12 }}>
         <div>
-          <div style={{ 
-            fontSize: 11, 
-            fontWeight: 700, 
-            color: "#f97316", 
-            letterSpacing: "0.3em", 
-            textTransform: "uppercase", 
-            marginBottom: 6 
+          <div style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color: "#f97316",
+            letterSpacing: "0.3em",
+            textTransform: "uppercase",
+            marginBottom: 6
           }}>
             Good {currentTime.getHours() < 12 ? "morning" : currentTime.getHours() < 17 ? "afternoon" : "evening"}
           </div>
@@ -794,17 +794,17 @@ export default function OverviewTab({
             <option value="this_month" style={{ background: "#0d0d0d", color: "#fff" }}>This Month</option>
           </select>
           {newLeadsCount > 0 && (
-            <button 
-              onClick={() => setActiveTab("leads")} 
-              style={{ 
-                display: "flex", 
-                alignItems: "center", 
-                gap: 8, 
-                background: "rgba(249,115,22,0.12)", 
-                border: "1px solid rgba(249,115,22,0.25)", 
-                borderRadius: 12, 
-                padding: "10px 16px", 
-                cursor: "pointer", 
+            <button
+              onClick={() => setActiveTab("leads")}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                background: "rgba(249,115,22,0.12)",
+                border: "1px solid rgba(249,115,22,0.25)",
+                borderRadius: 12,
+                padding: "10px 16px",
+                cursor: "pointer",
                 color: "#f97316",
                 transition: "all 0.2s"
               }}
@@ -817,17 +817,17 @@ export default function OverviewTab({
             </button>
           )}
           {hotLeadsCount > 0 && (
-            <button 
-              onClick={() => setActiveTab("leads")} 
-              style={{ 
-                display: "flex", 
-                alignItems: "center", 
-                gap: 8, 
-                background: "rgba(239,68,68,0.1)", 
-                border: "1px solid rgba(239,68,68,0.2)", 
-                borderRadius: 12, 
-                padding: "10px 16px", 
-                cursor: "pointer", 
+            <button
+              onClick={() => setActiveTab("leads")}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                background: "rgba(239,68,68,0.1)",
+                border: "1px solid rgba(239,68,68,0.2)",
+                borderRadius: 12,
+                padding: "10px 16px",
+                cursor: "pointer",
                 color: "#ef4444",
                 transition: "all 0.2s"
               }}
@@ -846,7 +846,7 @@ export default function OverviewTab({
       {(overdueLeads.length > 0 || followUpsToday.length > 0) && (
         <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
           {overdueLeads.length > 0 && (
-            <button 
+            <button
               onClick={() => setActiveTab("leads")}
               style={{
                 display: "flex",
@@ -885,7 +885,7 @@ export default function OverviewTab({
           )}
 
           {followUpsToday.length > 0 && (
-            <button 
+            <button
               onClick={() => setActiveTab("leads")}
               style={{
                 display: "flex",
@@ -941,59 +941,124 @@ export default function OverviewTab({
         {/* Pipeline Conversion Funnel */}
         <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: isMobile ? "16px" : "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em" }}>Lead Conversion Funnel</div>
-          <div style={{ display: "flex", alignItems: "center", gap: 24, flex: 1, minHeight: 180, flexWrap: "wrap" }}>
-            {/* SVG Funnel Graphic */}
-            <div style={{ flex: "1 1 200px", maxWidth: 280 }}>
-              <svg viewBox="0 0 200 160" style={{ width: "100%", height: "auto" }}>
-                <defs>
-                  <linearGradient id="funnel-grad-1" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#f97316" stopOpacity="0.85" />
-                    <stop offset="100%" stopColor="#ea580c" stopOpacity="0.85" />
-                  </linearGradient>
-                  <linearGradient id="funnel-grad-2" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.85" />
-                    <stop offset="100%" stopColor="#0891b2" stopOpacity="0.85" />
-                  </linearGradient>
-                  <linearGradient id="funnel-grad-3" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#10b981" stopOpacity="0.85" />
-                    <stop offset="100%" stopColor="#059669" stopOpacity="0.85" />
-                  </linearGradient>
-                </defs>
-                <polygon points="10,10 190,10 160,50 40,50" fill="url(#funnel-grad-1)" style={{ transition: "all 0.3s ease" }} />
-                <polygon points="43,55 157,55 130,95 70,95" fill="url(#funnel-grad-2)" style={{ transition: "all 0.3s ease" }} />
-                <polygon points="73,100 127,100 110,140 90,140" fill="url(#funnel-grad-3)" style={{ transition: "all 0.3s ease" }} />
-              </svg>
-            </div>
-            {/* Funnel Stats Details */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 14, flex: 1, minWidth: 150 }}>
-              {[
-                { label: "Inbound Leads", count: leads.length, pct: 100, color: "#f97316" },
-                { 
-                  label: "Replied / Active", 
-                  count: leads.filter(l => l.status === "replied" || l.status === "contacted" || l.status === "qualified" || l.status === "hot" || l.meetingBooked).length,
-                  pct: leads.length ? Math.round((leads.filter(l => l.status === "replied" || l.status === "contacted" || l.status === "qualified" || l.status === "hot" || l.meetingBooked).length / leads.length) * 100) : 0, 
-                  color: "#22d3ee" 
-                },
-                { 
-                  label: "Meetings Booked", 
-                  count: leads.filter(l => l.meetingBooked).length,
-                  pct: leads.length ? Math.round((leads.filter(l => l.meetingBooked).length / leads.length) * 100) : 0, 
-                  color: "#10b981" 
-                }
-              ].map((item, idx) => (
-                <div key={idx} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <div style={{ width: 8, height: 8, borderRadius: "50%", background: item.color }} />
-                    <span style={{ fontSize: 11, fontWeight: 700, color: "#fff" }}>{item.label}</span>
-                  </div>
-                  <div style={{ display: "flex", alignItems: "baseline", gap: 8, paddingLeft: 16 }}>
-                    <span style={{ fontSize: 18, fontWeight: 900, color: "#fff" }}>{item.count}</span>
-                    <span style={{ fontSize: 10, color: "#525252" }}>({item.pct}%)</span>
-                  </div>
+          {(() => {
+            const total = leads.length;
+            const meetings = leads.filter(l => l.meetingBooked).length;
+            const won = leads.filter(l => l.status === "won").length;
+
+            const r2 = total > 0 ? (meetings / total) : 0;
+            const r3 = total > 0 ? (won / total) : 0;
+
+            // Stage 1 (top): Inbound Leads (fixed baseline)
+            const w1_top = 180;
+            const w1_bottom = 120;
+
+            // Stage 2 (middle): Meetings Booked
+            const w2_top = Math.max(40, 120 * r2);
+            const w2_bottom = w2_top * 0.6;
+
+            // Dynamic widths for fully rounded pills (capsules)
+            const w1 = 170;
+            const w2 = Math.max(48, 170 * r2);
+            const w3 = Math.max(32, 170 * r3);
+
+            // Flow connector paths with smooth curves and no sharp corners
+            const connector1 = `M ${100 - w1/2} 22 C ${100 - w1/2} 38, ${100 - w2/2} 38, ${100 - w2/2} 58 L ${100 + w2/2} 58 C ${100 + w2/2} 38, ${100 + w1/2} 38, ${100 + w1/2} 22 Z`;
+            const connector2 = `M ${100 - w2/2} 62 C ${100 - w2/2} 78, ${100 - w3/2} 78, ${100 - w3/2} 98 L ${100 + w3/2} 98 C ${100 + w3/2} 78, ${100 + w2/2} 78, ${100 + w2/2} 62 Z`;
+
+            return (
+              <div style={{ display: "flex", alignItems: "center", gap: 24, flex: 1, minHeight: 180, flexWrap: "wrap" }}>
+                {/* SVG Funnel Graphic */}
+                <div style={{ flex: "1 1 200px", maxWidth: 280 }}>
+                  <svg viewBox="0 0 200 130" style={{ width: "100%", height: "auto" }}>
+                    <defs>
+                      <linearGradient id="funnel-grad-1" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#f97316" stopOpacity="0.9" />
+                        <stop offset="100%" stopColor="#ea580c" stopOpacity="0.9" />
+                      </linearGradient>
+                      <linearGradient id="funnel-grad-2" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.9" />
+                        <stop offset="100%" stopColor="#0891b2" stopOpacity="0.9" />
+                      </linearGradient>
+                      <linearGradient id="funnel-grad-3" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#10b981" stopOpacity="0.9" />
+                        <stop offset="100%" stopColor="#059669" stopOpacity="0.9" />
+                      </linearGradient>
+                      <linearGradient id="conn-grad-1" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#f97316" stopOpacity="0.15" />
+                        <stop offset="100%" stopColor="#22d3ee" stopOpacity="0.15" />
+                      </linearGradient>
+                      <linearGradient id="conn-grad-2" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.15" />
+                        <stop offset="100%" stopColor="#10b981" stopOpacity="0.15" />
+                      </linearGradient>
+                      <filter id="glow-filter" x="-20%" y="-20%" width="140%" height="140%">
+                        <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#000" floodOpacity="0.3" />
+                      </filter>
+                    </defs>
+
+                    {/* Smooth Liquid Connections */}
+                    <path d={connector1} fill="url(#conn-grad-1)" style={{ transition: "all 0.4s ease" }} />
+                    <path d={connector2} fill="url(#conn-grad-2)" style={{ transition: "all 0.4s ease" }} />
+
+                    {/* Stage 1 Capsule (Inbound Leads) */}
+                    <g filter="url(#glow-filter)" style={{ transition: "all 0.4s ease" }}>
+                      <rect x={100 - w1/2} y={10} width={w1} height={24} rx={12} fill="url(#funnel-grad-1)" style={{ transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }} />
+                      <rect x={100 - w1/2 + 2} y={12} width={w1 - 4} height={8} rx={4} fill="rgba(255, 255, 255, 0.15)" style={{ transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }} />
+                      <text x="100" y="26" textAnchor="middle" fill="#ffffff" fontSize="10" fontWeight="800" letterSpacing="0.05em" style={{ userSelect: "none" }}>{total} LEADS</text>
+                    </g>
+
+                    {/* Stage 2 Capsule (Meetings Booked) */}
+                    <g filter="url(#glow-filter)" style={{ transition: "all 0.4s ease" }}>
+                      <rect x={100 - w2/2} y={50} width={w2} height={24} rx={12} fill="url(#funnel-grad-2)" style={{ transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }} />
+                      <rect x={100 - w2/2 + 2} y={52} width={Math.max(0, w2 - 4)} height={8} rx={4} fill="rgba(255, 255, 255, 0.15)" style={{ transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }} />
+                      <text x="100" y="66" textAnchor="middle" fill="#ffffff" fontSize="9" fontWeight="800" letterSpacing="0.05em" style={{ userSelect: "none" }}>
+                        {w2 > 80 ? `${meetings} MEETINGS` : meetings}
+                      </text>
+                    </g>
+
+                    {/* Stage 3 Capsule (Closed Deals - Won) */}
+                    <g filter="url(#glow-filter)" style={{ transition: "all 0.4s ease" }}>
+                      <rect x={100 - w3/2} y={90} width={w3} height={24} rx={12} fill="url(#funnel-grad-3)" style={{ transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }} />
+                      <rect x={100 - w3/2 + 2} y={92} width={Math.max(0, w3 - 4)} height={8} rx={4} fill="rgba(255, 255, 255, 0.15)" style={{ transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)" }} />
+                      <text x="100" y="106" textAnchor="middle" fill="#ffffff" fontSize="9" fontWeight="800" letterSpacing="0.05em" style={{ userSelect: "none" }}>
+                        {w3 > 80 ? `${won} WON` : won}
+                      </text>
+                    </g>
+                  </svg>
                 </div>
-              ))}
-            </div>
-          </div>
+                {/* Funnel Stats Details */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 14, flex: 1, minWidth: 150 }}>
+                  {[
+                    { label: "Inbound Leads", count: total, pct: 100, color: "#f97316" },
+                    {
+                      label: "Meetings Booked",
+                      count: meetings,
+                      pct: total ? Math.round((meetings / total) * 100) : 0,
+                      color: "#22d3ee"
+                    },
+                    {
+                      label: "Closed Deals (Won)",
+                      count: won,
+                      pct: total ? Math.round((won / total) * 100) : 0,
+                      color: "#10b981"
+                    }
+                  ].map((item, idx) => (
+                    <div key={idx} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: item.color }} />
+                        <span style={{ fontSize: 11, fontWeight: 700, color: "#fff" }}>{item.label}</span>
+                      </div>
+                      <div style={{ display: "flex", alignItems: "baseline", gap: 8, paddingLeft: 16 }}>
+                        <span style={{ fontSize: 18, fontWeight: 900, color: "#fff" }}>{item.count}</span>
+                        <span style={{ fontSize: 10, color: "#525252" }}>({item.pct}%)</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </div>
 
         {/* Service Popularity Breakdown */}
@@ -1032,9 +1097,53 @@ export default function OverviewTab({
         </div>
       </div>
 
+      {/* My Pending Tasks Checklist (Spans Full Width) */}
+      <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <CheckCircle2 size={14} color="#f97316" />
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#fff", textTransform: "uppercase", letterSpacing: "0.2em" }}>My Pending Tasks</div>
+          </div>
+          <div style={{ fontSize: 10, fontWeight: 800, background: "rgba(249,115,22,0.1)", color: "#f97316", padding: "2px 6px", borderRadius: 6 }}>{myTasks.length} pending</div>
+        </div>
+
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, maxHeight: 150, overflowY: "auto", paddingRight: 4 }}>
+          {myTasks.map((task) => (
+            <div key={task.id} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.02)", borderRadius: 10 }}>
+              <input
+                type="checkbox"
+                checked={task.status === "completed"}
+                onChange={() => handleToggleTask(task.id, task.status)}
+                style={{ marginTop: 2, accentColor: "#f97316", cursor: "pointer" }}
+              />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontSize: 11, fontWeight: 600, color: "#fff", textDecoration: task.status === "completed" ? "line-through" : "none", opacity: task.status === "completed" ? 0.5 : 1 }}>
+                  {task.title}
+                </div>
+                {task.description && (
+                  <div style={{ fontSize: 9, color: "#71717a", marginTop: 2 }}>
+                    {task.description}
+                  </div>
+                )}
+                {task.dueDate && (
+                  <div style={{ fontSize: 8, color: "#525252", marginTop: 4, display: "flex", alignItems: "center", gap: 4 }}>
+                    <Clock size={8} /> Due: {new Date(task.dueDate).toLocaleDateString()}
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+          {myTasks.length === 0 && (
+            <div style={{ textAlign: "center", padding: "20px 0", fontSize: 11, color: "#3f3f46" }}>
+              No pending tasks. You're all caught up!
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* 2-Column Layout */}
       <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 14 }}>
-        
+
         {/* Left Column (50%) */}
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {/* Lead Sources */}
@@ -1077,50 +1186,7 @@ export default function OverviewTab({
             )}
           </div>
 
-          {/* My Pending Tasks Checklist */}
-          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <CheckCircle2 size={14} color="#f97316" />
-                <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em" }}>My Pending Tasks</div>
-              </div>
-              <div style={{ fontSize: 10, fontWeight: 800, background: "rgba(249,115,22,0.1)", color: "#f97316", padding: "2px 6px", borderRadius: 6 }}>{myTasks.length} pending</div>
-            </div>
-            
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, maxHeight: 200, overflowY: "auto", paddingRight: 4 }}>
-              {myTasks.map((task) => (
-                <div key={task.id} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.02)", borderRadius: 10 }}>
-                  <input
-                    type="checkbox"
-                    checked={task.status === "completed"}
-                    onChange={() => handleToggleTask(task.id, task.status)}
-                    style={{ marginTop: 2, accentColor: "#f97316", cursor: "pointer" }}
-                  />
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontSize: 11, fontWeight: 600, color: "#fff", textDecoration: task.status === "completed" ? "line-through" : "none", opacity: task.status === "completed" ? 0.5 : 1 }}>
-                      {task.title}
-                    </div>
-                    {task.description && (
-                      <div style={{ fontSize: 9, color: "#71717a", marginTop: 2 }}>
-                        {task.description}
-                      </div>
-                    )}
-                    {task.dueDate && (
-                      <div style={{ fontSize: 8, color: "#525252", marginTop: 4, display: "flex", alignItems: "center", gap: 4 }}>
-                        <Clock size={8} /> Due: {new Date(task.dueDate).toLocaleDateString()}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
-              {myTasks.length === 0 && (
-                <div style={{ textAlign: "center", padding: "20px 0", fontSize: 11, color: "#3f3f46" }}>
-                  No pending tasks. You're all caught up!
-                </div>
-              )}
-            </div>
-          </div>
-          
+
           {/* Mini Calendar for leads & meetings */}
           <OverviewMiniCalendar leads={leads} />
         </div>
@@ -1134,7 +1200,7 @@ export default function OverviewTab({
                 <Activity size={16} color="#f97316" />
                 <div style={{ fontSize: 12, fontWeight: 800, color: "#fff", textTransform: "uppercase", letterSpacing: "0.2em" }}>Activity Timeline</div>
               </div>
-              
+
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
                 {/* Export CSV */}
                 <button
@@ -1198,8 +1264,8 @@ export default function OverviewTab({
                 style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 500, width: "100%", outline: "none" }}
               />
             </div>
-            
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxHeight: 360, overflowY: "auto", paddingRight: 8, paddingLeft: 8, paddingBottom: 20 }}>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxHeight: 520, overflowY: "auto", paddingRight: 8, paddingLeft: 8, paddingBottom: 20 }}>
               {filteredTimeline.length === 0 ? (
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "150px", color: "#3f3f46", fontSize: 11, fontStyle: "italic" }}>
                   {logSearch ? "No matching logs found." : "No recent activity."}
@@ -1208,13 +1274,13 @@ export default function OverviewTab({
                 Object.entries(groupedTimeline).map(([dateStr, dayLogs]) => (
                   <div key={dateStr} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                     {/* Sticky Date Label */}
-                    <div style={{ 
-                      fontSize: 9, 
-                      fontWeight: 900, 
-                      color: "#f97316", 
-                      textTransform: "uppercase", 
-                      letterSpacing: "0.15em", 
-                      padding: "8px 0 4px", 
+                    <div style={{
+                      fontSize: 9,
+                      fontWeight: 900,
+                      color: "#f97316",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.15em",
+                      padding: "8px 0 4px",
                       borderBottom: "1px dashed rgba(249,115,22,0.15)",
                       position: "sticky",
                       top: 0,
@@ -1248,7 +1314,7 @@ export default function OverviewTab({
                           <div key={log.id} style={{ position: "relative", display: "flex", flexDirection: "column", gap: 6 }}>
                             {/* Timeline Node */}
                             <div style={{ position: "absolute", left: -21, top: 4, width: 8, height: 8, borderRadius: "50%", background: badge.color, boxShadow: `0 0 8px ${badge.color}`, border: "2px solid #0d0d0d" }} />
-                            
+
                             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
                               <span style={{
                                 background: badge.bg,
@@ -1291,20 +1357,20 @@ export default function OverviewTab({
           <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, overflow: "hidden" }}>
             <div style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
               <div style={{ fontSize: 11, fontWeight: 700, color: "#fff" }}>Recent Lead Activity</div>
-              <button 
-                onClick={() => setActiveTab("leads")} 
-                style={{ 
-                  display: "flex", 
-                  alignItems: "center", 
-                  gap: 3, 
-                  fontSize: 8, 
-                  fontWeight: 900, 
-                  color: "#f97316", 
-                  background: "none", 
-                  border: "none", 
-                  cursor: "pointer", 
-                  textTransform: "uppercase", 
-                  letterSpacing: "0.1em" 
+              <button
+                onClick={() => setActiveTab("leads")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 3,
+                  fontSize: 8,
+                  fontWeight: 900,
+                  color: "#f97316",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em"
                 }}
               >
                 View all <ArrowUpRight size={10} />
@@ -1351,7 +1417,7 @@ function OverviewPerformanceChart({ leads }) {
   const [hoveredPoint, setHoveredPoint] = useState(null);
   const [viewRange, setViewRange] = useState(15);
   const [timeOffset, setTimeOffset] = useState(0); // offset days back in time
-  
+
   const analyticsData = useMemo(() => {
     const dates = [];
     for (let i = viewRange - 1; i >= 0; i--) {
@@ -1401,7 +1467,7 @@ function OverviewPerformanceChart({ leads }) {
       if (d.leads > max) max = d.leads;
       if (d.meetings > max) max = d.meetings;
     });
-    return Math.max(max + 1, 4); 
+    return Math.max(max + 1, 4);
   }, [analyticsData]);
 
   const handleRangeChange = (range) => {
@@ -1430,7 +1496,7 @@ function OverviewPerformanceChart({ leads }) {
   const startX = 60;
   const startY = 30;
   const endY = 230;
-  
+
   const getCurvePath = (key) => {
     if (analyticsData.length === 0) return "";
     const points = analyticsData.map((d, i) => {
@@ -1438,7 +1504,7 @@ function OverviewPerformanceChart({ leads }) {
       const y = endY - (d[key] / maxVal) * chartHeight;
       return { x, y };
     });
-    
+
     let path = `M ${points[0].x} ${points[0].y}`;
     for (let i = 0; i < points.length - 1; i++) {
       const cpX1 = points[i].x + (points[i+1].x - points[i].x) / 3;
@@ -1473,7 +1539,7 @@ function OverviewPerformanceChart({ leads }) {
           <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em" }}>Lead Acquisition & Bookings Trend</div>
           <div style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>Daily Activity Performance</div>
         </div>
-        
+
         {/* Dynamic Controls Panel */}
         <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
           {/* Time Range Selector */}
@@ -1522,7 +1588,7 @@ function OverviewPerformanceChart({ leads }) {
             >
               ◀ Back
             </button>
-            
+
             {timeOffset > 0 && (
               <button
                 onClick={handleTodayReset}
@@ -1624,12 +1690,12 @@ function OverviewPerformanceChart({ leads }) {
 
           {/* Date Labels (X Axis Ticks) */}
           {analyticsData.map((d, i) => {
-            const isLabelVisible = 
-              viewRange === 7 || 
-              (viewRange === 15 && i % 2 === 0) || 
+            const isLabelVisible =
+              viewRange === 7 ||
+              (viewRange === 15 && i % 2 === 0) ||
               (viewRange === 30 && i % 4 === 0) ||
               i === analyticsData.length - 1;
-              
+
             if (!isLabelVisible) return null;
 
             const x = startX + i * (chartWidth / (analyticsData.length - 1));
@@ -1646,14 +1712,14 @@ function OverviewPerformanceChart({ leads }) {
             const x = startX + hoveredPoint * (chartWidth / (analyticsData.length - 1));
             const yLeads = endY - (d.leads / maxVal) * chartHeight;
             const yMeetings = endY - (d.meetings / maxVal) * chartHeight;
-            
+
             return (
               <g>
                 <line x1={x} y1={startY} x2={x} y2={endY} stroke="rgba(255,255,255,0.15)" strokeWidth={1} strokeDasharray="4 4" />
-                
+
                 {/* Leads Dot */}
                 <circle cx={x} cy={yLeads} r={7} fill="#f97316" stroke="#0d0d0d" strokeWidth={2} style={{ filter: "drop-shadow(0 0 6px #f97316)" }} />
-                
+
                 {/* Meetings Dot */}
                 <circle cx={x} cy={yMeetings} r={7} fill="#22c55e" stroke="#0d0d0d" strokeWidth={2} style={{ filter: "drop-shadow(0 0 6px #22c55e)" }} />
               </g>
@@ -1684,10 +1750,10 @@ function OverviewPerformanceChart({ leads }) {
         {hoveredPoint !== null && (() => {
           const d = analyticsData[hoveredPoint];
           const x = startX + hoveredPoint * (chartWidth / (analyticsData.length - 1));
-          
+
           // Position relative percentage left
           const pctLeft = (x / 1000) * 100;
-          
+
           return (
             <div style={{
               position: "absolute",

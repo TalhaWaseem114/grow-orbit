@@ -99,72 +99,90 @@ export const SANDBOX_DRAFTS = [
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
-  As discussed, I've attached our <strong>24-Month Amazon Growth Roadmap</strong> for your review. This document outlines our long-term strategy, covering each stage of the Amazon growth journey—from product validation and launch to brand scaling and achieving category leadership.
+  As discussed, I've attached our <strong> 24-Month Amazon Growth Roadmap</strong> for your review. This document outlines our long-term strategy, covering each stage of the Amazon growth journey, from product validation and launch to brand scaling and achieving category leadership.
 </p>
 
-<!-- Highlights Roadmap Card -->
-<div style="background-color: #f8fafc; border-left: 4px solid #f97316; border-radius: 12px; padding: 24px; margin-bottom: 24px; border: 1px solid #e2e8f0; border-left-width: 4px;">
-  <div style="font-size: 11px; font-weight: 800; color: #f97316; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px;">Roadmap Highlights & Phases</div>
-  
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.6; color: #475569; border-collapse: collapse; margin: 0;">
-    <tr>
-      <td style="padding-bottom: 16px; vertical-align: top; width: 36px;">
-        <div style="background-color: #ffedd5; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 13px;">🔍</div>
-      </td>
-      <td style="padding-bottom: 16px; padding-top: 2px; vertical-align: top; color: #334155; font-family: 'Montserrat', sans-serif;">
-        <strong style="color: #0f172a;">Phase 1: Discovery & Product Validation (Months 1–2)</strong><br />
-        Identify and validate a profitable product opportunity before investment.
-      </td>
-    </tr>
-    <tr>
-      <td style="padding-bottom: 16px; vertical-align: top; width: 36px;">
-        <div style="background-color: #ffedd5; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 13px;">🚀</div>
-      </td>
-      <td style="padding-bottom: 16px; padding-top: 2px; vertical-align: top; color: #334155; font-family: 'Montserrat', sans-serif;">
-        <strong style="color: #0f172a;">Phase 2: Market Entry (Launch) (Months 2–5)</strong><br />
-        Build the Amazon presence, prepare all creative assets, and launch the product.
-      </td>
-    </tr>
-    <tr>
-      <td style="padding-bottom: 16px; vertical-align: top; width: 36px;">
-        <div style="background-color: #ffedd5; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 13px;">📈</div>
-      </td>
-      <td style="padding-bottom: 16px; padding-top: 2px; vertical-align: top; color: #334155; font-family: 'Montserrat', sans-serif;">
-        <strong style="color: #0f172a;">Phase 3: Brand Establishment (Months 5–9)</strong><br />
-        Generate initial sales, build credibility, establish reviews, and improve organic visibility.
-      </td>
-    </tr>
-    <tr>
-      <td style="padding-bottom: 16px; vertical-align: top; width: 36px;">
-        <div style="background-color: #ffedd5; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 13px;">⚡</div>
-      </td>
-      <td style="padding-bottom: 16px; padding-top: 2px; vertical-align: top; color: #334155; font-family: 'Montserrat', sans-serif;">
-        <strong style="color: #0f172a;">Phase 4: Growth Acceleration (Months 9–16)</strong><br />
-        Scale inventory and advertising to achieve first-page keyword rankings.
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top; width: 36px;">
-        <div style="background-color: #ffedd5; width: 26px; height: 26px; border-radius: 50%; text-align: center; line-height: 26px; font-size: 13px;">👑</div>
-      </td>
-      <td style="padding-top: 2px; vertical-align: top; color: #334155; font-family: 'Montserrat', sans-serif;">
-        <strong style="color: #0f172a;">Phase 5: Market Leadership (Months 17–24)</strong><br />
-        Strengthen organic dominance, expand the brand, and establish category leadership.
-      </td>
-    </tr>
-  </table>
-</div>
+<!-- Highlights Roadmap Card (Table-based for GoDaddy) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td style="background-color: #f8fafc; border-left: 4px solid #f97316; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 16px;">
+        <tr>
+          <td style="font-size: 11px; font-weight: 800; color: #f97316; letter-spacing: 2px; text-transform: uppercase;">ROADMAP HIGHLIGHTS &amp; PHASES</td>
+        </tr>
+      </table>
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.6; color: #475569;">
+        <tr>
+          <td width="36" valign="top" style="padding-bottom: 16px; padding-right: 8px;">
+            <span style="font-size: 16px;">&#128269;</span>
+          </td>
+          <td valign="top" style="padding-bottom: 16px; color: #334155;">
+            <strong style="color: #0f172a;">Phase 1: Discovery &amp; Product Validation (Months 1&#8211;2)</strong><br>
+            Identify and vet a winning product opportunity.
+          </td>
+        </tr>
+        <tr>
+          <td width="36" valign="top" style="padding-bottom: 16px; padding-right: 8px;">
+            <span style="font-size: 16px;">&#128640;</span>
+          </td>
+          <td valign="top" style="padding-bottom: 16px; color: #334155;">
+            <strong style="color: #0f172a;">Phase 2: Market Entry (Launch) (Months 2&#8211;5)</strong><br>
+            Establish the Amazon presence and bring the product to market.
+          </td>
+        </tr>
+        <tr>
+          <td width="36" valign="top" style="padding-bottom: 16px; padding-right: 8px;">
+            <span style="font-size: 16px;">&#128200;</span>
+          </td>
+          <td valign="top" style="padding-bottom: 16px; color: #334155;">
+            <strong style="color: #0f172a;">Phase 3: Brand Establishment (Months 5&#8211;9)</strong><br>
+            Build initial sales velocity, credibility, and organic visibility.
+          </td>
+        </tr>
+        <tr>
+          <td width="36" valign="top" style="padding-bottom: 16px; padding-right: 8px;">
+            <span style="font-size: 16px;">&#9889;</span>
+          </td>
+          <td valign="top" style="padding-bottom: 16px; color: #334155;">
+            <strong style="color: #0f172a;">Phase 4: Growth Acceleration (Months 9&#8211;16)</strong><br>
+            Scale inventory and advertising to secure first-page rankings.
+          </td>
+        </tr>
+        <tr>
+          <td width="36" valign="top" style="padding-right: 8px;">
+            <span style="font-size: 16px;">&#128081;</span>
+          </td>
+          <td valign="top" style="color: #334155;">
+            <strong style="color: #0f172a;">Phase 5: Market Leadership (Months 17&#8211;24)</strong><br>
+            Achieve durable organic dominance and category leadership.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
   It provides a clear overview of the methodology, milestones, and growth objectives we follow throughout the engagement.
 </p>
 
-<!-- Centered Button Container -->
-<div style="text-align: center; margin: 35px 0;">
-  <a href="https://drive.google.com/file/d/1vJEh03zklqZJKAsjZDSPe6nxNmLJj7q9/view?usp=drive_link" style="background-color: #f97316; color: #ffffff !important; text-decoration: none; padding: 12px 32px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; box-shadow: 0 6px 18px rgba(249, 115, 22, 0.25); font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; border: 3px solid #fed7aa; box-sizing: border-box; max-width: 100%;">
-    Open 24-Month Roadmap (PDF)
-  </a>
-</div>
+<!-- CTA Button (Table-based for GoDaddy) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 35px; margin-bottom: 35px;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="center" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 12px 32px; border-radius: 50px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            <a href="https://drive.google.com/file/d/1vJEh03zklqZJKAsjZDSPe6nxNmLJj7q9/view?usp=drive_link" target="_blank" style="color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+              Open 24-Month Roadmap (PDF)
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
   Please take a look, and let me know if you have any questions or if you'd like to discuss any part of the roadmap in more detail.
@@ -172,14 +190,6 @@ export const SANDBOX_DRAFTS = [
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px;">
   Looking forward to your feedback.
-</p>
-
-<!-- Signature Divider -->
-<div style="height: 1px; background-color: rgba(15, 23, 42, 0.06); margin: 30px 0 24px 0; border-radius: 1px;"></div>
-
-<p style="font-size: 14px; line-height: 1.7; color: #475569; margin-bottom: 0;">
-  Warm regards,<br />
-  <strong style="color: #0f172a; font-size: 16px;">The Grow <span style="color: #f97316;">Orbit</span> Team</strong>
 </p>`
   },
   {

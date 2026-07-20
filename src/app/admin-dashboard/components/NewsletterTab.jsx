@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Mail, Image as ImageIcon, LayoutTemplate, UploadCloud, RotateCcw, Copy, Eye, Palette, ShoppingCart, BarChart3, Sparkles, Smartphone, Monitor, Calendar, Clipboard } from "lucide-react";
+import { Mail, Image as ImageIcon, LayoutTemplate, UploadCloud, RotateCcw, Copy, Eye, Palette, ShoppingCart, BarChart3, Sparkles, Smartphone, Monitor, Calendar, Clipboard, Search } from "lucide-react";
 import { auth } from "@/firebase/firebaseConfig";
-import { sandboxId, sandboxSubject, sandboxHeadline, sandboxBody } from "./SandboxTemplate";
+import { sandboxId, sandboxSubject, sandboxHeadline, sandboxBody, SANDBOX_DRAFTS } from "./SandboxTemplate";
 
 // ─── HTML Syntax Highlighter ──────────────────────────────────
 const highlightHtml = (code) => {
@@ -241,817 +241,96 @@ const TEMPLATES = [
 </p>`,
   },
   {
-    id: "allServices",
-    label: "All Services",
-    emoji: "🚀",
+    id: "productHunting",
+    label: "Product Hunting",
+    emoji: "🔍",
     color: "#f97316",
     bg: "rgba(249,115,22,0.06)",
     border: "rgba(249,115,22,0.15)",
-    icon: ShoppingCart,
-    description: "Amazon + Graphics combined pitch",
-    subject: "Scale Your Brand with Amazon & Creative Design Services 🚀",
+    icon: Search,
+    description: "Product sourcing & market analysis pitch",
+    subject: "Your Custom Product Sourcing & Market Analysis Proposal 🚀",
     headerImage: "/logo.png",
-    headline: "Your All-in-One Growth Partner",
-    body: `<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi there,</p>
-
-<!-- Premium Hook Panel -->
-<div style="background-color: #fafafb; border-left: 3px solid #f97316; padding: 16px 20px; margin-bottom: 24px; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);">
-  <p style="font-size: 14.5px; line-height: 1.5; color: #0f172a; font-style: italic; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    "Most brands scale slower because their search marketing strategy doesn't talk to their product design. We align both under one roof to multiply your conversion rates."
-  </p>
-</div>
-
-<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-bottom: 24px;">At Grow Orbit, we simplify your scaling operations by combining data-driven marketplace management with scroll-stopping design assets.</p>
-
-<!-- Combined Card 1: Amazon -->
-<div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; margin-bottom: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.01);">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="text-align: left;">
-    <tr>
-      <td style="font-size: 16px; font-weight: 700; color: #0f172a; padding-bottom: 4px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        🛒 Marketplace Strategy
-      </td>
-    </tr>
-    <tr>
-      <td style="font-size: 11px; font-weight: 700; color: #f97316; letter-spacing: 0.05em; text-transform: uppercase; padding-bottom: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        Growth & Performance
-      </td>
-    </tr>
-    <tr>
-      <td style="font-size: 13px; line-height: 1.6; color: #475569; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        High-efficiency Sponsored Ads (PPC), dayparting schedules, listing keyword SEO, and ongoing catalog health audits.
-      </td>
-    </tr>
-  </table>
-</div>
-
-<!-- Combined Card 2: Design -->
-<div style="background-color: #fdf8ff; border: 1px solid #f3e8ff; border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.01);">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="text-align: left;">
-    <tr>
-      <td style="font-size: 16px; font-weight: 700; color: #0f172a; padding-bottom: 4px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        🎨 Creative & Visuals
-      </td>
-    </tr>
-    <tr>
-      <td style="font-size: 11px; font-weight: 700; color: #a855f7; letter-spacing: 0.05em; text-transform: uppercase; padding-bottom: 12px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        Conversion Architecture
-      </td>
-    </tr>
-    <tr>
-      <td style="font-size: 13px; line-height: 1.6; color: #6b21a8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        Scroll-stopping hero graphics, custom package renders, high-converting A+ Content structures, and storefront layouts.
-      </td>
-    </tr>
-  </table>
-</div>
-
-<!-- Performance Metrics -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="text-align: center; margin-bottom: 28px;">
-  <tr>
-    <td width="33%" style="padding: 4px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      <div style="font-size: 20px; font-weight: 800; color: #0f172a;">2-5x</div>
-      <div style="font-size: 9px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">ROAS Growth</div>
-    </td>
-    <td width="33%" style="border-left: 1px solid #e2e8f0; padding: 4px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      <div style="font-size: 20px; font-weight: 800; color: #0f172a;">+80%</div>
-      <div style="font-size: 9px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">CVR Lift</div>
-    </td>
-    <td width="33%" style="border-left: 1px solid #e2e8f0; padding: 4px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      <div style="font-size: 20px; font-weight: 800; color: #0f172a;">50+</div>
-      <div style="font-size: 9px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">Brands Scaled</div>
-    </td>
-  </tr>
-</table>
-
-<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-bottom: 8px;">Let's discuss how we can tailor a growth plan specifically for your brand.</p>`,
-  },
-  {
-    id: "ppc",
-    label: "Amazon PPC",
-    emoji: "📊",
-    color: "#60a5fa",
-    bg: "rgba(59,130,246,0.06)",
-    border: "rgba(59,130,246,0.15)",
-    icon: BarChart3,
-    description: "PPC-focused Amazon services",
-    subject: "Stop Wasting Ad Spend — Let's Fix Your Amazon PPC 📊",
-    headerImage: "/logo.png",
-    headline: "Maximize Every Dollar of Your Amazon Ad Spend",
-    body: `<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi there,</p>
-
-<!-- Premium Hook Panel -->
-<div style="background-color: #fffbeb; border-left: 3px solid #3b82f6; padding: 16px 20px; margin-bottom: 24px; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);">
-  <p style="font-size: 14.5px; line-height: 1.5; color: #1e293b; font-style: italic; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    "If you're paying Amazon more in advertising fees than you are taking home in net profit, your campaign structures are likely bleeding cash on cold keywords."
-  </p>
-</div>
-
-<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-bottom: 24px;">At Grow Orbit, we audit and restructure your PPC strategy from the ground up to focus ad spend purely on high-intent buyer searches.</p>
-
-<!-- Focus points -->
-<div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 20px 24px; margin-bottom: 24px; text-align: left; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.6; color: #475569; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    <tr>
-      <td style="padding-bottom: 10px;">
-        🔍 <strong>Bid Pacing:</strong> Adjusting daily target bids to match hour-by-hour shopping peaks.
-      </td>
-    </tr>
-    <tr>
-      <td style="padding-bottom: 10px;">
-        🎯 <strong>ACoS Control:</strong> Systematic negative keyword extraction to eliminate non-converting budget.
-      </td>
-    </tr>
-    <tr>
-      <td>
-        📈 <strong>SEO Flywheel:</strong> Leveraging ad placements to steadily compound organic search indexing.
-      </td>
-    </tr>
-  </table>
-</div>
-
-<!-- PPC Metrics Row -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="text-align: center; margin-bottom: 28px;">
-  <tr>
-    <td width="33%" style="padding: 4px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      <div style="font-size: 20px; font-weight: 800; color: #3b82f6;">30-50%</div>
-      <div style="font-size: 9px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">ACoS Reduction</div>
-    </td>
-    <td width="33%" style="border-left: 1px solid #e2e8f0; padding: 4px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      <div style="font-size: 20px; font-weight: 800; color: #3b82f6;">2-3x</div>
-      <div style="font-size: 9px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">Organic CTR</div>
-    </td>
-    <td width="33%" style="border-left: 1px solid #e2e8f0; padding: 4px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      <div style="font-size: 20px; font-weight: 800; color: #3b82f6;">90 Days</div>
-      <div style="font-size: 9px; font-weight: 600; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 2px;">Stabilization</div>
-    </td>
-  </tr>
-</table>
-
-<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-bottom: 8px;">Ready to stop guessing and start growing? Book your free PPC strategy call today.</p>`,
-  },
-  {
-    id: "graphics",
-    label: "Graphics & Design",
-    emoji: "🎨",
-    color: "#c084fc",
-    bg: "rgba(168,85,247,0.06)",
-    border: "rgba(168,85,247,0.15)",
-    icon: Palette,
-    description: "Visual-heavy design showcase",
-    subject: "Elevate Your Brand with Stunning Design & Creatives 🎨",
-    headerImage: "/logo.png",
-    headline: "Design That Converts — See Our Work",
-    body: `<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 24px;">Your brand deserves visuals that don't just look good — <strong>they convert</strong>. Here is a showcase of the high-performance design assets we craft at Grow Orbit:</p>
-
-<!-- Premium Hook Panel -->
-<div style="background-color: #fdf6ff; border-left: 3px solid #a855f7; padding: 16px 20px; margin-bottom: 28px; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);">
-  <p style="font-size: 14.5px; line-height: 1.5; color: #0f172a; font-style: italic; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    "In a marketplace where customers swipe in milliseconds, your listing images are either your greatest sales asset or your silent conversion killer."
-  </p>
-</div>
-
-<!-- Project Card 1: Lumina Bites -->
-<div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01); text-align: left;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 12px;">
-    <tr>
-      <td style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <div style="font-size: 14px; font-weight: 700; color: #0f172a;">Lumina Bites — Snacks Niche</div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Listing Infographics & Design</div>
-      </td>
-      <td align="right" valign="top" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <span style="font-size: 11px; font-weight: 700; color: #16a34a; background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 4px 10px; border-radius: 100px; display: inline-block;">+80% Sales Lift</span>
-      </td>
-    </tr>
-  </table>
-  
-  <!-- 2x2 Image Grid -->
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 12px; border-collapse: collapse;">
-    <tr>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271653/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.png" alt="Lumina Bites Packaging" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271655/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/2.png" alt="Lumina Bites Hero Display" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-    </tr>
-    <tr>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271657/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/3.png" alt="Lumina Bites Ingredients" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271659/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/4.png" alt="Lumina Bites Texture" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-    </tr>
-  </table>
-
-  <p style="font-size: 12px; line-height: 1.5; color: #64748b; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    High-conversion mobile-first listing infographics showcasing Sarah J.'s premium organic cookie recipes, emphasizing key taste textures, natural ingredients, and crunch profiles.
-  </p>
-</div>
-
-<!-- Project Card 2: Nexa Pouches -->
-<div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01); text-align: left;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 12px;">
-    <tr>
-      <td style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <div style="font-size: 14px; font-weight: 700; color: #0f172a;">Nexa — EDC Gear</div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Premium A+ Content Modules</div>
-      </td>
-      <td align="right" valign="top" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <span style="font-size: 11px; font-weight: 700; color: #2563eb; background-color: #eff6ff; border: 1px solid #bfdbfe; padding: 4px 10px; border-radius: 100px; display: inline-block;">3.2x ROAS</span>
-      </td>
-    </tr>
-  </table>
-
-  <!-- Vertical A+ Content Stack (One image per row) -->
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 12px; border-collapse: collapse;">
-    <tr>
-      <td style="padding: 4px 0; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271681/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-1.png" alt="Nexa Brand Header" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-    </tr>
-    <tr>
-      <td style="padding: 4px 0; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271683/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-2.png" alt="Nexa Lifestyle Module" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-    </tr>
-    <tr>
-      <td style="padding: 4px 0; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271685/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-3.png" alt="Nexa Technical Comparison" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-    </tr>
-    <tr>
-      <td style="padding: 4px 0; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271686/grow_orbit_portfolio/assets/portfolio/nexa_pouches/aplus-4.png" alt="Nexa Precision Engineering" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-    </tr>
-  </table>
-
-  <p style="font-size: 12px; line-height: 1.5; color: #64748b; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    Premium custom A+ Content modules showcasing Nexa's durability specifications, tactical EDC lifestyle layouts, pocket-sized capacity, and advanced waterproof rubber seal details.
-  </p>
-</div>
-
-<!-- Project Card 3: Core Vitality supplements -->
-<div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01); text-align: left;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 12px;">
-    <tr>
-      <td style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <div style="font-size: 14px; font-weight: 700; color: #0f172a;">Core Vitality — Health & Supplements</div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Photorealistic 3D Pill Renders</div>
-      </td>
-      <td align="right" valign="top" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <span style="font-size: 11px; font-weight: 700; color: #7c3aed; background-color: #f5f3ff; border: 1px solid #ddd6fe; padding: 4px 10px; border-radius: 100px; display: inline-block;">+130% Sales Lift</span>
-      </td>
-    </tr>
-  </table>
-
-  <!-- 2x2 Image Grid -->
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 12px; border-collapse: collapse;">
-    <tr>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271764/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/main_image.png" alt="Core Vitality Hero" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271768/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/2.png" alt="Core Vitality Presentation" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-    </tr>
-    <tr>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271770/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/3.png" alt="Core Vitality Packaging" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271772/grow_orbit_portfolio/assets/portfolio/core_vitality_suppliments/4.png" alt="Core Vitality Bio-Availability" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-    </tr>
-  </table>
-
-  <p style="font-size: 12px; line-height: 1.5; color: #64748b; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    Photorealistic 3D packaging renders and science-focused infographics explaining Dr. Elena R.'s dual-phase formula activation, bioavailability tracking, and synergistic ingredients.
-  </p>
-</div>
-
-<!-- Project Card 4: Meow Master Cat Food -->
-<div style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; margin-bottom: 28px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01); text-align: left;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 12px;">
-    <tr>
-      <td style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <div style="font-size: 14px; font-weight: 700; color: #0f172a;">Meow-Master — Pet Nutrition</div>
-        <div style="font-size: 11px; color: #64748b; margin-top: 2px;">Vibrant Listing Infographics</div>
-      </td>
-      <td align="right" valign="top" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <span style="font-size: 11px; font-weight: 700; color: #16a34a; background-color: #f0fdf4; border: 1px solid #bbf7d0; padding: 4px 10px; border-radius: 100px; display: inline-block;">+110% CVR Lift</span>
-      </td>
-    </tr>
-  </table>
-
-  <!-- 2x2 Image Grid -->
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 12px; border-collapse: collapse;">
-    <tr>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781528191/grow_orbit_portfolio/meow_master/main_image.png" alt="Meow-Master Hero" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781528178/grow_orbit_portfolio/meow_master/Artboard_1_6.png" alt="Meow-Master Presentation" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-    </tr>
-    <tr>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781528189/grow_orbit_portfolio/meow_master/Artboard_7_5.png" alt="Meow-Master Ingredients" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-      <td class="grid-cell" width="50%" style="padding: 4px; vertical-align: top;">
-        <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781528187/grow_orbit_portfolio/meow_master/Artboard_6_5.png" alt="Meow-Master Simple Routine" style="width: 100%; height: auto; border-radius: 8px; display: block; border: 1px solid #f1f5f9;" />
-      </td>
-    </tr>
-  </table>
-
-  <p style="font-size: 12px; line-height: 1.5; color: #64748b; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    Vet-approved pet care listing infographics showcasing real salmon ingredients, veterinary endorsements, and a visual 60-day cat health transformation checklist.
-  </p>
-</div>
-
-<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-bottom: 8px;">Let's transform your brand assets. Book a free creative design consultation today.</p>`,
-  },
-  {
-    id: "welcome",
-    label: "Welcome Email",
-    emoji: "👋",
-    color: "#4ade80",
-    bg: "rgba(74,222,128,0.06)",
-    border: "rgba(74,222,128,0.15)",
-    icon: Sparkles,
-    description: "New lead onboarding",
-    subject: "Welcome to Grow Orbit! 🚀",
-    headerImage: "/logo.png",
-    headline: "Welcome Aboard! Let's Scale Your Brand",
-    body: `<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi there 👋</p>
-
-<!-- Premium Hook Panel -->
-<div style="background-color: #f0fdf4; border-left: 3px solid #10b981; padding: 16px 20px; margin-bottom: 24px; border-radius: 4px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);">
-  <p style="font-size: 14.5px; line-height: 1.5; color: #1e293b; font-style: italic; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    "Let's turn your listing visits into customer orders. Here is exactly what we are prepping for your brand strategy call."
-  </p>
-</div>
-
-<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-bottom: 24px;">Thank you for scheduling a strategy call! Our team of Amazon account managers is currently preparing an audit of your brand's marketplace position.</p>
-
-<!-- Timeline Card -->
-<div style="background-color: #f8fafc; border: 3px solid #ffffff; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: left; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.015);">
-  <div style="margin-bottom: 20px; text-align: left;">
-    <span style="display: inline-block; background-color: #fff7ed; border: 1px solid #ffedd5; border-radius: 50px; padding: 6px 14px; font-size: 10px; font-weight: 800; color: #ea580c; letter-spacing: 0.05em; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      ⚡ Priority Gaps to Target
-    </span>
-  </div>
-  
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.6; color: #475569;">
-    <tr>
-      <td width="36" valign="top" style="padding-bottom: 16px;">
-        <div style="width: 26px; height: 26px; border-radius: 13px; background: #ffffff; color: #ea580c; font-size: 12px; font-weight: 800; line-height: 26px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">1</div>
-      </td>
-      <td valign="top" style="padding-bottom: 16px; padding-left: 6px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <strong style="color: #0f172a; font-size: 14px;">Keyword Discoverability:</strong> <span style="color: #475569;">Dominating high-volume search terms for ASINs B0H4NWP31Q & B0G62KPDVF to capture lost market share.</span>
-      </td>
-    </tr>
-    <tr>
-      <td width="36" valign="top" style="padding-bottom: 16px;">
-        <div style="width: 26px; height: 26px; border-radius: 13px; background: #ffffff; color: #ea580c; font-size: 12px; font-weight: 800; line-height: 26px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">2</div>
-      </td>
-      <td valign="top" style="padding-bottom: 16px; padding-left: 6px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <strong style="color: #0f172a; font-size: 14px;">A+ Brand Story:</strong> <span style="color: #475569;">Upgrading the visual narrative to lock in conversions once shoppers land on your page.</span>
-      </td>
-    </tr>
-    <tr>
-      <td width="36" valign="top">
-        <div style="width: 26px; height: 26px; border-radius: 13px; background: #ffffff; color: #ea580c; font-size: 12px; font-weight: 800; line-height: 26px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">3</div>
-      </td>
-      <td valign="top" style="padding-left: 6px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        <strong style="color: #0f172a; font-size: 14px;">Persuasive Imagery:</strong> <span style="color: #475569;">Designing custom, high-converting infographics tailored for mobile shoppers across all variations.</span>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<p style="font-size: 15px; line-height: 1.6; color: #475569; margin-bottom: 8px;">Have immediate questions? Just hit reply to this email.</p>`,
-  },
-  {
-    id: "getStartedMobile",
-    label: "Get Started Promo",
-    emoji: "🔥",
-    color: "#f97316",
-    bg: "rgba(249,115,22,0.06)",
-    border: "rgba(249,115,22,0.15)",
-    icon: Smartphone,
-    description: "Multi-section dark theme pitch",
-    subject: "Turn Amazon Into Your Growth Engine 🔥",
-    headerImage: "/logo.png",
-    headline: "",
-    body: `<!-- DARK_THEME -->
-<div style="background-color: #0A0A0B; margin: -36px -32px; padding: 36px 32px; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  
-  <!-- Section 1: Hero & Stats -->
-  <div style="text-align: center; margin-bottom: 32px;">
-    <!-- Eyebrow: 92 / SYSTEM - GROWTH PARTNER -->
-    <div style="font-size: 9px; font-weight: bold; color: #f97316; letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 12px; display: inline-flex; align-items: center; justify-content: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background-color: #f97316; margin-right: 6px; vertical-align: middle;"></span>
-      92 / SYSTEM - GROWTH PARTNER
-    </div>
-
-    <!-- Badge: Currently Accepting 3-5 Brands -->
-    <div style="margin-bottom: 24px;">
-      <span style="display: inline-block; border: 1px solid rgba(249,115,22,0.3); background-color: rgba(249,115,22,0.05); color: #f97316; border-radius: 100px; padding: 4px 14px; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-        ⚡ Currently Accepting 3-5 Brands - Apply Now
-      </span>
-    </div>
-
-    <!-- Big Title: TURN AMAZON INTO YOUR GROWTH ENGINE. -->
-    <h1 style="font-size: 26px; font-weight: 900; line-height: 1.15; color: #ffffff; margin: 0 0 16px 0; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; letter-spacing: -0.03em;">
-      TURN AMAZON <br>INTO YOUR <br><span style="color: #f97316;">GROWTH ENGINE.</span>
-    </h1>
-
-    <!-- Description -->
-    <p style="font-size: 15px; line-height: 1.6; color: #a1a1aa; margin: 0 auto 32px auto; max-width: 480px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      We build, launch, and scale Amazon brands from $0 to <strong style="color: #ffffff;">$50K-$200K+/month</strong> with a proven, profit-first system.
-    </p>
-
-    <!-- Stats 2x2 Grid -->
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 32px; border-collapse: collapse;">
-      <tr>
-        <td width="48%" style="padding: 12px; background: #141416; border: 1px solid #27272a; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: left;">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td width="26" valign="top" style="font-size: 16px; color: #f97316; padding-top: 2px;">📈</td>
-              <td valign="top" style="padding-left: 6px;">
-                <div style="font-size: 18px; font-weight: 900; color: #ffffff;">$12M+</div>
-                <div style="font-size: 8px; color: #a1a1aa; text-transform: uppercase; font-weight: 700; margin-top: 2px; letter-spacing: 0.05em; line-height: 1.2;">Revenue Generated</div>
-              </td>
-            </tr>
-          </table>
-        </td>
-        <td width="4%"></td>
-        <td width="48%" style="padding: 12px; background: #141416; border: 1px solid #27272a; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: left;">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td width="26" valign="top" style="font-size: 16px; color: #f97316; padding-top: 2px;">🚀</td>
-              <td valign="top" style="padding-left: 6px;">
-                <div style="font-size: 18px; font-weight: 900; color: #ffffff;">80+</div>
-                <div style="font-size: 8px; color: #a1a1aa; text-transform: uppercase; font-weight: 700; margin-top: 2px; letter-spacing: 0.05em; line-height: 1.2;">Brands Launched</div>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr style="height: 12px;"><td colspan="3"></td></tr>
-      <tr>
-        <td width="48%" style="padding: 12px; background: #141416; border: 1px solid #27272a; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: left;">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td width="26" valign="top" style="font-size: 16px; color: #f97316; padding-top: 2px;">🎯</td>
-              <td valign="top" style="padding-left: 6px;">
-                <div style="font-size: 18px; font-weight: 900; color: #ffffff;">8.2x</div>
-                <div style="font-size: 8px; color: #a1a1aa; text-transform: uppercase; font-weight: 700; margin-top: 2px; letter-spacing: 0.05em; line-height: 1.2;">Average ROAS</div>
-              </td>
-            </tr>
-          </table>
-        </td>
-        <td width="4%"></td>
-        <td width="48%" style="padding: 12px; background: #141416; border: 1px solid #27272a; border-radius: 8px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: left;">
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
-            <tr>
-              <td width="26" valign="top" style="font-size: 16px; color: #f97316; padding-top: 2px;">🛡️</td>
-              <td valign="top" style="padding-left: 6px;">
-                <div style="font-size: 18px; font-weight: 900; color: #ffffff;">100%</div>
-                <div style="font-size: 8px; color: #a1a1aa; text-transform: uppercase; font-weight: 700; margin-top: 2px; letter-spacing: 0.05em; line-height: 1.2;">Profit-First Approach</div>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-  <!-- Section 2: Real Client Dashboards -->
-  <div style="text-align: center; margin-bottom: 32px; border-top: 1px solid #27272a; padding-top: 24px;">
-    <div style="display: inline-block; background-color: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.2); border-radius: 100px; padding: 4px 12px; font-size: 9px; font-weight: bold; color: #f97316; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;">
-      Real Client Dashboards
-    </div>
-    <h3 style="font-size: 18px; font-weight: 900; color: #ffffff; margin: 0 0 8px 0; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; letter-spacing: -0.02em;">
-      Numbers that <span style="font-style: italic; font-weight: 300; color: #a1a1aa; text-transform: none;">speak volumes.</span>
-    </h3>
-    <p style="font-size: 13px; color: #a1a1aa; margin: 0 0 20px 0; line-height: 1.5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-      Live Seller Central screenshots from brands we manage — growth you can see, not just hear about.
-    </p>
-
-    <!-- Dashboards Images Layout -->
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 20px;">
-      <tr>
-        <td width="30%" align="center" valign="middle">
-          <img src="https://www.groworbitofficial.com/images/saler%20centeral%20screens/1.jpg" alt="Client Dashboard 1" style="width: 100%; max-width: 150px; border-radius: 8px; border: 1px solid #27272a;" />
-        </td>
-        <td style="width: 4%;"></td>
-        <td width="32%" align="center" valign="middle">
-          <img src="https://www.groworbitofficial.com/images/saler%20centeral%20screens/2.jpg" alt="Client Dashboard 2" style="width: 100%; max-width: 170px; border-radius: 8px; border: 2px solid #f97316; box-shadow: 0 4px 20px rgba(249,115,22,0.2);" />
-        </td>
-        <td style="width: 4%;"></td>
-        <td width="30%" align="center" valign="middle">
-          <img src="https://www.groworbitofficial.com/images/saler%20centeral%20screens/3.jpg" alt="Client Dashboard 3" style="width: 100%; max-width: 150px; border-radius: 8px; border: 1px solid #27272a;" />
-        </td>
-      </tr>
-    </table>
-
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #141416; border-radius: 8px; border: 1px solid #27272a;">
-      <tr>
-        <td width="33%" style="padding: 12px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div style="font-size: 16px; font-weight: 800; color: #ffffff;">1.15M+</div>
-          <div style="font-size: 8px; color: #a1a1aa; text-transform: uppercase; font-weight: bold; margin-top: 2px; letter-spacing: 0.05em;">Units Sold</div>
-        </td>
-        <td style="border-left: 1px solid #27272a;"></td>
-        <td width="33%" style="padding: 12px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div style="font-size: 16px; font-weight: 800; color: #ffffff;">135%</div>
-          <div style="font-size: 8px; color: #a1a1aa; text-transform: uppercase; font-weight: bold; margin-top: 2px; letter-spacing: 0.05em;">Growth YoY</div>
-        </td>
-        <td style="border-left: 1px solid #27272a;"></td>
-        <td width="33%" style="padding: 12px; text-align: center; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div style="font-size: 16px; font-weight: 800; color: #ffffff;">99%</div>
-          <div style="font-size: 8px; color: #a1a1aa; text-transform: uppercase; font-weight: bold; margin-top: 2px; letter-spacing: 0.05em;">Buy Box Rate</div>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-  <!-- Section 3: What We Do (Services) -->
-  <div style="margin-bottom: 32px; border-top: 1px solid #27272a; padding-top: 24px;">
-    <div style="text-align: center; margin-bottom: 20px;">
-      <div style="display: inline-block; background-color: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.2); border-radius: 100px; padding: 4px 12px; font-size: 9px; font-weight: bold; color: #f97316; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;">
-        02 / What We Do
-      </div>
-      <h3 style="font-size: 18px; font-weight: 900; color: #ffffff; margin: 0 0 8px 0; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; letter-spacing: -0.02em;">
-        Every Lever That <span style="font-style: italic; font-weight: 300; color: #a1a1aa; text-transform: none;">moves revenue.</span>
-      </h3>
-    </div>
-
-    <!-- Services Grid Layout -->
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
-      <!-- Row 1 -->
-      <tr>
-        <td width="48%" valign="top" style="background-color: #141416; border: 1px solid #27272a; border-radius: 8px; padding: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div style="font-size: 10px; font-weight: bold; color: #f97316; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.05em;">01. Product Hunting</div>
-          <div style="font-size: 12px; color: #a1a1aa; line-height: 1.4; margin-bottom: 8px;">Find high-demand, low-competition products with strong margins.</div>
-          <div style="font-size: 13px; font-weight: bold; color: #ffffff;">30%+ <span style="font-size: 9px; color: #a1a1aa; font-weight: normal;">Margin Potential</span></div>
-        </td>
-        <td style="width: 4%;"></td>
-        <td width="48%" valign="top" style="background-color: #141416; border: 1px solid #27272a; border-radius: 8px; padding: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div style="font-size: 10px; font-weight: bold; color: #f97316; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.05em;">02. Sourcing & Setup</div>
-          <div style="font-size: 12px; color: #a1a1aa; line-height: 1.4; margin-bottom: 8px;">Secure factory-direct pricing with verified suppliers globally.</div>
-          <div style="font-size: 13px; font-weight: bold; color: #ffffff;">0% <span style="font-size: 9px; color: #a1a1aa; font-weight: normal;">Risk Sourcing</span></div>
-        </td>
-      </tr>
-      <tr style="height: 12px;"><td colspan="3"></td></tr>
-      <!-- Row 2 -->
-      <tr>
-        <td width="48%" valign="top" style="background-color: #141416; border: 1px solid #27272a; border-radius: 8px; padding: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div style="font-size: 10px; font-weight: bold; color: #f97316; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.05em;">03. Brand Launch</div>
-          <div style="font-size: 12px; color: #a1a1aa; line-height: 1.4; margin-bottom: 8px;">Launch with high-converting listings and optimized content.</div>
-          <div style="font-size: 13px; font-weight: bold; color: #ffffff;">2X <span style="font-size: 9px; color: #a1a1aa; font-weight: normal;">Faster Rankings</span></div>
-        </td>
-        <td style="width: 4%;"></td>
-        <td width="48%" valign="top" style="background-color: #141416; border: 1px solid #27272a; border-radius: 8px; padding: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div style="font-size: 10px; font-weight: bold; color: #f97316; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.05em;">04. Creative & A+</div>
-          <div style="font-size: 12px; color: #a1a1aa; line-height: 1.4; margin-bottom: 8px;">Convert shoppers with scroll-stopping product listings & visuals.</div>
-          <div style="font-size: 13px; font-weight: bold; color: #ffffff;">25-40% <span style="font-size: 9px; color: #a1a1aa; font-weight: normal;">Higher CVR</span></div>
-        </td>
-      </tr>
-      <tr style="height: 12px;"><td colspan="3"></td></tr>
-      <!-- Row 3 -->
-      <tr>
-        <td width="48%" valign="top" style="background-color: #141416; border: 1px solid #27272a; border-radius: 8px; padding: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div style="font-size: 10px; font-weight: bold; color: #f97316; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.05em;">05. PPC & Ranking</div>
-          <div style="font-size: 12px; color: #a1a1aa; line-height: 1.4; margin-bottom: 8px;">Maximize ROI with custom campaign structures and negative keywords.</div>
-          <div style="font-size: 13px; font-weight: bold; color: #ffffff;">40% <span style="font-size: 9px; color: #a1a1aa; font-weight: normal;">ACoS Reduction</span></div>
-        </td>
-        <td style="width: 4%;"></td>
-        <td width="48%" valign="top" style="background-color: #141416; border: 1px solid #27272a; border-radius: 8px; padding: 14px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <div style="font-size: 10px; font-weight: bold; color: #f97316; text-transform: uppercase; margin-bottom: 4px; letter-spacing: 0.05em;">06. Full Mgmt</div>
-          <div style="font-size: 12px; color: #a1a1aa; line-height: 1.4; margin-bottom: 8px;">End-to-end operational scaling past $100K+ in monthly revenue.</div>
-          <div style="font-size: 13px; font-weight: bold; color: #ffffff;">$100K+ <span style="font-size: 9px; color: #a1a1aa; font-weight: normal;">Monthly Scale</span></div>
-        </td>
-      </tr>
-    </table>
-  </div>
-
-  <!-- Section 4: Portfolio Preview -->
-  <div style="border-top: 1px solid #27272a; padding-top: 24px; text-align: center;">
-    <div style="display: inline-block; background-color: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.2); border-radius: 100px; padding: 4px 12px; font-size: 9px; font-weight: bold; color: #f97316; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px;">
-      03 / Portfolio
-    </div>
-    <h3 style="font-size: 18px; font-weight: 900; color: #ffffff; margin: 0 0 8px 0; text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; letter-spacing: -0.02em;">
-      Our Work in <span style="font-style: italic; font-weight: 300; color: #a1a1aa; text-transform: none;">real-time.</span>
-    </h3>
-    
-    <!-- Lumina Bites Card -->
-    <div style="background-color: #141416; border: 1px solid #27272a; border-radius: 12px; padding: 16px; margin-top: 16px; text-align: left;">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 12px;">
-        <tr>
-          <td style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-            <div style="font-size: 13px; font-weight: bold; color: #ffffff;">Lumina Bites — Snacks Niche</div>
-            <div style="font-size: 10px; color: #a1a1aa; margin-top: 2px;">Listing Infographics & Design</div>
-          </td>
-          <td align="right" valign="top" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-            <span style="font-size: 10px; font-weight: bold; color: #16a34a; background-color: rgba(22,163,74,0.1); border: 1px solid rgba(22,163,74,0.2); padding: 4px 10px; border-radius: 100px; display: inline-block;">+80% Sales Lift</span>
-          </td>
-        </tr>
-      </table>
-      <img src="https://res.cloudinary.com/dciggvulg/image/upload/v1781271653/grow_orbit_portfolio/assets/portfolio/lumina_bites_1/main_image.png" alt="Lumina Bites" style="width: 100%; border-radius: 8px; border: 1px solid #27272a; display: block;" />
-    </div>
-  </div>
-</div>`
-  },
-  {
-    id: "proposal",
-    label: "Custom Proposal",
-    emoji: "📄",
-    color: "#f97316",
-    bg: "rgba(249,115,22,0.06)",
-    border: "rgba(249,115,22,0.15)",
-    icon: Mail,
-    description: "Send pitch proposal to client",
-    subject: "Your Custom Growth & Amazon Scale Proposal 🚀",
-    headerImage: "/logo.png",
-    headline: "Your Tailored Brand Growth Proposal",
+    headline: "Custom Product Sourcing & Market Analysis Blueprint",
     body: `<!-- HIDE_DEFAULT_CTA -->
-<!-- NEUMORPHIC_THEME -->
-<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi,</p>
+<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Dear Rehan,</p>
 
-<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-  It was great connecting on our recent call. Following our discussion where you walked us through your two products, our research team did a deep dive into <strong>Kadilo's Amazon presence</strong>, your competitors, and the market. What we uncovered was even more interesting than we expected.
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+  I hope you're doing well.
 </p>
 
-<!-- Glassmorphic Metric Banner -->
-<div style="background-color: #f8fafc; border: 3px solid #ffffff; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.015);">
-  <div style="font-size: 10px; font-weight: 800; color: #ef4444; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 6px;">Category Revenue Opportunity</div>
-  <div style="font-size: 28px; font-weight: 900; color: #0f172a; letter-spacing: -0.03em;">Over $10.6M / Month</div>
-  <div style="font-size: 12px; color: #64748b; margin-top: 6px; font-weight: 500;">
-    $9.1M Scented Candles listings &bull; $1.5M Incense Sticks listings
-  </div>
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+  As discussed, our team at <strong>Grow Orbit</strong> has completed an in-depth product sourcing and market analysis based on your requirements. We've attached our research proposal, which includes five carefully selected product opportunities backed by detailed market intelligence.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+  Rather than relying on assumptions, we've benchmarked each product against top-performing competitors and included the following:
+</p>
+
+<!-- Highlights Card -->
+<div style="background-color: #f8fafc; border-left: 4px solid #f97316; border-radius: 6px; padding: 16px 20px; margin-bottom: 24px;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.7; color: #475569; border-collapse: collapse; margin: 0;">
+    <tr>
+      <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
+        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
+      </td>
+      <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
+        Market size and category revenue
+      </td>
+    </tr>
+    <tr>
+      <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
+        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
+      </td>
+      <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
+        Competitor pricing and sales performance
+      </td>
+    </tr>
+    <tr>
+      <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
+        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
+      </td>
+      <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
+        Estimated unit economics and profit margins
+      </td>
+    </tr>
+    <tr>
+      <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
+        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
+      </td>
+      <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
+        Reference ASINs and competitive benchmarks
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 32px;">
+        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
+      </td>
+      <td style="padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
+        A transparent breakdown of the opportunity behind each product
+      </td>
+    </tr>
+  </table>
 </div>
 
-<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-  Over <strong style="color: #f97316; font-weight: 800;">$10.6M</strong> flows through your product categories every month, yet we identified several opportunities that could help Kadilo capture a much larger share of that demand.
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+  Our objective was to identify products that offer the strongest balance of demand, profitability, and long-term potential, allowing you to make decisions based on real market data instead of speculation.
 </p>
 
-<!-- Gaps Section Header (Pill Badge) -->
-<div style="text-align: left; margin-bottom: 22px;">
-  <div style="font-size: 10px; font-weight: 800; color: #ea580c; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 14px; background-color: rgba(249, 115, 22, 0.08); border-radius: 20px; display: inline-block; border: 1px solid rgba(249, 115, 22, 0.18);">
-    ⚡ Priority Gaps to Target
-  </div>
-</div>
-
-<!-- List Structure -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 28px;">
-  <!-- Row 1 -->
-  <tr>
-    <td style="padding-bottom: 18px; vertical-align: top; width: 45px;">
-      <!-- Glass Bullet -->
-      <div style="background-color: rgba(255, 255, 255, 0.75); border: 1px solid rgba(255, 255, 255, 0.9); width: 28px; height: 28px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02); text-align: center; line-height: 26px; font-weight: bold; color: #f97316; font-size: 12px;">
-        1
-      </div>
-    </td>
-    <td style="padding-bottom: 18px; padding-top: 3px; vertical-align: top;">
-      <strong style="color: #1e293b;">Keyword Discoverability:</strong> Dominating high-volume search terms for ASINs B0H4NWP31Q & B0G62KPDVF to capture lost market share.
-    </td>
-  </tr>
-  <!-- Row 2 -->
-  <tr>
-    <td style="padding-bottom: 18px; vertical-align: top; width: 45px;">
-      <div style="background-color: rgba(255, 255, 255, 0.75); border: 1px solid rgba(255, 255, 255, 0.9); width: 28px; height: 28px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02); text-align: center; line-height: 26px; font-weight: bold; color: #f97316; font-size: 12px;">
-        2
-      </div>
-    </td>
-    <td style="padding-bottom: 18px; padding-top: 3px; vertical-align: top;">
-      <strong style="color: #1e293b;">A+ Brand Story:</strong> Upgrading the visual narrative to lock in conversions once shoppers land on your page.
-    </td>
-  </tr>
-  <!-- Row 3 -->
-  <tr>
-    <td style="vertical-align: top; width: 45px;">
-      <div style="background-color: rgba(255, 255, 255, 0.75); border: 1px solid rgba(255, 255, 255, 0.9); width: 28px; height: 28px; border-radius: 50%; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02); text-align: center; line-height: 26px; font-weight: bold; color: #f97316; font-size: 12px;">
-        3
-      </div>
-    </td>
-    <td style="padding-top: 3px; vertical-align: top;">
-      <strong style="color: #1e293b;">Persuasive Imagery:</strong> Designing custom, high-converting infographics tailored for mobile shoppers across all variations.
-    </td>
-  </tr>
-</table>
-
-<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-  Instead of sending a generic proposal, we prepared a <strong style="color: #0f172a;">personalized Growth Blueprint</strong> outlining our findings, the gaps we identified, and the strategy we'd recommend if Kadilo were our own brand.
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px;">
+  We understand that selecting the right product is one of the most important decisions in building a successful Amazon brand.
 </p>
 
-<!-- Glass Attachment Box -->
-<div style="text-align: center; margin-bottom: 24px; margin-top: 16px;">
-  <a href="https://drive.google.com/file/d/1avAPVaDAQva217UPYlCbE72dx_TD8uDA/view?usp=drive_link" target="_blank" style="display: block; background-color: #ffffff; border: 1.5px dashed #fdba74; border-radius: 16px; padding: 18px 24px; text-decoration: none; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.015);">
-    <table cellpadding="0" cellspacing="0" border="0" style="margin: 0 auto;">
-      <tr>
-        <td style="vertical-align: middle; padding-right: 12px;">
-          <svg width="20" height="24" viewBox="0 0 20 24" fill="none" style="display: block;">
-            <path d="M12 0H2C0.9 0 0 0.9 0 2V22C0 23.1 0.9 24 2 24H18C19.1 24 20 23.1 20 22V8L12 0Z" fill="#e8e5f7"/>
-            <path d="M12 0V8H20L12 0Z" fill="#d1caf0"/>
-            <line x1="4" y1="13" x2="16" y2="13" stroke="#b0a4e3" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="4" y1="17" x2="16" y2="17" stroke="#b0a4e3" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="4" y1="21" x2="11" y2="21" stroke="#b0a4e3" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </td>
-        <td style="vertical-align: middle; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; font-size: 15px; font-weight: 800; color: #0f172a; letter-spacing: -0.01em;">
-          Open Detailed Growth Blueprint (PDF)
-        </td>
-      </tr>
-    </table>
+<!-- Centered Button Container -->
+<div style="text-align: center; margin: 35px 0;">
+  <a href="https://drive.google.com/file/d/1-4xpU4aWDAkU4fSy2xAWg_AvlhL9L38M/view?usp=drive_link" style="background-color: #f97316; color: #ffffff !important; text-decoration: none; padding: 12px 32px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; box-shadow: 0 6px 18px rgba(249, 115, 22, 0.25); font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; border: 3px solid #fed7aa; box-sizing: border-box; max-width: 100%;">
+    Review Research Proposal
   </a>
 </div>
 
-<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-  Rather than spoiling everything here, I'll let the report speak for itself.
-</p>
-
-<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-  If it resonates with you, I'd be happy to walk you through the strategy and answer any questions on a quick call.
-</p>
-
-<!-- Orange Glass CTA Button -->
-<div style="text-align: center; margin-bottom: 28px;">
-  <a href="https://www.groworbitofficial.com/get-started/#lead-form" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #ffffff !important; padding: 15px 35px; border-radius: 50px; font-size: 13px; font-weight: 800; text-decoration: none; box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25); border: 1px solid rgba(255, 255, 255, 0.1); text-transform: uppercase; letter-spacing: 0.06em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    🗓️ Book a Strategy Call
-  </a>
-</div>
-
-<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-  Looking forward to hearing your thoughts.
-</p>
-
-<!-- Soft Divider line -->
-<div style="height: 1px; background-color: rgba(15, 23, 42, 0.06); margin: 30px 0 24px 0; border-radius: 1px;"></div>
-
-<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 0;">
-  Warm regards,<br />
-  <strong style="color: #0f172a; font-size: 16px;">The Grow <span style="color: #f97316;">Orbit</span> Team</strong>
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+  Please take your time reviewing the attached proposal. We'd be glad to discuss any of the opportunities in detail, answer your questions, or prepare a more focused sourcing strategy around the products that interest you most.
 </p>`,
-  },
-  {
-    id: "meetingBooking",
-    label: "Meeting Booking",
-    emoji: "🗓️",
-    color: "#f97316",
-    bg: "rgba(249,115,22,0.06)",
-    border: "rgba(249,115,22,0.15)",
-    icon: Calendar,
-    description: "Confirm meeting & timezone",
-    subject: "Meeting Schedule Confirmation — Grow Orbit 🗓️",
-    headerImage: "/logo.png",
-    headline: "Meeting Schedule Confirmation",
-    body: `<!-- HIDE_DEFAULT_CTA -->
-<!-- NEUMORPHIC_THEME -->
-<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi,</p>
-
-<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-  Thank you for your email.
-</p>
-
-<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-  <strong>2:00 PM</strong> works well for me. Could you please let me know which time zone you're referring to? That way, I can adjust the meeting time accordingly on my end.
-</p>
-
-<!-- Interactive Calendar Ticket Card -->
-<div style="background-color: #f8fafc; border: 3px solid #ffffff; border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.015); border-left: 5px solid #f97316;">
-  <table cellpadding="0" cellspacing="0" border="0" style="width: 100%; border-collapse: collapse;">
-    <tr>
-      <td style="vertical-align: top; width: 60px; padding-right: 16px; text-align: center; border-right: 2px dashed #cbd5e1;">
-        <!-- Styled Calendar Icon Badge -->
-        <div style="background: rgba(249, 115, 22, 0.08); border-radius: 12px; border: 1.5px solid rgba(249, 115, 22, 0.25); padding: 8px; width: 40px; box-sizing: border-box;">
-          <div style="font-size: 8px; font-weight: 800; color: #f97316; text-transform: uppercase; margin-bottom: 2px;">TOMORROW</div>
-          <div style="font-size: 16px; font-weight: 900; color: #0f172a; line-height: 1;">📅</div>
-        </div>
-      </td>
-      <td style="vertical-align: middle; padding-left: 20px; text-align: left;">
-        <div style="font-size: 10px; font-weight: 800; color: #64748b; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px;">Proposed Meeting Time</div>
-        <div style="font-size: 18px; font-weight: 800; color: #0f172a; letter-spacing: -0.02em;">2:00 PM <span style="font-size: 12px; color: #f97316; font-weight: 700;">(Time Zone Pending)</span></div>
-        <div style="font-size: 12px; color: #64748b; margin-top: 4px; font-weight: 500;">
-          Agenda: Discussing Strategy Plan & Costing
-        </div>
-      </td>
-    </tr>
-  </table>
-</div>
-
-<p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-  Looking forward to speaking with you tomorrow and discussing the plan and costing.
-</p>
-
-<!-- Orange Glass CTA Button -->
-<div style="text-align: center; margin-bottom: 28px; margin-top: 16px;">
-  <a href="https://www.groworbitofficial.com/get-started/#lead-form" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #ffffff !important; padding: 16px 60px; min-width: 260px; border-radius: 50px; font-size: 13px; font-weight: 800; text-decoration: none; box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25); border: 3px solid #fdba74; text-transform: uppercase; letter-spacing: 0.06em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    🗓️ Book Meeting
-  </a>
-</div>`,
   }
 ];
 
@@ -1065,20 +344,23 @@ export default function NewsletterTab({ isMobile }) {
   const [subjectCopied, setSubjectCopied] = useState(false);
   const [activeTemplate, setActiveTemplate] = useState(TEMPLATES[0].id);
 
-  const loadSandboxDraft = () => {
-    if (sandboxSubject) setSubject(sandboxSubject);
-    if (sandboxHeadline) setHeadline(sandboxHeadline);
+  const loadSandboxDraft = (index = 0) => {
+    const draft = SANDBOX_DRAFTS && SANDBOX_DRAFTS[index];
+    if (!draft) return;
+
+    if (draft.subject) setSubject(draft.subject);
+    if (draft.headline) setHeadline(draft.headline);
     
     const filteredWidgets = widgets.filter(w => w.type !== "sandboxContent");
     
     // Extract and preserve any existing HTML comment tags (flags) from the current body text
     const commentFlags = body.match(/<!--[\s\S]*?-->/g) || [];
     const flagsStr = commentFlags.join("\n");
-    const prettyBody = beautifyHtml(sandboxBody || "");
+    const prettyBody = beautifyHtml(draft.body || "");
     const fullBodyText = flagsStr ? `${flagsStr}\n${prettyBody}` : prettyBody;
 
     const newSandboxWidget = {
-      id: `sandbox-${sandboxId || Date.now()}`,
+      id: `sandbox-${draft.id || Date.now()}`,
       type: "sandboxContent",
       content: {
         text: fullBodyText
@@ -1708,30 +990,59 @@ export default function NewsletterTab({ isMobile }) {
               <p style={{ fontSize: 11, color: "#8e8e93", margin: "2px 0 0" }}>{TEMPLATES.find(t => t.id === activeTemplate)?.description}</p>
             </div>
           </div>
-          <div style={{ display: "flex", gap: 10 }}>
-            {sandboxId && (
-              <button
-                onClick={loadSandboxDraft}
-                type="button"
-                style={{
-                  background: "rgba(249, 115, 22, 0.1)",
-                  border: "1px solid rgba(249, 115, 22, 0.3)",
-                  borderRadius: 10,
-                  padding: "10px 18px",
-                  color: "#f97316",
-                  fontSize: 12,
-                  fontWeight: 800,
-                  cursor: "pointer",
-                  transition: "all 0.2s",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6
-                }}
-                onMouseEnter={e => { e.currentTarget.style.background = "rgba(249, 115, 22, 0.18)"; e.currentTarget.style.borderColor = "rgba(249, 115, 22, 0.5)"; }}
-                onMouseLeave={e => { e.currentTarget.style.background = "rgba(249, 115, 22, 0.1)"; e.currentTarget.style.borderColor = "rgba(249, 115, 22, 0.3)"; }}
-              >
-                <Sparkles size={13} /> Load AI Draft
-              </button>
+          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+            {SANDBOX_DRAFTS && SANDBOX_DRAFTS.length > 0 && (
+              <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
+                <span style={{ fontSize: 10, fontWeight: 800, color: "#f97316", letterSpacing: "0.08em", textTransform: "uppercase", display: "flex", alignItems: "center", gap: 4, marginRight: 4 }}>
+                  <Sparkles size={12} color="#f97316" /> AI Sandbox:
+                </span>
+                {[1, 2, 3, 4, 5].map((num) => {
+                  const draftIndex = num - 1;
+                  const isFuture = num > 2;
+
+                  return (
+                    <button
+                      key={num}
+                      onClick={() => loadSandboxDraft(draftIndex)}
+                      type="button"
+                      style={{
+                        background: isFuture ? "rgba(255, 255, 255, 0.02)" : "rgba(249, 115, 22, 0.1)",
+                        border: isFuture ? "1px dashed rgba(255, 255, 255, 0.1)" : "1px solid rgba(249, 115, 22, 0.3)",
+                        borderRadius: 8,
+                        padding: "8px 12px",
+                        color: isFuture ? "#71717a" : "#f97316",
+                        fontSize: 11,
+                        fontWeight: 800,
+                        cursor: "pointer",
+                        transition: "all 0.2s",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 4
+                      }}
+                      onMouseEnter={e => {
+                        if (!isFuture) {
+                          e.currentTarget.style.background = "rgba(249, 115, 22, 0.18)";
+                          e.currentTarget.style.borderColor = "rgba(249, 115, 22, 0.5)";
+                        } else {
+                          e.currentTarget.style.background = "rgba(255, 255, 255, 0.06)";
+                          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.2)";
+                        }
+                      }}
+                      onMouseLeave={e => {
+                        if (!isFuture) {
+                          e.currentTarget.style.background = "rgba(249, 115, 22, 0.1)";
+                          e.currentTarget.style.borderColor = "rgba(249, 115, 22, 0.3)";
+                        } else {
+                          e.currentTarget.style.background = "rgba(255, 255, 255, 0.02)";
+                          e.currentTarget.style.borderColor = "rgba(255, 255, 255, 0.1)";
+                        }
+                      }}
+                    >
+                      {isFuture ? `Draft ${num} (Future)` : `Draft ${num}`}
+                    </button>
+                  );
+                })}
+              </div>
             )}
             <button
               onClick={() => setShowTemplateModal(true)}

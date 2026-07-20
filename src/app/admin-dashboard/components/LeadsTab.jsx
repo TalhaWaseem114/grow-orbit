@@ -304,27 +304,10 @@ function LeadDetailPanel({
   return (
     <div className="lead-expanded" style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "20px" }}>
       {/* CRM Controls Bar */}
-      <div className="lead-crm-bar" style={{ display: "flex", gap: 12, paddingBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.02)", marginBottom: 16 }}>
-        {/* Assignee Select */}
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 6 }}>Assign Owner</div>
-          <select
-            value={lead.assignedTo || ""}
-            onChange={(e) => {
-              const admin = users.find(u => u.uid === e.target.value || u.id === e.target.value);
-              handleAssignLead(lead.id, e.target.value, admin?.fullName || admin?.displayName || "Admin");
-            }}
-            style={{ width: "100%", background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: "8px 12px", color: "#fff", fontSize: 11, fontWeight: 600, outline: "none" }}
-          >
-            <option value="">Unassigned</option>
-            {users.filter(u => u.role === "admin").map(u => (
-              <option key={u.id || u.uid} value={u.id || u.uid}>{u.fullName || u.displayName || u.email}</option>
-            ))}
-          </select>
-        </div>
+      <div className="lead-crm-bar" style={{ display: "flex", justifyContent: "flex-end", paddingBottom: 16, borderBottom: "1px solid rgba(255,255,255,0.02)", marginBottom: 16 }}>
         {/* Priority Select */}
         <div style={{ width: 140 }}>
-          <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 6 }}>Priority Level</div>
+          <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.15em", marginBottom: 6, textAlign: "right" }}>Priority Level</div>
           <div style={{ display: "flex", background: "rgba(255,255,255,0.03)", borderRadius: 10, padding: 3, border: "1px solid rgba(255,255,255,0.06)" }}>
             {["low", "medium", "high"].map(p => (
               <button key={p} onClick={() => handleUpdatePriority(lead.id, p)}

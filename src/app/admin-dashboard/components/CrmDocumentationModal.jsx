@@ -94,7 +94,6 @@ export default function CrmDocumentationModal({ isOpen, onClose }) {
               Expanding a lead opens the <strong>Lead Detail Panel</strong>, your primary workspace for that account. Here's what you can do:
             </p>
             <ul style={{ fontSize: 13, color: "#d4d4d4", lineHeight: 1.6, margin: 0, paddingLeft: 20 }}>
-              <li style={{ marginBottom: 6 }}><strong>Assign Owners:</strong> Delegate the lead to specific team members.</li>
               <li style={{ marginBottom: 6 }}><strong>Quick Outreach:</strong> Click the Email or WhatsApp icons to immediately contact the lead. The WhatsApp button automatically pre-fills a personalized greeting!</li>
               <li style={{ marginBottom: 6 }}><strong>Timeline Activity:</strong> Log notes after calls. The system also automatically logs major changes (like stage moves or meeting bookings) to this timeline.</li>
               <li style={{ marginBottom: 6 }}><strong>Follow-ups:</strong> Set a "Next Follow-Up" date. If the date is missed, the system will flag the lead in Red to alert you.</li>

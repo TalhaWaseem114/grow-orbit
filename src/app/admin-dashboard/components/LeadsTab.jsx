@@ -647,6 +647,85 @@ function LeadDetailPanel({
             </div>
           </div>
 
+          {/* Tasks Checklist Widget */}
+          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
+            <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Actionable Tasks</div>
+
+            <form onSubmit={handleAddTask} style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 10 }}>
+              <div style={{ display: "flex", gap: 6 }}>
+                <input
+                  type="text"
+                  placeholder="Add new task..."
+                  value={newTaskTitle}
+                  onChange={(e) => setNewTaskTitle(e.target.value)}
+                  style={{ flex: 1, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
+                />
+                <button
+                  type="submit"
+                  disabled={addingTask || !newTaskTitle.trim()}
+                  style={{ background: "#f97316", color: "#fff", border: "none", borderRadius: 8, padding: "6px 12px", fontSize: 10, fontWeight: 800, cursor: "pointer", textTransform: "uppercase" }}
+                >
+                  {addingTask ? "..." : "Add"}
+                </button>
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.05em" }}>Due Date:</span>
+                <input
+                  type="date"
+                  value={newTaskDueDate}
+                  onChange={(e) => setNewTaskDueDate(e.target.value)}
+                  style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, padding: "4px 8px", color: "#fff", fontSize: 10, outline: "none", cursor: "pointer", colorScheme: "dark" }}
+                />
+              </div>
+            </form>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 150, overflowY: "auto" }}>
+              {tasks.length === 0 ? (
+                <div style={{ fontSize: 10, color: "#525252", fontStyle: "italic", padding: "6px 0" }}>No tasks added.</div>
+              ) : (
+                tasks.map(t => (
+                  <div key={t.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 8, padding: "6px 8px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
+                      <div
+                        onClick={() => handleToggleTask(t.id, t.status)}
+                        style={{
+                          width: 14,
+                          height: 14,
+                          borderRadius: 3,
+                          border: `1.5px solid ${t.status === "completed" ? "#f97316" : "rgba(255,255,255,0.25)"}`,
+                          background: t.status === "completed" ? "#f97316" : "rgba(255,255,255,0.02)",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          cursor: "pointer",
+                          transition: "all 0.2s ease",
+                          flexShrink: 0
+                        }}
+                      >
+                        {t.status === "completed" && (
+                          <svg width="8" height="6" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.5 4L4 6.5L8.5 1.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        )}
+                      </div>
+                      <span style={{ fontSize: 11, color: t.status === "completed" ? "#525252" : "#fff", textDecoration: t.status === "completed" ? "line-through" : "none", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {t.title}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteTask(t.id)}
+                      style={{ background: "none", border: "none", color: "#525252", cursor: "pointer", fontSize: 10, padding: 0 }}
+                      onMouseEnter={e => e.currentTarget.style.color = "#ef4444"}
+                      onMouseLeave={e => e.currentTarget.style.color = "#525252"}
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
 
           {/* Contract Summary Card Widget */}
           <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
@@ -742,86 +821,6 @@ function LeadDetailPanel({
             >
               Generate Invoice
             </button>
-          </div>
-
-          {/* Tasks Checklist Widget */}
-          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", borderRadius: 12, padding: "14px 16px" }}>
-            <div style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.25em", marginBottom: 8 }}>Actionable Tasks</div>
-
-            <form onSubmit={handleAddTask} style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 10 }}>
-              <div style={{ display: "flex", gap: 6 }}>
-                <input
-                  type="text"
-                  placeholder="Add new task..."
-                  value={newTaskTitle}
-                  onChange={(e) => setNewTaskTitle(e.target.value)}
-                  style={{ flex: 1, background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
-                />
-                <button
-                  type="submit"
-                  disabled={addingTask || !newTaskTitle.trim()}
-                  style={{ background: "#f97316", color: "#fff", border: "none", borderRadius: 8, padding: "6px 12px", fontSize: 10, fontWeight: 800, cursor: "pointer", textTransform: "uppercase" }}
-                >
-                  {addingTask ? "..." : "Add"}
-                </button>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 9, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.05em" }}>Due Date:</span>
-                <input
-                  type="date"
-                  value={newTaskDueDate}
-                  onChange={(e) => setNewTaskDueDate(e.target.value)}
-                  style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, padding: "4px 8px", color: "#fff", fontSize: 10, outline: "none", cursor: "pointer", colorScheme: "dark" }}
-                />
-              </div>
-            </form>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 150, overflowY: "auto" }}>
-              {tasks.length === 0 ? (
-                <div style={{ fontSize: 10, color: "#525252", fontStyle: "italic", padding: "6px 0" }}>No tasks added.</div>
-              ) : (
-                tasks.map(t => (
-                  <div key={t.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 8, padding: "6px 8px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
-                      <div
-                        onClick={() => handleToggleTask(t.id, t.status)}
-                        style={{
-                          width: 14,
-                          height: 14,
-                          borderRadius: 3,
-                          border: `1.5px solid ${t.status === "completed" ? "#f97316" : "rgba(255,255,255,0.25)"}`,
-                          background: t.status === "completed" ? "#f97316" : "rgba(255,255,255,0.02)",
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          cursor: "pointer",
-                          transition: "all 0.2s ease",
-                          flexShrink: 0
-                        }}
-                      >
-                        {t.status === "completed" && (
-                          <svg width="8" height="6" viewBox="0 0 10 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M1.5 4L4 6.5L8.5 1.5" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        )}
-                      </div>
-                      <span style={{ fontSize: 11, color: t.status === "completed" ? "#525252" : "#fff", textDecoration: t.status === "completed" ? "line-through" : "none", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                        {t.title}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleDeleteTask(t.id)}
-                      style={{ background: "none", border: "none", color: "#525252", cursor: "pointer", fontSize: 10, padding: 0 }}
-                      onMouseEnter={e => e.currentTarget.style.color = "#ef4444"}
-                      onMouseLeave={e => e.currentTarget.style.color = "#525252"}
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))
-              )}
-            </div>
           </div>
 
           {/* Client Conversion Widget */}

@@ -193,11 +193,116 @@ export const SANDBOX_DRAFTS = [
 </p>`
   },
   {
-    id: "sandbox-future-3",
-    subject: "Will be added in future",
-    headline: "Will be added in future",
+    id: "sandbox-discovery",
+    subject: "Welcome to Grow Orbit — Let's Tailor Your Amazon Growth Strategy 🚀",
+    headline: "Welcome to Grow Orbit | Strategic Discovery",
     body: `<!-- HIDE_DEFAULT_CTA -->
-<p style="font-size: 14px; line-height: 1.6; color: #475569;">Will be added in future</p>`
+<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi there,</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+  Thank you for reaching out to <strong> Grow Orbit</strong>. We're excited to learn more about your Amazon goals and help you build a high-performing brand.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+  To help our research team tailor the right analysis and preliminary strategy for you, could you quickly share a bit more about your current focus?
+</p>
+
+<!-- Discovery Card (Table-based for GoDaddy) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td style="background-color: #f8fafc; border-left: 4px solid #f97316; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; border-radius: 8px; padding: 24px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 16px;">
+        <tr>
+          <td style="font-size: 11px; font-weight: 800; color: #f97316; letter-spacing: 2px; text-transform: uppercase;">WHERE ARE YOU ON YOUR JOURNEY?</td>
+        </tr>
+      </table>
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.6; color: #475569;">
+        <tr>
+          <td width="36" valign="top" style="padding-bottom: 16px; padding-right: 8px;">
+            <span style="font-size: 16px;">&#128640;</span>
+          </td>
+          <td valign="top" style="padding-bottom: 16px; color: #334155;">
+            <strong style="color: #0f172a;">Option A: New Brand Launch (0 to 1)</strong><br>
+            You're looking to identify product opportunities, source inventory, and launch a new store.
+          </td>
+        </tr>
+        <tr>
+          <td width="36" valign="top" style="padding-right: 8px;">
+            <span style="font-size: 16px;">&#128200;</span>
+          </td>
+          <td valign="top" style="color: #334155;">
+            <strong style="color: #0f172a;">Option B: Existing Store Scaling</strong><br>
+            You already have an active Amazon store and want to optimize PPC, listings, and organic rank.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- Services Overview Card -->
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 16px;">
+  Here is a quick snapshot of the core solutions we deliver at Grow Orbit:
+</p>
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.6; color: #475569;">
+        <tr>
+          <td width="28" valign="top" style="padding-bottom: 12px; color: #f97316;">&#10004;</td>
+          <td valign="top" style="padding-bottom: 12px; color: #334155;">
+            <strong style="color: #0f172a;">Turnkey Product Sourcing &amp; Launch:</strong> High-margin product vetting, supplier negotiation &amp; brand asset creation.
+          </td>
+        </tr>
+        <tr>
+          <td width="28" valign="top" style="padding-bottom: 12px; color: #f97316;">&#10004;</td>
+          <td valign="top" style="padding-bottom: 12px; color: #334155;">
+            <strong style="color: #0f172a;">Visual Design &amp; Brand Creatives:</strong> High-converting main images, A+ Content, Brand Storefronts &amp; 3D renders.
+          </td>
+        </tr>
+        <tr>
+          <td width="28" valign="top" style="padding-bottom: 12px; color: #f97316;">&#10004;</td>
+          <td valign="top" style="padding-bottom: 12px; color: #334155;">
+            <strong style="color: #0f172a;">Amazon PPC &amp; Revenue Growth:</strong> Data-driven ad optimization, organic rank acceleration &amp; TACOS reduction.
+          </td>
+        </tr>
+        <tr>
+          <td width="28" valign="top" style="color: #f97316;">&#10004;</td>
+          <td valign="top" style="color: #334155;">
+            <strong style="color: #0f172a;">Full Account Management:</strong> End-to-end operational handling, inventory planning &amp; category dominance.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+  You can simply reply to this email for further discussion, or pick a convenient time for a brief 15-minute strategy call below:
+</p>
+
+<!-- CTA Button (Table-based for GoDaddy) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 28px; margin-bottom: 28px;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="center" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 12px 32px; border-radius: 50px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            <a href="https://www.groworbitofficial.com/get-started/" target="_blank" style="color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;">
+              Book a 15-Min Strategy Call
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px;">
+  Prefer to chat directly? Feel free to call or WhatsApp us at <strong style="color: #f97316;">+1 (912) 820-5916</strong>.
+</p>`
   },
   {
     id: "sandbox-future-4",

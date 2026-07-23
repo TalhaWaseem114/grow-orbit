@@ -18,11 +18,12 @@ const STATUS_CONFIG = {
   archived:      { label: "Archived",         color: "#71717a", bg: "rgba(113,113,122,0.10)", border: "rgba(113,113,122,0.2)"  },
 };
 
-export default function KanbanBoard({ 
-  leads, 
-  handleStatusChange, 
-  setExpandedLead, 
-  setLeadViewMode 
+export default function KanbanBoard({
+  leads,
+  handleStatusChange,
+  setExpandedLead,
+  setLeadViewMode,
+  setFullScreenModalLead
 }) {
   const columns = ["new", "hot", "qualified", "contacted", "proposal_sent", "won", "lost"];
   const [dragOverColumn, setDragOverColumn] = useState(null);
@@ -54,13 +55,19 @@ export default function KanbanBoard({
   };
 
   return (
-    <div style={{ 
-      display: "flex", 
-      gap: 16, 
-      overflowX: "auto", 
-      paddingBottom: 16, 
-      minHeight: "65vh",
-      alignItems: "flex-start"
+    <div style={{
+      display: "flex",
+      gap: 16,
+      overflowX: "auto",
+      padding: "20px 20px 24px 20px",
+      minHeight: "68vh",
+      alignItems: "flex-start",
+      background: "#08080a",
+      backgroundImage: `radial-gradient(rgba(255, 255, 255, 0.12) 1.2px, transparent 1.2px)`,
+      backgroundSize: "24px 24px",
+      border: "1px solid rgba(255, 255, 255, 0.06)",
+      borderRadius: 20,
+      position: "relative"
     }}>
       <style>{`
         @keyframes badgePop {
@@ -88,17 +95,17 @@ export default function KanbanBoard({
           : null;
 
         // Count Overdue leads in column
-        const overdueCount = columnLeads.filter(l => 
-          l.nextFollowUp && 
-          new Date(l.nextFollowUp) < new Date(new Date().setHours(0,0,0,0)) && 
+        const overdueCount = columnLeads.filter(l =>
+          l.nextFollowUp &&
+          new Date(l.nextFollowUp) < new Date(new Date().setHours(0,0,0,0)) &&
           status !== "won" && status !== "lost"
         ).length;
 
         // Calculate total column revenue value
         const totalValue = columnLeads.reduce((acc, l) => acc + (Number(l.estimatedDealValue) || 0), 0);
-        
+
         return (
-          <div 
+          <div
             key={status}
             onDrop={(e) => handleDrop(e, status)}
             onDragOver={handleDragOver}
@@ -106,18 +113,20 @@ export default function KanbanBoard({
             onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOverColumn(null); }}
             style={{
               flex: "0 0 280px",
-              background: dragOverColumn === status ? `${cfg.color}0A` : "rgba(255,255,255,0.02)",
-              border: `1px solid ${dragOverColumn === status ? cfg.color + "40" : "rgba(255,255,255,0.05)"}`,
+              background: dragOverColumn === status ? `${cfg.color}1E` : "rgba(14, 14, 18, 0.85)",
+              backdropFilter: "blur(12px)",
+              border: dragOverColumn === status ? `3px solid ${cfg.color}` : "3px solid rgba(255,255,255,0.08)",
               borderRadius: 16,
               display: "flex",
               flexDirection: "column",
               height: "100%",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
               transition: "all 0.2s ease"
             }}
           >
             {/* Column Header */}
-            <div style={{ 
-              padding: "16px", 
+            <div style={{
+              padding: "14px 16px",
               borderBottom: "1px solid rgba(255,255,255,0.05)",
               display: "flex",
               flexDirection: "column",
@@ -130,14 +139,14 @@ export default function KanbanBoard({
                     {cfg.label}
                   </h3>
                 </div>
-                <span 
+                <span
                   key={columnLeads.length}
-                  style={{ 
-                    fontSize: 9, 
-                    fontWeight: 700, 
-                    color: "#a3a3a3", 
-                    background: "rgba(255,255,255,0.05)", 
-                    padding: "2px 8px", 
+                  style={{
+                    fontSize: 9,
+                    fontWeight: 700,
+                    color: "#a3a3a3",
+                    background: "rgba(255,255,255,0.05)",
+                    padding: "2px 8px",
                     borderRadius: 100,
                     animation: "badgePop 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) both"
                   }}
@@ -148,9 +157,9 @@ export default function KanbanBoard({
               {/* Additional Column Stats */}
               <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 8 }}>
                 {avgAge !== null && (
-                  <span style={{ 
-                    fontSize: 9, 
-                    color: Number(avgAge) > 2 ? "#ef4444" : "#525252", 
+                  <span style={{
+                    fontSize: 9,
+                    color: Number(avgAge) > 2 ? "#ef4444" : "#525252",
                     fontWeight: 700,
                     display: "inline-flex",
                     alignItems: "center",
@@ -165,13 +174,13 @@ export default function KanbanBoard({
                   </span>
                 )}
                 {overdueCount > 0 && (
-                  <span style={{ 
-                    fontSize: 8, 
-                    fontWeight: 900, 
-                    color: "#ef4444", 
-                    background: "rgba(239,68,68,0.1)", 
-                    border: "1px solid rgba(239,68,68,0.2)", 
-                    padding: "1px 6px", 
+                  <span style={{
+                    fontSize: 8,
+                    fontWeight: 900,
+                    color: "#ef4444",
+                    background: "rgba(239,68,68,0.1)",
+                    border: "1px solid rgba(239,68,68,0.2)",
+                    padding: "1px 6px",
                     borderRadius: 6,
                     textTransform: "uppercase",
                     letterSpacing: "0.05em"
@@ -188,21 +197,21 @@ export default function KanbanBoard({
                 const isOverdue = lead.nextFollowUp && new Date(lead.nextFollowUp) < new Date(new Date().setHours(0,0,0,0)) && status !== "won" && status !== "lost";
                 const score = calculateLeadScore(lead);
                 const scoreCat = getScoreCategory(score);
-                
+
                 // Calculate lead age in days
                 const created = lead.createdAt?.toDate ? lead.createdAt.toDate() : new Date();
                 const ageDays = (new Date() - created) / (1000 * 60 * 60 * 24);
                 const priority = calculateLeadPriority(lead);
-                
+
                 return (
-                  <div 
+                  <div
                     key={lead.id}
                     draggable
                     onDragStart={(e) => handleDragStart(e, lead.id)}
                     onDragEnd={handleDragEnd}
                     onClick={() => {
                       setExpandedLead(lead.id);
-                      setLeadViewMode("cards"); // Switch to cards to show expansion
+                      setLeadViewMode("table"); // Switch to list view to show expansion
                     }}
                     style={{
                       background: "#0d0d0d",
@@ -229,7 +238,7 @@ export default function KanbanBoard({
                         <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#ef4444" }} title="High Priority" />
                       )}
                     </div>
-                    
+
                     <div style={{ fontSize: 10, color: "#a3a3a3", marginBottom: 8, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                       {lead.requestedService || lead.email}
                     </div>
@@ -239,55 +248,55 @@ export default function KanbanBoard({
                         <span style={{ fontSize: 9, fontWeight: 700, color: "#525252", background: "rgba(255,255,255,0.03)", padding: "2px 6px", borderRadius: 4, textTransform: "uppercase" }}>
                           {lead.source || "Direct"}
                         </span>
-                        {/* 
-                        <span style={{ 
-                          fontSize: 8, 
-                          fontWeight: 900, 
-                          color: scoreCat.color, 
-                          background: scoreCat.bg, 
-                          border: `1px solid ${scoreCat.border}`, 
-                          padding: "1px 5px", 
-                          borderRadius: 4 
+                        {/*
+                        <span style={{
+                          fontSize: 8,
+                          fontWeight: 900,
+                          color: scoreCat.color,
+                          background: scoreCat.bg,
+                          border: `1px solid ${scoreCat.border}`,
+                          padding: "1px 5px",
+                          borderRadius: 4
                         }} title={`Lead Score: ${score}`}>
                           {score}
                         </span>
                         */}
                         {/* Individual Lead Card Age */}
-                        <span style={{ 
-                          fontSize: 9, 
-                          fontWeight: 700, 
-                          color: ageDays > 2 ? "#ef4444" : "#525252", 
-                          display: "inline-flex", 
-                          alignItems: "center", 
-                          gap: 3 
+                        <span style={{
+                          fontSize: 9,
+                          fontWeight: 700,
+                          color: ageDays > 2 ? "#ef4444" : "#525252",
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 3
                         }}>
                           {ageDays > 2 && "⚠️ "}Age: {ageDays.toFixed(1)}d
                         </span>
                         {/* Cold Risk Warning Badge */}
                         {ageDays > 7 && (
-                          <span style={{ 
-                            fontSize: 8, 
-                            fontWeight: 900, 
-                            color: "#22d3ee", 
-                            background: "rgba(34,211,238,0.10)", 
-                            border: "1px solid rgba(34,211,238,0.25)", 
-                            borderRadius: 4, 
-                            padding: "2px 6px", 
-                            textTransform: "uppercase", 
-                            letterSpacing: "0.05em" 
+                          <span style={{
+                            fontSize: 8,
+                            fontWeight: 900,
+                            color: "#22d3ee",
+                            background: "rgba(34,211,238,0.10)",
+                            border: "1px solid rgba(34,211,238,0.25)",
+                            borderRadius: 4,
+                            padding: "2px 6px",
+                            textTransform: "uppercase",
+                            letterSpacing: "0.05em"
                           }}>
                             COLD RISK ❄️
                           </span>
                         )}
                       </div>
-                      
+
                       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                         {lead.whatsapp && lead.whatsapp !== "N/A" && (
-                          <a 
+                          <a
                             href={`https://wa.me/${lead.whatsapp.replace(/\D/g,"")}?text=${encodeURIComponent(
                               `Hi ${lead.fullName || ""}, I'm reaching out from Grow Orbit regarding your interest in ${lead.requestedService || "our services"}. I'd love to connect and see how we can help you scale!`
                             )}`}
-                            target="_blank" 
+                            target="_blank"
                             rel="noreferrer"
                             onClick={e => e.stopPropagation()}
                             style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", cursor: "pointer", color: "#4ade80", transition: "opacity 0.2s" }}
@@ -298,7 +307,7 @@ export default function KanbanBoard({
                             <Phone size={12} />
                           </a>
                         )}
-                        <a 
+                        <a
                           href={`mailto:${lead.email}`}
                           onClick={e => e.stopPropagation()}
                           style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", cursor: "pointer", color: "#38bdf8", transition: "opacity 0.2s" }}

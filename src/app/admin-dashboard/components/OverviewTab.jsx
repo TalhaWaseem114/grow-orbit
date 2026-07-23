@@ -3,9 +3,10 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import {
   Users, Briefcase, Activity, TrendingUp, AlertCircle, ArrowUpRight, Calendar,
-  Flame, Clock, CheckCircle2, MessageSquare, Terminal, Search, Download, Trash2, RefreshCw
+  Flame, Clock, CheckCircle2, MessageSquare, Terminal, Search, Download, Trash2, RefreshCw, Mail, Phone,
+  Filter, ChevronDown, ChevronUp, RotateCcw
 } from "lucide-react";
-import { collection, query, orderBy, limit, where, onSnapshot, doc, updateDoc, serverTimestamp, getDocs, writeBatch } from "firebase/firestore";
+import { collection, query, orderBy, limit, where, onSnapshot, doc, updateDoc, serverTimestamp, getDocs, writeBatch, deleteDoc, getDoc } from "firebase/firestore";
 
 /* ─────────────────────────────────────────
    HELPERS & CONFIGS
@@ -21,6 +22,297 @@ const STATUS_CONFIG = {
   cold:          { label: "Cold (New) ❄️",    color: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.25)" },
   replied:       { label: "Replied",        color: "#22d3ee", bg: "rgba(34,211,238,0.10)",  border: "rgba(34,211,238,0.25)" },
   archived:      { label: "Archived",       color: "#71717a", bg: "rgba(113,113,122,0.10)", border: "rgba(113,113,122,0.2)"  },
+};
+
+/* ─────── Standalone Countdown Timer Calculation Helper ─────── */
+const getCountdownTimer = (dueDate, dueTime) => {
+  if (!dueDate) return { isPast: false, label: "Scheduled", hours: null, minutes: null };
+  const hasTime = Boolean(dueTime && String(dueTime).trim() !== "");
+  const now = new Date();
+
+  if (hasTime) {
+    const targetIso = `${dueDate}T${dueTime}:00`;
+    const targetTime = new Date(targetIso).getTime();
+    const nowTime = now.getTime();
+    if (isNaN(targetTime)) return { isPast: false, label: "Invalid", hours: null, minutes: null };
+
+    const diffMs = targetTime - nowTime;
+    const isPast = diffMs <= 0;
+    const absMin = Math.floor(Math.abs(diffMs) / (1000 * 60));
+    const hours = Math.floor(absMin / 60);
+    const minutes = absMin % 60;
+
+    return {
+      isPast,
+      hours,
+      minutes,
+      label: isPast ? `${hours}h ${minutes}m ago` : `${hours}h ${minutes}m`
+    };
+  } else {
+    const todayStr = now.toISOString().split("T")[0];
+    const targetDate = new Date(`${dueDate}T00:00:00`);
+    const currentDate = new Date(`${todayStr}T00:00:00`);
+    const dayDiffMs = targetDate.getTime() - currentDate.getTime();
+    const dayDiff = Math.round(dayDiffMs / (1000 * 60 * 60 * 24));
+
+    if (dayDiff < 0) {
+      return { isPast: true, hours: Math.abs(dayDiff) * 24, minutes: 0, label: `${Math.abs(dayDiff)}d ago` };
+    } else if (dayDiff === 0) {
+      return { isPast: false, hours: 12, minutes: 0, label: "Today" };
+    } else {
+      return { isPast: false, hours: dayDiff * 24, minutes: 0, label: `${dayDiff}d left` };
+    }
+  }
+};
+
+/* ─────── Circular SVG Progress Ring Timer ─────── */
+const CircularTimerProgress = ({ dueDate, dueTime, typeColor, isCompleted }) => {
+  if (isCompleted) {
+    return (
+      <div
+        title="Completed Task"
+        style={{
+          position: "relative",
+          width: 58,
+          height: 58,
+          borderRadius: "50%",
+          background: "rgba(34,197,94,0.12)",
+          border: "2px dashed #22c55e",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0,
+          boxShadow: "0 0 14px rgba(34,197,94,0.3)"
+        }}
+      >
+        <CheckCircle2 size={16} color="#22c55e" />
+        <span style={{ fontSize: 9, fontWeight: 900, color: "#22c55e", marginTop: 2, letterSpacing: "0.05em" }}>DONE</span>
+      </div>
+    );
+  }
+  if (!dueDate) return null;
+
+  try {
+    const hasTime = Boolean(dueTime && String(dueTime).trim() !== "");
+    const now = new Date();
+
+    let diffMs = 0;
+    let isOverdue = false;
+    let line1 = "";
+    let line2 = "";
+    let fullText = "";
+
+    if (hasTime) {
+      // EXACT TIME SPECIFIED (e.g. 16:25)
+      const targetIso = `${dueDate}T${dueTime}:00`;
+      const targetTime = new Date(targetIso).getTime();
+      const nowTime = now.getTime();
+
+      if (isNaN(targetTime)) return null;
+
+      diffMs = targetTime - nowTime;
+      isOverdue = diffMs <= 0;
+
+      if (isOverdue) {
+        const pastMin = Math.floor(Math.abs(diffMs) / (1000 * 60));
+        const totalHours = Math.floor(pastMin / 60);
+        const mins = pastMin % 60;
+
+        if (totalHours >= 24) {
+          const days = Math.floor(totalHours / 24);
+          const remHours = totalHours % 24;
+          line1 = `-${days}d`;
+          line2 = `${remHours}h`;
+        } else if (totalHours > 0) {
+          line1 = `-${totalHours}h`;
+          line2 = `${mins}m`;
+        } else {
+          line1 = `-${mins}m`;
+          line2 = "ago";
+        }
+        fullText = `Overdue: ${totalHours}h ${mins}m ago`;
+      } else {
+        const totalMin = Math.floor(diffMs / (1000 * 60));
+        const totalHours = Math.floor(totalMin / 60);
+        const mins = totalMin % 60;
+
+        if (totalHours >= 24) {
+          const days = Math.floor(totalHours / 24);
+          const remHours = totalHours % 24;
+          line1 = `${days}d`;
+          line2 = `${remHours}h`;
+        } else {
+          line1 = `${totalHours}h`;
+          line2 = `${mins}m`;
+        }
+        fullText = `Due in ${totalHours}h ${mins}m`;
+      }
+    } else {
+      // DATE-ONLY SPECIFIED (No fake time!)
+      const todayStr = now.toISOString().split("T")[0];
+      const targetDate = new Date(`${dueDate}T00:00:00`);
+      const currentDate = new Date(`${todayStr}T00:00:00`);
+      const dayDiffMs = targetDate.getTime() - currentDate.getTime();
+      const dayDiff = Math.round(dayDiffMs / (1000 * 60 * 60 * 24));
+
+      if (dayDiff < 0) {
+        isOverdue = true;
+        line1 = `-${Math.abs(dayDiff)}d`;
+        line2 = "past";
+        fullText = `Overdue by ${Math.abs(dayDiff)} day(s)`;
+      } else if (dayDiff === 0) {
+        line1 = "Today";
+        line2 = "Due";
+        fullText = "Due Today";
+      } else if (dayDiff === 1) {
+        line1 = "1d";
+        line2 = "left";
+        fullText = "Due Tomorrow";
+      } else {
+        line1 = `${dayDiff}d`;
+        line2 = "left";
+        fullText = `Due in ${dayDiff} days`;
+      }
+
+      diffMs = Math.max(0, dayDiff * 24 * 60 * 60 * 1000);
+    }
+
+    // Dynamic scale timeframe window (2h for short tasks, 24h for daily, 48h for long-term)
+    let totalWindowMs = 24 * 60 * 60 * 1000;
+    if (diffMs <= 2 * 60 * 60 * 1000) {
+      totalWindowMs = 2 * 60 * 60 * 1000;
+    } else if (diffMs <= 24 * 60 * 60 * 1000) {
+      totalWindowMs = 24 * 60 * 60 * 1000;
+    } else {
+      totalWindowMs = 48 * 60 * 60 * 1000;
+    }
+
+    const clampedMs = Math.max(0, Math.min(diffMs, totalWindowMs));
+    let progressPercent = isOverdue ? 100 : (clampedMs / totalWindowMs) * 100;
+    if (!isOverdue && progressPercent > 0 && progressPercent < 20) {
+      progressPercent = 20; // Keep glowing arc ring stroke clearly visible when active
+    }
+
+    const radius = 22;
+    const strokeWidth = 4;
+    const circumference = 2 * Math.PI * radius; // ~138.23
+    const strokeDashoffset = circumference - (progressPercent / 100) * circumference;
+
+    const ringColor = isOverdue
+      ? "#ef4444"
+      : progressPercent <= 30 || line1 === "Today"
+      ? "#f59e0b"
+      : typeColor || "#a855f7";
+
+    return (
+      <div
+        title={fullText}
+        style={{
+          position: "relative",
+          width: 58,
+          height: 58,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexShrink: 0
+        }}
+      >
+        <svg width={58} height={58} style={{ transform: "rotate(-90deg)" }}>
+          {/* Background Circle Track */}
+          <circle
+            cx={29}
+            cy={29}
+            r={radius}
+            stroke="rgba(255,255,255,0.08)"
+            strokeWidth={strokeWidth}
+            fill="rgba(0,0,0,0.5)"
+          />
+          {/* Animated Progress Ring Stroke */}
+          <circle
+            cx={29}
+            cy={29}
+            r={radius}
+            stroke={ringColor}
+            strokeWidth={strokeWidth}
+            fill="transparent"
+            strokeDasharray={circumference}
+            strokeDashoffset={strokeDashoffset}
+            strokeLinecap="round"
+            style={{
+              transition: "stroke-dashoffset 0.4s ease, stroke 0.3s ease",
+              filter: `drop-shadow(0 0 5px ${ringColor}90)`
+            }}
+          />
+        </svg>
+        {/* Center 2-Line Text inside Circle */}
+        <div
+          style={{
+            position: "absolute",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            lineHeight: 1.05,
+            fontFamily: "monospace",
+            textAlign: "center"
+          }}
+        >
+          <span style={{ fontSize: line1 === "Today" ? 10 : 11, fontWeight: 900, color: isOverdue ? "#f87171" : "#ffffff" }}>
+            {line1}
+          </span>
+          <span style={{ fontSize: 9, fontWeight: 800, color: isOverdue ? "#fca5a5" : "rgba(255,255,255,0.75)" }}>
+            {line2}
+          </span>
+        </div>
+      </div>
+    );
+  } catch (e) {
+    return null;
+  }
+};
+
+
+
+/* ─────── Alphabet Initial Solid Gradient Generator ─────── */
+const ALPHABET_GRADIENTS = [
+  "linear-gradient(135deg, #f97316, #ea580c)", // A - Solid Orange
+  "linear-gradient(135deg, #3b82f6, #1d4ed8)", // B - Solid Blue
+  "linear-gradient(135deg, #10b981, #047857)", // C - Solid Emerald
+  "linear-gradient(135deg, #8b5cf6, #6d28d9)", // D - Solid Purple
+  "linear-gradient(135deg, #ec4899, #be185d)", // E - Solid Pink
+  "linear-gradient(135deg, #06b6d4, #0e7490)", // F - Solid Cyan
+  "linear-gradient(135deg, #f59e0b, #b45309)", // G - Solid Amber
+  "linear-gradient(135deg, #6366f1, #4338ca)", // H - Solid Indigo
+  "linear-gradient(135deg, #14b8a6, #0f766e)", // I - Solid Teal
+  "linear-gradient(135deg, #f43f5e, #be123c)", // J - Solid Rose
+  "linear-gradient(135deg, #84cc16, #4d7c0f)", // K - Solid Lime
+  "linear-gradient(135deg, #d946ef, #a21caf)", // L - Solid Fuchsia
+  "linear-gradient(135deg, #0284c7, #0369a1)", // M - Solid Sky
+  "linear-gradient(135deg, #eab308, #a16207)", // N - Solid Yellow
+  "linear-gradient(135deg, #a855f7, #7e22ce)", // O - Solid Violet
+  "linear-gradient(135deg, #34d399, #059669)", // P - Solid Mint
+  "linear-gradient(135deg, #fb923c, #c2410c)", // Q - Solid Apricot
+  "linear-gradient(135deg, #60a5fa, #1e40af)", // R - Solid Light Blue
+  "linear-gradient(135deg, #f472b6, #9d174d)", // S - Solid Soft Pink
+  "linear-gradient(135deg, #a78bfa, #5b21b6)", // T - Solid Lavender
+  "linear-gradient(135deg, #38bdf8, #0284c7)", // U - Solid Ocean
+  "linear-gradient(135deg, #4ade80, #15803d)", // V - Solid Bright Green
+  "linear-gradient(135deg, #fbbf24, #b45309)", // W - Solid Gold
+  "linear-gradient(135deg, #f87171, #b91c1c)", // X - Solid Coral
+  "linear-gradient(135deg, #c084fc, #6b21a8)", // Y - Solid Lilac
+  "linear-gradient(135deg, #2dd4bf, #0f766e)", // Z - Solid Turquoise
+];
+
+const getAlphabetGradient = (name) => {
+  if (!name || typeof name !== "string") return ALPHABET_GRADIENTS[0];
+  const char = name.trim()[0];
+  if (!char) return ALPHABET_GRADIENTS[0];
+  const code = char.toUpperCase().charCodeAt(0) - 65;
+  if (code >= 0 && code < 26) {
+    return ALPHABET_GRADIENTS[code];
+  }
+  return ALPHABET_GRADIENTS[0];
 };
 
 const getLogBadgeStyle = (action) => {
@@ -46,6 +338,18 @@ const getLogBadgeStyle = (action) => {
       return { bg: "rgba(249,115,22,0.1)", border: "rgba(249,115,22,0.2)", color: "#f97316" };
     case "MEETING_BOOKED":
       return { bg: "rgba(34,197,94,0.1)", border: "rgba(34,197,94,0.2)", color: "#22c55e" };
+    case "CLIENT_NOTE":
+    case "NOTE":
+      return { bg: "rgba(249,115,22,0.12)", border: "rgba(249,115,22,0.25)", color: "#f97316" };
+    case "TASK":
+    case "REMINDER":
+      return { bg: "rgba(168,85,247,0.12)", border: "rgba(168,85,247,0.25)", color: "#a855f7" };
+    case "ALERT":
+      return { bg: "rgba(239,68,68,0.12)", border: "rgba(239,68,68,0.25)", color: "#ef4444" };
+    case "FOLLOWUP":
+      return { bg: "rgba(59,130,246,0.12)", border: "rgba(59,130,246,0.25)", color: "#3b82f6" };
+    case "ADD_NOTE_TASK":
+      return { bg: "rgba(14,165,233,0.12)", border: "rgba(14,165,233,0.25)", color: "#0ea5e9" };
     default:
       return { bg: "rgba(255,255,255,0.05)", border: "rgba(255,255,255,0.08)", color: "#a3a3a3" };
   }
@@ -165,9 +469,9 @@ function OverviewMiniCalendar({ leads }) {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 4, flex: 1 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 5 }}>
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => (
-          <div key={d} style={{ textAlign: "center", fontSize: 9, fontWeight: 800, color: "#525252", paddingBottom: 8 }}>{d}</div>
+          <div key={d} style={{ textAlign: "center", fontSize: 10, fontWeight: 800, color: "#525252", paddingBottom: 6 }}>{d}</div>
         ))}
         {daysArray.map((day, i) => {
           const { leads: dayLeads, meetings: dayMeetings } = getDayData(day);
@@ -196,18 +500,20 @@ function OverviewMiniCalendar({ leads }) {
                 });
               }}
               style={{
+                width: "100%",
                 aspectRatio: "1",
-                background: day ? (hoveredDay === i ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.02)") : "transparent",
-                border: isToday ? "1px solid rgba(249,115,22,0.5)" : "1px solid rgba(255,255,255,0.02)",
-                borderRadius: 8,
+                background: day ? (hoveredDay === i ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.02)") : "rgba(255,255,255,0.005)",
+                border: isToday ? "1.5px solid #f97316" : day ? "1px solid rgba(255,255,255,0.04)" : "1px solid rgba(255,255,255,0.015)",
+                borderRadius: 6,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                justifyContent: "flex-start",
-                padding: "4px 2px",
+                justifyContent: "space-between",
+                padding: "8px 4px",
                 position: "relative",
                 cursor: day ? "pointer" : "default",
-                transition: "all 0.15s ease"
+                transition: "all 0.15s ease",
+                boxShadow: isToday ? "0 0 12px rgba(249,115,22,0.25)" : "none"
               }}
             >
               {day && (
@@ -473,6 +779,7 @@ export default function OverviewTab({
   conversionRate: propsConversionRate,
   isMobile,
   setActiveTab,
+  setExpandedLead,
   db,
   currentAdmin,
   triggerConfirm,
@@ -482,6 +789,242 @@ export default function OverviewTab({
   const [myTasks, setMyTasks] = useState([]);
   const [dateRange, setDateRange] = useState("all");
   const [logSearch, setLogSearch] = useState("");
+  const [feedFilter, setFeedFilter] = useState("all"); // all, notes, tasks, alerts, followup, system
+  const [taskFilter, setTaskFilter] = useState("all"); // all, task, alert, followup, note
+  const [isPendingTasksOpen, setIsPendingTasksOpen] = useState(false);
+  const [completedTaskIds, setCompletedTaskIds] = useState(new Set());
+  const [deletedTaskIds, setDeletedTaskIds] = useState(new Set());
+  const [activeDoneMenuId, setActiveDoneMenuId] = useState(null);
+
+  // Delete single item from Firestore database & lead timeline
+  const handleDeleteItemFromDb = async (item, leadId) => {
+    if (!db) return;
+    try {
+      if (item.dbTask || item.id?.startsWith("dbtask_")) {
+        try { await deleteDoc(doc(db, "tasks", item.id)); } catch (e) {}
+      }
+
+      const targetLeadId = item.leadId || leadId;
+      if (targetLeadId) {
+        const leadRef = doc(db, "leads", targetLeadId);
+        const leadSnap = await getDoc(leadRef);
+        if (leadSnap.exists()) {
+          const currentTimeline = leadSnap.data().timeline || [];
+          const updatedTimeline = currentTimeline.filter(t => {
+            const rawId = item.id ? item.id.replace(`item_${targetLeadId}_`, "").replace(`tl_${targetLeadId}_`, "") : null;
+            if (t.id && rawId && (t.id === rawId || t.id === item.id)) return false;
+            const tText = (t.text || t.title || t.details || "").trim();
+            const itemText = (item.title || "").trim();
+            if (tText && itemText && tText === itemText) return false;
+            return true;
+          });
+          await updateDoc(leadRef, { timeline: updatedTimeline });
+        }
+      }
+    } catch (err) {
+      console.warn("Delete item from Firestore failed:", err);
+    }
+  };
+
+  // Clear all items for a lead group from Firestore database & timeline
+  const handleClearAllGroupItemsFromDb = async (group) => {
+    if (!db || !group) return;
+    try {
+      const targetLeadId = group.leadId;
+      if (targetLeadId) {
+        const leadRef = doc(db, "leads", targetLeadId);
+        const leadSnap = await getDoc(leadRef);
+        if (leadSnap.exists()) {
+          await updateDoc(leadRef, { timeline: [] });
+        }
+      }
+      if (Array.isArray(group.items)) {
+        group.items.forEach(async (item) => {
+          if (item.dbTask) {
+            try { await deleteDoc(doc(db, "tasks", item.id)); } catch (e) {}
+          }
+        });
+      }
+    } catch (err) {
+      console.warn("Clear group items from Firestore failed:", err);
+    }
+  };
+
+  // Client Task Groups Data & Dynamic Summary Metrics (Linked to Real Firestore Leads)
+  const taskGroupsData = useMemo(() => {
+    const todayStr = new Date().toISOString().split("T")[0];
+
+    const groups = (rawLeads || []).map((lead) => {
+      const clientName = (lead.fullName || lead.name || lead.companyName || lead.email?.split("@")[0] || "Client").trim();
+      const email = lead.email || "No email provided";
+      const phone = lead.phone || lead.phoneNumber || "No phone provided";
+      const status = lead.status || "new";
+      const service = lead.selectedService || lead.service || lead.servicesRequested || "Full Account Management";
+
+      // Helper function to identify system submission clutter, Calendly bookings & inbound notes
+      const isSystemClutter = (text, entry) => {
+        if (entry?.type === "system" || entry?.action === "system") return true;
+        if (!text || typeof text !== "string") return true;
+        const lower = text.toLowerCase().trim();
+        return (
+          lower.includes("calendly") ||
+          lower.includes("meeting successfully scheduled") ||
+          lower.includes("meeting scheduled") ||
+          lower.includes("booked") ||
+          lower.includes("submitted via") ||
+          lower.includes("no message") ||
+          lower.includes("initial lead action") ||
+          lower.includes("landing page") ||
+          lower.includes("inbound") ||
+          lower === "no message provided"
+        );
+      };
+
+      const items = [];
+
+      // 1. Map real lead timeline entries if available (ONLY manually created admin items)
+      if (Array.isArray(lead.timeline) && lead.timeline.length > 0) {
+        lead.timeline.forEach((entry, idx) => {
+          const rawText = (entry.text || entry.title || entry.details || "").trim();
+          if (isSystemClutter(rawText, entry)) return;
+
+          let dDate = entry.dueDate || null;
+          let dTime = entry.dueTime || null;
+
+          if (!dDate && entry.timestamp) {
+            try {
+              const tDate = entry.timestamp.toDate ? entry.timestamp.toDate() : new Date(entry.timestamp.seconds ? entry.timestamp.seconds * 1000 : entry.timestamp);
+              if (!isNaN(tDate)) {
+                dDate = tDate.toISOString().split("T")[0];
+                dTime = tDate.toTimeString().slice(0, 5);
+              }
+            } catch (e) {}
+          }
+
+          const rawType = (entry.type || entry.action || "note").toString().toLowerCase().trim();
+          let normType = "note";
+          if (rawType.includes("task") || rawType.includes("reminder")) normType = "task";
+          else if (rawType.includes("alert")) normType = "alert";
+          else if (rawType.includes("followup") || rawType.includes("follow_up")) normType = "followup";
+
+          items.push({
+            id: entry.id ? `item_${lead.id}_${entry.id}` : `tl_${lead.id}_${idx}`,
+            type: normType,
+            title: rawText,
+            dueDate: dDate || todayStr,
+            dueTime: dTime || null,
+            isCompleted: Boolean(entry.isCompleted)
+          });
+        });
+      }
+
+      // 2. Map recent new lead & meeting reminders (ONLY for fresh leads created within last 2 hours for unbooked leads, and 24h for booked meetings)
+      let leadCreatedDate = null;
+      if (lead.createdAt) {
+        leadCreatedDate = lead.createdAt.toDate ? lead.createdAt.toDate() : new Date(lead.createdAt.seconds ? lead.createdAt.seconds * 1000 : lead.createdAt);
+      }
+      const now = new Date();
+
+      if (leadCreatedDate && !isNaN(leadCreatedDate)) {
+        const timeDiffMs = now.getTime() - leadCreatedDate.getTime();
+        const isMeetingBooked = Boolean(lead.meetingBooked || lead.status === "meeting_booked");
+
+        if (isMeetingBooked && timeDiffMs >= 0 && timeDiffMs <= 24 * 60 * 60 * 1000) {
+          // New meeting booked within last 24h: 1-day (24h) timer to do account/client background research
+          const due1d = new Date(leadCreatedDate.getTime() + 24 * 60 * 60 * 1000);
+          items.push({
+            id: `recent_meeting_res_${lead.id}`,
+            type: "task",
+            title: `Task: Conduct client background & account research`,
+            dueDate: due1d.toISOString().split("T")[0],
+            dueTime: due1d.toTimeString().slice(0, 5),
+            isCompleted: false
+          });
+        } else if (!isMeetingBooked && (lead.status === "new" || !lead.status) && timeDiffMs >= 0 && timeDiffMs <= 2 * 60 * 60 * 1000) {
+          // Brand new inbound lead (unbooked) created within last 2 hours: 2-hour reminder to set follow-up email
+          const due2h = new Date(leadCreatedDate.getTime() + 2 * 60 * 60 * 1000);
+          items.push({
+            id: `recent_lead_fu_${lead.id}`,
+            type: "followup",
+            title: `Action Item: Set follow-up email within 2 hours`,
+            dueDate: due2h.toISOString().split("T")[0],
+            dueTime: due2h.toTimeString().slice(0, 5),
+            isCompleted: false
+          });
+        }
+      }
+
+      const rawNotes = (lead.notes || lead.challenge || lead.message || "").trim();
+      const isClutterNote = rawNotes.toLowerCase().includes("no message") || rawNotes.toLowerCase().includes("submitted via");
+      const notes = isClutterNote ? "" : rawNotes;
+
+      return {
+        clientName,
+        email,
+        phone,
+        status,
+        service,
+        leadId: lead.id,
+        notes,
+        items
+      };
+    });
+
+    let totalPending = 0;
+    let overdueCount = 0;
+    let todayCount = 0;
+    let taskCount = 0;
+    let alertCount = 0;
+    let followupCount = 0;
+    let noteCount = 0;
+    let nearestItem = null;
+    let smallestFutureDiff = Infinity;
+
+    groups.forEach(g => {
+      g.items.forEach(item => {
+        if (deletedTaskIds.has(item.id)) return;
+        const isDone = completedTaskIds.has(item.id);
+
+        if (!isDone) {
+          totalPending++;
+          if (item.type === "task") taskCount++;
+          if (item.type === "alert") alertCount++;
+          if (item.type === "followup") followupCount++;
+          if (item.type === "note") noteCount++;
+
+          const timer = getCountdownTimer(item.dueDate, item.dueTime);
+          if (timer.isPast) {
+            overdueCount++;
+          } else {
+            // Check if due today
+            if (item.dueDate === todayStr || timer.label === "Today" || (timer.hours != null && timer.hours < 24)) {
+              todayCount++;
+            }
+            // Check for nearest task
+            if (timer.hours != null) {
+              const totalMins = timer.hours * 60 + timer.minutes;
+              if (totalMins < smallestFutureDiff) {
+                smallestFutureDiff = totalMins;
+                nearestItem = { ...item, clientName: g.clientName, timer };
+              }
+            }
+          }
+        }
+      });
+    });
+
+    return {
+      groups,
+      totalPending,
+      overdueCount,
+      todayCount,
+      taskCount,
+      alertCount,
+      followupCount,
+      noteCount,
+      nearestItem
+    };
+  }, [rawLeads, completedTaskIds, deletedTaskIds]);
 
   const leads = React.useMemo(() => {
     if (dateRange === "all") return rawLeads || [];
@@ -541,9 +1084,10 @@ export default function OverviewTab({
     return () => unsubLogs();
   }, [db, currentAdmin]);
 
-  // Combine DB activity logs with Leads and Meetings
+  // Combine DB activity logs with Leads and Meetings (Deduplicated)
   const mergedTimeline = React.useMemo(() => {
     let timeline = [...activityLogs];
+    const seenKeys = new Set();
 
     leads.forEach(l => {
       // Add NEW_LEAD event
@@ -580,28 +1124,213 @@ export default function OverviewTab({
           });
         }
       }
+
+      // Add ALL client-specific timeline notes, tasks, alerts, follow-ups
+      if (l.timeline && Array.isArray(l.timeline)) {
+        l.timeline.forEach((item, index) => {
+          const itemKey = item.id || `${l.id}_${item.text}_${index}`;
+          if (seenKeys.has(itemKey)) return;
+          seenKeys.add(itemKey);
+
+          const clientName = l.fullName || l.email || "Client";
+          const rawType = item.type || "note";
+          const actionName = rawType === "note" ? "CLIENT_NOTE" : rawType.toUpperCase();
+          const scheduled = item.dueDate ? ` [Scheduled: ${item.dueDate} ${item.dueTime || ""}]` : "";
+
+          timeline.push({
+            id: itemKey,
+            action: actionName,
+            details: `${clientName}: "${item.text}"${scheduled}`,
+            timestamp: item.timestamp || l.createdAt || new Date(),
+            adminName: item.adminName || "Admin"
+          });
+        });
+      }
+    });
+
+    // Deduplicate entire timeline list by ID
+    const finalTimeline = [];
+    const idSet = new Set();
+    timeline.forEach((item, i) => {
+      const uKey = item.id || `tm_${i}`;
+      if (!idSet.has(uKey)) {
+        idSet.add(uKey);
+        finalTimeline.push(item);
+      }
     });
 
     // Sort descending by timestamp
-    timeline.sort((a, b) => {
-      const timeA = a.timestamp?.toDate ? a.timestamp.toDate().getTime() : 0;
-      const timeB = b.timestamp?.toDate ? b.timestamp.toDate().getTime() : 0;
+    finalTimeline.sort((a, b) => {
+      const timeA = a.timestamp?.toDate ? a.timestamp.toDate().getTime() : new Date(a.timestamp || 0).getTime();
+      const timeB = b.timestamp?.toDate ? b.timestamp.toDate().getTime() : new Date(b.timestamp || 0).getTime();
       return timeB - timeA;
     });
 
-    return timeline.slice(0, 100);
+    return finalTimeline.slice(0, 150);
   }, [activityLogs, leads]);
 
-  // Filter timeline based on search query
+  // Combine DB tasks with Lead Timeline Tasks & Scheduled Reminders
+  const allPendingTasks = React.useMemo(() => {
+    const list = [];
+    const seenIds = new Set();
+
+    // 1. Add tasks from DB 'tasks' collection
+    (myTasks || []).forEach(t => {
+      if (t.status === "completed" || t.isCompleted) return;
+
+      const linkedLead = t.leadId ? (rawLeads || []).find(l => l.id === t.leadId) : null;
+      const clientNameStr = (
+        (typeof t.clientName === "string" && t.clientName.trim()) ||
+        (linkedLead ? (linkedLead.fullName || linkedLead.email) : null) ||
+        "General Admin Tasks"
+      ).trim();
+
+      const titleStr = (
+        (typeof t.title === "string" && t.title.trim()) ||
+        (typeof t.text === "string" && t.text.trim()) ||
+        (typeof t.details === "string" && t.details.trim()) ||
+        (typeof t.task === "string" && t.task.trim()) ||
+        ""
+      ).trim();
+
+      if (!titleStr) return; // Skip empty tasks
+
+      const rawType = (t.type || "task").toString().toLowerCase();
+      const normType = rawType.includes("alert") ? "alert" : rawType.includes("follow") ? "followup" : rawType.includes("note") ? "note" : "task";
+
+      list.push({
+        id: t.id || `dbtask_${Math.random()}`,
+        leadId: t.leadId || null,
+        clientName: clientNameStr,
+        title: titleStr,
+        type: normType,
+        dueDate: t.dueDate || "Today",
+        dueTime: t.dueTime || "",
+        dbTask: true
+      });
+    });
+
+    // 2. Add pending tasks/reminders/alerts/followups from lead timelines
+    (rawLeads || []).forEach(l => {
+      const clientNameStr = (typeof l.fullName === "string" && l.fullName.trim()) ? l.fullName.trim() : ((typeof l.email === "string" && l.email.trim()) ? l.email.trim() : "Client");
+
+      if (l.timeline && Array.isArray(l.timeline)) {
+        l.timeline.forEach(t => {
+          if (t.isCompleted) return;
+
+          let rawType = (t.type || t.action || "task").toString().toLowerCase().trim();
+          if (rawType.includes("note")) rawType = "note";
+          else if (rawType.includes("task") || rawType.includes("reminder")) rawType = "task";
+          else if (rawType.includes("alert")) rawType = "alert";
+          else if (rawType.includes("followup") || rawType.includes("follow_up")) rawType = "followup";
+          else rawType = "note";
+
+          const textVal = (
+            (typeof t.text === "string" && t.text.trim()) ||
+            (typeof t.title === "string" && t.title.trim()) ||
+            (typeof t.note === "string" && t.note.trim()) ||
+            (typeof t.details === "string" && t.details.trim()) ||
+            ""
+          ).trim();
+
+          if (!textVal) return;
+          if (t.type === "system" || t.action === "system") return;
+          const lowerVal = textVal.toLowerCase();
+          if (
+            lowerVal.includes("calendly") ||
+            lowerVal.includes("meeting successfully scheduled") ||
+            lowerVal.includes("meeting scheduled") ||
+            lowerVal.includes("booked") ||
+            lowerVal.includes("submitted via") ||
+            lowerVal.includes("no message") ||
+            lowerVal.includes("initial lead action") ||
+            lowerVal.includes("landing page") ||
+            lowerVal.includes("inbound") ||
+            lowerVal === "no message provided"
+          ) return;
+
+          const itemId = t.id || `lead_t_${l.id}_${t.timestamp || Math.random()}`;
+          if (!list.some(existing => existing.id === itemId)) {
+            list.push({
+              id: itemId,
+              leadId: l.id,
+              clientName: clientNameStr,
+              title: textVal,
+              type: rawType,
+              dueDate: t.dueDate || l.nextFollowUp || "Today",
+              dueTime: t.dueTime || "",
+              dbTask: false
+            });
+          }
+        });
+      }
+
+      // Add recent lead (<2h) or meeting (<24h) action items to pending tasks
+      let leadCreatedDate = null;
+      if (l.createdAt) {
+        leadCreatedDate = l.createdAt.toDate ? l.createdAt.toDate() : new Date(l.createdAt.seconds ? l.createdAt.seconds * 1000 : l.createdAt);
+      }
+      const now = new Date();
+
+      if (leadCreatedDate && !isNaN(leadCreatedDate)) {
+        const timeDiffMs = now.getTime() - leadCreatedDate.getTime();
+        const isMeetingBooked = Boolean(l.meetingBooked || l.status === "meeting_booked");
+
+        if (isMeetingBooked && timeDiffMs >= 0 && timeDiffMs <= 24 * 60 * 60 * 1000) {
+          const due1d = new Date(leadCreatedDate.getTime() + 24 * 60 * 60 * 1000);
+          const recId = `recent_meeting_res_${l.id}`;
+          if (!list.some(existing => existing.id === recId)) {
+            list.push({
+              id: recId,
+              leadId: l.id,
+              clientName: clientNameStr,
+              title: `Task: Conduct client background & account research`,
+              type: "task",
+              dueDate: due1d.toISOString().split("T")[0],
+              dueTime: due1d.toTimeString().slice(0, 5),
+              dbTask: false
+            });
+          }
+        } else if (!isMeetingBooked && (l.status === "new" || !l.status) && timeDiffMs >= 0 && timeDiffMs <= 2 * 60 * 60 * 1000) {
+          const due2h = new Date(leadCreatedDate.getTime() + 2 * 60 * 60 * 1000);
+          const recId = `recent_lead_fu_${l.id}`;
+          if (!list.some(existing => existing.id === recId)) {
+            list.push({
+              id: recId,
+              leadId: l.id,
+              clientName: clientNameStr,
+              title: `Action Item: Set follow-up email within 2 hours`,
+              type: "followup",
+              dueDate: due2h.toISOString().split("T")[0],
+              dueTime: due2h.toTimeString().slice(0, 5),
+              dbTask: false
+            });
+          }
+        }
+      }
+    });
+
+    return list;
+  }, [myTasks, rawLeads]);
+
+  // Filter timeline based on search query & feedFilter
   const filteredTimeline = React.useMemo(() => {
-    if (!logSearch.trim()) return mergedTimeline;
+    let list = mergedTimeline;
+    if (feedFilter !== "all") {
+      if (feedFilter === "notes") list = list.filter(l => l.action === "CLIENT_NOTE" || l.action === "NOTE");
+      else if (feedFilter === "tasks") list = list.filter(l => l.action === "TASK" || l.action === "REMINDER");
+      else if (feedFilter === "alerts") list = list.filter(l => l.action === "ALERT");
+      else if (feedFilter === "followup") list = list.filter(l => l.action === "FOLLOWUP");
+      else if (feedFilter === "system") list = list.filter(l => ["NEW_LEAD", "MEETING_BOOKED"].includes(l.action));
+    }
+    if (!logSearch.trim()) return list;
     const q = logSearch.toLowerCase();
-    return mergedTimeline.filter(log =>
+    return list.filter(log =>
       log.action?.toLowerCase().includes(q) ||
       log.adminName?.toLowerCase().includes(q) ||
       log.details?.toLowerCase().includes(q)
     );
-  }, [mergedTimeline, logSearch]);
+  }, [mergedTimeline, logSearch, feedFilter]);
 
   // Group logs by Date (with robust parsing)
   const groupedTimeline = React.useMemo(() => {
@@ -934,10 +1663,8 @@ export default function OverviewTab({
         <StatCard title="Total Users"    value={users.length}  sub="Registered accounts"    icon={Users} />
       </div>
 
-
-
-      {/* Visual Analytics Funnel & Services Chart */}
-      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1.2fr 1fr", gap: 14 }}>
+      {/* Visual Analytics Funnel, Services Chart & Lead Sources Row */}
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "2fr 1.5fr 1.5fr", gap: 14 }}>
         {/* Pipeline Conversion Funnel */}
         <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: isMobile ? "16px" : "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em" }}>Lead Conversion Funnel</div>
@@ -948,14 +1675,6 @@ export default function OverviewTab({
 
             const r2 = total > 0 ? (meetings / total) : 0;
             const r3 = total > 0 ? (won / total) : 0;
-
-            // Stage 1 (top): Inbound Leads (fixed baseline)
-            const w1_top = 180;
-            const w1_bottom = 120;
-
-            // Stage 2 (middle): Meetings Booked
-            const w2_top = Math.max(40, 120 * r2);
-            const w2_bottom = w2_top * 0.6;
 
             // Dynamic widths for fully rounded pills (capsules)
             const w1 = 170;
@@ -1074,8 +1793,18 @@ export default function OverviewTab({
             )
               .sort((a, b) => b[1] - a[1])
               .slice(0, 4)
-              .map(([service, count]) => {
+              .map(([service, count], idx) => {
                 const percent = leads.length ? Math.round((count / leads.length) * 100) : 0;
+
+                // Determine gradient by ranked index
+                const progressGradients = [
+                  "linear-gradient(90deg, #f97316, #ea580c)", // 1st: Theme Orange
+                  "linear-gradient(90deg, #fbbf24, #d97706)", // 2nd: Yellowish/Golden
+                  "linear-gradient(90deg, #a855f7, #7c3aed)", // 3rd: Purple
+                  "linear-gradient(90deg, #ef4444, #b91c1c)"  // 4th: Reddish
+                ];
+                const activeGrad = progressGradients[idx] || progressGradients[3];
+
                 return (
                   <div key={service} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, fontWeight: 600 }}>
@@ -1083,7 +1812,7 @@ export default function OverviewTab({
                       <span style={{ color: "#f97316", fontWeight: 700 }}>{count} ({percent}%)</span>
                     </div>
                     <div style={{ width: "100%", height: 5, background: "rgba(255,255,255,0.03)", borderRadius: 10, overflow: "hidden" }}>
-                      <div style={{ height: "100%", background: "linear-gradient(90deg, #f97316, #ea580c)", width: `${percent}%`, borderRadius: 10, transition: "width 0.4s ease" }} />
+                      <div style={{ height: "100%", background: activeGrad, width: `${percent}%`, borderRadius: 10, transition: "width 0.4s ease" }} />
                     </div>
                   </div>
                 );
@@ -1095,50 +1824,791 @@ export default function OverviewTab({
             )}
           </div>
         </div>
+
+        {/* Lead Sources */}
+        <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: isMobile ? "16px" : "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em" }}>Lead Sources</div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12, justifyContent: "center", flex: 1 }}>
+            {Object.entries(leads.reduce((acc, l) => { const k = l.source || "Direct"; acc[k] = (acc[k] || 0) + 1; return acc; }, {})).slice(0, 4).map(([src, count], idx) => {
+              const percent = leads.length ? Math.round((count / leads.length) * 100) : 0;
+
+              const progressGradients = [
+                "linear-gradient(90deg, #f97316, #ea580c)", // 1st: Theme Orange
+                "linear-gradient(90deg, #fbbf24, #d97706)", // 2nd: Yellowish/Golden
+                "linear-gradient(90deg, #a855f7, #7c3aed)", // 3rd: Purple
+                "linear-gradient(90deg, #ef4444, #b91c1c)"  // 4th: Reddish
+              ];
+              const activeGrad = progressGradients[idx] || progressGradients[3];
+
+              return (
+                <div key={src} style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11, fontWeight: 600 }}>
+                    <span style={{ fontSize: 11, color: "#a3a3a3", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "80%" }}>{src}</span>
+                    <span style={{ color: "#f97316", fontWeight: 700 }}>{count} ({percent}%)</span>
+                  </div>
+                  <div style={{ width: "100%", height: 5, background: "rgba(255,255,255,0.03)", borderRadius: 10, overflow: "hidden" }}>
+                    <div style={{ height: "100%", background: activeGrad, width: `${percent}%`, borderRadius: 10, transition: "width 0.4s ease" }} />
+                  </div>
+                </div>
+              );
+            })}
+            {leads.length === 0 && <p style={{ fontSize: 11, color: "#3f3f46" }}>No leads yet.</p>}
+          </div>
+        </div>
       </div>
 
-      {/* My Pending Tasks Checklist (Spans Full Width) */}
-      <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px" }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <CheckCircle2 size={14} color="#f97316" />
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#fff", textTransform: "uppercase", letterSpacing: "0.2em" }}>My Pending Tasks</div>
-          </div>
-          <div style={{ fontSize: 10, fontWeight: 800, background: "rgba(249,115,22,0.1)", color: "#f97316", padding: "2px 6px", borderRadius: 6 }}>{myTasks.length} pending</div>
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 10, maxHeight: 150, overflowY: "auto", paddingRight: 4 }}>
-          {myTasks.map((task) => (
-            <div key={task.id} style={{ display: "flex", alignItems: "flex-start", gap: 10, padding: "10px", background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.02)", borderRadius: 10 }}>
-              <input
-                type="checkbox"
-                checked={task.status === "completed"}
-                onChange={() => handleToggleTask(task.id, task.status)}
-                style={{ marginTop: 2, accentColor: "#f97316", cursor: "pointer" }}
-              />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 11, fontWeight: 600, color: "#fff", textDecoration: task.status === "completed" ? "line-through" : "none", opacity: task.status === "completed" ? 0.5 : 1 }}>
-                  {task.title}
+      {/* Task & Reminders Metric Overview Cards Bar (4-Column Real Metrics Row) */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)",
+          gap: 12,
+          marginBottom: 14,
+          width: "100%"
+        }}
+      >
+        {[
+          {
+            title: "Pending Tasks",
+            value: String(taskGroupsData.totalPending),
+            sub: `${taskGroupsData.groups.length} Client Groups`,
+            subColor: "#a855f7",
+            color: "#a855f7",
+            icon: CheckCircle2,
+            filterKey: "all"
+          },
+          {
+            title: "Overdue Items",
+            value: String(taskGroupsData.overdueCount),
+            sub: "Action required",
+            subColor: "#ef4444",
+            color: "#ef4444",
+            icon: AlertCircle,
+            filterKey: "overdue"
+          },
+          {
+            title: "Nearest Task",
+            value: taskGroupsData.nearestItem ? `In ${taskGroupsData.nearestItem.timer.hours}h ${taskGroupsData.nearestItem.timer.minutes}m` : "None",
+            sub: taskGroupsData.nearestItem ? `${taskGroupsData.nearestItem.clientName} • ${taskGroupsData.nearestItem.title.replace(/^[^:]+:\s*/, '')}` : "All caught up!",
+            subColor: "#f97316",
+            color: "#f97316",
+            icon: Clock,
+            filterKey: "nearest"
+          },
+          {
+            title: "Due Today",
+            value: String(taskGroupsData.todayCount),
+            sub: "Scheduled for today",
+            subColor: "#3b82f6",
+            color: "#3b82f6",
+            icon: Calendar,
+            filterKey: "today"
+          }
+        ].map((card, idx) => {
+          const IconComp = card.icon;
+          const isActive = taskFilter === card.filterKey;
+          return (
+            <div
+              key={idx}
+              onClick={() => {
+                setTaskFilter(card.filterKey);
+                setIsPendingTasksOpen(true);
+              }}
+              style={{
+                background: isActive
+                  ? `radial-gradient(circle at 0% 0%, ${card.color}28 0%, #161622 50%, #0c0c12 100%)`
+                  : `radial-gradient(circle at 0% 0%, ${card.color}1a 0%, #111116 50%, #09090c 100%)`,
+                border: isActive ? `1.5px solid ${card.color}` : "1px solid rgba(255, 255, 255, 0.07)",
+                borderRadius: 16,
+                padding: "14px 16px",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                boxShadow: isActive ? `0 6px 20px rgba(0,0,0,0.6), 0 0 16px ${card.color}30` : "0 4px 14px rgba(0, 0, 0, 0.4)",
+                transition: "all 0.25s ease",
+                cursor: "pointer",
+                position: "relative",
+                overflow: "hidden"
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                if (!isActive) {
+                  e.currentTarget.style.background = `radial-gradient(circle at 0% 0%, ${card.color}25 0%, #13131a 50%, #0a0a0d 100%)`;
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)";
+                  e.currentTarget.style.boxShadow = `0 8px 24px rgba(0,0,0,0.6), 0 0 16px ${card.color}20`;
+                }
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = "translateY(0px)";
+                if (!isActive) {
+                  e.currentTarget.style.background = `radial-gradient(circle at 0% 0%, ${card.color}1a 0%, #111116 50%, #09090c 100%)`;
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
+                  e.currentTarget.style.boxShadow = "0 4px 14px rgba(0, 0, 0, 0.4)";
+                }
+              }}
+            >
+              {/* Top Row: Icon + Title */}
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div
+                  style={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: 10,
+                    background: `${card.color}15`,
+                    border: `1px solid ${card.color}30`,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: card.color,
+                    flexShrink: 0
+                  }}
+                >
+                  <IconComp size={16} color={card.color} />
                 </div>
-                {task.description && (
-                  <div style={{ fontSize: 9, color: "#71717a", marginTop: 2 }}>
-                    {task.description}
-                  </div>
-                )}
-                {task.dueDate && (
-                  <div style={{ fontSize: 8, color: "#525252", marginTop: 4, display: "flex", alignItems: "center", gap: 4 }}>
-                    <Clock size={8} /> Due: {new Date(task.dueDate).toLocaleDateString()}
-                  </div>
-                )}
+                <span style={{ fontSize: 10, fontWeight: 700, color: "#a1a1aa", letterSpacing: "0.02em", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {card.title}
+                </span>
+              </div>
+
+              {/* Middle Row: Main Stat Value */}
+              <div style={{ fontSize: 20, fontWeight: 900, color: "#ffffff", letterSpacing: "-0.02em" }}>
+                {card.value}
+              </div>
+
+              {/* Bottom Row: Subtext */}
+              <div style={{ display: "flex", alignItems: "center", marginTop: "auto" }}>
+                <span style={{ fontSize: 9, fontWeight: 700, color: card.subColor, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  {card.sub}
+                </span>
               </div>
             </div>
-          ))}
-          {myTasks.length === 0 && (
-            <div style={{ textAlign: "center", padding: "20px 0", fontSize: 11, color: "#3f3f46" }}>
-              No pending tasks. You're all caught up!
+          );
+        })}
+      </div>
+
+      {/* My Pending Client Tasks & Scheduled Reminders Widget (FULL WIDTH & COLLAPSIBLE) */}
+      <div style={{ position: "relative", zIndex: 5, background: "#0c0c0e", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column", width: "100%", marginBottom: 14, boxShadow: "0 10px 30px rgba(0,0,0,0.6)", transition: "all 0.3s ease" }}>
+        {/* COLLAPSIBLE HEADER BAR */}
+        <div
+          onClick={() => setIsPendingTasksOpen(!isPendingTasksOpen)}
+          style={{
+            padding: "16px 20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            borderBottom: isPendingTasksOpen ? "1px solid rgba(255,255,255,0.04)" : "none",
+            background: "rgba(255,255,255,0.02)",
+            flexWrap: "wrap",
+            gap: 10,
+            cursor: "pointer",
+            userSelect: "none"
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <Clock size={16} color="#a855f7" />
+            <div style={{ fontSize: 12, fontWeight: 800, color: "#fff", textTransform: "uppercase", letterSpacing: "0.15em" }}>My Pending Tasks &amp; Scheduled Reminders</div>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }} onClick={e => e.stopPropagation()}>
+            {/* Task Type Filter Dropdown Pill Button */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 8,
+                background: "rgba(255, 255, 255, 0.05)",
+                border: "1px solid rgba(255, 255, 255, 0.14)",
+                borderRadius: 12,
+                padding: "6px 14px",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                transition: "all 0.2s ease"
+              }}
+            >
+              <Filter size={13} color="#a855f7" style={{ flexShrink: 0 }} />
+              <select
+                value={taskFilter}
+                onChange={(e) => setTaskFilter(e.target.value)}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "#ffffff",
+                  fontSize: 11,
+                  fontWeight: 800,
+                  cursor: "pointer",
+                  outline: "none",
+                  fontFamily: "inherit",
+                  letterSpacing: "0.02em"
+                }}
+              >
+                <option value="all" style={{ background: "#14141c", color: "#ffffff" }}>All Task Types ({taskGroupsData.totalPending})</option>
+                <option value="overdue" style={{ background: "#14141c", color: "#ef4444" }}>🚨 Overdue Items ({taskGroupsData.overdueCount})</option>
+                <option value="nearest" style={{ background: "#14141c", color: "#f97316" }}>⏱️ Nearest Task ({taskGroupsData.nearestItem ? `In ${taskGroupsData.nearestItem.timer.hours}h ${taskGroupsData.nearestItem.timer.minutes}m` : "None"})</option>
+                <option value="today" style={{ background: "#14141c", color: "#3b82f6" }}>📅 Due Today ({taskGroupsData.todayCount})</option>
+                <option value="task" style={{ background: "#14141c", color: "#a855f7" }}>📋 Tasks Only ({taskGroupsData.taskCount})</option>
+                <option value="alert" style={{ background: "#14141c", color: "#ef4444" }}>🚨 Alerts Only ({taskGroupsData.alertCount})</option>
+                <option value="followup" style={{ background: "#14141c", color: "#3b82f6" }}>📅 Follow-ups ({taskGroupsData.followupCount})</option>
+                <option value="note" style={{ background: "#14141c", color: "#f97316" }}>📝 Notes Only ({taskGroupsData.noteCount})</option>
+              </select>
             </div>
-          )}
+
+            {/* Pending Count Badge */}
+            <span style={{ fontSize: 10, fontWeight: 800, color: "#a855f7", background: "rgba(168,85,247,0.12)", padding: "6px 14px", borderRadius: 100, border: "1px solid rgba(168,85,247,0.28)", letterSpacing: "0.02em" }}>
+              {taskFilter === "all" ? `${taskGroupsData.groups.length} Client Groups • ${taskGroupsData.totalPending} Pending Items` : `Filter: ${taskFilter.toUpperCase()}`}
+            </span>
+
+            {/* Collapse / Expand Toggle Button */}
+            <div
+              onClick={() => setIsPendingTasksOpen(!isPendingTasksOpen)}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 30,
+                height: 30,
+                borderRadius: 10,
+                background: "rgba(255,255,255,0.06)",
+                border: "1px solid rgba(255,255,255,0.14)",
+                color: "#a855f7",
+                cursor: "pointer",
+                transition: "all 0.2s ease"
+              }}
+            >
+              {isPendingTasksOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </div>
+          </div>
         </div>
+
+        {/* WIDGET CONTENT BODY */}
+        {isPendingTasksOpen && (
+          <div style={{ display: "flex", flexDirection: "column", gap: 14, padding: 16, maxHeight: 580, overflowY: "auto", background: "#08080a" }}>
+          {taskGroupsData.groups.length === 0 ? (
+            <div style={{ padding: "36px 20px", textAlign: "center", background: "#0c0c0f", borderRadius: 16, border: "1px solid rgba(255,255,255,0.05)" }}>
+              <Inbox size={32} color="#71717a" style={{ margin: "0 auto 10px auto" }} />
+              <div style={{ fontSize: 13, fontWeight: 700, color: "#e4e4e7" }}>No Active Client Tasks or Notes</div>
+              <div style={{ fontSize: 11, color: "#71717a", marginTop: 4 }}>Add a new lead or create timeline notes in the Leads tab to track real client actions here.</div>
+            </div>
+          ) : (
+            taskGroupsData.groups.map((group, gIdx) => {
+            const activeClientItems = group.items.filter(t => !deletedTaskIds.has(t.id));
+            if (activeClientItems.length === 0) return null;
+
+            const grad = getAlphabetGradient(group.clientName);
+            const initial = group.clientName?.[0]?.toUpperCase() || "C";
+
+            return (
+              <div
+                key={group.leadId || `${group.clientName}_${group.email}_${gIdx}`}
+                style={{
+                  background: "#0c0c0f",
+                  border: "1px solid rgba(255,255,255,0.05)",
+                  borderRadius: 16,
+                  padding: "18px 20px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 16,
+                  flexShrink: 0,
+                  boxShadow: "0 8px 24px rgba(0, 0, 0, 0.5)",
+                  transition: "all 0.2s ease"
+                }}
+              >
+                {/* TOP CENTERED INBOUND BRIEF / INQUIRY MESSAGE BANNER */}
+                <div
+                  style={{
+                    width: "100%",
+                    background: "rgba(255, 255, 255, 0.02)",
+                    border: "1px solid rgba(255, 255, 255, 0.06)",
+                    borderRadius: 10,
+                    padding: "8px 16px",
+                    textAlign: "center",
+                    fontSize: 11,
+                    color: group.notes ? "#e4e4e7" : "#71717a",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                    boxShadow: "inset 0 1px 3px rgba(0,0,0,0.5)"
+                  }}
+                >
+                  <span style={{ fontWeight: 800, color: "#f97316", textTransform: "uppercase", fontSize: 9, letterSpacing: "0.06em", flexShrink: 0 }}>
+                    Inbound Brief:
+                  </span>
+                  <span style={{ fontStyle: group.notes ? "italic" : "normal", fontWeight: group.notes ? 500 : 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    {group.notes ? `"${group.notes}"` : "No initial inquiry message provided"}
+                  </span>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: isMobile ? "column" : "row",
+                    alignItems: isMobile ? "stretch" : "flex-start",
+                    gap: 20,
+                    width: "100%"
+                  }}
+                >
+                  {/* LEFT COLUMN: Neumorphic Client Profile Box */}
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 12,
+                    width: isMobile ? "100%" : 255,
+                    background: "#111115",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: 14,
+                    padding: 14,
+                    flexShrink: 0,
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.4)"
+                  }}
+                >
+                  {/* Header: Avatar, Name, Pending Count & Clear All Button */}
+                  <div
+                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}
+                  >
+                    <div
+                      onClick={() => {
+                        if (group.leadId && setExpandedLead) {
+                          setExpandedLead(group.leadId);
+                        }
+                        setActiveTab("leads");
+                      }}
+                      style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer", flex: 1, minWidth: 0 }}
+                    >
+                      <div
+                        style={{
+                          width: 40,
+                          height: 40,
+                          borderRadius: 12,
+                          background: grad,
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          fontSize: 15,
+                          fontWeight: 900,
+                          color: "#fff",
+                          boxShadow: "4px 4px 10px rgba(0,0,0,0.5), inset 1px 1px 2px rgba(255,255,255,0.3)",
+                          border: "1px solid rgba(255,255,255,0.18)",
+                          flexShrink: 0
+                        }}
+                      >
+                        {initial}
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 2, overflow: "hidden" }}>
+                        <span style={{ fontSize: 13, fontWeight: 800, color: "#ffffff", letterSpacing: "-0.01em", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          {group.clientName}
+                        </span>
+                        <div style={{ display: "inline-flex", alignItems: "center", gap: 4 }}>
+                          <span style={{ fontSize: 9, fontWeight: 800, color: "#a855f7", background: "rgba(168,85,247,0.15)", padding: "2px 8px", borderRadius: 100, border: "1px solid rgba(168,85,247,0.3)" }}>
+                            {activeClientItems.length} Pending
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Delete / Clear All Tasks for User Button */}
+                    <button
+                      type="button"
+                      title={`Clear all tasks and notifications for ${group.clientName}`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const performClear = () => {
+                          const idsToDelete = group.items.map(item => item.id);
+                          setDeletedTaskIds(prev => {
+                            const next = new Set(prev);
+                            idsToDelete.forEach(id => next.add(id));
+                            return next;
+                          });
+                          handleClearAllGroupItemsFromDb(group);
+                        };
+
+                        if (triggerConfirm) {
+                          triggerConfirm(
+                            "Clear Client Tasks",
+                            `Are you sure you want to clear all tasks, alerts, and reminders for "${group.clientName}"? This action cannot be undone.`,
+                            performClear,
+                            true
+                          );
+                        } else if (typeof window !== "undefined" && window.confirm(`Are you sure you want to clear all tasks and reminders for ${group.clientName}?`)) {
+                          performClear();
+                        }
+                      }}
+                      style={{
+                        background: "rgba(239, 68, 68, 0.12)",
+                        border: "1px solid rgba(239, 68, 68, 0.3)",
+                        borderRadius: 8,
+                        width: 28,
+                        height: 28,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        cursor: "pointer",
+                        color: "#ef4444",
+                        transition: "all 0.2s ease",
+                        flexShrink: 0,
+                        marginLeft: 6
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.background = "rgba(239, 68, 68, 0.25)";
+                        e.currentTarget.style.color = "#ffffff";
+                        e.currentTarget.style.borderColor = "#ef4444";
+                        e.currentTarget.style.boxShadow = "0 0 10px rgba(239, 68, 68, 0.4)";
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.background = "rgba(239, 68, 68, 0.12)";
+                        e.currentTarget.style.color = "#ef4444";
+                        e.currentTarget.style.borderColor = "rgba(239, 68, 68, 0.3)";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
+                    >
+                      <Trash2 size={13} />
+                    </button>
+                  </div>
+
+                  {/* Contact Details Panel (Embedded Down) */}
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 8,
+                      padding: "10px 12px",
+                      minHeight: 65,
+                      background: "rgba(0, 0, 0, 0.25)",
+                      borderRadius: 10,
+                      border: "none",
+                      boxShadow: "none"
+                    }}
+                  >
+                    <div style={{ fontSize: 8, fontWeight: 900, color: "#a855f7", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                      Contact Details
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 11, color: "#e4e4e7", overflow: "hidden" }}>
+                      <Mail size={12} color="#a855f7" style={{ flexShrink: 0 }} />
+                      <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", fontWeight: 500 }}>
+                        {group.email}
+                      </span>
+                    </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 11, color: "#e4e4e7" }}>
+                      <Phone size={12} color="#a855f7" style={{ flexShrink: 0 }} />
+                      <span style={{ fontWeight: 500 }}>{group.phone}</span>
+                    </div>
+                  </div>
+
+                  {/* Neumorphic Extruded Button */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (group.leadId && setExpandedLead) {
+                        setExpandedLead(group.leadId);
+                      }
+                      setActiveTab("leads");
+                    }}
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 800,
+                      color: "#f97316",
+                      background: "linear-gradient(145deg, #1c1c24, #14141a)",
+                      border: "1px solid rgba(249,115,22,0.35)",
+                      padding: "8px 12px",
+                      borderRadius: 8,
+                      cursor: "pointer",
+                      textAlign: "center",
+                      transition: "all 0.2s ease",
+                      letterSpacing: "0.02em",
+                      boxShadow: "3px 3px 8px #0a0a0d, -2px -2px 6px rgba(255,255,255,0.03)"
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.background = "linear-gradient(145deg, #f97316, #ea580c)";
+                      e.currentTarget.style.color = "#ffffff";
+                      e.currentTarget.style.boxShadow = "4px 4px 12px rgba(249,115,22,0.4), -2px -2px 8px rgba(255,255,255,0.05)";
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.background = "linear-gradient(145deg, #1c1c24, #14141a)";
+                      e.currentTarget.style.color = "#f97316";
+                      e.currentTarget.style.boxShadow = "3px 3px 8px #0a0a0d, -2px -2px 6px rgba(255,255,255,0.03)";
+                    }}
+                  >
+                  View Lead Profile →
+                  </button>
+                </div>
+
+                {/* VERTICAL DIVIDER LINE */}
+                {!isMobile && (
+                  <div style={{ width: 1, minHeight: 60, background: "rgba(255,255,255,0.06)", alignSelf: "stretch", boxShadow: "1px 0 0 rgba(0,0,0,0.5)" }} />
+                )}
+
+                {/* RIGHT COLUMN: 2x2 Grid Layout of Neumorphic Items */}
+                <div
+                  style={{
+                    flex: 1,
+                    minWidth: 0,
+                    display: "grid",
+                    gridTemplateColumns: isMobile ? "1fr" : "repeat(2, 1fr)",
+                    gap: 12
+                  }}
+                >
+                  {group.items
+                    .filter(t => !deletedTaskIds.has(t.id))
+                    .filter(t => {
+                      if (taskFilter === "all") return true;
+                      if (taskFilter === "task" || taskFilter === "alert" || taskFilter === "followup" || taskFilter === "note") {
+                        return t.type === taskFilter;
+                      }
+                      const isCompleted = completedTaskIds.has(t.id);
+                      if (isCompleted) return taskFilter === "all";
+
+                      const countdown = getCountdownTimer(t.dueDate, t.dueTime);
+                      if (taskFilter === "overdue") {
+                        return countdown.isPast;
+                      }
+                      if (taskFilter === "today") {
+                        const todayStr = new Date().toISOString().split("T")[0];
+                        return t.dueDate === todayStr || countdown.label === "Today" || (countdown.hours != null && countdown.hours < 24 && !countdown.isPast);
+                      }
+                      if (taskFilter === "nearest") {
+                        return (countdown.hours != null && countdown.hours < 12 && !countdown.isPast);
+                      }
+                      return true;
+                    }).map((t) => {
+                      const isAlert = t.type === "alert";
+                      const isTask = t.type === "task";
+                      const isFollowup = t.type === "followup";
+                      const isItemCompleted = completedTaskIds.has(t.id);
+
+                      const typeColor = isItemCompleted ? "#22c55e" : isAlert ? "#ef4444" : isTask ? "#a855f7" : isFollowup ? "#3b82f6" : "#f97316";
+                      const TypeIcon = isItemCompleted ? CheckCircle2 : isAlert ? AlertCircle : isTask ? CheckCircle2 : isFollowup ? Calendar : MessageSquare;
+                      const typeLabel = isItemCompleted ? "COMPLETED" : isAlert ? "ALERT" : isTask ? "TASK" : isFollowup ? "FOLLOW-UP" : "NOTE";
+
+                      return (
+                        <div
+                          key={t.id}
+                          style={{
+                            padding: "14px 16px",
+                            background: isItemCompleted ? "linear-gradient(135deg, rgba(34,197,94,0.06) 0%, #090e0b 100%)" : "linear-gradient(135deg, #141419 0%, #0c0c0f 100%)",
+                            border: isItemCompleted ? "1px solid rgba(34,197,94,0.25)" : "1px solid rgba(255, 255, 255, 0.06)",
+                            borderLeft: isItemCompleted ? "4px solid #22c55e" : "4px solid rgba(255, 255, 255, 0.14)",
+                            borderRadius: 14,
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            gap: 12,
+                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.4)",
+                            transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
+                            cursor: "pointer",
+                            opacity: isItemCompleted ? 0.8 : 1
+                          }}
+                          onClick={() => {
+                            if (group.leadId && setExpandedLead) {
+                              setExpandedLead(group.leadId);
+                            }
+                            setActiveTab("leads");
+                          }}
+                          onMouseEnter={e => {
+                            e.currentTarget.style.background = isItemCompleted ? "linear-gradient(135deg, rgba(34,197,94,0.12) 0%, #0d1510 100%)" : "linear-gradient(135deg, #191920 0%, #101014 100%)";
+                            e.currentTarget.style.borderLeftColor = typeColor;
+                            e.currentTarget.style.boxShadow = `0 6px 20px rgba(0,0,0,0.6), 0 0 16px ${typeColor}25`;
+                            e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)";
+                            e.currentTarget.style.transform = "translateY(-2px)";
+                          }}
+                          onMouseLeave={e => {
+                            e.currentTarget.style.background = isItemCompleted ? "linear-gradient(135deg, rgba(34,197,94,0.06) 0%, #090e0b 100%)" : "linear-gradient(135deg, #141419 0%, #0c0c0f 100%)";
+                            e.currentTarget.style.borderLeftColor = isItemCompleted ? "#22c55e" : "rgba(255, 255, 255, 0.14)";
+                            e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.4)";
+                            e.currentTarget.style.borderColor = isItemCompleted ? "rgba(34,197,94,0.25)" : "rgba(255, 255, 255, 0.06)";
+                            e.currentTarget.style.transform = "translateY(0px)";
+                          }}
+                        >
+                          {/* Top Header: Badge + Mark Done Button Menu */}
+                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, position: "relative" }}>
+                            <div
+                              style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: 5,
+                                fontSize: 9,
+                                fontWeight: 900,
+                                textTransform: "uppercase",
+                                padding: "4px 10px",
+                                borderRadius: 8,
+                                background: `${typeColor}18`,
+                                color: typeColor,
+                                border: `1px solid ${typeColor}35`,
+                                letterSpacing: "0.03em"
+                              }}
+                            >
+                              <TypeIcon size={12} color={typeColor} style={{ flexShrink: 0 }} />
+                              <span>{typeLabel}</span>
+                            </div>
+
+                            {/* Done / Options Dropdown Popover Button */}
+                            <div style={{ position: "relative" }} onClick={e => e.stopPropagation()}>
+                              <button
+                                type="button"
+                                onClick={() => setActiveDoneMenuId(activeDoneMenuId === t.id ? null : t.id)}
+                                style={{
+                                  background: isItemCompleted ? "rgba(34,197,94,0.2)" : "linear-gradient(145deg, rgba(34,197,94,0.2), rgba(34,197,94,0.08))",
+                                  border: "1px solid rgba(34,197,94,0.35)",
+                                  color: "#4ade80",
+                                  borderRadius: 8,
+                                  padding: "4px 9px",
+                                  fontSize: 9,
+                                  fontWeight: 800,
+                                  cursor: "pointer",
+                                  boxShadow: "2px 2px 5px #08080b, -1px -1px 4px rgba(255,255,255,0.03)",
+                                  transition: "all 0.2s ease",
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  gap: 4,
+                                  flexShrink: 0
+                                }}
+                              >
+                                <CheckCircle2 size={10} style={{ flexShrink: 0 }} />
+                                <span>{isItemCompleted ? "Completed" : "Done"}</span>
+                                <ChevronDown size={10} />
+                              </button>
+
+                              {/* Action Popover Menu */}
+                              {activeDoneMenuId === t.id && (
+                                <div
+                                  style={{
+                                    position: "absolute",
+                                    top: "100%",
+                                    right: 0,
+                                    marginTop: 6,
+                                    background: "#14141c",
+                                    border: "1px solid rgba(255,255,255,0.14)",
+                                    borderRadius: 12,
+                                    padding: 6,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    gap: 4,
+                                    zIndex: 60,
+                                    boxShadow: "0 10px 24px rgba(0,0,0,0.8)",
+                                    minWidth: 155
+                                  }}
+                                >
+                                  {!isItemCompleted ? (
+                                    <button
+                                      onClick={() => {
+                                        setCompletedTaskIds(prev => new Set(prev).add(t.id));
+                                        setActiveDoneMenuId(null);
+                                      }}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 8,
+                                        padding: "8px 10px",
+                                        borderRadius: 8,
+                                        background: "rgba(34,197,94,0.1)",
+                                        border: "none",
+                                        color: "#4ade80",
+                                        fontSize: 10,
+                                        fontWeight: 800,
+                                        cursor: "pointer",
+                                        textAlign: "left"
+                                      }}
+                                    >
+                                      <CheckCircle2 size={12} color="#22c55e" />
+                                      <span>Keep & Mark Done</span>
+                                    </button>
+                                  ) : (
+                                    <button
+                                      onClick={() => {
+                                        setCompletedTaskIds(prev => {
+                                          const next = new Set(prev);
+                                          next.delete(t.id);
+                                          return next;
+                                        });
+                                        setActiveDoneMenuId(null);
+                                      }}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        gap: 8,
+                                        padding: "8px 10px",
+                                        borderRadius: 8,
+                                        background: "rgba(59,130,246,0.1)",
+                                        border: "none",
+                                        color: "#60a5fa",
+                                        fontSize: 10,
+                                        fontWeight: 800,
+                                        cursor: "pointer",
+                                        textAlign: "left"
+                                      }}
+                                    >
+                                      <RotateCcw size={12} color="#3b82f6" />
+                                      <span>Re-open Task</span>
+                                    </button>
+                                  )}
+
+                                  <button
+                                    onClick={() => {
+                                      setDeletedTaskIds(prev => new Set(prev).add(t.id));
+                                      setActiveDoneMenuId(null);
+                                      handleDeleteItemFromDb(t, group.leadId);
+                                    }}
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 8,
+                                      padding: "8px 10px",
+                                      borderRadius: 8,
+                                      background: "rgba(239,68,68,0.1)",
+                                      border: "none",
+                                      color: "#f87171",
+                                      fontSize: 10,
+                                      fontWeight: 800,
+                                      cursor: "pointer",
+                                      textAlign: "left"
+                                    }}
+                                  >
+                                    <Trash2 size={12} color="#ef4444" />
+                                    <span>Delete Item</span>
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Middle & Bottom: Title, Date + Circular Progress Ring */}
+                          <div style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 10, paddingTop: 4 }}>
+                            <div style={{ display: "flex", flexDirection: "column", gap: 6, flex: 1, minWidth: 0 }}>
+                              <div
+                                style={{
+                                  fontSize: 12,
+                                  color: isItemCompleted ? "#a1a1aa" : "#ffffff",
+                                  fontWeight: 700,
+                                  lineHeight: "1.4",
+                                  letterSpacing: "-0.01em",
+                                  display: "-webkit-box",
+                                  WebkitLineClamp: 2,
+                                  WebkitBoxOrient: "vertical",
+                                  overflow: "hidden",
+                                  textDecoration: isItemCompleted ? "line-through" : "none"
+                                }}
+                              >
+                                {t.title}
+                              </div>
+
+                              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 10, color: "#71717a", fontFamily: "monospace" }}>
+                                <Clock size={11} color="#71717a" style={{ flexShrink: 0 }} />
+                                <span>Due: {t.dueDate} {t.dueTime ? `at ${t.dueTime}` : ""}</span>
+                              </div>
+                            </div>
+
+                            {/* CIRCULAR TIMER PROGRESS RING */}
+                            <CircularTimerProgress dueDate={t.dueDate} dueTime={t.dueTime} typeColor={typeColor} isCompleted={isItemCompleted} />
+                          </div>
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+            </div>
+            );
+          })
+        )}
+      </div>
+        )}
       </div>
 
       {/* 2-Column Layout */}
@@ -1146,69 +2616,113 @@ export default function OverviewTab({
 
         {/* Left Column (50%) */}
         <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          {/* Lead Sources */}
-          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px" }}>
-            <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 16 }}>Lead Sources</div>
-            {Object.entries(leads.reduce((acc, l) => { const k = l.source || "Direct"; acc[k] = (acc[k] || 0) + 1; return acc; }, {})).slice(0, 4).map(([src, count]) => (
-              <div key={src} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
-                <span style={{ fontSize: 11, color: "#a3a3a3", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: "60%" }}>{src}</span>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 50, height: 3, background: "rgba(255,255,255,0.05)", borderRadius: 2, overflow: "hidden" }}>
-                    <div style={{ height: "100%", background: "#f97316", width: `${leads.length > 0 ? (count / leads.length) * 100 : 0}%`, borderRadius: 2 }} />
+          {/* Mini Calendar for leads & meetings */}
+          <OverviewMiniCalendar leads={leads} />
+
+          {/* Recent leads activity list */}
+          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, overflow: "hidden" }}>
+            <div style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+              <div style={{ fontSize: 11, fontWeight: 700, color: "#fff" }}>Recent Lead Activity</div>
+              <button
+                onClick={() => setActiveTab("leads")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 3,
+                  fontSize: 8,
+                  fontWeight: 900,
+                  color: "#f97316",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.1em"
+                }}
+              >
+                View all <ArrowUpRight size={10} />
+              </button>
+            </div>
+            {leads.slice(0, 5).map((lead, i) => {
+              const name = lead.fullName || "Unknown";
+
+              return (
+                <div key={lead.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 18px", borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.03)" : "none" }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "none"}
+                >
+                  <div style={{ width: 28, height: 28, borderRadius: 8, background: getAlphabetGradient(name), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, color: "#fff", border: "1px solid rgba(255,255,255,0.08)", flexShrink: 0 }}>
+                    {name[0].toUpperCase()}
                   </div>
-                  <span style={{ fontSize: 10, fontWeight: 700, color: "#f97316", minWidth: 16, textAlign: "right" }}>{count}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 11, fontWeight: 700, color: "#fff", marginBottom: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{name}</div>
+                    <div style={{ fontSize: 9, color: "#525252", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{lead.requestedService}</div>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, flexShrink: 0 }}>
+                    <StatusBadge status={lead.status || "new"} />
+                    <div style={{ fontSize: 8, color: "#3f3f46", fontFamily: "monospace" }}>{fmt(lead.createdAt)}</div>
+                  </div>
                 </div>
+              );
+            })}
+            {leads.length === 0 && (
+              <div style={{ padding: "24px 20px", textAlign: "center", color: "#333", fontSize: 11 }}>
+                No leads received yet.
               </div>
-            ))}
-            {leads.length === 0 && <p style={{ fontSize: 11, color: "#3f3f46" }}>No leads yet.</p>}
+            )}
           </div>
+        </div>
+
+        {/* Right Column (50%): Activity Feed & Recent Leads */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {/* Admin list */}
           <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px" }}>
             <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em", marginBottom: 16 }}>Admin Users</div>
-            {users.filter(u => u.role?.trim() === "admin").map(u => (
-              <div key={u.id} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                <div style={{ width: 28, height: 28, borderRadius: 8, background: "rgba(249,115,22,0.1)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 900, color: "#f97316", flexShrink: 0 }}>
-                  {(u.displayName || u.fullName || "A")[0]}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                    <div style={{ fontSize: 11, fontWeight: 700, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{u.displayName || u.fullName || "Admin"}</div>
-                    {u.allowedPanels?.length >= 8 && (
-                      <div style={{ fontSize: 8, fontWeight: 800, background: "rgba(74,222,128,0.1)", color: "#4ade80", border: "1px solid rgba(74,222,128,0.2)", padding: "2px 6px", borderRadius: 4, textTransform: "uppercase", letterSpacing: "0.05em", flexShrink: 0 }}>Super</div>
-                    )}
+            {users.filter(u => u.role?.trim() === "admin").map(u => {
+              const name = u.displayName || u.fullName || "Admin";
+
+              return (
+                <div key={u.id} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                  <div style={{ width: 28, height: 28, borderRadius: 8, background: getAlphabetGradient(name), display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 900, color: "#fff", border: "1px solid rgba(255,255,255,0.08)", flexShrink: 0 }}>
+                    {name[0].toUpperCase()}
                   </div>
-                  <div style={{ fontSize: 9, color: "#525252", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{u.email}</div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <div style={{ fontSize: 11, fontWeight: 700, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{name}</div>
+                      {u.allowedPanels?.length >= 8 && (
+                        <div style={{ fontSize: 8, fontWeight: 800, background: "rgba(74,222,128,0.1)", color: "#4ade80", border: "1px solid rgba(74,222,128,0.2)", padding: "2px 6px", borderRadius: 4, textTransform: "uppercase", letterSpacing: "0.05em", flexShrink: 0 }}>Super</div>
+                      )}
+                    </div>
+                    <div style={{ fontSize: 9, color: "#525252", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{u.email}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             {users.filter(u => u.role?.trim() === "admin").length === 0 && (
               <p style={{ fontSize: 11, color: "#3f3f46" }}>No admin accounts found.</p>
             )}
           </div>
 
-
-          {/* Mini Calendar for leads & meetings */}
-          <OverviewMiniCalendar leads={leads} />
-        </div>
-
-        {/* Right Column (50%): Activity Feed & Recent Leads */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-          {/* Recent audit activity feed */}
-          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px", display: "flex", flexDirection: "column", gap: 16, flex: 1, minHeight: 400 }}>
+          {/* Live Client Intelligence & Audit Feed */}
+          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, padding: "20px", display: "flex", flexDirection: "column", gap: 14, flex: 1, minHeight: 580 }}>
+            {/* Header Title & Actions */}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 10, paddingBottom: 12, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <Activity size={16} color="#f97316" />
-                <div style={{ fontSize: 12, fontWeight: 800, color: "#fff", textTransform: "uppercase", letterSpacing: "0.2em" }}>Activity Timeline</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e", boxShadow: "0 0 10px #22c55e", animation: "pulse 2s infinite" }} />
+                <div style={{ fontSize: 12, fontWeight: 900, color: "#fff", textTransform: "uppercase", letterSpacing: "0.15em", display: "flex", alignItems: "center", gap: 6 }}>
+                  <Activity size={15} color="#f97316" /> Live Client Intelligence &amp; Audit Feed
+                </div>
+                <span style={{ fontSize: 9, fontWeight: 800, color: "#f97316", background: "rgba(249,115,22,0.12)", padding: "2px 8px", borderRadius: 100, border: "1px solid rgba(249,115,22,0.25)" }}>
+                  {filteredTimeline.length} Logs
+                </span>
               </div>
 
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
-                {/* Export CSV */}
                 <button
                   onClick={exportLogsToCSV}
                   disabled={filteredTimeline.length === 0}
                   style={{
-                    background: "transparent",
-                    border: "1px solid rgba(255,255,255,0.1)",
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(255,255,255,0.08)",
                     borderRadius: 10,
                     padding: "6px 12px",
                     fontSize: 10,
@@ -1220,52 +2734,64 @@ export default function OverviewTab({
                     gap: 6,
                     transition: "all 0.15s"
                   }}
-                  onMouseEnter={e => { if (filteredTimeline.length > 0) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = "transparent"; }}
+                  onMouseEnter={e => { if (filteredTimeline.length > 0) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.03)"; }}
                 >
                   <Download size={12} /> Export CSV
                 </button>
-
-                {/* Clear (only deletes activity_logs collection) */}
-                {activityLogs.length > 0 && (
-                  <button
-                    onClick={handleClearLogs}
-                    style={{
-                      background: "transparent",
-                      border: "1px solid rgba(239,68,68,0.2)",
-                      borderRadius: 10,
-                      padding: "6px 12px",
-                      fontSize: 10,
-                      fontWeight: 800,
-                      color: "#ef4444",
-                      cursor: "pointer",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 6,
-                      transition: "all 0.15s"
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.background = "rgba(239,68,68,0.1)"}
-                    onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-                  >
-                    <Trash2 size={12} /> Clear
-                  </button>
-                )}
+                <div style={{ fontSize: 9, fontWeight: 800, color: "#4ade80", background: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.2)", padding: "5px 10px", borderRadius: 10, display: "flex", alignItems: "center", gap: 4 }}>
+                  🔒 Protected History
+                </div>
               </div>
             </div>
 
-            {/* Search Logs */}
+            {/* Type Filter Pills Row */}
+            <div style={{ display: "flex", gap: 6, flexWrap: "wrap", background: "#08080a", padding: 4, borderRadius: 12, border: "1px solid rgba(255,255,255,0.05)" }}>
+              {[
+                { id: "all", label: "ALL" },
+                { id: "notes", label: "📝 Notes" },
+                { id: "tasks", label: "⏰ Tasks" },
+                { id: "alerts", label: "🔔 Alerts" },
+                { id: "followup", label: "📅 Follow-Ups" },
+                { id: "system", label: "⚡ System" }
+              ].map(f => (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() => setFeedFilter(f.id)}
+                  style={{
+                    flex: 1,
+                    padding: "5px 10px",
+                    borderRadius: 8,
+                    border: "none",
+                    fontSize: 9,
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    transition: "all 0.15s",
+                    background: feedFilter === f.id ? "linear-gradient(135deg, #f97316, #ea580c)" : "transparent",
+                    color: feedFilter === f.id ? "#ffffff" : "#71717a",
+                    whiteSpace: "nowrap"
+                  }}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Search Bar */}
             <div style={{ display: "flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: "8px 12px" }}>
               <Search size={13} color="#525252" />
               <input
                 type="text"
-                placeholder="Search audit trail by action, admin, details..."
+                placeholder="Search audit feed by client name, action, admin, notes..."
                 value={logSearch}
                 onChange={e => setLogSearch(e.target.value)}
                 style={{ background: "none", border: "none", color: "#fff", fontSize: 11, fontWeight: 500, width: "100%", outline: "none" }}
               />
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxHeight: 520, overflowY: "auto", paddingRight: 8, paddingLeft: 8, paddingBottom: 20 }}>
+            {/* Expanded Feed List */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 16, maxHeight: 680, overflowY: "auto", paddingRight: 8, paddingLeft: 8, paddingBottom: 20 }}>
               {filteredTimeline.length === 0 ? (
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "150px", color: "#3f3f46", fontSize: 11, fontStyle: "italic" }}>
                   {logSearch ? "No matching logs found." : "No recent activity."}
@@ -1292,7 +2818,7 @@ export default function OverviewTab({
                     </div>
 
                     <div style={{ position: "relative", paddingLeft: 16, borderLeft: "2px solid rgba(255,255,255,0.05)", display: "flex", flexDirection: "column", gap: 20 }}>
-                      {dayLogs.map((log) => {
+                      {dayLogs.map((log, idx) => {
                         const badge = getLogBadgeStyle(log.action);
                         let time = "—";
                         if (log.timestamp) {
@@ -1311,7 +2837,7 @@ export default function OverviewTab({
                         }
 
                         return (
-                          <div key={log.id} style={{ position: "relative", display: "flex", flexDirection: "column", gap: 6 }}>
+                          <div key={log.id ? `${log.id}_${idx}` : idx} style={{ position: "relative", display: "flex", flexDirection: "column", gap: 6 }}>
                             {/* Timeline Node */}
                             <div style={{ position: "absolute", left: -21, top: 4, width: 8, height: 8, borderRadius: "50%", background: badge.color, boxShadow: `0 0 8px ${badge.color}`, border: "2px solid #0d0d0d" }} />
 
@@ -1353,53 +2879,6 @@ export default function OverviewTab({
             </div>
           </div>
 
-          {/* Recent leads activity list */}
-          <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 20, overflow: "hidden" }}>
-            <div style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-              <div style={{ fontSize: 11, fontWeight: 700, color: "#fff" }}>Recent Lead Activity</div>
-              <button
-                onClick={() => setActiveTab("leads")}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 3,
-                  fontSize: 8,
-                  fontWeight: 900,
-                  color: "#f97316",
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.1em"
-                }}
-              >
-                View all <ArrowUpRight size={10} />
-              </button>
-            </div>
-            {leads.slice(0, 5).map((lead, i) => (
-              <div key={lead.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 18px", borderBottom: i < 4 ? "1px solid rgba(255,255,255,0.03)" : "none" }}
-                onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.02)"}
-                onMouseLeave={e => e.currentTarget.style.background = "none"}
-              >
-                <div style={{ width: 28, height: 28, borderRadius: 8, background: "linear-gradient(135deg, rgba(249,115,22,0.2), rgba(249,115,22,0.05))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, color: "#f97316", flexShrink: 0 }}>
-                  {lead.fullName?.[0] || "L"}
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: "#fff", marginBottom: 2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{lead.fullName || "Unknown"}</div>
-                  <div style={{ fontSize: 9, color: "#525252", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{lead.requestedService}</div>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, flexShrink: 0 }}>
-                  <StatusBadge status={lead.status || "new"} />
-                  <div style={{ fontSize: 8, color: "#3f3f46", fontFamily: "monospace" }}>{fmt(lead.createdAt)}</div>
-                </div>
-              </div>
-            ))}
-            {leads.length === 0 && (
-              <div style={{ padding: "24px 20px", textAlign: "center", color: "#333", fontSize: 11 }}>
-                No leads received yet.
-              </div>
-            )}
-          </div>
         </div>
 
       </div>

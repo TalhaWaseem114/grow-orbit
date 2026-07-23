@@ -217,17 +217,17 @@ export default function AdminDashboard() {
   /* Auto-pruning Audit Logs older than 30 days */
   useEffect(() => {
     if (authChecking || !db) return;
-    
+
     const pruneOldLogs = async () => {
       try {
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-        
+
         const q = query(
           collection(db, "activity_logs"),
           where("timestamp", "<", thirtyDaysAgo)
         );
-        
+
         const snapshot = await getDocs(q);
         if (!snapshot.empty) {
           console.log(`[Audit Trail] Pruning ${snapshot.size} logs older than 30 days...`);
@@ -239,7 +239,7 @@ export default function AdminDashboard() {
         console.warn("[Audit Trail] Pruning failed:", e.message);
       }
     };
-    
+
     // Run pruning 5 seconds after loading
     const timer = setTimeout(pruneOldLogs, 5000);
     return () => clearTimeout(timer);
@@ -524,7 +524,7 @@ export default function AdminDashboard() {
 
       // Build phase timestamp updates — auto-fill previous phases
       const tsUpdates = {};
-      
+
       // Phase 2: Research Done (qualified)
       if (["qualified", "contacted", "hot", "proposal_sent", "won"].includes(newStatus)) {
         if (!targetLead?.researchCompletedAt) tsUpdates.researchCompletedAt = now;
@@ -573,23 +573,57 @@ export default function AdminDashboard() {
     } catch (e) { console.warn("Follow-up date update failed:", e.message); }
   };
 
-  const handleAddLeadNote = async (leadId, noteText) => {
+  const handleAddLeadNote = async (leadId, noteText, noteType = "note", dueDate = null, dueTime = null) => {
     if (!noteText.trim()) return "";
     try {
+      const targetLead = leads.find(l => l.id === leadId);
+      const clientName = targetLead ? (targetLead.fullName || targetLead.email) : "Client";
+      const adminName = currentAdmin?.fullName || currentAdmin?.displayName || auth.currentUser?.email || "Admin";
+      const adminId = auth.currentUser?.uid || "system";
+
       const newEntry = {
+        id: "nt_" + Date.now(),
         text: noteText,
+        type: noteType,
+        dueDate: dueDate || null,
+        dueTime: dueTime || null,
         timestamp: new Date(),
-        adminName: currentAdmin?.fullName || currentAdmin?.displayName || "Admin",
-        adminId: auth.currentUser?.uid
+        adminName,
+        adminId,
+        isCompleted: false
       };
+
       const leadRef = doc(db, leadsCollectionName, leadId);
       const leadSnap = await getDoc(leadRef);
-      const currentTimeline = leadSnap.data().timeline || [];
+      const currentTimeline = leadSnap?.data()?.timeline || [];
+      const updates = { timeline: [newEntry, ...currentTimeline] };
 
-      await updateDoc(leadRef, { timeline: [newEntry, ...currentTimeline] });
-      setLeads(prev => prev.map(l => l.id === leadId ? { ...l, timeline: [newEntry, ...(l.timeline || [])] } : l));
+      if (noteType === "followup" && dueDate) {
+        updates.nextFollowUp = dueDate;
+      }
+
+      await updateDoc(leadRef, updates);
+      setLeads(prev => prev.map(l => l.id === leadId ? { ...l, ...updates } : l));
+
+      // If task, reminder, alert, or followup, sync to 'tasks' collection for Overview My Pending Tasks
+      if (["task", "reminder", "alert", "followup"].includes(noteType)) {
+        await addDoc(collection(db, "tasks"), {
+          leadId,
+          clientName,
+          title: noteText,
+          type: noteType,
+          dueDate: dueDate || new Date().toISOString().split("T")[0],
+          dueTime: dueTime || "12:00",
+          assignedTo: adminId,
+          adminName,
+          status: "pending",
+          createdAt: new Date()
+        });
+      }
+
+      logActivity("ADD_NOTE_TASK", `Created ${noteType.toUpperCase()} for "${clientName}": ${noteText.slice(0, 40)}`);
       return "done";
-    } catch (e) { console.warn("Add timeline note failed:", e.message); return "error"; }
+    } catch (e) { console.warn("Add timeline note/task failed:", e.message); return "error"; }
   };
 
   const handleDeleteLeadNote = async (leadId, timestamp) => {
@@ -611,6 +645,30 @@ export default function AdminDashboard() {
     }
   };
 
+
+  const [showNotifDropdown, setShowNotifDropdown] = useState(false);
+
+  const pendingReminders = useMemo(() => {
+    const list = [];
+    (leads || []).forEach(l => {
+      if (l.timeline && Array.isArray(l.timeline)) {
+        l.timeline.forEach(t => {
+          if (["task", "reminder", "alert", "followup"].includes(t.type) && !t.isCompleted) {
+            list.push({
+              id: t.id || `notif_${l.id}_${Math.random()}`,
+              clientName: l.fullName || l.email || "Client",
+              title: t.text,
+              type: t.type,
+              dueDate: t.dueDate || l.nextFollowUp || "Today",
+              dueTime: t.dueTime || "",
+              leadId: l.id
+            });
+          }
+        });
+      }
+    });
+    return list;
+  }, [leads]);
 
   const recent3dLeadsCount = useMemo(() => {
     const now = new Date();
@@ -769,30 +827,35 @@ export default function AdminDashboard() {
         flexDirection: "column",
         flexShrink: 0,
         position: "relative",
+        zIndex: 1050,
+        overflow: "visible",
         transition: "width 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
       }}>
         {/* Toggle Button */}
         <button
           onClick={toggleSidebar}
+          title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
           style={{
             position: "absolute",
-            right: -12,
-            top: 28,
-            width: 24,
-            height: 24,
+            right: -14,
+            top: 20,
+            width: 28,
+            height: 28,
             borderRadius: "50%",
             background: "#f97316",
-            border: "4px solid #060606",
+            border: "3px solid #060606",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             cursor: "pointer",
-            zIndex: 100,
-            boxShadow: "0 0 10px rgba(0,0,0,0.5)",
-            transition: "transform 0.3s"
+            zIndex: 9999,
+            boxShadow: "0 0 14px rgba(249,115,22,0.5), 0 4px 10px rgba(0,0,0,0.8)",
+            transition: "transform 0.3s ease, background 0.2s ease"
           }}
+          onMouseEnter={e => e.currentTarget.style.transform = "scale(1.12)"}
+          onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
         >
-          <ChevronRight size={14} color="#fff" style={{ transform: isSidebarCollapsed ? "none" : "rotate(180deg)", transition: "transform 0.3s" }} />
+          <ChevronRight size={15} color="#fff" style={{ transform: isSidebarCollapsed ? "none" : "rotate(180deg)", transition: "transform 0.3s" }} />
         </button>
 
         {/* Logo */}
@@ -936,7 +999,7 @@ export default function AdminDashboard() {
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", minWidth: 0, width: "100%" }}>
 
         {/* Header */}
-        <header className="admin-header" style={{ height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", borderBottom: "1px solid rgba(255,255,255,0.04)", background: "rgba(6,6,6,0.8)", backdropFilter: "blur(12px)", flexShrink: 0 }}>
+        <header className="admin-header" style={{ height: 64, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "0 32px", borderBottom: "1px solid rgba(255,255,255,0.04)", background: "rgba(6,6,6,0.9)", backdropFilter: "blur(12px)", flexShrink: 0, position: "relative", zIndex: 1000 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
             {isMobile && (
               <div style={{ width: 28, height: 28, borderRadius: 8, background: "white", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", marginRight: 4, flexShrink: 0 }}>
@@ -957,50 +1020,130 @@ export default function AdminDashboard() {
                 <span style={{ fontSize: 10, color: "#525252", fontFamily: "monospace" }}>{dateStr}</span>
               </div>
             )}
-            {/* Notifications Bell Button */}
-            <button
-              style={{
-                background: "rgba(255,255,255,0.03)",
-                border: "1px solid rgba(255,255,255,0.05)",
-                borderRadius: 10,
-                width: 32,
-                height: 32,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                cursor: "pointer",
-                color: "#a3a3a3",
-                transition: "all 0.15s",
-                position: "relative"
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
-              onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}
-              title="Notifications"
-            >
-              <Bell size={14} />
-              <div style={{
-                position: "absolute",
-                top: 7,
-                right: 7,
-                width: 6,
-                height: 6,
-                borderRadius: "50%",
-                background: "#f97316",
-                boxShadow: "0 0 6px #f97316"
-              }} />
-            </button>
+            {/* Notifications Bell Button & Live Dropdown */}
+            <div style={{ position: "relative", zIndex: 1001 }}>
+              <button
+                type="button"
+                onClick={() => setShowNotifDropdown(prev => !prev)}
+                style={{
+                  background: showNotifDropdown ? "rgba(249,115,22,0.15)" : "rgba(255,255,255,0.03)",
+                  border: `1px solid ${showNotifDropdown ? "rgba(249,115,22,0.4)" : "rgba(255,255,255,0.05)"}`,
+                  borderRadius: 10,
+                  width: 34,
+                  height: 34,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                  color: showNotifDropdown ? "#f97316" : "#a3a3a3",
+                  transition: "all 0.15s",
+                  position: "relative"
+                }}
+                onMouseEnter={e => { if (!showNotifDropdown) e.currentTarget.style.background = "rgba(255,255,255,0.08)"; }}
+                onMouseLeave={e => { if (!showNotifDropdown) e.currentTarget.style.background = "rgba(255,255,255,0.03)"; }}
+                title="Client Notifications & Scheduled Reminders"
+              >
+                <Bell size={15} />
+                {pendingReminders.length > 0 && (
+                  <div style={{
+                    position: "absolute",
+                    top: -4,
+                    right: -4,
+                    background: "#f97316",
+                    color: "#fff",
+                    fontSize: 8,
+                    fontWeight: 900,
+                    borderRadius: 10,
+                    padding: "1px 5px",
+                    boxShadow: "0 0 8px rgba(249,115,22,0.8)",
+                    border: "1px solid #060606"
+                  }}>
+                    {pendingReminders.length}
+                  </div>
+                )}
+              </button>
 
-            <div style={{ 
-              width: 32, 
-              height: 32, 
-              borderRadius: "50%", 
-              background: "linear-gradient(135deg, #f97316, #ea580c)", 
-              border: "1px solid rgba(255,255,255,0.15)", 
-              display: "flex", 
-              alignItems: "center", 
-              justifyContent: "center", 
-              fontSize: 11, 
-              fontWeight: 900, 
+              {/* Floating Notifications Dropdown */}
+              {showNotifDropdown && (
+                <div style={{
+                  position: "absolute",
+                  top: 42,
+                  right: 0,
+                  width: 340,
+                  background: "#0c0c0e",
+                  border: "1px solid rgba(255,255,255,0.12)",
+                  borderRadius: 16,
+                  boxShadow: "0 20px 50px rgba(0,0,0,0.95)",
+                  zIndex: 99999,
+                  overflow: "hidden"
+                }}>
+                  <div style={{ padding: "14px 16px", borderBottom: "1px solid rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ fontSize: 11, fontWeight: 900, color: "#fff", textTransform: "uppercase", letterSpacing: "0.1em", display: "flex", alignItems: "center", gap: 6 }}>
+                      <Bell size={13} color="#f97316" /> Notifications &amp; Alerts
+                    </div>
+                    <span style={{ fontSize: 9, fontWeight: 800, color: "#f97316", background: "rgba(249,115,22,0.12)", padding: "2px 6px", borderRadius: 100 }}>
+                      {pendingReminders.length} Active
+                    </span>
+                  </div>
+
+                  <div style={{ maxHeight: 300, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+                    {pendingReminders.length === 0 ? (
+                      <div style={{ padding: "24px 16px", textAlign: "center", color: "#525252", fontSize: 11 }}>
+                        No pending alerts or scheduled reminders.
+                      </div>
+                    ) : (
+                      pendingReminders.map((notif, idx) => {
+                        const typeColor = notif.type === "alert" ? "#ef4444" : notif.type === "task" ? "#a855f7" : notif.type === "followup" ? "#3b82f6" : "#f97316";
+                        return (
+                          <div
+                            key={notif.id || idx}
+                            onClick={() => {
+                              if (notif.leadId) {
+                                setExpandedLead(notif.leadId);
+                              }
+                              setActiveTab("leads");
+                              setShowNotifDropdown(false);
+                            }}
+                            style={{
+                              padding: "12px 16px",
+                              borderBottom: idx < pendingReminders.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
+                              cursor: "pointer",
+                              transition: "all 0.15s",
+                              display: "flex",
+                              flexDirection: "column",
+                              gap: 4
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}
+                            onMouseLeave={e => e.currentTarget.style.background = "none"}
+                          >
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                              <span style={{ fontSize: 10, fontWeight: 800, color: "#fff" }}>{notif.clientName}</span>
+                              <span style={{ fontSize: 8, fontWeight: 900, textTransform: "uppercase", padding: "1px 5px", borderRadius: 4, background: `${typeColor}15`, color: typeColor, border: `1px solid ${typeColor}30` }}>
+                                {notif.type}
+                              </span>
+                            </div>
+                            <div style={{ fontSize: 11, color: "#a1a1aa", lineHeight: 1.4 }}>{notif.title}</div>
+                            <div style={{ fontSize: 9, color: "#71717a", fontFamily: "monospace" }}>Due: {notif.dueDate} {notif.dueTime}</div>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div style={{
+              width: 32,
+              height: 32,
+              borderRadius: "50%",
+              background: "linear-gradient(135deg, #f97316, #ea580c)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontSize: 11,
+              fontWeight: 900,
               color: "#fff",
               boxShadow: "0 0 10px rgba(249,115,22,0.2)"
             }}>
@@ -1028,6 +1171,7 @@ export default function AdminDashboard() {
                   conversionRate={conversionRate}
                   isMobile={isMobile}
                   setActiveTab={setActiveTab}
+                  setExpandedLead={setExpandedLead}
                   db={db}
                   currentAdmin={currentAdminData}
                   triggerConfirm={triggerConfirm}

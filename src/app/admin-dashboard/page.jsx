@@ -214,12 +214,22 @@ export default function AdminDashboard() {
     return () => clearInterval(t);
   }, []);
 
-  /* Auto-pruning Audit Logs older than 30 days */
+  /* Auto-pruning Audit Logs older than 30 days — gated to once per 7 days per browser */
   useEffect(() => {
     if (authChecking || !db) return;
 
     const pruneOldLogs = async () => {
       try {
+        // Only prune once every 7 days to avoid unnecessary Firestore reads on every login
+        const lastPruneKey = "orbit_audit_last_pruned";
+        if (typeof window !== "undefined") {
+          const lastPruned = localStorage.getItem(lastPruneKey);
+          if (lastPruned) {
+            const daysSince = (Date.now() - parseInt(lastPruned, 10)) / (1000 * 60 * 60 * 24);
+            if (daysSince < 7) return; // Skip — pruned less than 7 days ago
+          }
+        }
+
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
@@ -234,6 +244,10 @@ export default function AdminDashboard() {
           const deletePromises = snapshot.docs.map(d => deleteDoc(d.ref));
           await Promise.all(deletePromises);
           console.log("[Audit Trail] Pruning completed successfully.");
+        }
+
+        if (typeof window !== "undefined") {
+          localStorage.setItem(lastPruneKey, Date.now().toString());
         }
       } catch (e) {
         console.warn("[Audit Trail] Pruning failed:", e.message);
@@ -251,7 +265,7 @@ export default function AdminDashboard() {
     const fetch_ = async () => {
       setLoading(true);
 
-      // 1. Fetch Users
+      // 1. Fetch Users (one-shot — no real-time listener needed)
       try {
         const uSnap = await getDocs(collection(db, "users"));
         setUsers(uSnap.docs.map(d => ({ id: d.id, ...d.data() })));
@@ -259,33 +273,10 @@ export default function AdminDashboard() {
         console.warn("Users fetch restricted by permissions:", e.message);
       }
 
-      // 2. Fetch Leads
-      try {
-        const lQ_low = query(collection(db, "leads"), orderBy("createdAt", "desc"));
-        const finalSnap = await getDocs(lQ_low);
-        setLeadsCollectionName("leads");
-
-        if (finalSnap) {
-          const fetchedLeads = finalSnap.docs.map(d => {
-            const data = d.data();
-            let status = data.status || "new";
-            if (status === "new" && data.createdAt) {
-              const created = data.createdAt.toDate ? data.createdAt.toDate() : new Date(data.createdAt);
-              const ageDays = (new Date() - created) / (1000 * 60 * 60 * 24);
-              if (ageDays > 7) {
-                status = "cold";
-              }
-            }
-            return { ...data, id: d.id, status };
-          });
-          setLeads(fetchedLeads);
-        } else {
-          console.warn("[AdminDashboard] Lowercase leads query returned no documents.");
-        }
-      } catch (e) {
-        console.warn("Leads fetch restricted by permissions:", e.message);
-      }
-
+      // 2. Leads are NOT fetched here — the real-time onSnapshot listener below
+      //    fires immediately on subscribe and populates `leads` state, so a
+      //    separate getDocs call would be a redundant Firestore read.
+      setLeadsCollectionName("leads");
 
       setLoading(false);
     };
@@ -593,9 +584,9 @@ export default function AdminDashboard() {
         isCompleted: false
       };
 
+      // Use in-memory leads state instead of a getDoc read — saves 1 Firestore read per note
+      const currentTimeline = targetLead?.timeline || [];
       const leadRef = doc(db, leadsCollectionName, leadId);
-      const leadSnap = await getDoc(leadRef);
-      const currentTimeline = leadSnap?.data()?.timeline || [];
       const updates = { timeline: [newEntry, ...currentTimeline] };
 
       if (noteType === "followup" && dueDate) {
@@ -630,14 +621,15 @@ export default function AdminDashboard() {
     if (!timestamp) return;
     if (!window.confirm("Are you sure you want to delete this note?")) return;
     try {
-      const leadRef = doc(db, leadsCollectionName, leadId);
-      const leadSnap = await getDoc(leadRef);
-      const currentTimeline = leadSnap.data().timeline || [];
+      // Use in-memory leads state instead of a getDoc read — saves 1 Firestore read per deletion
+      const targetLead = leads.find(l => l.id === leadId);
+      const currentTimeline = targetLead?.timeline || [];
+      const targetTime = timestamp?.toDate ? timestamp.toDate().getTime() : new Date(timestamp).getTime();
       const updatedTimeline = currentTimeline.filter(item => {
         const itemTime = item.timestamp?.toDate ? item.timestamp.toDate().getTime() : new Date(item.timestamp).getTime();
-        const targetTime = timestamp?.toDate ? timestamp.toDate().getTime() : new Date(timestamp).getTime();
         return itemTime !== targetTime;
       });
+      const leadRef = doc(db, leadsCollectionName, leadId);
       await updateDoc(leadRef, { timeline: updatedTimeline });
       setLeads(prev => prev.map(l => l.id === leadId ? { ...l, timeline: updatedTimeline } : l));
     } catch (e) {

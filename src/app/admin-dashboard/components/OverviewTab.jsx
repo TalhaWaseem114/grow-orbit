@@ -1061,14 +1061,48 @@ export default function OverviewTab({
   const todayStr = new Date().toISOString().split("T")[0];
   const followUpsToday = leads.filter(l => l.nextFollowUp === todayStr && l.status !== "won" && l.status !== "lost");
 
-  // Real-time listener for logs & my tasks
+  const [isRefreshingLogs, setIsRefreshingLogs] = useState(false);
+
+  // One-time fetch per 24 hours for activity logs (to minimize Firebase reads)
+  const fetchActivityLogs = async (forceRefresh = false) => {
+    if (!db) return;
+    
+    // Skip auto-fetch if logs were already fetched within the last 24 hours (unless manually refreshed)
+    if (!forceRefresh && typeof window !== "undefined") {
+      const lastFetched = localStorage.getItem("orbit_logs_last_fetched");
+      if (lastFetched) {
+        const timePassed = Date.now() - parseInt(lastFetched, 10);
+        const twentyFourHours = 24 * 60 * 60 * 1000;
+        if (!isNaN(timePassed) && timePassed < twentyFourHours) {
+          return; // 24-hour rate limit active
+        }
+      }
+    }
+
+    setIsRefreshingLogs(true);
+    try {
+      const logsQ = query(collection(db, "activity_logs"), orderBy("timestamp", "desc"), limit(50));
+      const snap = await getDocs(logsQ);
+      const fetchedLogs = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setActivityLogs(fetchedLogs);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("orbit_logs_last_fetched", Date.now().toString());
+      }
+    } catch (err) {
+      console.warn("Fetch activity logs failed:", err);
+    } finally {
+      setIsRefreshingLogs(false);
+    }
+  };
+
+  // Check 24-hour rule on mount
+  useEffect(() => {
+    fetchActivityLogs(false);
+  }, [db]);
+
+  // Real-time listener strictly for my tasks
   useEffect(() => {
     if (!db) return;
-    const logsQ = query(collection(db, "activity_logs"), orderBy("timestamp", "desc"), limit(50));
-    const unsubLogs = onSnapshot(logsQ, (snap) => {
-      setActivityLogs(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    }, err => console.warn(err));
-
     const adminId = currentAdmin?.id || currentAdmin?.uid;
     if (adminId) {
       const tasksQ = query(
@@ -1079,85 +1113,49 @@ export default function OverviewTab({
       const unsubTasks = onSnapshot(tasksQ, (snap) => {
         setMyTasks(snap.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       }, err => console.warn(err));
-      return () => { unsubLogs(); unsubTasks(); };
+      return () => unsubTasks();
     }
-    return () => unsubLogs();
   }, [db, currentAdmin]);
 
-  // Combine DB activity logs with Leads and Meetings (Deduplicated)
-  const mergedTimeline = React.useMemo(() => {
-    let timeline = [...activityLogs];
-    const seenKeys = new Set();
-
-    leads.forEach(l => {
-      // Add NEW_LEAD event
-      if (l.createdAt) {
-        timeline.push({
-          id: `lead_${l.id}_created`,
-          action: "NEW_LEAD",
-          details: `New lead generated: ${l.fullName || l.email || "Unknown"} (${l.source || "Direct"})`,
-          timestamp: l.createdAt,
-          adminName: l.source || "System"
-        });
-      }
-
-      // Add MEETING_BOOKED event if meetingBooked is true
-      if (l.meetingBooked) {
-        if (l.followUpDate) {
-          const d = new Date(l.followUpDate);
-          if (!isNaN(d.valueOf())) {
-            timeline.push({
-              id: `lead_${l.id}_meeting`,
-              action: "MEETING_BOOKED",
-              details: `Meeting booked with ${l.fullName || l.email || "Unknown"}`,
-              timestamp: { toDate: () => d },
-              adminName: "System"
-            });
+  // Clear all activity logs from Firestore database & state
+  const handleClearActivityLogs = async () => {
+    const clearAction = async () => {
+      try {
+        if (db) {
+          const snap = await getDocs(collection(db, "activity_logs"));
+          if (!snap.empty) {
+            const batch = writeBatch(db);
+            snap.docs.forEach(docSnap => batch.delete(docSnap.ref));
+            await batch.commit();
           }
-        } else if (l.createdAt) {
-          timeline.push({
-            id: `lead_${l.id}_meeting`,
-            action: "MEETING_BOOKED",
-            details: `Meeting booked with ${l.fullName || l.email || "Unknown"}`,
-            timestamp: l.createdAt,
-            adminName: "System"
-          });
         }
+        setActivityLogs([]);
+        if (typeof window !== "undefined") {
+          localStorage.removeItem("orbit_logs_last_fetched");
+        }
+        if (typeof logActivity === "function") {
+          logActivity("CLEAR_LOGS", "Cleared the audit feed logs");
+        }
+      } catch (err) {
+        console.warn("Failed to clear activity logs:", err);
       }
+    };
 
-      // Add ALL client-specific timeline notes, tasks, alerts, follow-ups
-      if (l.timeline && Array.isArray(l.timeline)) {
-        l.timeline.forEach((item, index) => {
-          const itemKey = item.id || `${l.id}_${item.text}_${index}`;
-          if (seenKeys.has(itemKey)) return;
-          seenKeys.add(itemKey);
+    if (triggerConfirm) {
+      triggerConfirm(
+        "Clear Audit Logs",
+        "Are you sure you want to permanently delete all activity logs from the audit feed? This action cannot be undone.",
+        clearAction,
+        true
+      );
+    } else if (typeof window !== "undefined" && window.confirm("Are you sure you want to clear all activity logs?")) {
+      clearAction();
+    }
+  };
 
-          const clientName = l.fullName || l.email || "Client";
-          const rawType = item.type || "note";
-          const actionName = rawType === "note" ? "CLIENT_NOTE" : rawType.toUpperCase();
-          const scheduled = item.dueDate ? ` [Scheduled: ${item.dueDate} ${item.dueTime || ""}]` : "";
-
-          timeline.push({
-            id: itemKey,
-            action: actionName,
-            details: `${clientName}: "${item.text}"${scheduled}`,
-            timestamp: item.timestamp || l.createdAt || new Date(),
-            adminName: item.adminName || "Admin"
-          });
-        });
-      }
-    });
-
-    // Deduplicate entire timeline list by ID
-    const finalTimeline = [];
-    const idSet = new Set();
-    timeline.forEach((item, i) => {
-      const uKey = item.id || `tm_${i}`;
-      if (!idSet.has(uKey)) {
-        idSet.add(uKey);
-        finalTimeline.push(item);
-      }
-    });
+  // Sort and filter real activity logs for the Audit Feed
+  const mergedTimeline = React.useMemo(() => {
+    const finalTimeline = [...activityLogs];
 
     // Sort descending by timestamp
     finalTimeline.sort((a, b) => {
@@ -1167,7 +1165,7 @@ export default function OverviewTab({
     });
 
     return finalTimeline.slice(0, 150);
-  }, [activityLogs, leads]);
+  }, [activityLogs]);
 
   // Combine DB tasks with Lead Timeline Tasks & Scheduled Reminders
   const allPendingTasks = React.useMemo(() => {
@@ -2717,6 +2715,34 @@ export default function OverviewTab({
               </div>
 
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                {/* Refresh Logs Button */}
+                <button
+                  type="button"
+                  onClick={() => fetchActivityLogs(true)}
+                  disabled={isRefreshingLogs}
+                  title="Fetch latest activity logs on demand"
+                  style={{
+                    background: "rgba(255,255,255,0.03)",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: 10,
+                    padding: "6px 12px",
+                    fontSize: 10,
+                    fontWeight: 800,
+                    color: "#a3a3a3",
+                    cursor: isRefreshingLogs ? "not-allowed" : "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 6,
+                    transition: "all 0.15s"
+                  }}
+                  onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.03)"}
+                >
+                  <RefreshCw size={12} color="#f97316" />
+                  {isRefreshingLogs ? "Fetching..." : "Refresh Logs"}
+                </button>
+
+                {/* Export CSV Button */}
                 <button
                   onClick={exportLogsToCSV}
                   disabled={filteredTimeline.length === 0}
@@ -2739,6 +2765,34 @@ export default function OverviewTab({
                 >
                   <Download size={12} /> Export CSV
                 </button>
+
+                {/* Clear All Logs Button */}
+                {activityLogs.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleClearActivityLogs}
+                    title="Permanently clear system activity logs"
+                    style={{
+                      background: "rgba(239, 68, 68, 0.12)",
+                      border: "1px solid rgba(239, 68, 68, 0.25)",
+                      borderRadius: 10,
+                      padding: "6px 12px",
+                      fontSize: 10,
+                      fontWeight: 800,
+                      color: "#ef4444",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 6,
+                      transition: "all 0.15s"
+                    }}
+                    onMouseEnter={e => e.currentTarget.style.background = "rgba(239, 68, 68, 0.25)"}
+                    onMouseLeave={e => e.currentTarget.style.background = "rgba(239, 68, 68, 0.12)"}
+                  >
+                    <Trash2 size={12} color="#ef4444" /> Clear Logs
+                  </button>
+                )}
+
                 <div style={{ fontSize: 9, fontWeight: 800, color: "#4ade80", background: "rgba(74,222,128,0.1)", border: "1px solid rgba(74,222,128,0.2)", padding: "5px 10px", borderRadius: 10, display: "flex", alignItems: "center", gap: 4 }}>
                   🔒 Protected History
                 </div>

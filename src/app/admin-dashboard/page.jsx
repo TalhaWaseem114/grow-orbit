@@ -689,9 +689,9 @@ export default function AdminDashboard() {
       ? currentAdmin.fullName.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
       : (auth.currentUser?.email?.[0] || "A").toUpperCase();
 
-  const convertedCount = leads.filter(l => l.status === "hot" || l.status === "replied").length;
+  const bookedMeetingsCount = leads.filter(l => Boolean(l.meetingBooked || l.status === "hot" || l.status === "meeting_booked")).length;
   const conversionRate = leads.length > 0
-    ? ((convertedCount / leads.length) * 100).toFixed(1) + "%"
+    ? ((bookedMeetingsCount / leads.length) * 100).toFixed(1) + "%"
     : "0%";
 
   /* Auth loading check visual overlay */
@@ -1209,6 +1209,7 @@ export default function AdminDashboard() {
                   triggerConfirm={triggerConfirm}
                   logActivity={logActivity}
                   leadsCollectionName={leadsCollectionName}
+                  setActiveTab={setActiveTab}
                 />
               )}
 

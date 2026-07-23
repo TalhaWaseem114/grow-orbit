@@ -340,7 +340,8 @@ function LeadDetailPanel({
   handleDeleteLead,
   logActivity,
   setFullScreenModalLead,
-  isFullScreen
+  isFullScreen,
+  setActiveTab
 }) {
   const router = useRouter();
   const [tasks, setTasks] = useState([]);
@@ -355,15 +356,55 @@ function LeadDetailPanel({
   const [isSavingEntry, setIsSavingEntry] = useState(false);
 
   const uniqueTimeline = useMemo(() => {
-    const list = lead.timeline || [];
+    const list = [...(lead.timeline || [])];
+
+    // Auto-inject dynamic system action items (2-hour follow-up for fresh leads & 24-hour research for booked meetings)
+    let leadCreatedDate = null;
+    if (lead.createdAt) {
+      leadCreatedDate = lead.createdAt.toDate ? lead.createdAt.toDate() : new Date(lead.createdAt.seconds ? lead.createdAt.seconds * 1000 : lead.createdAt);
+    }
+    const now = new Date();
+
+    if (leadCreatedDate && !isNaN(leadCreatedDate)) {
+      const timeDiffMs = now.getTime() - leadCreatedDate.getTime();
+      const isMeetingBooked = Boolean(lead.meetingBooked || lead.status === "meeting_booked");
+
+      if (isMeetingBooked && timeDiffMs >= 0 && timeDiffMs <= 24 * 60 * 60 * 1000) {
+        const due1d = new Date(leadCreatedDate.getTime() + 24 * 60 * 60 * 1000);
+        list.unshift({
+          id: `recent_meeting_res_${lead.id}`,
+          type: "task",
+          text: "Task: Conduct client background & account research",
+          dueDate: due1d.toISOString().split("T")[0],
+          dueTime: due1d.toTimeString().slice(0, 5),
+          timestamp: leadCreatedDate,
+          adminName: "System",
+          isSystemGenerated: true
+        });
+      } else if (!isMeetingBooked && (lead.status === "new" || !lead.status) && timeDiffMs >= 0 && timeDiffMs <= 2 * 60 * 60 * 1000) {
+        const due2h = new Date(leadCreatedDate.getTime() + 2 * 60 * 60 * 1000);
+        list.unshift({
+          id: `recent_lead_fu_${lead.id}`,
+          type: "followup",
+          text: "Action Item: Set follow-up email within 2 hours",
+          dueDate: due2h.toISOString().split("T")[0],
+          dueTime: due2h.toTimeString().slice(0, 5),
+          timestamp: leadCreatedDate,
+          adminName: "System",
+          isSystemGenerated: true
+        });
+      }
+    }
+
     const seen = new Set();
     return list.filter(item => {
-      const key = item.id || `${item.text}_${item.timestamp?.seconds || item.timestamp}`;
+      const textVal = item.text || item.title || "";
+      const key = item.id || `${textVal}_${item.timestamp?.seconds || item.timestamp}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
     });
-  }, [lead.timeline]);
+  }, [lead.timeline, lead.createdAt, lead.meetingBooked, lead.status, lead.id]);
 
   const handleCopy = (text, field) => {
     if (!text) return;
@@ -822,24 +863,60 @@ function LeadDetailPanel({
                           </div>
                           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                             <span style={{ fontSize: 9, color: "#71717a", fontFamily: "monospace" }}>{fmt(item.timestamp)} {fmtTime(item.timestamp)}</span>
-                            <button
-                              onClick={() => handleDeleteLeadNote?.(lead.id, item.timestamp)}
-                              style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", opacity: 0.6, display: "flex", alignItems: "center", padding: 0 }}
-                              onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
-                              onMouseLeave={(e) => e.currentTarget.style.opacity = 0.6}
-                              title="Delete entry"
-                            >
-                              <Trash2 size={11} />
-                            </button>
+                            {!item.isSystemGenerated && (
+                              <button
+                                onClick={() => handleDeleteLeadNote?.(lead.id, item.timestamp)}
+                                style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", opacity: 0.6, display: "flex", alignItems: "center", padding: 0 }}
+                                onMouseEnter={(e) => e.currentTarget.style.opacity = 1}
+                                onMouseLeave={(e) => e.currentTarget.style.opacity = 0.6}
+                                title="Delete entry"
+                              >
+                                <Trash2 size={11} />
+                              </button>
+                            )}
                           </div>
                         </div>
                         <div style={{ fontSize: 12, color: "#cbd5e1", lineHeight: 1.6 }}>
                           {item.text}
                         </div>
                         {(item.dueDate || item.dueTime) && (
-                          <div style={{ marginTop: 8, display: "inline-flex", alignItems: "center", gap: 6, padding: "3px 8px", background: "rgba(255,255,255,0.03)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.05)", fontSize: 10, color: "#a1a1aa" }}>
-                            <Clock size={11} color={itemColor} />
-                            <span>Scheduled Due: <strong style={{ color: "#fff" }}>{item.dueDate || "Today"} {item.dueTime || ""}</strong></span>
+                          <div style={{ marginTop: 8, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+                            <div style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "3px 8px", background: "rgba(255,255,255,0.03)", borderRadius: 6, border: "1px solid rgba(255,255,255,0.05)", fontSize: 10, color: "#a1a1aa" }}>
+                              <Clock size={11} color={itemColor} />
+                              <span>Scheduled Due: <strong style={{ color: "#fff" }}>{item.dueDate || "Today"} {item.dueTime || ""}</strong></span>
+                            </div>
+
+                            {setActiveTab && (item.type === "followup" || (item.text && (item.text.toLowerCase().includes("email") || item.text.toLowerCase().includes("follow-up")))) && (
+                              <button
+                                type="button"
+                                onClick={() => setActiveTab("newsletter")}
+                                style={{
+                                  display: "inline-flex",
+                                  alignItems: "center",
+                                  gap: 5,
+                                  padding: "3px 8px",
+                                  borderRadius: 6,
+                                  background: "rgba(249, 115, 22, 0.12)",
+                                  border: "1px solid rgba(249, 115, 22, 0.3)",
+                                  color: "#f97316",
+                                  fontSize: 9,
+                                  fontWeight: 800,
+                                  cursor: "pointer",
+                                  transition: "all 0.2s ease"
+                                }}
+                                onMouseEnter={e => {
+                                  e.currentTarget.style.background = "#f97316";
+                                  e.currentTarget.style.color = "#ffffff";
+                                }}
+                                onMouseLeave={e => {
+                                  e.currentTarget.style.background = "rgba(249, 115, 22, 0.12)";
+                                  e.currentTarget.style.color = "#f97316";
+                                }}
+                                title="Open Email Designer to craft your follow-up email"
+                              >
+                                <Mail size={11} /> Email Designer →
+                              </button>
+                            )}
                           </div>
                         )}
                       </div>
@@ -885,6 +962,41 @@ function LeadDetailPanel({
                   {copiedField === 'email' ? <Check size={13} style={{ color: '#4ade80' }} /> : <Copy size={13} />}
                 </button>
               </div>
+              {setActiveTab && (
+                <button
+                  type="button"
+                  onClick={() => setActiveTab("newsletter")}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: 8,
+                    width: "100%",
+                    padding: "9px 12px",
+                    borderRadius: 10,
+                    background: "linear-gradient(135deg, rgba(249, 115, 22, 0.18), rgba(249, 115, 22, 0.08))",
+                    border: "1px solid rgba(249, 115, 22, 0.35)",
+                    color: "#f97316",
+                    fontSize: 10,
+                    fontWeight: 800,
+                    cursor: "pointer",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.05em",
+                    transition: "all 0.2s ease"
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.background = "#f97316";
+                    e.currentTarget.style.color = "#ffffff";
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.background = "linear-gradient(135deg, rgba(249, 115, 22, 0.18), rgba(249, 115, 22, 0.08))";
+                    e.currentTarget.style.color = "#f97316";
+                  }}
+                  title="Launch Email Designer to draft follow-up templates"
+                >
+                  <Mail size={12} /> Launch Email Designer →
+                </button>
+              )}
             </div>
           </div>
 
@@ -1033,7 +1145,8 @@ function LeadCalendarView({
   logActivity,
   expandedLead,
   setExpandedLead,
-  setFullScreenModalLead
+  setFullScreenModalLead,
+  setActiveTab
 }) {
   const today = new Date();
   const [currentDate, setCurrentDate] = useState(() => new Date());
@@ -1413,6 +1526,7 @@ function LeadCalendarView({
                                 handleDeleteLead={handleDeleteLead}
                                 logActivity={logActivity}
                                 setFullScreenModalLead={setFullScreenModalLead}
+                                setActiveTab={setActiveTab}
                               />
                             </div>
                           )}
@@ -1544,7 +1658,8 @@ export default function LeadsTab({
   exportLeads,
   triggerConfirm,
   logActivity,
-  leadsCollectionName
+  leadsCollectionName,
+  setActiveTab
 }) {
   const startInputRef = useRef(null);
   const endInputRef = useRef(null);
@@ -2289,6 +2404,7 @@ export default function LeadsTab({
             expandedLead={expandedLead}
             setExpandedLead={setExpandedLead}
             setFullScreenModalLead={setFullScreenModalLead}
+            setActiveTab={setActiveTab}
           />
         ) : (
           <div style={{ background: "#0d0d0d", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 18, overflowX: "auto" }}>
@@ -2581,6 +2697,7 @@ export default function LeadsTab({
                             handleDeleteLead={handleDeleteLead}
                             logActivity={logActivity}
                             setFullScreenModalLead={setFullScreenModalLead}
+                            setActiveTab={setActiveTab}
                           />
                         </td>
                       </tr>
@@ -2697,6 +2814,7 @@ export default function LeadsTab({
                 handleDeleteLead={(id) => { handleDeleteLead(id); setFullScreenModalLead(null); }}
                 logActivity={logActivity}
                 isFullScreen={true}
+                setActiveTab={setActiveTab}
               />
             </div>
           </div>

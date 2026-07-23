@@ -1046,9 +1046,9 @@ export default function OverviewTab({
   }, [rawLeads, dateRange]);
 
   const newLeadsCount = leads.filter(l => (l.status || "new") === "new").length;
-  const convertedCount = leads.filter(l => l.status === "hot" || l.status === "replied").length;
+  const bookedMeetingsCount = leads.filter(l => Boolean(l.meetingBooked || l.status === "hot" || l.status === "meeting_booked")).length;
   const conversionRate = leads.length > 0
-    ? ((convertedCount / leads.length) * 100).toFixed(1) + "%"
+    ? ((bookedMeetingsCount / leads.length) * 100).toFixed(1) + "%"
     : "0%";
 
   const hotLeadsCount = leads.filter(l => (l.status || "new") === "hot").length;
@@ -1656,8 +1656,8 @@ export default function OverviewTab({
       <div className="stats-grid" style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(5, 1fr)", gap: 14 }}>
         <StatCard title="Active Leads"   value={leads.length}  sub="All time enquiries"     icon={Briefcase} accent sparkData={last7Days} />
         <StatCard title="New Leads"      value={newLeadsCount} sub="Awaiting response"      icon={Activity} />
-        <StatCard title="Booked Meetings" value={leads.filter(l => l.meetingBooked).length} sub="Calendly bookings" icon={Calendar} />
-        <StatCard title="Conversion Est" value={conversionRate} sub="Interest-to-Lead ratio" icon={TrendingUp} />
+        <StatCard title="Booked Meetings" value={bookedMeetingsCount} sub="Calendly bookings" icon={Calendar} />
+        <StatCard title="Conversion Est" value={conversionRate} sub="Meetings-to-Lead ratio" icon={TrendingUp} />
         <StatCard title="Total Users"    value={users.length}  sub="Registered accounts"    icon={Users} />
       </div>
 
@@ -1668,7 +1668,7 @@ export default function OverviewTab({
           <div style={{ fontSize: 11, fontWeight: 700, color: "#525252", textTransform: "uppercase", letterSpacing: "0.2em" }}>Lead Conversion Funnel</div>
           {(() => {
             const total = leads.length;
-            const meetings = leads.filter(l => l.meetingBooked).length;
+            const meetings = bookedMeetingsCount;
             const won = leads.filter(l => l.status === "won").length;
 
             const r2 = total > 0 ? (meetings / total) : 0;
@@ -2540,6 +2540,30 @@ export default function OverviewTab({
 
                                   <button
                                     onClick={() => {
+                                      if (setActiveTab) setActiveTab("newsletter");
+                                      setActiveDoneMenuId(null);
+                                    }}
+                                    style={{
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 8,
+                                      padding: "8px 10px",
+                                      borderRadius: 8,
+                                      background: "rgba(249,115,22,0.1)",
+                                      border: "none",
+                                      color: "#f97316",
+                                      fontSize: 10,
+                                      fontWeight: 800,
+                                      cursor: "pointer",
+                                      textAlign: "left"
+                                    }}
+                                  >
+                                    <Mail size={12} color="#f97316" />
+                                    <span>Open Email Designer</span>
+                                  </button>
+
+                                  <button
+                                    onClick={() => {
                                       setDeletedTaskIds(prev => new Set(prev).add(t.id));
                                       setActiveDoneMenuId(null);
                                       handleDeleteItemFromDb(t, group.leadId);
@@ -2591,6 +2615,45 @@ export default function OverviewTab({
                                 <Clock size={11} color="#71717a" style={{ flexShrink: 0 }} />
                                 <span>Due: {t.dueDate} {t.dueTime ? `at ${t.dueTime}` : ""}</span>
                               </div>
+
+                              {/* Direct Launch Email Designer Button for Follow-ups / Email Tasks */}
+                              {(isFollowup || (t.title && (t.title.toLowerCase().includes("email") || t.title.toLowerCase().includes("follow-up")))) && (
+                                <button
+                                  type="button"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (setActiveTab) setActiveTab("newsletter");
+                                  }}
+                                  style={{
+                                    marginTop: 4,
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    gap: 5,
+                                    padding: "5px 10px",
+                                    borderRadius: 6,
+                                    background: "linear-gradient(135deg, rgba(249, 115, 22, 0.25), rgba(249, 115, 22, 0.12))",
+                                    border: "1px solid rgba(249, 115, 22, 0.4)",
+                                    color: "#f97316",
+                                    fontSize: 10,
+                                    fontWeight: 800,
+                                    cursor: "pointer",
+                                    width: "fit-content",
+                                    transition: "all 0.2s ease",
+                                    boxShadow: "0 2px 6px rgba(249, 115, 22, 0.2)"
+                                  }}
+                                  onMouseEnter={e => {
+                                    e.currentTarget.style.background = "#f97316";
+                                    e.currentTarget.style.color = "#ffffff";
+                                  }}
+                                  onMouseLeave={e => {
+                                    e.currentTarget.style.background = "linear-gradient(135deg, rgba(249, 115, 22, 0.25), rgba(249, 115, 22, 0.12))";
+                                    e.currentTarget.style.color = "#f97316";
+                                  }}
+                                  title="Launch Email Designer directly to compose follow-up"
+                                >
+                                  <Mail size={11} /> Open Email Designer →
+                                </button>
+                              )}
                             </div>
 
                             {/* CIRCULAR TIMER PROGRESS RING */}

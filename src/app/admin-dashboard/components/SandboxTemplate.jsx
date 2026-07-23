@@ -306,10 +306,86 @@ export const SANDBOX_DRAFTS = [
   },
   {
     id: "sandbox-future-4",
-    subject: "Will be added in future",
-    headline: "Will be added in future",
+    subject: "Amazon Competitor Audit & Visual Upgrade Proposal for Ohoud 🚀",
+    headline: "Amazon Growth & Visual Upgrade Proposal | Ohoud",
     body: `<!-- HIDE_DEFAULT_CTA -->
-<p style="font-size: 14px; line-height: 1.6; color: #475569;">Will be added in future</p>`
+<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi,</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  We spent some time studying how <strong> Ohoud's</strong> top products stack up against your closest competitors on Amazon, analyzing pricing, visibility, visual content, and market positioning to pinpoint exactly what's standing between Ohoud and the category ranking it deserves.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  <strong>The short version:</strong> Your products are strong and competitively priced. What's missing is the high-converting visual and content layer that's currently carrying top-selling competitors ahead in your category.
+</p>
+
+<!-- Key Breakdown Card (Table-based for email client compatibility) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 20px;">
+  <tr>
+    <td style="background-color: #f8fafc; border-left: 4px solid #f97316; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 14px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 12px;">
+        <tr>
+          <td style="font-size: 11px; font-weight: 800; color: #f97316; letter-spacing: 1.5px; text-transform: uppercase;">OHOUD AUDIT &amp; PROPOSAL HIGHLIGHTS</td>
+        </tr>
+      </table>
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.5; color: #475569;">
+        <tr>
+          <td width="24" valign="top" style="padding-bottom: 10px; padding-right: 6px;">
+            <span style="font-size: 15px;">&#128269;</span>
+          </td>
+          <td valign="top" style="padding-bottom: 10px; color: #334155;">
+            <strong style="color: #0f172a;">Top-Selling Competitor Breakdown:</strong><br>
+            A deep-dive benchmark into pricing, search term visibility, and ranking velocity.
+          </td>
+        </tr>
+        <tr>
+          <td width="24" valign="top" style="padding-bottom: 10px; padding-right: 6px;">
+            <span style="font-size: 15px;">&#128248;</span>
+          </td>
+          <td valign="top" style="padding-bottom: 10px; color: #334155;">
+            <strong style="color: #0f172a;">Premium Dark-Theme Concept Sample:</strong><br>
+            A proof-of-concept sample showcasing your listing optimized in a sleek, high-end dark aesthetic.
+          </td>
+        </tr>
+        <tr>
+          <td width="24" valign="top" style="padding-right: 6px;">
+            <span style="font-size: 15px;">&#128640;</span>
+          </td>
+          <td valign="top" style="color: #334155;">
+            <strong style="color: #0f172a;">Growth Action Plan:</strong><br>
+            Strategic steps to elevate brand perception, maximize conversion rates, and capture dominant market share.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  Inside the proposal, you'll find an initial sample concept of your listing in a premium dark aesthetic. This is a preliminary preview, the final production deliverables will be fully customized and even more sophisticated.
+</p>
+
+<!-- CTA Button (Table-based for GoDaddy / Gmail compatibility) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 32px; margin-bottom: 32px;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="center" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 14px 36px; border-radius: 50px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            <a href="https://drive.google.com/file/d/1CuF3zQdnJ9bdJ-DbYIvqtGv9nuBMVXTR/view?usp=drive_link" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;">
+              Review Proposal
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  Take a look when you get a chance. We'd love to walk you through what we found and discuss what closing that gap could do for Ohoud's growth on Amazon.
+</p>`
   },
   {
     id: "sandbox-future-5",

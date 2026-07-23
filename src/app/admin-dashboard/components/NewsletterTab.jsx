@@ -959,6 +959,10 @@ export default function NewsletterTab({ isMobile }) {
       .email-body {
         padding: 20px 14px !important;
       }
+      .email-headline {
+        font-size: 16px !important;
+        line-height: 1.35 !important;
+      }
     }
   </style>
 </head>
@@ -993,7 +997,7 @@ export default function NewsletterTab({ isMobile }) {
       `}
       <!-- Body -->
       <div class="email-body" style="padding: 28px 20px; background-color: ${containerBg}; text-align: left;">
-        ${headText ? `<h1 style="font-size: 22px; font-weight: 800; color: ${h1Color}; margin-top: 0; margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${headText}</h1>` : ""}
+        ${headText ? `<h1 class="email-headline" style="font-size: 18px; font-weight: 800; color: ${h1Color}; margin-top: 0; margin-bottom: 20px; line-height: 1.35; letter-spacing: -0.02em; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${headText}</h1>` : ""}
         <div style="font-size: 15px; color: ${isDark ? "#e4e4e7" : "#334155"}; line-height: 1.6; margin-bottom: 28px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${formattedBody}</div>
         
         <!-- CTA -->
@@ -1231,13 +1235,15 @@ export default function NewsletterTab({ isMobile }) {
                 </span>
                 {[1, 2, 3, 4, 5].map((num) => {
                   const draftIndex = num - 1;
-                  const isFuture = num > 3;
+                  const targetDraft = SANDBOX_DRAFTS && SANDBOX_DRAFTS[draftIndex];
+                  const isFuture = !targetDraft || targetDraft.subject === "Will be added in future";
 
                   return (
                     <button
                       key={num}
                       onClick={() => loadSandboxDraft(draftIndex)}
                       type="button"
+                      title={targetDraft?.subject ? targetDraft.subject : `Load Draft ${num}`}
                       style={{
                         background: isFuture ? "rgba(255, 255, 255, 0.02)" : "rgba(249, 115, 22, 0.1)",
                         border: isFuture ? "1px dashed rgba(255, 255, 255, 0.1)" : "1px solid rgba(249, 115, 22, 0.3)",

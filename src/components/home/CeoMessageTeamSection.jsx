@@ -11,6 +11,14 @@ export default function CeoMessageTeamSection() {
   const [canScrollRight, setCanScrollRight] = useState(true);
   const carouselRef = useRef(null);
 
+  const optimizeCloudinaryUrl = (url, width = 600) => {
+    if (!url || typeof url !== "string") return url;
+    if (url.includes("res.cloudinary.com") && url.includes("/upload/")) {
+      return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width}/`);
+    }
+    return url;
+  };
+
   const handleScroll = () => {
     const container = carouselRef.current;
     if (!container) return;
@@ -68,38 +76,38 @@ export default function CeoMessageTeamSection() {
   const sourcingPics = [
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040764/grow_orbit_ceo_pics/2.avif",
-      title: "Guangzhou Sourcing Fair",
-      desc: "Meeting with suppliers to inspect product catalogs and verify manufacturing credentials."
+      title: "Guangzhou Sourcing Expo",
+      desc: "Vetting new suppliers, inspecting product catalogs, and verifying manufacturer credentials on the ground."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040765/grow_orbit_ceo_pics/3.avif",
-      title: "Supplier Partnership Agreement",
-      desc: "Securing exclusive distribution rights and direct supply contracts for our clients' brands."
+      title: "Direct Factory Contract Deal",
+      desc: "Negotiating direct supply terms and securing favorable pricing without middleman markups."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040766/grow_orbit_ceo_pics/4.avif",
-      title: "Quality Check at Minstar Factory",
-      desc: "On-site quality audit of raw materials and strict inspection of production lines."
+      title: "Minstar Factory Quality Audit",
+      desc: "Inspecting raw materials, tooling standards, and quality control procedures on the assembly floor."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040767/grow_orbit_ceo_pics/5.avif",
-      title: "Supplier Factory Visit",
-      desc: "Fostering long-term supplier relationships directly on the manufacturing shop floor."
+      title: "On-Site Production Inspection",
+      desc: "Reviewing manufacturing capacity and building long-term ties directly on the factory floor."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040768/grow_orbit_ceo_pics/6.avif",
-      title: "Sourcing Welcome Ceremony",
-      desc: "Establishing close strategic ties to ensure priority production scheduling."
+      title: "Executive Supplier Partnership",
+      desc: "Establishing strategic manufacturer partnerships to lock in priority production scheduling."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040769/grow_orbit_ceo_pics/7.avif",
-      title: "Sourcing Center, China",
-      desc: "Reviewing logistics hubs and checking packaging durability on-site."
+      title: "Transit Between Supplier Hubs",
+      desc: "Traveling across manufacturing cities by high-speed rail for back-to-back factory audits."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040771/grow_orbit_ceo_pics/8.avif",
-      title: "Relationship Building Dinner",
-      desc: "Developing strong supplier relationships beyond business discussions for better negotiations."
+      title: "Strategic Supplier Dinner",
+      desc: "Building trusted executive relationships with factory owners for priority lead times and negotiation leverage."
     }
   ];
 
@@ -123,10 +131,10 @@ export default function CeoMessageTeamSection() {
               }}
             >
               <Image
-                src="https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif"
+                src={optimizeCloudinaryUrl("https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif", 800)}
                 alt="Coach Ali Haider - CEO & Founder"
                 fill
-                sizes="(max-width: 1024px) 100vw, 40vw"
+                sizes="(max-width: 1024px) 100vw, 400px"
                 className="object-cover transition-all duration-750 group-hover:scale-105"
                 priority
               />
@@ -229,10 +237,12 @@ export default function CeoMessageTeamSection() {
                   }}
                 >
                   <Image
-                    src={pic.img}
+                    src={optimizeCloudinaryUrl(pic.img, 500)}
                     alt={pic.title}
                     fill
-                    sizes="(max-width: 640px) 100vw, 300px"
+                    loading="lazy"
+                    decoding="async"
+                    sizes="(max-width: 640px) 220px, 300px"
                     className="object-cover transition-transform duration-750 ease-out group-hover:scale-105"
                   />
                   {/* Gradient overlay to show text in bottom */}

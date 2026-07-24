@@ -14,13 +14,13 @@ const steps = [
     icon: <Package size={22} strokeWidth={1.5} className="text-orange-500" />,
     num: "02",
     title: "Sourcing & Setup",
-    desc: "Supplier vetting, brand registry, account setup, and full backend configuration — your entire foundation built right.",
+    desc: "Supplier vetting, brand registry, account setup, and full backend configuration so your entire foundation is built right.",
   },
   {
     icon: <Layers size={22} strokeWidth={1.5} className="text-orange-500" />,
     num: "03",
     title: "Launch & Build",
-    desc: "Listing creation, A+ content, main images, PPC campaigns, and brand store — everything crafted to convert from day one.",
+    desc: "Listing creation, A+ content, main images, PPC campaigns, and brand store, crafted to convert from day one.",
   },
   {
     icon: <Rocket size={22} strokeWidth={1.5} className="text-orange-500" />,
@@ -55,7 +55,7 @@ export default function ProcessSection() {
           </div>
           <div className="max-w-sm mb-2">
             <p className="text-gray-400 text-[18px] font-light leading-relaxed">
-              We handle everything — from finding the right product to building a brand that sells at scale on Amazon.
+              We handle everything from finding the right product to building a brand that sells at scale on Amazon.
             </p>
           </div>
         </div>

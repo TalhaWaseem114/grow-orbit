@@ -21,7 +21,7 @@ const serviceGroups = [
       { icon: <BarChart3 size={16} />,     title: "PPC Efficiency",        desc: "Lower ACoS, higher ROAS, zero wasted spend.", href: "/service/ppc-efficiency" },
       { icon: <Search size={16} />,        title: "Listing Optimization",  desc: "A9-optimized copy that indexes and converts.",  href: "/service/listing-optimization" },
       { icon: <Target size={16} />,        title: "Audit & Strategy",      desc: "72-hour audit. 24-month growth roadmap.",       href: "/service/audit-strategy" },
-      { icon: <Zap size={16} />,           title: "Brand Launch Setup",    desc: "Listings, PPC, Brand Registry — launch-ready.", href: "/service/brand-launch" },
+      { icon: <Zap size={16} />,           title: "Brand Launch Setup",    desc: "Listings, PPC, and Brand Registry built launch-ready.", href: "/service/brand-launch" },
       { icon: <Cpu size={16} />,           title: "Growth Automation",     desc: "Repricing, alerts, review workflows on autopilot.", href: "/service/growth-automation" },
       { icon: <Settings size={16} />,      title: "Account Ops",           desc: "Case management, suppression recovery, defense.", href: "/service/account-ops" },
       { icon: <Activity size={16} />,      title: "Ongoing Support",       desc: "Weekly optimization cycles, performance tracking.", href: "/service/ongoing-support" },
@@ -31,12 +31,12 @@ const serviceGroups = [
     label: "Design & Creative",
     color: "violet",
     items: [
-      { icon: <Camera size={16} />,        title: "Listing Images",        desc: "Hero shots, lifestyle, infographics — built to convert.", href: "/service/design/listing-image-systems" },
+      { icon: <Camera size={16} />,        title: "Listing Images",        desc: "Hero shots, lifestyle, and infographics built to convert.", href: "/service/design/listing-image-systems" },
       { icon: <Sparkles size={16} />,      title: "A+ Content (EBC)",      desc: "Below-the-fold modules that close the sale.",     href: "/service/design/enhanced-brand-content" },
       { icon: <BookOpen size={16} />,      title: "Brand Story",           desc: "Above-the-fold narrative + catalog cross-sell.",  href: "/service/design/brand-story" },
       { icon: <Layout size={16} />,        title: "Brand Store",           desc: "Custom storefront, sub-pages, vanity URL.",      href: "/service/design/brand-store" },
       { icon: <MousePointerClick size={16}/>,title: "Main Image CTR",     desc: "Engineered to win the click on the search grid.", href: "/service/design/main-image-ctr" },
-      { icon: <Palette size={16} />,       title: "Brand Guidelines",      desc: "Logo, color, type — one cohesive system.",       href: "/service/design/brand-guidelines" },
+      { icon: <Palette size={16} />,       title: "Brand Guidelines",      desc: "Logo, colors, and typography in one cohesive system.", href: "/service/design/brand-guidelines" },
       { icon: <Layers size={16} />,        title: "Full Overhaul",         desc: "All 7 image slots rebuilt as a conversion system.", href: "/service/design/full-listing-optimization" },
     ],
   },
@@ -47,7 +47,7 @@ const serviceGroups = [
       { icon: <Award size={16} />,         title: "Full Account Management", desc: "One team. Every lever. Total ownership.",          href: "/service/full/amazon-management" },
       { icon: <FileText size={16} />,      title: "SOP Frameworks",        desc: "Documented workflows ready to delegate.",          href: "/service/sop" },
       { icon: <HeartHandshake size={16} />,title: "Direct Coaching",       desc: "1-on-1 strategy with senior operators.",           href: "/service/coaching-consultation" },
-      { icon: <Monitor size={16} />,       title: "DTC Website",           desc: "Shopify or custom — off-Amazon revenue channel.",  href: "/service/dtc-website" },
+      { icon: <Monitor size={16} />,       title: "DTC Website",           desc: "Shopify or custom off-Amazon revenue channels.",  href: "/service/dtc-website" },
       { icon: <Radio size={16} />,         title: "Amazon DSP",            desc: "Programmatic ads on and off Amazon.",               href: "/service/amazon-dsp" },
       { icon: <Gavel size={16} />,         title: "Trademark Filing",      desc: "Brand Registry across 7 countries.",                href: "/service/trademark-registration" },
     ],
@@ -109,7 +109,7 @@ export default function ServicesSection({ mode }) {
              </h2>
 
              <p className="text-zinc-600 text-base sm:text-lg font-light leading-relaxed max-w-sm mb-8 sm:mb-10">
-               Every layer moves revenue. Nothing decorative, nothing redundant — activated in the right order, at the right time.
+               Every layer moves revenue. Nothing decorative, nothing redundant, activated in the right order at the right time.
              </p>
 
              <div className="flex flex-col gap-4 sm:gap-5">

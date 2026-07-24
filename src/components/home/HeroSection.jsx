@@ -61,7 +61,7 @@ export default function Hero({ mode }) {
                 <>
                   Scale your<br />
                   <span className="text-orange-500">Amazon.</span><br />
-                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2 text-[26px] xs:text-[32px] sm:text-[42px] md:text-[48px] lg:text-[56px]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2 text-[32px] xs:text-[40px] sm:text-[52px] md:text-[58px] lg:text-[66px]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     zero guesswork.
                   </span>
                 </>
@@ -69,7 +69,7 @@ export default function Hero({ mode }) {
                 <>
                   Scale your<br />
                   <span className="text-orange-500">Conversion.</span><br />
-                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2 text-[26px] xs:text-[32px] sm:text-[42px] md:text-[48px] lg:text-[56px]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2 text-[32px] xs:text-[40px] sm:text-[52px] md:text-[58px] lg:text-[66px]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     engineered visuals.
                   </span>
                 </>
@@ -77,23 +77,23 @@ export default function Hero({ mode }) {
                 <>
                   Scale your<br />
                   <span className="text-orange-500">Revenue.</span><br />
-                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2 text-[26px] xs:text-[32px] sm:text-[42px] md:text-[48px] lg:text-[56px]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="italic font-light lowercase tracking-tight text-zinc-500 block mt-2 text-[32px] xs:text-[40px] sm:text-[52px] md:text-[58px] lg:text-[66px]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     zero guesswork.
                   </span>
                 </>
               )}
             </h1>
 
-            <div className="flex gap-6 mb-12 lg:mb-10 justify-center lg:justify-start text-left">
+            <div className="flex gap-6 mb-12 lg:mb-10 justify-center lg:justify-start text-center lg:text-left">
               <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden md:block opacity-50 shrink-0" />
               <div>
-                <p className="text-lg sm:text-xl text-zinc-400 font-light leading-relaxed max-w-xl mb-4 mx-auto lg:mx-0">
+                <p className="text-lg sm:text-xl text-zinc-400 font-light leading-relaxed max-w-xl mb-4 mx-auto lg:mx-0 text-center lg:text-left">
                   {mode === "amazon-services" ? (
                     "We run your Amazon PPC advertising, organic ranking SEO, and product sourcing operations so you can focus on scale instead of management."
                   ) : mode === "design-creative" ? (
                     "We design scroll-stopping listing images, premium A+ Content modules, and custom storefronts built specifically to increase your conversion rate."
                   ) : (
-                    "We run your entire Amazon operation — ads, SEO, listings, and core creative — so you can focus on building your brand instead of managing it."
+                    "We run your entire Amazon operation across ads, SEO, listings, and core creative so you can focus on building your brand instead of managing it."
                   )}
                 </p>
                 <div className="flex flex-wrap justify-center lg:justify-start gap-6 font-mono text-[9px] text-zinc-600 uppercase tracking-widest">

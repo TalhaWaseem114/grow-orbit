@@ -75,7 +75,7 @@ export default function WhyChooseUs() {
             </div>
 
             <p className="text-zinc-500 text-[15px] italic tracking-wide" style={{ fontFamily: "'Playfair Display', serif" }}>
-              That’s why results compound — not spike.
+              That’s why results compound instead of spike.
             </p>
           </div>
         </div>
@@ -109,7 +109,7 @@ export default function WhyChooseUs() {
                   Systems Running as One
                 </h3>
                 <p className="text-orange-100/70 text-[12px] font-light leading-relaxed">
-                  SEO, PPC, creative, and account ops simultaneously — each system feeding data back into the others.
+                  SEO, PPC, creative, and account ops simultaneously, with each system feeding data back into the others.
                 </p>
               </div>
             </div>
@@ -130,7 +130,7 @@ export default function WhyChooseUs() {
                   Dedicated Team Assigned
                 </h3>
                 <p className="text-zinc-500 text-[12px] font-light leading-relaxed group-hover:text-zinc-400 transition-colors">
-                  Named account manager, PPC specialist, creative lead. Your brand is a priority — not a ticket.
+                  Named account manager, PPC specialist, creative lead. Your brand is a priority, not a ticket.
                 </p>
                 <div className="mt-4 flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -154,7 +154,7 @@ export default function WhyChooseUs() {
                 Data Before Action — Always
               </h3>
               <p className="text-zinc-500 text-[12px] font-light leading-relaxed group-hover:text-zinc-400 transition-colors">
-                Every engagement starts with a full 72-hour account audit. We diagnose before we prescribe. No template strategies — every plan built from your actual data.
+                Every engagement starts with a full 72-hour account audit. We diagnose before we prescribe. No template strategies: every plan is built from your actual data.
               </p>
             </div>
             {/* Big stat at bottom */}
@@ -184,7 +184,7 @@ export default function WhyChooseUs() {
                   Weekly Reports, Every Monday
                 </h3>
                 <p className="text-zinc-500 text-[12px] font-light leading-relaxed group-hover:text-zinc-400 transition-colors">
-                  Organic rank, ACoS, revenue, and the exact actions taken — with the reasoning documented every week.
+                  Organic rank, ACoS, revenue, and the exact actions taken, with the reasoning documented every week.
                 </p>
               </div>
             </div>

@@ -28,7 +28,7 @@ const faqs = [
   },
   {
     q: "Can you take over my existing account?",
-    a: "Yes — many of our clients come with live accounts. We audit first, identify what’s holding you back, and fix that before scaling. Your current sales stay stable during the transition."
+    a: "Yes, many of our clients come with live accounts. We audit first, identify what’s holding you back, and fix that before scaling. Your current sales stay stable during the transition."
   },
   {
     q: "I’ve been burned by agencies before. Why is this different?",
@@ -78,7 +78,7 @@ export default function FAQSection({ scrollToForm }) {
               </span>
             </h2>
             <p className="text-zinc-500 text-lg font-light leading-relaxed max-w-sm mb-12">
-              The questions every brand asks before working with us — answered honestly, without fluff.
+              The questions every brand asks before working with us, answered honestly without fluff.
             </p>
 
             {/* Support card */}
@@ -90,7 +90,7 @@ export default function FAQSection({ scrollToForm }) {
                 </span>
               </div>
               <p className="text-xs text-zinc-400 leading-relaxed mb-6">
-                Every brand's situation is different. Book a free 15-minute call — we'll answer everything specific to your account.
+                Every brand's situation is different. Book a free 15-minute call to get answers specific to your account.
               </p>
               <button
                 onClick={scrollToForm}

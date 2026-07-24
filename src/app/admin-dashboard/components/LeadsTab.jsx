@@ -357,6 +357,7 @@ function LeadDetailPanel({
 
   const uniqueTimeline = useMemo(() => {
     const list = [...(lead.timeline || [])];
+    const dismissed = Array.isArray(lead.dismissedTasks) ? lead.dismissedTasks : [];
 
     // Auto-inject dynamic system action items (2-hour follow-up for fresh leads & 24-hour research for booked meetings)
     let leadCreatedDate = null;
@@ -369,7 +370,17 @@ function LeadDetailPanel({
       const timeDiffMs = now.getTime() - leadCreatedDate.getTime();
       const isMeetingBooked = Boolean(lead.meetingBooked || lead.status === "meeting_booked");
 
-      if (isMeetingBooked && timeDiffMs >= 0 && timeDiffMs <= 24 * 60 * 60 * 1000) {
+      const isResDismissed = dismissed.includes(`recent_meeting_res_${lead.id}`) ||
+                             dismissed.includes(`sys_24h_research_${lead.id}`) ||
+                             dismissed.includes(`Task: Conduct client background & account research`) ||
+                             dismissed.some(d => typeof d === "string" && d.includes("background & account research"));
+
+      const isFuDismissed = dismissed.includes(`recent_lead_fu_${lead.id}`) ||
+                            dismissed.includes(`sys_2h_followup_${lead.id}`) ||
+                            dismissed.includes(`Action Item: Set follow-up email within 2 hours`) ||
+                            dismissed.some(d => typeof d === "string" && d.includes("follow-up email within 2 hours"));
+
+      if (isMeetingBooked && !isResDismissed && timeDiffMs >= 0 && timeDiffMs <= 24 * 60 * 60 * 1000) {
         const due1d = new Date(leadCreatedDate.getTime() + 24 * 60 * 60 * 1000);
         list.unshift({
           id: `recent_meeting_res_${lead.id}`,
@@ -381,7 +392,7 @@ function LeadDetailPanel({
           adminName: "System",
           isSystemGenerated: true
         });
-      } else if (!isMeetingBooked && (lead.status === "new" || !lead.status) && timeDiffMs >= 0 && timeDiffMs <= 2 * 60 * 60 * 1000) {
+      } else if (!isMeetingBooked && !isFuDismissed && (lead.status === "new" || !lead.status) && timeDiffMs >= 0 && timeDiffMs <= 2 * 60 * 60 * 1000) {
         const due2h = new Date(leadCreatedDate.getTime() + 2 * 60 * 60 * 1000);
         list.unshift({
           id: `recent_lead_fu_${lead.id}`,
@@ -399,12 +410,13 @@ function LeadDetailPanel({
     const seen = new Set();
     return list.filter(item => {
       const textVal = item.text || item.title || "";
+      if (dismissed.includes(item.id) || dismissed.includes(textVal)) return false;
       const key = item.id || `${textVal}_${item.timestamp?.seconds || item.timestamp}`;
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
     });
-  }, [lead.timeline, lead.createdAt, lead.meetingBooked, lead.status, lead.id]);
+  }, [lead.timeline, lead.dismissedTasks, lead.createdAt, lead.meetingBooked, lead.status, lead.id]);
 
   const handleCopy = (text, field) => {
     if (!text) return;

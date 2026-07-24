@@ -6,7 +6,7 @@ import {
   Flame, Clock, CheckCircle2, MessageSquare, Terminal, Search, Download, Trash2, RefreshCw, Mail, Phone,
   Filter, ChevronDown, ChevronUp, RotateCcw
 } from "lucide-react";
-import { collection, query, orderBy, limit, where, onSnapshot, doc, updateDoc, serverTimestamp, getDocs, writeBatch, deleteDoc, getDoc } from "firebase/firestore";
+import { collection, query, orderBy, limit, where, onSnapshot, doc, updateDoc, serverTimestamp, getDocs, writeBatch, deleteDoc, getDoc, arrayUnion } from "firebase/firestore";
 
 /* ─────────────────────────────────────────
    HELPERS & CONFIGS
@@ -810,15 +810,29 @@ export default function OverviewTab({
         const leadSnap = await getDoc(leadRef);
         if (leadSnap.exists()) {
           const currentTimeline = leadSnap.data().timeline || [];
+          const rawId = item.id ? item.id.replace(`item_${targetLeadId}_`, "").replace(`tl_${targetLeadId}_`, "") : null;
           const updatedTimeline = currentTimeline.filter(t => {
-            const rawId = item.id ? item.id.replace(`item_${targetLeadId}_`, "").replace(`tl_${targetLeadId}_`, "") : null;
             if (t.id && rawId && (t.id === rawId || t.id === item.id)) return false;
             const tText = (t.text || t.title || t.details || "").trim();
             const itemText = (item.title || "").trim();
             if (tText && itemText && tText === itemText) return false;
             return true;
           });
-          await updateDoc(leadRef, { timeline: updatedTimeline });
+
+          const dismissKeys = [
+            item.id,
+            item.title,
+            rawId,
+            `recent_meeting_res_${targetLeadId}`,
+            `recent_lead_fu_${targetLeadId}`,
+            "Task: Conduct client background & account research",
+            "Action Item: Set follow-up email within 2 hours"
+          ].filter(Boolean);
+
+          await updateDoc(leadRef, {
+            timeline: updatedTimeline,
+            dismissedTasks: arrayUnion(...dismissKeys)
+          });
         }
       }
     } catch (err) {
@@ -835,7 +849,19 @@ export default function OverviewTab({
         const leadRef = doc(db, "leads", targetLeadId);
         const leadSnap = await getDoc(leadRef);
         if (leadSnap.exists()) {
-          await updateDoc(leadRef, { timeline: [] });
+          const allItemKeys = (group.items || []).flatMap(it => [
+            it.id,
+            it.title,
+            `recent_meeting_res_${targetLeadId}`,
+            `recent_lead_fu_${targetLeadId}`,
+            "Task: Conduct client background & account research",
+            "Action Item: Set follow-up email within 2 hours"
+          ]).filter(Boolean);
+
+          await updateDoc(leadRef, {
+            timeline: [],
+            dismissedTasks: arrayUnion(...allItemKeys)
+          });
         }
       }
       if (Array.isArray(group.items)) {
@@ -881,12 +907,16 @@ export default function OverviewTab({
       };
 
       const items = [];
+      const dismissed = Array.isArray(lead.dismissedTasks) ? lead.dismissedTasks : [];
 
       // 1. Map real lead timeline entries if available (ONLY manually created admin items)
       if (Array.isArray(lead.timeline) && lead.timeline.length > 0) {
         lead.timeline.forEach((entry, idx) => {
           const rawText = (entry.text || entry.title || entry.details || "").trim();
           if (isSystemClutter(rawText, entry)) return;
+
+          const entryId = entry.id ? `item_${lead.id}_${entry.id}` : `tl_${lead.id}_${idx}`;
+          if (dismissed.includes(entryId) || dismissed.includes(entry.id) || dismissed.includes(rawText)) return;
 
           let dDate = entry.dueDate || null;
           let dTime = entry.dueTime || null;
@@ -908,7 +938,7 @@ export default function OverviewTab({
           else if (rawType.includes("followup") || rawType.includes("follow_up")) normType = "followup";
 
           items.push({
-            id: entry.id ? `item_${lead.id}_${entry.id}` : `tl_${lead.id}_${idx}`,
+            id: entryId,
             type: normType,
             title: rawText,
             dueDate: dDate || todayStr,
@@ -929,7 +959,17 @@ export default function OverviewTab({
         const timeDiffMs = now.getTime() - leadCreatedDate.getTime();
         const isMeetingBooked = Boolean(lead.meetingBooked || lead.status === "meeting_booked");
 
-        if (isMeetingBooked && timeDiffMs >= 0 && timeDiffMs <= 24 * 60 * 60 * 1000) {
+        const isResDismissed = dismissed.includes(`recent_meeting_res_${lead.id}`) ||
+                               dismissed.includes(`sys_24h_research_${lead.id}`) ||
+                               dismissed.includes(`Task: Conduct client background & account research`) ||
+                               dismissed.some(d => typeof d === "string" && d.includes("background & account research"));
+
+        const isFuDismissed = dismissed.includes(`recent_lead_fu_${lead.id}`) ||
+                              dismissed.includes(`sys_2h_followup_${lead.id}`) ||
+                              dismissed.includes(`Action Item: Set follow-up email within 2 hours`) ||
+                              dismissed.some(d => typeof d === "string" && d.includes("follow-up email within 2 hours"));
+
+        if (isMeetingBooked && !isResDismissed && timeDiffMs >= 0 && timeDiffMs <= 24 * 60 * 60 * 1000) {
           // New meeting booked within last 24h: 1-day (24h) timer to do account/client background research
           const due1d = new Date(leadCreatedDate.getTime() + 24 * 60 * 60 * 1000);
           items.push({
@@ -940,7 +980,7 @@ export default function OverviewTab({
             dueTime: due1d.toTimeString().slice(0, 5),
             isCompleted: false
           });
-        } else if (!isMeetingBooked && (lead.status === "new" || !lead.status) && timeDiffMs >= 0 && timeDiffMs <= 2 * 60 * 60 * 1000) {
+        } else if (!isMeetingBooked && !isFuDismissed && (lead.status === "new" || !lead.status) && timeDiffMs >= 0 && timeDiffMs <= 2 * 60 * 60 * 1000) {
           // Brand new inbound lead (unbooked) created within last 2 hours: 2-hour reminder to set follow-up email
           const due2h = new Date(leadCreatedDate.getTime() + 2 * 60 * 60 * 1000);
           items.push({

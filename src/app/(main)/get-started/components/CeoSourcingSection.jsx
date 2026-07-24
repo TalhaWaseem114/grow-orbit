@@ -32,41 +32,50 @@ export default function CeoSourcingSection() {
     };
   }, []);
 
+  // Cloudinary image optimization helper (auto format AVIF/WebP, auto quality, & max width capping)
+  const optimizeCloudinaryUrl = (url, width = 600) => {
+    if (!url || typeof url !== "string") return url;
+    if (url.includes("cloudinary.com") && !url.includes("f_auto,q_auto")) {
+      return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width}/`);
+    }
+    return url;
+  };
+
   const sourcingPics = [
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040764/grow_orbit_ceo_pics/2.avif",
-      title: "Guangzhou Sourcing Fair",
-      desc: "Meeting with suppliers to inspect product catalogs and verify manufacturing credentials."
+      title: "Guangzhou Sourcing Expo",
+      desc: "Vetting new suppliers, inspecting product catalogs, and verifying manufacturer credentials on the ground."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040765/grow_orbit_ceo_pics/3.avif",
-      title: "Supplier Partnership Agreement",
-      desc: "Securing exclusive distribution rights and direct supply contracts for our clients' brands."
+      title: "Direct Factory Contract Deal",
+      desc: "Negotiating direct supply terms and securing favorable pricing without middleman markups."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040766/grow_orbit_ceo_pics/4.avif",
-      title: "Quality Check at Minstar Factory",
-      desc: "On-site quality audit of raw materials and strict inspection of production lines."
+      title: "Minstar Factory Quality Audit",
+      desc: "Inspecting raw materials, tooling standards, and quality control procedures on the assembly floor."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040767/grow_orbit_ceo_pics/5.avif",
-      title: "Supplier Factory Visit",
-      desc: "Fostering long-term supplier relationships directly on the manufacturing shop floor."
+      title: "On-Site Production Inspection",
+      desc: "Reviewing manufacturing capacity and building long-term ties directly on the factory floor."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040768/grow_orbit_ceo_pics/6.avif",
-      title: "Sourcing Welcome Ceremony",
-      desc: "Establishing close strategic ties to ensure priority production scheduling."
+      title: "Executive Supplier Partnership",
+      desc: "Establishing strategic manufacturer partnerships to lock in priority production scheduling."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040769/grow_orbit_ceo_pics/7.avif",
-      title: "Sourcing Center, China",
-      desc: "Reviewing logistics hubs and checking packaging durability on-site."
+      title: "Transit Between Supplier Hubs",
+      desc: "Traveling across manufacturing cities by high-speed rail for back-to-back factory audits."
     },
     {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040771/grow_orbit_ceo_pics/8.avif",
-      title: "Relationship Building Dinner",
-      desc: "Developing strong supplier relationships beyond business discussions for better negotiations."
+      title: "Strategic Supplier Dinner",
+      desc: "Building trusted executive relationships with factory owners for priority lead times and negotiation leverage."
     }
   ];
 
@@ -79,27 +88,27 @@ export default function CeoSourcingSection() {
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
         {/* CEO MESSAGE GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-16">
-          
+
           {/* Left Side: CEO Image Container */}
           <div className="lg:col-span-5 flex justify-center">
-            <div 
+            <div
               className="relative group w-full max-w-[400px] aspect-[4/5] rounded-[36px] overflow-hidden bg-zinc-900 transition-all duration-300 hover:scale-[1.01]"
               style={{
-                border: "3px solid rgba(255, 255, 255, 0.15)",
-                boxShadow: "10px 10px 30px rgba(0, 0, 0, 0.5), -10px -10px 30px rgba(255, 255, 255, 0.02)"
+                border: "3px solid rgba(255, 255, 255, 0.07)",
+                boxShadow: "0 20px 40px rgba(0, 0, 0, 0.6)"
               }}
             >
               <Image
-                src="https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif"
+                src={optimizeCloudinaryUrl("https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif", 800)}
                 alt="Coach Ali Haider - CEO & Founder"
                 fill
-                sizes="(max-width: 1024px) 100vw, 40vw"
+                sizes="(max-width: 1024px) 100vw, 400px"
                 className="object-cover transition-all duration-750 group-hover:scale-105"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent" />
-              
-              <div className="absolute bottom-6 left-6 right-6 bg-white/5 backdrop-blur-md border border-white/10 p-4 rounded-2xl">
+
+              <div className="absolute bottom-6 left-6 right-6 bg-zinc-950/60 backdrop-blur-md border border-white/10 p-4 rounded-2xl">
                 <p className="text-white font-black text-sm uppercase tracking-wider">Coach Ali Haider</p>
                 <p className="text-orange-500 text-xs font-bold uppercase tracking-widest mt-1">CEO, Grow Orbit</p>
               </div>
@@ -111,7 +120,7 @@ export default function CeoSourcingSection() {
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 text-orange-500 font-bold uppercase tracking-[0.2em] text-[10px] mb-6">
               <Quote size={12} className="rotate-180" /> Partner Message
             </div>
-            
+
             <h2 className="text-3xl sm:text-5xl font-black font-montserrat tracking-tight text-white uppercase leading-tight mb-8">
               Sourcing & Scaling <br/>
               <span className="text-orange-500 italic font-light normal-case" style={{ fontFamily: "'Playfair Display', serif" }}>At the Source.</span>
@@ -122,7 +131,7 @@ export default function CeoSourcingSection() {
                 Hey, I'm Ali. I didn't start selling on Amazon because I wanted to look at spreadsheets. I started because I wanted to <span className="text-white font-semibold">build something out of nothing</span>.
               </p>
               <p>
-                At Grow Orbit, we study what works, drop the hype, and show you where the current runs. We physically visit factories in China, verify quality, and manage logistics firsthand so you can scale safely. If you're ready to grow your brand with a team that acts like partners, let's talk.
+                At Grow Orbit, we drop the hype and <span className="text-white font-semibold">build winning brands</span>. Whether launching from <span className="text-white font-semibold">ground zero</span> or <span className="text-white font-semibold">scaling an established store</span>, we physically visit factories in China and handle logistics firsthand so you can <span className="text-white font-semibold">launch and scale safely</span>. Ready to build or expand? Let's talk.
               </p>
             </div>
 
@@ -156,7 +165,7 @@ export default function CeoSourcingSection() {
           <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-orange-500/10 text-orange-500 font-bold uppercase tracking-wider text-[9px] mb-4">
             <Globe size={10} /> Sourcing Trip Highlights
           </div>
-          
+
           {/* Carousel Slider Wrapper with Left/Right floating overlay arrows */}
           <div className="relative group/carousel mb-5 -mr-6 sm:-mr-12 pr-6 sm:pr-12">
             {/* Left Floating Arrow */}
@@ -174,32 +183,34 @@ export default function CeoSourcingSection() {
             </button>
 
             {/* Horizontal Sourcing Carousel Slider (Going off-screen) */}
-            <div 
+            <div
               ref={carouselRef}
               onScroll={handleScroll}
               className="flex gap-4 sm:gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scroll-smooth select-none no-scrollbar"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {sourcingPics.map((pic, i) => (
-                <div 
-                  key={i} 
+                <div
+                  key={i}
                   className="min-w-[220px] sm:min-w-[280px] md:min-w-[300px] aspect-[3/4] relative rounded-[28px] overflow-hidden bg-zinc-900 group cursor-pointer snap-start transition-all duration-300 hover:scale-[1.01]"
                   onClick={() => setActiveImage(pic)}
                   style={{
-                    border: "3px solid rgba(255, 255, 255, 0.15)",
-                    boxShadow: "8px 8px 24px rgba(0, 0, 0, 0.6), -8px -8px 24px rgba(255, 255, 255, 0.01)"
+                    border: "3px solid rgba(255, 255, 255, 0.07)",
+                    boxShadow: "0 12px 30px rgba(0, 0, 0, 0.6)"
                   }}
                 >
                   <Image
-                    src={pic.img}
+                    src={optimizeCloudinaryUrl(pic.img, 500)}
                     alt={pic.title}
                     fill
-                    sizes="(max-width: 640px) 100vw, 300px"
+                    sizes="(max-width: 640px) 220px, 300px"
+                    loading="lazy"
+                    decoding="async"
                     className="object-cover transition-transform duration-750 ease-out group-hover:scale-105"
                   />
                   {/* Gradient overlay to show text in bottom */}
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/20 to-transparent" />
-                  
+
                   {/* Text badge at bottom */}
                   <div className="absolute bottom-4 left-4 right-4 z-10">
                     <p className="text-white font-montserrat font-semibold text-[11px] sm:text-xs uppercase tracking-tight leading-tight">
@@ -253,7 +264,7 @@ export default function CeoSourcingSection() {
 
             {/* Minimal Scroll Progress Bar */}
             <div className="flex-1 max-w-[120px] h-[2px] bg-zinc-800 rounded-full overflow-hidden relative">
-              <div 
+              <div
                 className="absolute top-0 bottom-0 left-0 bg-orange-500 rounded-full transition-all duration-100"
                 style={{ width: `${scrollProgress}%` }}
               />
@@ -267,13 +278,13 @@ export default function CeoSourcingSection() {
 
         {/* Lightbox Modal */}
         {activeImage && (
-          <div 
+          <div
             className="fixed inset-0 bg-black/95 z-[100] flex flex-col items-center justify-center p-4 sm:p-6 backdrop-blur-sm transition-all duration-300"
             onClick={() => setActiveImage(null)}
           >
             <div className="relative max-w-2xl w-full flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
               <div className="relative w-full max-h-[70vh] flex items-center justify-center bg-zinc-950 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-                <button 
+                <button
                   className="absolute top-4 right-4 text-white hover:scale-105 bg-black/60 hover:bg-zinc-900 border border-white/15 w-8 h-8 rounded-full flex items-center justify-center text-lg font-light focus:outline-none transition-all z-40"
                   onClick={() => setActiveImage(null)}
                 >

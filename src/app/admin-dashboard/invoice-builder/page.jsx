@@ -25,6 +25,27 @@ const fmtCurrency = (amount, currency = "USD") => {
   return `${sym}${Number(amount || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 };
 
+const formatDateStr = (dateStr, longFormat = false) => {
+  if (!dateStr) return "—";
+  try {
+    const parts = String(dateStr).split("-");
+    if (parts.length === 3) {
+      const [y, m, d] = parts.map(Number);
+      if (y && m && d) {
+        const dt = new Date(y, m - 1, d);
+        return dt.toLocaleDateString("en-US", {
+          month: longFormat ? "long" : "short",
+          day: "numeric",
+          year: "numeric"
+        });
+      }
+    }
+    return dateStr;
+  } catch (e) {
+    return dateStr;
+  }
+};
+
 const getServiceIcon = (name = "") => {
   const n = name.toLowerCase();
   if (n.includes("account") || n.includes("management")) {
@@ -408,7 +429,20 @@ function InvoiceBuilderContent() {
     }));
   };
 
+  const validateClientInfo = () => {
+    const nameStr = (clientName || companyName || "").trim();
+    const emailStr = (clientEmail || "").trim();
+
+    if (!nameStr || !emailStr) {
+      setExpandedSections(prev => ({ ...prev, clientInfo: true }));
+      alert("Missing Client Information:\n\nPlease enter the Client Full Name (or Company Name) and Client Email Address before exporting or saving the invoice.");
+      return false;
+    }
+    return true;
+  };
+
   const handleExportPDF = async () => {
+    if (!validateClientInfo()) return;
     setExporting(true);
     const originalTitle = document.title;
     document.title = `Grow Orbit pdf invoice (${invoiceNumberPreview})`;
@@ -423,6 +457,7 @@ function InvoiceBuilderContent() {
   };
 
   const handleSaveInvoice = async () => {
+    if (!validateClientInfo()) return;
     setSaving(true);
     try {
       const token = await auth.currentUser?.getIdToken() || "";
@@ -637,30 +672,6 @@ function InvoiceBuilderContent() {
             {saving ? <Loader size={13} className="animate-spin" /> : <Save size={13} />}
             {invoiceId || hasSaved ? "Update & Save" : "Save Invoice"}
           </button>
-
-          {/* Email Client Button */}
-          <button
-            onClick={() => setShowEmailModal(true)}
-            disabled={!isEmailActive}
-            style={{
-              border: "none",
-              background: !isEmailActive ? "rgba(255,255,255,0.03)" : "#22c55e",
-              color: !isEmailActive ? "#525252" : "#fff",
-              cursor: !isEmailActive ? "not-allowed" : "pointer",
-              fontSize: "11px",
-              fontWeight: 800,
-              display: "flex",
-              alignItems: "center",
-              gap: 6,
-              padding: "8px 16px",
-              borderRadius: "8px",
-              transition: "all 0.2s"
-            }}
-            title={!isEmailActive ? "Save the invoice and Export the PDF first to send an email." : "Email Invoice to Client"}
-          >
-            <Mail size={13} />
-            Email Client
-          </button>
         </div>
       </div>
 
@@ -726,28 +737,6 @@ function InvoiceBuilderContent() {
                   />
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Client Label 1</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Valued Partner"
-                      value={clientLabel1}
-                      onChange={e => setClientLabel1(e.target.value)}
-                      style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
-                    />
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                    <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Client Label 2</label>
-                    <input
-                      type="text"
-                      placeholder="e.g. Business Client"
-                      value={clientLabel2}
-                      onChange={e => setClientLabel2(e.target.value)}
-                      style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
-                    />
-                  </div>
-                </div>
               </>
             )}
           </div>
@@ -1172,8 +1161,8 @@ function InvoiceBuilderContent() {
 
                 {/* Invoice Text Overlay */}
                 <div style={{ position: "absolute", top: 38, right: 55, textAlign: "right", zIndex: 2 }}>
-                  <div style={{ fontSize: "36px", fontWeight: "900", color: "#fff", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-montserrat)" }}>INVOICE</div>
-                  <div style={{ fontSize: "14px", fontWeight: "800", color: "#f97316", marginTop: 6, letterSpacing: "1px", fontFamily: "var(--font-montserrat)" }}>#{invoiceNumberPreview}</div>
+                  <div style={{ fontSize: "36px", fontWeight: "900", color: "#f97316", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-montserrat)" }}>INVOICE</div>
+                  <div style={{ fontSize: "14px", fontWeight: "800", color: "#ffffff", marginTop: 6, letterSpacing: "1px", fontFamily: "var(--font-montserrat)" }}>#{invoiceNumberPreview}</div>
                 </div>
 
                 {/* Logo & Tagline */}
@@ -1197,8 +1186,32 @@ function InvoiceBuilderContent() {
                 </div>
               </div>
 
-              {/* Orange Separator Line */}
-              <div style={{ height: "2px", background: "#fdba74", marginBottom: "28px" }} />
+              {/* Edge-to-Edge Dashed Orange Line with Black End Half-Circle Cutouts */}
+              <div style={{ position: "relative", margin: "20px -55px 28px", height: "0px" }}>
+                <div style={{
+                  position: "absolute",
+                  left: "-16px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: "28px",
+                  height: "28px",
+                  borderRadius: "50%",
+                  background: "#0b0f19",
+                  zIndex: 5
+                }} />
+                <div style={{ borderTop: "3px dashed #f97316", width: "100%" }} />
+                <div style={{
+                  position: "absolute",
+                  right: "-16px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  width: "28px",
+                  height: "28px",
+                  borderRadius: "50%",
+                  background: "#0b0f19",
+                  zIndex: 5
+                }} />
+              </div>
 
               {/* Three-Column Metadata Block */}
               <div style={{
@@ -1210,20 +1223,31 @@ function InvoiceBuilderContent() {
                 {/* 1. Billed To Column */}
                 <div style={{ width: "32%", display: "flex", flexDirection: "column" }}>
                   <div style={{ fontSize: "10.5px", fontWeight: "900", color: "#ef4444", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "1px", fontFamily: "var(--font-montserrat)" }}>BILLED TO</div>
-                  <div style={{ fontSize: "15px", fontWeight: "800", color: "#0f172a", marginBottom: "8px", fontFamily: "var(--font-montserrat)" }}>{companyName || clientName || "Valued Client"}</div>
+                  <div style={{ fontSize: "15px", fontWeight: "800", color: "#0f172a", marginBottom: "8px", fontFamily: "var(--font-montserrat)" }}>{clientName || companyName || "Valued Client"}</div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#475569", fontSize: "11.5px" }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                      <span style={{ fontWeight: "600" }}>{clientLabel1 || "Valued Partner"}</span>
+                      {companyName ? (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
+                          <path d="M9 22v-4h6v4"/>
+                          <path d="M8 6h.01"/><path d="M16 6h.01"/><path d="M12 6h.01"/>
+                          <path d="M12 10h.01"/><path d="M12 14h.01"/>
+                          <path d="M16 10h.01"/><path d="M16 14h.01"/>
+                          <path d="M8 10h.01"/><path d="M8 14h.01"/>
+                        </svg>
+                      ) : (
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      )}
+                      <span style={{ fontWeight: "600" }}>{companyName || clientName || clientLabel1 || "Valued Partner"}</span>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#475569", fontSize: "11.5px" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      <span style={{ fontWeight: "600" }}>{clientLabel2 || "Business Client"}</span>
+                      <span style={{ fontWeight: "600" }}>{clientAddress || clientLabel2 || "Business Client"}</span>
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#475569", fontSize: "11.5px" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                      <span style={{ fontWeight: "500", textDecoration: "none" }}>{clientEmail || "support@groworbitofficial.com"}</span>
+                      <span style={{ fontWeight: "500", textDecoration: "none" }}>{clientEmail || "client@company.com"}</span>
                     </div>
                   </div>
                 </div>
@@ -1254,11 +1278,11 @@ function InvoiceBuilderContent() {
                   gap: "8px"
                 }}>
                   {[
-                    { label: "INVOICE DATE", val: issueDate ? new Date(issueDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—" },
-                    { label: "DUE DATE", val: dueDate ? new Date(dueDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—" },
+                    { label: "INVOICE DATE", val: formatDateStr(issueDate) },
+                    { label: "DUE DATE", val: formatDateStr(dueDate) },
                     { label: "PAYMENT TERMS", val: paymentTerms || "Net 14 Days" },
                     { label: "INVOICE ID", val: invoiceNumberPreview },
-                    { label: "START DATE", val: startDate ? new Date(startDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : (issueDate ? new Date(issueDate).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : "—") }
+                    { label: "START DATE", val: formatDateStr(startDate || issueDate) }
                   ].map((row, i) => (
                     <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "9.5px" }}>
                       <span style={{ fontWeight: "800", color: "#0f172a", letterSpacing: "0.5px", fontFamily: "var(--font-montserrat)" }}>{row.label}</span>
@@ -1375,7 +1399,7 @@ We appreciate your trust and look forward to
 helping you achieve exceptional growth on Amazon.`}
                       </pre>
                       <div style={{ marginTop: "12px", fontSize: "10px", color: "#f8fafc", fontFamily: "var(--font-montserrat)", fontWeight: "500" }}>
-                        Payment is due by {dueDate ? new Date(dueDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "the specified due date"}.
+                        Payment is due by {dueDate ? formatDateStr(dueDate, true) : "the specified due date"}.
                       </div>
                     </div>
                   </div>
@@ -1437,11 +1461,11 @@ helping you achieve exceptional growth on Amazon.`}
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", fontSize: "10px", lineHeight: "1.6", gap: "3px" }}>
                       <div style={{ fontWeight: "800", color: "#0f172a", fontSize: "11px", fontFamily: "var(--font-montserrat)" }}>BANK TRANSFER</div>
-                      <div style={{ color: "#64748b" }}>Bank Name: <span style={{ fontWeight: "700", color: "#475569" }}>Wise (TransferWise)</span></div>
-                      <div style={{ color: "#64748b" }}>Account Name: <span style={{ fontWeight: "700", color: "#475569" }}>Grow Orbit LLC</span></div>
-                      <div style={{ color: "#64748b" }}>Account Number: <span style={{ fontWeight: "700", color: "#475569" }}>831245678</span></div>
-                      <div style={{ color: "#64748b" }}>Routing Number: <span style={{ fontWeight: "700", color: "#475569" }}>026073150</span></div>
-                      <div style={{ color: "#64748b" }}>SWIFT / BIC: <span style={{ fontWeight: "700", color: "#475569" }}>TRWIBEB1XXX</span></div>
+                      <div style={{ color: "#64748b" }}>Bank Name: <span style={{ fontWeight: "700", color: "#475569" }}>{bankName || "Wise (TransferWise)"}</span></div>
+                      <div style={{ color: "#64748b" }}>Account Name: <span style={{ fontWeight: "700", color: "#475569" }}>{bankAccountName || "Grow Orbit LLC"}</span></div>
+                      <div style={{ color: "#64748b" }}>Account Number: <span style={{ fontWeight: "700", color: "#475569" }}>{bankAccountNumber || "831245678"}</span></div>
+                      <div style={{ color: "#64748b" }}>Routing Number: <span style={{ fontWeight: "700", color: "#475569" }}>{bankRoutingNumber || "026073150"}</span></div>
+                      <div style={{ color: "#64748b" }}>SWIFT / BIC: <span style={{ fontWeight: "700", color: "#475569" }}>{bankSwiftBic || "TRWIBEB1XXX"}</span></div>
                     </div>
                   </div>
 
@@ -1455,7 +1479,7 @@ helping you achieve exceptional growth on Amazon.`}
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", fontSize: "10px", lineHeight: "1.6", gap: "3px" }}>
                       <div style={{ fontWeight: "800", color: "#0f172a", fontSize: "11px", fontFamily: "var(--font-montserrat)" }}>PAYPAL</div>
-                      <div style={{ color: "#64748b" }}>Recipient: <span style={{ fontWeight: "750", color: "#1d4ed8" }}>support@groworbitofficial.com</span></div>
+                      <div style={{ color: "#64748b" }}>Recipient: <span style={{ fontWeight: "750", color: "#1d4ed8" }}>{paypalEmail || "support@groworbitofficial.com"}</span></div>
                     </div>
                   </div>
 
@@ -1470,7 +1494,7 @@ helping you achieve exceptional growth on Amazon.`}
                         </div>
                         <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                           <span style={{ fontSize: "10.5px", fontWeight: "900", color: "#ea580c", letterSpacing: "0.5px", fontFamily: "var(--font-montserrat)" }}>DUE DATE</span>
-                          <span style={{ fontSize: "12px", fontWeight: "900", color: "#0f172a" }}>{dueDate ? new Date(dueDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "—"}</span>
+                          <span style={{ fontSize: "12px", fontWeight: "900", color: "#0f172a" }}>{formatDateStr(dueDate, true)}</span>
                         </div>
                       </div>
 
@@ -1537,15 +1561,71 @@ helping you achieve exceptional growth on Amazon.`}
                   </div>
                 </div>
 
-                {/* Digital signature Ali right */}
-                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
-                  <div style={{ fontSize: "18px", fontFamily: "'Georgia', 'Times New Roman', serif", fontWeight: 400, color: "#0f172a", letterSpacing: "1px", marginBottom: "2px", fontStyle: "italic" }}>Ali Haider</div>
-                  <div style={{ width: "100px", height: "2px", background: "linear-gradient(90deg, transparent, #ea580c, transparent)", margin: "0 auto 4px", borderRadius: "1px" }}></div>
-                  <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "4px" }}>
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="M9 12l2 2 4-4"></path></svg>
-                    <span style={{ fontSize: "7px", fontWeight: 800, color: "#ea580c", textTransform: "uppercase", letterSpacing: "1px" }}>Digitally Signed</span>
+                {/* Digital signature card right */}
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  <div style={{
+                    position: "relative",
+                    overflow: "hidden",
+                    width: "185px",
+                    background: "#f8fafc",
+                    border: "1px solid #e2e8f0",
+                    borderRadius: "12px",
+                    padding: "14px 16px 12px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center"
+                  }}>
+                    {/* Top-Right Decorative Corner Shape Accent */}
+                    <div style={{
+                      position: "absolute",
+                      top: 0,
+                      right: 0,
+                      width: "65px",
+                      height: "65px",
+                      pointerEvents: "none"
+                    }}>
+                      <svg width="65" height="65" viewBox="0 0 65 65" fill="none">
+                        <path d="M65 0 H20 L65 50 Z" fill="#f6e7e0" />
+                      </svg>
+                    </div>
+
+                    {/* Signature Text */}
+                    <div style={{
+                      fontSize: "20px",
+                      fontFamily: "'Georgia', 'Times New Roman', serif",
+                      fontWeight: 400,
+                      color: "#0f172a",
+                      letterSpacing: "0.5px",
+                      marginBottom: "6px"
+                    }}>
+                      Ali Haider
+                    </div>
+
+                    {/* Orange Horizontal Gradient Line */}
+                    <div style={{
+                      width: "100px",
+                      height: "2px",
+                      background: "radial-gradient(ellipse at center, #ea580c 0%, rgba(234,88,12,0) 75%)",
+                      marginBottom: "10px"
+                    }} />
+
+                    {/* Digitally Signed Badge */}
+                    <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        <path d="M9 12l2 2 4-4" />
+                      </svg>
+                      <span style={{ fontSize: "7.5px", fontWeight: "750", color: "#ea580c", textTransform: "uppercase", letterSpacing: "0.8px", fontFamily: "var(--font-montserrat)" }}>
+                        DIGITALLY SIGNED
+                      </span>
+                    </div>
                   </div>
-                  <span style={{ fontSize: "7.5px", color: "#64748b", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.5px" }}>Founder & CEO, Grow Orbit LLC</span>
+
+                  {/* Title Label Below Card */}
+                  <span style={{ fontSize: "8px", color: "#64748b", fontWeight: "700", textTransform: "uppercase", letterSpacing: "0.5px", marginTop: "6px" }}>
+                    Founder & CEO, Grow Orbit LLC
+                  </span>
                 </div>
               </div>
 
@@ -1558,121 +1638,6 @@ helping you achieve exceptional growth on Amazon.`}
       </div>
     </div>
 
-    {/* Email Modal */}
-    {showEmailModal && (
-      <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.8)", display: "flex", justifyContent: "center", alignItems: "center", zIndex: 1000, padding: 20 }}>
-        <div style={{ background: "#0a0e17", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 16, width: "100%", maxWidth: "600px", display: "flex", flexDirection: "column", maxHeight: "90vh", overflow: "hidden", boxShadow: "0 20px 50px rgba(0,0,0,0.5)" }}>
-          {/* Modal Header */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 24px", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <Mail size={16} color="#ea580c" />
-              <h3 style={{ margin: 0, fontSize: 15, fontWeight: 800, color: "#fff", fontFamily: "var(--font-montserrat)" }}>Email Invoice</h3>
-            </div>
-            <button onClick={() => setShowEmailModal(false)} style={{ background: "none", border: "none", color: "#94a3b8", cursor: "pointer" }}>
-              <X size={18} />
-            </button>
-          </div>
-
-          {/* Modal Body */}
-          <div className="custom-scrollbar" style={{ padding: 24, overflowY: "auto", display: "flex", flexDirection: "column", gap: 18 }}>
-            <div style={{ fontSize: 11, color: "#94a3b8", lineHeight: 1.5, background: "rgba(234,88,12,0.05)", border: "1px dashed rgba(234,88,12,0.15)", borderRadius: 8, padding: 12, fontFamily: "var(--font-montserrat)" }}>
-              <strong>Workflow Instructions:</strong> First, upload your exported PDF to Google Drive, get the share link, and paste it below. Then you can copy the email draft or send it directly.
-            </div>
-
-            {/* To Field */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>To (Client Email)</label>
-              <input
-                type="email"
-                value={emailTo}
-                onChange={e => setEmailTo(e.target.value)}
-                style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
-                placeholder="client@email.com"
-              />
-            </div>
-
-            {/* Subject Field */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Subject</label>
-              <input
-                type="text"
-                value={emailSubject}
-                onChange={e => setEmailSubject(e.target.value)}
-                style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
-                placeholder="Invoice Subject"
-              />
-            </div>
-
-            {/* Google Drive Link */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Google Drive Share Link *</label>
-              <input
-                type="url"
-                value={gDriveLink}
-                onChange={e => setGDriveLink(e.target.value)}
-                style={{ background: "#0d111a", border: "1px dashed #ea580c", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
-                placeholder="https://drive.google.com/file/d/..."
-              />
-            </div>
-
-            {/* Custom message */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Custom Message / Note (Optional)</label>
-              <textarea
-                value={emailCustomMessage}
-                onChange={e => setEmailCustomMessage(e.target.value)}
-                style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none", minHeight: 80, resize: "vertical" }}
-                placeholder="Add a custom note to the client..."
-              />
-            </div>
-          </div>
-
-          {/* Modal Footer */}
-          <div style={{ padding: "18px 24px", borderTop: "1px solid rgba(255,255,255,0.06)", display: "flex", justifyContent: "flex-end", gap: 12, background: "rgba(0,0,0,0.2)" }}>
-            <button
-              onClick={handleCopyEmailTemplate}
-              disabled={!gDriveLink}
-              style={{
-                background: "transparent",
-                border: "1px solid rgba(255,255,255,0.1)",
-                color: !gDriveLink ? "#525252" : "#c0c0c0",
-                padding: "8px 16px",
-                borderRadius: 8,
-                fontSize: 11,
-                fontWeight: 700,
-                cursor: !gDriveLink ? "not-allowed" : "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 6
-              }}
-            >
-              {copiedTemplate ? <Check size={13} color="#22c55e" /> : <Copy size={13} />}
-              {copiedTemplate ? "Copied!" : "Copy Email Body"}
-            </button>
-            <button
-              onClick={handleSendEmailDirectly}
-              disabled={sendingEmail || !gDriveLink || !emailTo}
-              style={{
-                background: (!gDriveLink || !emailTo) ? "rgba(255,255,255,0.02)" : "#ea580c",
-                color: (!gDriveLink || !emailTo) ? "#525252" : "#fff",
-                border: "none",
-                padding: "8px 16px",
-                borderRadius: 8,
-                fontSize: 11,
-                fontWeight: 800,
-                cursor: (!gDriveLink || !emailTo) ? "not-allowed" : "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: 6
-              }}
-            >
-              {sendingEmail ? <Loader size={13} className="animate-spin" /> : <Mail size={13} />}
-              Send Email
-            </button>
-          </div>
-        </div>
-      </div>
-    )}
     </>
   );
 }

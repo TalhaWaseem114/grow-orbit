@@ -257,13 +257,7 @@ export default function InvoicesTab() {
                 </div>
               </Link>
             </div>
-          ) : (
-            <Link href="/admin-dashboard/contract-builder" style={{ textDecoration: "none" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#3b82f6", color: "#fff", border: "none", borderRadius: 12, padding: "10px 16px", fontSize: 11, fontWeight: 800, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                <Plus size={14} /> New Contract
-              </div>
-            </Link>
-          )}
+          ) : null}
         </div>
       </div>
 
@@ -362,16 +356,6 @@ export default function InvoicesTab() {
                         </td>
                         <td style={{ padding: "16px", textAlign: "right" }}>
                           <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", alignItems: "center" }}>
-                            {/* Download PDF button */}
-                            <a
-                              href={`/api/invoices/${inv.id}/pdf`}
-                              download
-                              title="Download Invoice PDF"
-                              style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#c0c0c0", cursor: "pointer", transition: "all 0.2s" }}
-                            >
-                              <Download size={12} style={{ margin: "auto" }} />
-                            </a>
-
                             {/* Edit Button */}
                             <Link href={`/admin-dashboard/invoice-builder?id=${inv.id}`} title="Edit Invoice">
                               <div style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#a3a3a3", cursor: "pointer", transition: "all 0.2s" }}>

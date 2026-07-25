@@ -118,7 +118,7 @@ export const SANDBOX_DRAFTS = [
             <span style="font-size: 16px;">&#128269;</span>
           </td>
           <td valign="top" style="padding-bottom: 16px; color: #334155;">
-            <strong style="color: #0f172a;">Phase 1: Discovery &amp; Product Validation (Months 1&#8211;2)</strong><br>
+            <strong style="color: #0f172a;">Phase 1: Discovery &amp; Product Validation (Months 1 to 2)</strong><br>
             Identify and vet a winning product opportunity.
           </td>
         </tr>
@@ -127,7 +127,7 @@ export const SANDBOX_DRAFTS = [
             <span style="font-size: 16px;">&#128640;</span>
           </td>
           <td valign="top" style="padding-bottom: 16px; color: #334155;">
-            <strong style="color: #0f172a;">Phase 2: Market Entry (Launch) (Months 2&#8211;5)</strong><br>
+            <strong style="color: #0f172a;">Phase 2: Market Entry (Launch) (Months 2 to 5)</strong><br>
             Establish the Amazon presence and bring the product to market.
           </td>
         </tr>
@@ -136,7 +136,7 @@ export const SANDBOX_DRAFTS = [
             <span style="font-size: 16px;">&#128200;</span>
           </td>
           <td valign="top" style="padding-bottom: 16px; color: #334155;">
-            <strong style="color: #0f172a;">Phase 3: Brand Establishment (Months 5&#8211;9)</strong><br>
+            <strong style="color: #0f172a;">Phase 3: Brand Establishment (Months 5 to 9)</strong><br>
             Build initial sales velocity, credibility, and organic visibility.
           </td>
         </tr>
@@ -145,7 +145,7 @@ export const SANDBOX_DRAFTS = [
             <span style="font-size: 16px;">&#9889;</span>
           </td>
           <td valign="top" style="padding-bottom: 16px; color: #334155;">
-            <strong style="color: #0f172a;">Phase 4: Growth Acceleration (Months 9&#8211;16)</strong><br>
+            <strong style="color: #0f172a;">Phase 4: Growth Acceleration (Months 9 to 16)</strong><br>
             Scale inventory and advertising to secure first-page rankings.
           </td>
         </tr>
@@ -154,7 +154,7 @@ export const SANDBOX_DRAFTS = [
             <span style="font-size: 16px;">&#128081;</span>
           </td>
           <td valign="top" style="color: #334155;">
-            <strong style="color: #0f172a;">Phase 5: Market Leadership (Months 17&#8211;24)</strong><br>
+            <strong style="color: #0f172a;">Phase 5: Market Leadership (Months 17 to 24)</strong><br>
             Achieve durable organic dominance and category leadership.
           </td>
         </tr>
@@ -388,10 +388,138 @@ export const SANDBOX_DRAFTS = [
 </p>`
   },
   {
-    id: "sandbox-future-5",
-    subject: "Will be added in future",
-    headline: "Will be added in future",
+    id: "sandbox-o2-professional",
+    subject: "Your Custom Amazon Growth Proposal for O2 Professional 🚀",
+    headline: "Custom Amazon Growth Proposal | O2 Professional",
     body: `<!-- HIDE_DEFAULT_CTA -->
-<p style="font-size: 14px; line-height: 1.6; color: #475569;">Will be added in future</p>`
+<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi Shauky,</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  I hope you're doing well.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  A few days ago, you reached out to us regarding our <strong> Amazon Full Account Management</strong> service and booked a strategy call. Although we weren't able to connect, our team continued the research because we believed <strong>O2 Professional</strong> deserved a closer look.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  Over the past few days, we've completed a comprehensive competitor benchmark across O2's <strong> Hair Dryers, Flat Irons &amp; Straighteners, Curling Irons,</strong> and <strong>Hot Tools &amp; Accessories</strong> categories.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  Rather than sending a generic agency presentation, we decided to build a custom Amazon growth proposal based entirely on our findings.
+</p>
+
+<!-- Inside the Proposal Card (Table-based for maximum email client compatibility) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td style="background-color: #f8fafc; border-left: 4px solid #f97316; border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; border-radius: 8px; padding: 20px 18px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 14px;">
+        <tr>
+          <td style="font-size: 11px; font-weight: 800; color: #f97316; letter-spacing: 1.5px; text-transform: uppercase;">INSIDE THE PROPOSAL, YOU'LL FIND:</td>
+        </tr>
+      </table>
+
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.6; color: #475569;">
+        <tr>
+          <td width="28" valign="top" style="padding-bottom: 12px; padding-right: 8px;">
+            <span style="font-size: 16px;">&#128269;</span>
+          </td>
+          <td valign="top" style="padding-bottom: 12px; color: #334155;">
+            <strong style="color: #0f172a;">Category Competitor Benchmark:</strong><br>
+            A category-by-category benchmark showing who's leading each segment of the market.
+          </td>
+        </tr>
+        <tr>
+          <td width="28" valign="top" style="padding-bottom: 12px; padding-right: 8px;">
+            <span style="font-size: 16px;">&#128200;</span>
+          </td>
+          <td valign="top" style="padding-bottom: 12px; color: #334155;">
+            <strong style="color: #0f172a;">Revenue &amp; Unit Sales Intelligence:</strong><br>
+            Monthly revenue and unit sales of the top-performing brands in your product categories.
+          </td>
+        </tr>
+        <tr>
+          <td width="28" valign="top" style="padding-bottom: 12px; padding-right: 8px;">
+            <span style="font-size: 16px;">&#128248;</span>
+          </td>
+          <td valign="top" style="padding-bottom: 12px; color: #334155;">
+            <strong style="color: #0f172a;">Content &amp; Branding Audit:</strong><br>
+            The content and branding differences that separate the market leaders from the rest.
+          </td>
+        </tr>
+        <tr>
+          <td width="28" valign="top" style="padding-right: 8px;">
+            <span style="font-size: 16px;">&#128640;</span>
+          </td>
+          <td valign="top" style="color: #334155;">
+            <strong style="color: #0f172a;">Practical Growth Roadmap:</strong><br>
+            Covering Amazon launch, Premium Listing Images, A+ Content, Brand Store, SEO, PPC, and complete account management.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  Every recommendation has been tailored specifically for <strong>O2 Professional</strong>, rather than copied from a template.
+</p>
+
+<!-- Key Insight Card -->
+<div style="background-color: #fff7ed; border: 1px solid #ffedd5; border-radius: 8px; padding: 18px 20px; margin-bottom: 24px;">
+  <p style="font-size: 12px; font-weight: 800; color: #ea580c; text-transform: uppercase; letter-spacing: 1px; margin-top: 0; margin-bottom: 8px; font-family: 'Montserrat', sans-serif;">
+    &#128161; KEY RESEARCH INSIGHT
+  </p>
+  <p style="font-size: 13.5px; line-height: 1.65; color: #431407; margin: 0;">
+    Across nearly every category we analysed, the biggest difference between the highest-performing brands and everyone else wasn't the product itself, but how the brand was positioned on Amazon (its listing experience, premium content, Brand Store, and overall customer journey).
+  </p>
+</div>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  That's exactly what we break down in the proposal, along with how we believe O2 can compete effectively in the same space.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  I've attached the proposal to this email, and I'd genuinely appreciate your thoughts after you've had a chance to review it.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 20px;">
+  If it aligns with your plans, let's schedule a quick 20–30 minute strategy call to walk through the research together and answer any questions.
+</p>
+
+<!-- CTA Button (Table-based for GoDaddy / Gmail compatibility) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 28px; margin-bottom: 28px;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="center" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 14px 36px; border-radius: 50px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            <a href="https://docs.google.com/document/d/1Rsb5Motq1yydJAy7AP9Ndm22KrmP9lLq/edit?usp=drive_link&ouid=100299232765546189422&rtpof=true&sd=true" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;">
+              Review Growth Proposal
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- Contact & Scheduling Links Card -->
+<div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px;">
+  <p style="font-size: 13.5px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 12px;">
+    You can simply reply to this email, book a time that works for you using the link below, or message me directly on WhatsApp:
+  </p>
+  <p style="font-size: 13px; margin-top: 0; margin-bottom: 8px;">
+    &#128197; <strong>Schedule a Meeting:</strong> <a href="https://www.groworbitofficial.com/get-started/" target="_blank" style="color: #f97316; text-decoration: underline; font-weight: 600;">Book 20-30 Min Strategy Call</a>
+  </p>
+  <p style="font-size: 13px; margin: 0;">
+    &#128241; <strong>WhatsApp:</strong> <strong style="color: #f97316;">+1 (912) 820-5916</strong>
+  </p>
+</div>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 24px;">
+  Looking forward to hearing your thoughts.
+</p>`
   }
 ];

@@ -102,11 +102,7 @@ export const sandboxBody = `<!-- HIDE_DEFAULT_CTA -->
   <p style="font-size: 13px; margin: 0;">
     &#128241; <strong>WhatsApp:</strong> <strong style="color: #f97316;">+1 (912) 820-5916</strong>
   </p>
-</div>
-
-<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 8px;">
-  Best regards,
-</p>`;
+</div>`;
 
 export const SANDBOX_DRAFTS = [
   {

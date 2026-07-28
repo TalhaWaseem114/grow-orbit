@@ -146,7 +146,7 @@ export default function Navbar() {
 
         {/* ── Logo ── */}
         <div className="flex-1 flex justify-start">
-          <Link href="/" prefetch={false} className="flex items-center gap-2.5 no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-xl" aria-label="Grow Orbit Home">
+          <Link href="/" prefetch={false} className="flex items-center gap-2.5 no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-xl">
             <div className="relative flex items-center justify-center w-10 h-10">
               <Image
                 src="/logo.png"

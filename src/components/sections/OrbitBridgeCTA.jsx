@@ -8,7 +8,7 @@ export default function OrbitBridgeCTA({ scrollToForm }) {
       </p>
       <button
         onClick={scrollToForm}
-        className="inline-flex items-center gap-2 text-orange-700 font-black text-[11px] uppercase tracking-widest hover:gap-4 transition-all"
+        className="inline-flex items-center gap-2 text-orange-600 font-extrabold text-[11px] uppercase tracking-widest hover:gap-4 transition-all"
       >
         Book Your Free 15-Min Meeting <ArrowRight size={13} />
       </button>

@@ -108,9 +108,9 @@ export default function Portfolio() {
         {/* Editorial Header */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 border-b border-black/5 pb-10">
           <div className="max-w-xl">
-            <span className="text-orange-500 font-bold uppercase tracking-[0.3em] text-xs">Featured Work</span>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-1"><span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />Featured Work</div>
             <h2 className="text-[48px] font-montserrat font-black leading-[1] tracking-tighter text-zinc-950 uppercase mt-4">
-              Revenue <span className="italic font-light text-zinc-400 normal-case" style={{ fontFamily: "'Playfair Display', serif" }}>Systems</span>
+              Revenue <span className="italic font-light text-zinc-600 normal-case" style={{ fontFamily: "'Playfair Display', serif" }}>Systems</span>
             </h2>
           </div>
           <p className="text-gray-500 text-xl font-light max-w-sm mt-8 md:mt-0 leading-relaxed">
@@ -133,7 +133,7 @@ export default function Portfolio() {
                   className={`px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300 focus-visible:ring-2 focus-visible:ring-black outline-none ${
                     activeCategory === cat
                       ? "bg-black text-white shadow-lg"
-                      : "text-zinc-400 hover:text-zinc-900"
+                      : "text-zinc-600 hover:text-zinc-900"
                   }`}
                 >
                   {cat}

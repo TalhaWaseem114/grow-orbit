@@ -61,10 +61,9 @@ export default function OrbitTestimonialsSection() {
           </div>
 
           {/* Section Label — App Style */}
-          <div className="relative z-10 flex items-center gap-3 mb-6">
-            <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-700">
-              04 / CLIENT RESULTS
-            </span>
+          <div className="relative z-10">
+            {/* Eyebrow — App Style */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-3"><span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />06 / Testimonials</div>
           </div>
 
           {/* Headline */}
@@ -120,15 +119,15 @@ export default function OrbitTestimonialsSection() {
                     </div>
                     <span className="text-[12px] font-bold text-zinc-900 ml-1">5.0</span>
                   </div>
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50/70 border border-orange-100/30 px-3.5 py-1.5 rounded-full">
+                  <span className="text-[9px] font-bold uppercase tracking-wider text-orange-800 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full">
                     {t.category}
                   </span>
                 </div>
 
                 {/* Punchy Review Headline */}
-                <h4 className="text-[15px] sm:text-[16px] font-black uppercase tracking-tight text-zinc-900 mb-3 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  {t.headline[0]} <span className="text-orange-500 font-extrabold">— {t.headline[1]}</span>
-                </h4>
+                <h3 className="text-[15px] sm:text-[16px] font-black uppercase tracking-tight text-zinc-900 mb-3 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                  {t.headline[0]} <span className="text-zinc-950 font-black">— {t.headline[1]}</span>
+                </h3>
 
                 {/* Spacious Quote */}
                 <p className="text-zinc-600 text-[13.5px] sm:text-[14px] font-normal leading-relaxed italic mb-6 relative">
@@ -170,7 +169,7 @@ export default function OrbitTestimonialsSection() {
                 </div>
 
                 {/* Explicit Text Link */}
-                <span className="flex items-center gap-1.5 text-orange-500 font-extrabold text-[10px] uppercase tracking-widest transition-colors duration-300 group-hover:text-zinc-950 shrink-0">
+                <span className="flex items-center gap-1.5 text-zinc-900 font-extrabold text-[11px] uppercase tracking-widest transition-colors duration-300 group-hover:text-orange-500 shrink-0">
                   Read Case Study
                   <ArrowRight size={12} className="translate-x-0 transition-transform duration-300 group-hover:translate-x-1" />
                 </span>

@@ -1,14 +1,15 @@
-export const sandboxId = "sandbox-rehan-proposal";
-export const sandboxSubject = "Your Custom Product Sourcing & Market Analysis Proposal 🚀";
-export const sandboxHeadline = "Custom Product Sourcing & Market Analysis Blueprint";
-export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Dear Rehan,</p>
+export const sandboxId = "sandbox-faraz-proposal";
+export const sandboxSubject = "Product Sourcing Proposal — Three Opportunities for Your Review 🚀";
+export const sandboxHeadline = "Custom Product Sourcing & Market Intelligence Blueprint";
+export const sandboxBody = `<!-- HIDE_DEFAULT_CTA -->
+<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi Faraz,</p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
   I hope you're doing well.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
-  As discussed, our team at <strong> Grow Orbit</strong> has completed an in-depth product sourcing and market analysis based on your requirements. We've attached our research proposal, which includes five carefully selected product opportunities backed by detailed market intelligence.
+  As discussed in our meeting, our team at <strong>Grow Orbit</strong> has completed an in-depth product sourcing and market analysis based on your requirements. We've attached our research proposal, which includes three carefully selected product opportunities backed by detailed market intelligence.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
@@ -16,71 +17,104 @@ export const sandboxBody = `<p style="font-size: 14px; line-height: 1.6; color: 
 </p>
 
 <!-- Highlights Card -->
-<div style="background-color: #f8fafc; border-left: 4px solid #f97316; border-radius: 6px; padding: 16px 20px; margin-bottom: 24px;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 1.7; color: #475569; border-collapse: collapse; margin: 0;">
+<div style="background-color: #f8fafc; border-left: 4px solid #f97316; border-radius: 8px; padding: 18px 22px; margin-bottom: 24px; border: 1px solid #e2e8f0; border-left: 4px solid #f97316;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13.5px; line-height: 1.7; color: #334155; border-collapse: collapse; margin: 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
     <tr>
-      <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
-        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
+      <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px;">
+        &#128202;
       </td>
-      <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
-        Market size and category revenue
+      <td style="padding-bottom: 14px; vertical-align: top; color: #334155;">
+        <strong style="color: #0f172a;">Market Size &amp; Category Revenue:</strong> Comprehensive analysis of overall category demand.
       </td>
     </tr>
     <tr>
-      <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
-        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
+      <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px;">
+        &#128181;
       </td>
-      <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
-        Competitor pricing and sales performance
-      </td>
-    </tr>
-    <tr>
-      <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
-        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
-      </td>
-      <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
-        Estimated unit economics and profit margins
+      <td style="padding-bottom: 14px; vertical-align: top; color: #334155;">
+        <strong style="color: #0f172a;">Competitor Pricing &amp; Sales Performance:</strong> Monthly revenue and sales velocity of market leaders.
       </td>
     </tr>
     <tr>
-      <td style="padding-bottom: 12px; vertical-align: top; width: 32px;">
-        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
+      <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px;">
+        &#128178;
       </td>
-      <td style="padding-bottom: 12px; padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
-        Reference ASINs and competitive benchmarks
+      <td style="padding-bottom: 14px; vertical-align: top; color: #334155;">
+        <strong style="color: #0f172a;">Estimated Unit Economics &amp; Margins:</strong> Landed cost breakdown and profit margin projections.
       </td>
     </tr>
     <tr>
-      <td style="vertical-align: top; width: 32px;">
-        <div style="background-color: #f97316; width: 8px; height: 8px; border-radius: 50%; margin-top: 8px; margin-left: 8px;"></div>
+      <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px;">
+        &#127919;
       </td>
-      <td style="padding-top: 2px; vertical-align: top; font-family: 'Montserrat', sans-serif; color: #475569;">
-        A transparent breakdown of the opportunity behind each product
+      <td style="padding-bottom: 14px; vertical-align: top; color: #334155;">
+        <strong style="color: #0f172a;">Reference ASINs &amp; Competitive Benchmarks:</strong> Top-performing products mapped against your criteria.
+      </td>
+    </tr>
+    <tr>
+      <td style="vertical-align: top; width: 34px; font-size: 16px;">
+        &#128161;
+      </td>
+      <td style="vertical-align: top; color: #334155;">
+        <strong style="color: #0f172a;">Transparent Opportunity Breakdown:</strong> Clear evaluation of the growth potential behind each product.
       </td>
     </tr>
   </table>
 </div>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
-  Our objective was to identify products that offer the strongest balance of demand, profitability, and long-term potential, allowing you to make decisions based on real market data instead of speculation.
+  Our objective was to identify products that offer the strongest balance of demand, profitability, and long-term potential, so you can make your decision based on real market data instead of speculation.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px;">
   We understand that selecting the right product is one of the most important decisions in building a successful Amazon brand.
 </p>
 
-<!-- Centered Button Container -->
-<div style="text-align: center; margin: 35px 0;">
-  <a href="https://drive.google.com/file/d/1-4xpU4aWDAkU4fSy2xAWg_AvlhL9L38M/view?usp=drive_link" style="background-color: #f97316; color: #ffffff !important; text-decoration: none; padding: 12px 32px; border-radius: 9999px; font-size: 12px; font-weight: 600; display: inline-block; box-shadow: 0 6px 18px rgba(249, 115, 22, 0.25); font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px; text-transform: uppercase; border: 3px solid #fed7aa; box-sizing: border-box; max-width: 100%;">
-    Review Research Proposal
-  </a>
+<!-- CTA Button (Table-based for GoDaddy / Gmail compatibility) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 28px; margin-bottom: 28px;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="center" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 14px 36px; border-radius: 50px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            <a href="https://drive.google.com/file/d/1Fkli7GcyvlXtuqqdBsSth5JQijKpyn7P/view?usp=drive_link" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;">
+              Review Sourcing Proposal
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px;">
+  Please take your time reviewing the attached proposal. We'd be glad to discuss any of the three opportunities in detail, answer your questions, or prepare a more focused sourcing strategy around the product that interests you most.
+</p>
+
+<!-- Contact & Scheduling Links Card -->
+<div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px;">
+  <p style="font-size: 13.5px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 12px;">
+    You can simply reply to this email, book a time that works for you using the link below, or message me directly on WhatsApp:
+  </p>
+  <p style="font-size: 13px; margin-top: 0; margin-bottom: 8px;">
+    &#128197; <strong>Schedule a Meeting:</strong> <a href="https://www.groworbitofficial.com/get-started/" target="_blank" style="color: #f97316; text-decoration: underline; font-weight: 600;">Book 20-30 Min Strategy Call</a>
+  </p>
+  <p style="font-size: 13px; margin: 0;">
+    &#128241; <strong>WhatsApp:</strong> <strong style="color: #f97316;">+1 (912) 820-5916</strong>
+  </p>
 </div>
 
-<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
-  Please take your time reviewing the attached proposal. We'd be glad to discuss any of the opportunities in detail, answer your questions, or prepare a more focused sourcing strategy around the products that interest you most.
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 8px;">
+  Best regards,
 </p>`;
 
 export const SANDBOX_DRAFTS = [
+  {
+    id: "sandbox-faraz-proposal",
+    subject: "Product Sourcing Proposal — Three Opportunities for Your Review 🚀",
+    headline: "Custom Product Sourcing & Market Intelligence Blueprint",
+    body: sandboxBody
+  },
   {
     id: "sandbox-rehan-proposal",
     subject: "Your Custom Product Sourcing & Market Analysis Proposal 🚀",

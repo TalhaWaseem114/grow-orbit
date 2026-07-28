@@ -64,12 +64,12 @@ export default function OrbitProcessSection({ scrollToForm }) {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-orange-500/80 mb-3">05 / Our Process</p>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-3"><span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />05 / Our Process</div>
               <h2
                 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                From Idea To <span className="italic font-light text-zinc-400 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>Revenue.</span>
+                From Idea To <span className="italic font-normal text-zinc-700 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>Revenue.</span>
               </h2>
             </div>
             <p className="text-zinc-600 text-sm font-normal max-w-[260px] leading-relaxed md:pb-2">
@@ -169,9 +169,9 @@ export default function OrbitProcessSection({ scrollToForm }) {
             {/* Loop banner */}
             <div className="mt-10 flex items-center gap-4">
               <div className="flex-1 h-px border-t border-dashed border-orange-200/60" />
-              <div className="flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-full px-5 py-2 shrink-0">
-                <RefreshCw size={11} strokeWidth={2.5} className="text-orange-500" />
-                <span className="text-[9px] font-black uppercase tracking-[0.2em] text-orange-600">Continuous Brand Evolution</span>
+              <div className="flex items-center gap-2 bg-zinc-950 border border-white/10 rounded-full px-5 py-2 shrink-0">
+                <RefreshCw size={11} strokeWidth={2.5} className="text-orange-400" />
+                <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-orange-400">Continuous Brand Evolution</span>
               </div>
               <div className="flex-1 h-px border-t border-dashed border-orange-200/60" />
             </div>
@@ -208,8 +208,8 @@ export default function OrbitProcessSection({ scrollToForm }) {
                         </div>
 
                         {/* Num badge (pinned to orbit) */}
-                        <div className={`absolute -bottom-1 -right-1 z-20 bg-white border rounded-full w-4 h-4 flex items-center justify-center shadow-xs ${s.dark ? "border-zinc-200" : "border-zinc-100"}`}>
-                          <span className={`text-[6px] font-black tracking-widest ${s.dark ? "text-zinc-500" : "text-orange-500"}`}>
+                        <div className={`absolute -bottom-1 -right-1 z-20 bg-white border rounded-full w-4 h-4 flex items-center justify-center shadow-xs ${s.dark ? "border-zinc-200" : "border-zinc-200"}`}>
+                          <span className={`text-[6px] font-black tracking-widest ${s.dark ? "text-zinc-700" : "text-orange-700"}`}>
                             {s.num}
                           </span>
                         </div>

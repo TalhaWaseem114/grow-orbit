@@ -431,63 +431,73 @@ export default function Footer() {
         {/* ══════════════════════════════════════
             GIANT WATERMARK TEXT
         ══════════════════════════════════════ */}
-        <div className="w-full flex justify-center items-center py-12 md:py-16 border-t border-b border-white/5 my-8 select-none overflow-hidden relative z-10">
-          <div
-            className="font-black uppercase text-white/[0.08] leading-none whitespace-nowrap tracking-tighter"
-            style={{ fontSize: "clamp(2rem, 11vw, 15rem)", fontFamily: "'Montserrat', sans-serif" }}
-          >
-            GROW ORBIT
-          </div>
+        <div className="w-full flex justify-center items-center py-12 md:py-16 border-t border-b border-white/5 my-8 select-none overflow-hidden relative z-10" aria-hidden="true">
+          <svg className="w-full h-auto max-h-[14rem] overflow-visible pointer-events-none" viewBox="0 0 1000 160" aria-hidden="true" role="img">
+            <text
+              x="50%"
+              y="55%"
+              dominantBaseline="middle"
+              textAnchor="middle"
+              fill="rgba(255,255,255,0.08)"
+              style={{ fontSize: "130px", fontFamily: "'Montserrat', sans-serif", fontWeight: 900, letterSpacing: "-0.05em" }}
+            >
+              GROW ORBIT
+            </text>
+          </svg>
         </div>
 
         {/* ══════════════════════════════════════
             BOTTOM BAR
         ══════════════════════════════════════ */}
-        <div className="relative z-10 pt-4 flex flex-col md:flex-row justify-between items-center gap-8">
+        <div className="relative z-10 pt-4 flex flex-col gap-2.5">
 
-          {/* Logo */}
-          <Link href="/" aria-label="Grow Orbit Home" className="flex items-center gap-3 group no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl">
-            <div className="relative flex items-center justify-center w-10 h-10">
-              <Image
-                src="/logo.png"
-                alt="Grow Orbit Logo"
-                width={40}
-                height={40}
-                className="object-contain group-hover:scale-110 transition-transform duration-300"
-              />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-black tracking-tight uppercase flex gap-1.5 transition-colors leading-none">
-                <span className="text-white">GROW</span>
-                <span className="text-orange-400">ORBIT</span>
-              </span>
-              <span className="text-[9px] font-bold text-zinc-600 tracking-wider mt-0.5 uppercase font-mono">
-                We Rank. You Sell. It's That Simple.
-              </span>
-            </div>
-          </Link>
-
-          {/* Nav links */}
-          <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2" aria-label="Footer Navigation">
+          {/* Upper Row: Nav links */}
+          <nav className="w-full flex flex-wrap items-center justify-center gap-x-8 gap-y-2 pb-0" aria-label="Footer Navigation">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 href={link.url}
-                className="text-zinc-400 text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
+                className="text-zinc-400 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1.5 px-2 min-h-[28px] inline-flex items-center"
               >
                 {link.name}
               </Link>
             ))}
           </nav>
 
-          {/* Copyright & Legal Links */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 text-zinc-500 text-[10px] uppercase tracking-widest font-black font-mono shrink-0">
-            <span>© 2010–2026 Grow Orbit.</span>
-            <span className="hidden sm:inline text-zinc-800">|</span>
-            <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors no-underline">Privacy Policy</Link>
-            <span className="hidden sm:inline text-zinc-800">|</span>
-            <Link href="/terms-of-service" className="hover:text-orange-500 transition-colors no-underline">Terms of Service</Link>
+          {/* Lower Row: Left Logo & Right Copyright / Legal */}
+          <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 pt-0">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-3 group no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl">
+              <div className="relative flex items-center justify-center w-10 h-10">
+                <Image
+                  src="/logo.png"
+                  alt="Grow Orbit Logo"
+                  width={40}
+                  height={40}
+                  className="object-contain group-hover:scale-110 transition-transform duration-300"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-black tracking-tight uppercase flex gap-1.5 transition-colors leading-none">
+                  <span className="text-white">GROW</span>
+                  <span className="text-orange-400">ORBIT</span>
+                </span>
+                <span className="text-[9px] font-bold text-zinc-400 tracking-wider mt-0.5 uppercase font-mono">
+                  We Rank. You Sell. It's That Simple.
+                </span>
+              </div>
+            </Link>
+
+            {/* Copyright & Legal Links */}
+            <div className="flex flex-col sm:flex-row items-center gap-4 text-zinc-500 text-[10px] uppercase tracking-widest font-black font-mono shrink-0">
+              <span>© 2010–2026 Grow Orbit.</span>
+              <span className="hidden sm:inline text-zinc-800">|</span>
+              <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors no-underline py-1.5 px-2 min-h-[28px] inline-flex items-center">Privacy Policy</Link>
+              <span className="hidden sm:inline text-zinc-800">|</span>
+              <Link href="/terms-of-service" className="hover:text-orange-500 transition-colors no-underline py-1.5 px-2 min-h-[28px] inline-flex items-center">Terms of Service</Link>
+            </div>
           </div>
+
         </div>
 
       </div>

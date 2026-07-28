@@ -151,13 +151,13 @@ export default function CeoMessageTeamSection() {
 
           {/* Right Side: CEO Message Text */}
           <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-500/10 text-orange-600 font-bold uppercase tracking-[0.2em] text-[10px] mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-800 font-bold uppercase tracking-[0.2em] text-[10px] mb-6">
               <Quote size={12} className="rotate-180" /> Leadership Message
             </div>
             
             <h2 className="text-3xl sm:text-5xl font-black font-montserrat tracking-tight text-zinc-950 uppercase leading-tight mb-8">
               Moving Through Amazon <br/>
-              <span className="text-orange-500 italic font-light normal-case" style={{ fontFamily: "'Playfair Display', serif" }}>Like Water.</span>
+              <span className="text-orange-600 italic font-light normal-case" style={{ fontFamily: "'Playfair Display', serif" }}>Like Water.</span>
             </h2>
 
             <div className="space-y-6 text-zinc-600 text-base sm:text-lg leading-relaxed font-light">
@@ -176,11 +176,12 @@ export default function CeoMessageTeamSection() {
             <div className="mt-10 pt-8 border-t border-zinc-200 flex items-center justify-between">
               <div>
                 <p className="font-montserrat font-black text-zinc-950 uppercase tracking-tight text-lg">Coach Ali Haider</p>
-                <p className="text-orange-500 text-sm font-semibold tracking-widest uppercase mt-1">CEO</p>
+                <div className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-zinc-950 text-orange-400 text-xs font-mono font-bold uppercase tracking-widest mt-1">CEO</div>
               </div>
               <div className="flex gap-3">
                 <a
                   href="mailto:support@groworbitofficial.com"
+                  aria-label="Email Coach Ali Haider"
                   className="w-10 h-10 rounded-xl bg-white hover:bg-zinc-900 border border-zinc-200 flex items-center justify-center text-zinc-600 hover:text-white transition-all duration-300"
                 >
                   <Mail size={16} />
@@ -199,8 +200,8 @@ export default function CeoMessageTeamSection() {
             }
           `}</style>
 
-          <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-orange-500/10 text-orange-600 font-bold uppercase tracking-wider text-[9px] mb-4">
-            <Globe size={10} /> Sourcing Trip Highlights
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-zinc-950 text-orange-400 font-bold uppercase tracking-wider text-[9.5px] mb-4">
+            <Globe size={11} className="text-orange-400" /> Sourcing Trip Highlights
           </div>
           
           {/* Carousel Slider Wrapper with Left/Right floating overlay arrows */}
@@ -284,6 +285,7 @@ export default function CeoMessageTeamSection() {
                 onClick={() => {
                   carouselRef.current?.scrollBy({ left: -320, behavior: "smooth" });
                 }}
+                aria-label="Previous slide"
                 className="w-8 h-8 rounded-full border border-zinc-200 hover:border-zinc-400 flex items-center justify-center text-zinc-500 hover:text-zinc-800 transition-all duration-200 bg-white"
               >
                 <ArrowLeft size={13} />
@@ -293,6 +295,7 @@ export default function CeoMessageTeamSection() {
                 onClick={() => {
                   carouselRef.current?.scrollBy({ left: 320, behavior: "smooth" });
                 }}
+                aria-label="Next slide"
                 className="w-8 h-8 rounded-full border border-zinc-200 hover:border-zinc-400 flex items-center justify-center text-zinc-500 hover:text-zinc-800 transition-all duration-200 bg-white"
               >
                 <ArrowRight size={13} />
@@ -324,6 +327,7 @@ export default function CeoMessageTeamSection() {
                 <button 
                   className="absolute top-4 right-4 text-white hover:scale-105 bg-black/60 hover:bg-zinc-900 border border-white/15 w-8 h-8 rounded-full flex items-center justify-center text-lg font-light focus:outline-none transition-all z-40"
                   onClick={() => setActiveImage(null)}
+                  aria-label="Close image modal"
                 >
                   &times;
                 </button>

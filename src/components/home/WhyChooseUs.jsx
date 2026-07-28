@@ -96,7 +96,7 @@ export default function WhyChooseUs() {
                 <div className="w-12 h-12 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center text-white">
                   <Activity size={22} />
                 </div>
-                <span className="text-[10px] font-mono font-bold text-orange-200 uppercase tracking-widest">01</span>
+                <span className="text-xs font-mono font-black text-white uppercase tracking-widest bg-zinc-950/40 px-2.5 py-1 rounded-md">01</span>
               </div>
               <div>
                 <p
@@ -105,10 +105,10 @@ export default function WhyChooseUs() {
                 >
                   6
                 </p>
-                <h3 className="font-black text-[15px] uppercase tracking-tight text-white mb-2">
+                <h3 className="font-black text-base uppercase tracking-tight text-white mb-2">
                   Systems Running as One
                 </h3>
-                <p className="text-orange-100/70 text-[12px] font-light leading-relaxed">
+                <p className="text-white/90 text-[12px] font-medium leading-relaxed">
                   SEO, PPC, creative, and account ops simultaneously, with each system feeding data back into the others.
                 </p>
               </div>

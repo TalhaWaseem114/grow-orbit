@@ -2,82 +2,86 @@ export const sandboxId = "sandbox-faraz-proposal";
 export const sandboxSubject = "Product Sourcing Proposal — Three Opportunities for Your Review 🚀";
 export const sandboxHeadline = "Custom Product Sourcing & Market Intelligence Blueprint";
 export const sandboxBody = `<!-- HIDE_DEFAULT_CTA -->
-<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi Faraz,</p>
+<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">Hi Faraz,</p>
 
-<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   I hope you're doing well.
 </p>
 
-<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
-  As discussed in our meeting, our team at <strong> Grow Orbit</strong> has completed an in-depth product sourcing and market analysis based on your requirements. We've attached our research proposal, which includes three carefully selected product opportunities backed by detailed market intelligence.
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  As discussed in our meeting, our team at <strong>Grow Orbit</strong> has completed an in-depth product sourcing and market analysis based on your requirements. We've attached our research proposal, which includes three carefully selected product opportunities backed by detailed market intelligence.
 </p>
 
-<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   Rather than relying on assumptions, we've benchmarked each product against top-performing competitors and included the following:
 </p>
 
-<!-- Highlights Card -->
-<div style="background-color: #f8fafc; border-left: 4px solid #f97316; border-radius: 8px; padding: 18px 22px; margin-bottom: 24px; border: 1px solid #e2e8f0; border-left: 4px solid #f97316;">
-  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13.5px; line-height: 1.7; color: #334155; border-collapse: collapse; margin: 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-    <tr>
-      <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px;">
-        &#128202;
-      </td>
-      <td style="padding-bottom: 14px; vertical-align: top; color: #334155;">
-        <strong style="color: #0f172a;">Market Size &amp; Category Revenue:</strong> Comprehensive analysis of overall category demand.
-      </td>
-    </tr>
-    <tr>
-      <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px;">
-        &#128181;
-      </td>
-      <td style="padding-bottom: 14px; vertical-align: top; color: #334155;">
-        <strong style="color: #0f172a;">Competitor Pricing &amp; Sales Performance:</strong> Monthly revenue and sales velocity of market leaders.
-      </td>
-    </tr>
-    <tr>
-      <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px;">
-        &#128178;
-      </td>
-      <td style="padding-bottom: 14px; vertical-align: top; color: #334155;">
-        <strong style="color: #0f172a;">Estimated Unit Economics &amp; Margins:</strong> Landed cost breakdown and profit margin projections.
-      </td>
-    </tr>
-    <tr>
-      <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px;">
-        &#127919;
-      </td>
-      <td style="padding-bottom: 14px; vertical-align: top; color: #334155;">
-        <strong style="color: #0f172a;">Reference ASINs &amp; Competitive Benchmarks:</strong> Top-performing products mapped against your criteria.
-      </td>
-    </tr>
-    <tr>
-      <td style="vertical-align: top; width: 34px; font-size: 16px;">
-        &#128161;
-      </td>
-      <td style="vertical-align: top; color: #334155;">
-        <strong style="color: #0f172a;">Transparent Opportunity Breakdown:</strong> Clear evaluation of the growth potential behind each product.
-      </td>
-    </tr>
-  </table>
-</div>
+<!-- Highlights Card (Bulletproof Table Structure for GoDaddy / Webmail) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 18px 22px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13.5px; line-height: 1.7; color: #334155; border-collapse: collapse; margin: 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        <tr>
+          <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#128202;
+          </td>
+          <td style="padding-bottom: 14px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Market Size &amp; Category Revenue:</strong> Comprehensive analysis of overall category demand.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#128181;
+          </td>
+          <td style="padding-bottom: 14px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Competitor Pricing &amp; Sales Performance:</strong> Monthly revenue and sales velocity of market leaders.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#128178;
+          </td>
+          <td style="padding-bottom: 14px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Estimated Unit Economics &amp; Margins:</strong> Landed cost breakdown and profit margin projections.
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 14px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#127919;
+          </td>
+          <td style="padding-bottom: 14px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Reference ASINs &amp; Competitive Benchmarks:</strong> Top-performing products mapped against your criteria.
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#128161;
+          </td>
+          <td style="vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Transparent Opportunity Breakdown:</strong> Clear evaluation of the growth potential behind each product.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
 
-<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   Our objective was to identify products that offer the strongest balance of demand, profitability, and long-term potential, so you can make your decision based on real market data instead of speculation.
 </p>
 
-<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px;">
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   We understand that selecting the right product is one of the most important decisions in building a successful Amazon brand.
 </p>
 
-<!-- CTA Button (Table-based for GoDaddy / Gmail compatibility) -->
+<!-- CTA Button (Table-based Bulletproof for GoDaddy / Webmail / Outlook / Gmail) -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 28px; margin-bottom: 28px;">
   <tr>
     <td align="center">
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          <td align="center" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 14px 36px; border-radius: 50px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-            <a href="https://drive.google.com/file/d/1Fkli7GcyvlXtuqqdBsSth5JQijKpyn7P/view?usp=drive_link" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2;">
+          <td align="center" bgcolor="#f97316" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 14px 36px; border-radius: 50px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <a href="https://drive.google.com/file/d/1Fkli7GcyvlXtuqqdBsSth5JQijKpyn7P/view?usp=drive_link" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
               Review Sourcing Proposal
             </a>
           </td>
@@ -87,22 +91,26 @@ export const sandboxBody = `<!-- HIDE_DEFAULT_CTA -->
   </tr>
 </table>
 
-<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px;">
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
   Please take your time reviewing the attached proposal. We'd be glad to discuss any of the three opportunities in detail, answer your questions, or prepare a more focused sourcing strategy around the product that interests you most.
 </p>
 
 <!-- Contact & Scheduling Links Card -->
-<div style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 20px; margin-bottom: 24px;">
-  <p style="font-size: 13.5px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 12px;">
-    You can simply reply to this email, book a time that works for you using the link below, or message me directly on WhatsApp:
-  </p>
-  <p style="font-size: 13px; margin-top: 0; margin-bottom: 8px;">
-    &#128197; <strong>Schedule a Meeting:</strong> <a href="https://www.groworbitofficial.com/get-started/" target="_blank" style="color: #f97316; text-decoration: underline; font-weight: 600;">Book 20-30 Min Strategy Call</a>
-  </p>
-  <p style="font-size: 13px; margin: 0;">
-    &#128241; <strong>WhatsApp:</strong> <strong style="color: #f97316;">+1 (912) 820-5916</strong>
-  </p>
-</div>`;
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+      <p style="font-size: 13.5px; line-height: 1.7; color: #334155; margin-top: 0; margin-bottom: 12px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        You can simply reply to this email, book a time that works for you using the link below, or message me directly on WhatsApp:
+      </p>
+      <p style="font-size: 13px; margin-top: 0; margin-bottom: 8px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        &#128197; <strong>Schedule a Meeting:</strong> <a href="https://www.groworbitofficial.com/get-started/" target="_blank" style="color: #f97316; text-decoration: underline; font-weight: 600;">Book 20-30 Min Strategy Call</a>
+      </p>
+      <p style="font-size: 13px; margin: 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        &#128241; <strong>WhatsApp:</strong> <strong style="color: #f97316;">+1 (912) 820-5916</strong>
+      </p>
+    </td>
+  </tr>
+</table>`;
 
 export const SANDBOX_DRAFTS = [
   {

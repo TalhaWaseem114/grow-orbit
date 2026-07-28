@@ -9,7 +9,7 @@ export const sandboxBody = `<!-- HIDE_DEFAULT_CTA -->
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  As discussed in our meeting, our team at <strong>Grow Orbit</strong> has completed an in-depth product sourcing and market analysis based on your requirements. We've attached our research proposal, which includes three carefully selected product opportunities backed by detailed market intelligence.
+  As discussed in our meeting, our team at <strong> Grow Orbit</strong> has completed an in-depth product sourcing and market analysis based on your requirements. We've attached our research proposal, which includes three carefully selected product opportunities backed by detailed market intelligence.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">

@@ -70,6 +70,14 @@ export default function Footer() {
         });
       }
 
+      // Track TikTok Pixel Lead event
+      if (typeof window !== "undefined" && window.ttq) {
+        window.ttq.track("SubmitForm", {
+          contents: [{ content_id: form.service || "Footer Lead", content_name: "Footer Lead Form" }]
+        });
+        window.ttq.track("CompleteRegistration");
+      }
+
       const nameParam = encodeURIComponent(form.name);
       const emailParam = encodeURIComponent(form.email);
       router.push(`/get-started/book-meeting?leadId=${resData.id}&name=${nameParam}&email=${emailParam}`);

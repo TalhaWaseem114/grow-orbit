@@ -104,6 +104,14 @@ export default function LeadForm({ theme = "light", compact = false }) {
         });
       }
 
+      // Track TikTok Pixel Lead event
+      if (typeof window !== "undefined" && window.ttq) {
+        window.ttq.track("SubmitForm", {
+          contents: [{ content_id: form.service || "General Lead", content_name: form.service || "Lead Form" }]
+        });
+        window.ttq.track("CompleteRegistration");
+      }
+
       // Mark as submitted to prevent double-submit
       setSubmitted(true);
 

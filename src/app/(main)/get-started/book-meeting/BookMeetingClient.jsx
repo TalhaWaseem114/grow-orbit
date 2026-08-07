@@ -70,6 +70,10 @@ function BookMeetingContent() {
                 throw new Error("Failed to register booking");
               }
               console.log("Booking confirmation document created successfully!");
+              if (typeof window !== "undefined" && window.ttq) {
+                window.ttq.track("Subscribe");
+                window.ttq.track("CompleteRegistration");
+              }
               success = true;
               break;
             } catch (err) {

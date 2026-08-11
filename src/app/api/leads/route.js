@@ -1,6 +1,7 @@
 import { NextResponse, after } from "next/server";
 import { db as clientDb } from "@/firebase/firebaseConfig";
 import { collection, addDoc, doc, updateDoc, getDoc, getDocs, query, where, arrayUnion } from "firebase/firestore";
+import { sendTikTokServerEvent } from "@/lib/tiktokEventsApi";
 
 // Lazy-load firebase-admin to prevent route crash if module fails to load on Vercel
 let _adminDb = null;
@@ -319,7 +320,7 @@ async function notifyWebhook(webhookUrl, discordPayload, slackText) {
   }
 }
 
-async function handleBookingConfirmation(body, webhookUrl) {
+async function handleBookingConfirmation(body, webhookUrl, clientIp = "unknown", userAgent = "") {
   const email = normalizeEmail(body.email);
   if (!body.leadId && !email) {
     return NextResponse.json({ error: "Missing lead reference for booking confirmation" }, { status: 400 });
@@ -378,6 +379,19 @@ async function handleBookingConfirmation(body, webhookUrl) {
           ].join("\n")
         ).catch((error) => {
           console.error("[API/Leads] Webhook notification dispatch failed for booking:", error);
+        });
+
+        sendTikTokServerEvent({
+          eventName: "Subscribe",
+          email: email || leadData.email,
+          phone: leadData.whatsapp,
+          contentName: "Strategy Session Booked",
+          pageUrl: "https://www.groworbitofficial.com/get-started/book-meeting",
+          clientIp,
+          userAgent,
+          eventId: `sub_${match.leadId || Date.now()}`,
+        }).catch((err) => {
+          console.error("[API/Leads] TikTok Server Event dispatch failed for booking:", err);
         });
       });
     }
@@ -463,7 +477,7 @@ async function updateBookingWithClientSdk(leadId, body, alreadyBooked) {
   await updateDoc(doc(clientDb, "leads", leadId), clientBookingUpdate);
 }
 
-async function handleLeadIntake(body, webhookUrl) {
+async function handleLeadIntake(body, webhookUrl, clientIp = "unknown", userAgent = "") {
   const normalizedFullName = cleanString(body.fullName);
   const normalizedEmail = normalizeEmail(body.email);
   const normalizedSource = cleanString(body.source, "API Request") || "API Request";
@@ -556,6 +570,32 @@ async function handleLeadIntake(body, webhookUrl) {
     ).catch((error) => {
       console.error("[API/Leads] Webhook notification dispatch failed:", error);
     });
+
+    sendTikTokServerEvent({
+      eventName: "SubmitForm",
+      email: leadDoc.email,
+      phone: leadDoc.whatsapp,
+      contentName: leadDoc.requestedService || "Grow Orbit Lead",
+      pageUrl: leadDoc.currentUrl || leadDoc.landingUrl || "https://www.groworbitofficial.com/get-started",
+      clientIp,
+      userAgent,
+      eventId: `lead_${docRef?.id || Date.now()}`,
+    }).catch((err) => {
+      console.error("[API/Leads] TikTok Server Event SubmitForm failed:", err);
+    });
+
+    sendTikTokServerEvent({
+      eventName: "CompleteRegistration",
+      email: leadDoc.email,
+      phone: leadDoc.whatsapp,
+      contentName: leadDoc.requestedService || "Grow Orbit Lead",
+      pageUrl: leadDoc.currentUrl || leadDoc.landingUrl || "https://www.groworbitofficial.com/get-started",
+      clientIp,
+      userAgent,
+      eventId: `reg_${docRef?.id || Date.now()}`,
+    }).catch((err) => {
+      console.error("[API/Leads] TikTok Server Event CompleteRegistration failed:", err);
+    });
   });
 
   return NextResponse.json({ success: true, id: docRef.id });
@@ -576,6 +616,7 @@ export async function POST(request) {
     }
 
     const clientIp = getClientIp(request);
+    const userAgent = request.headers.get("user-agent") || "";
     if (isRateLimited(clientIp)) {
       console.warn("[API/Leads] Rate limit exceeded:", clientIp);
       return NextResponse.json({ error: "Too many requests. Please try again shortly." }, { status: 429 });
@@ -584,10 +625,10 @@ export async function POST(request) {
     const webhookUrl = await resolveWebhookUrl();
 
     if (body.type === "booking_confirmation") {
-      return handleBookingConfirmation(body, webhookUrl);
+      return handleBookingConfirmation(body, webhookUrl, clientIp, userAgent);
     }
 
-    return handleLeadIntake(body, webhookUrl);
+    return handleLeadIntake(body, webhookUrl, clientIp, userAgent);
   } catch (error) {
     console.error("[API/Leads] Handler crash:", error);
     return NextResponse.json({ error: "Failed to process lead submission" }, { status: 500 });

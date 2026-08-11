@@ -88,7 +88,7 @@ export default function WhyChooseUs() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
 
           {/* ── CELL 1: Stat hero — "6 Systems" ── */}
-          <div className="bento-cell md:col-span-5 bg-orange-500 rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+          <div className="bento-cell md:col-span-5 bg-orange-700 rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
             <div className="absolute -bottom-8 -right-8 w-48 h-48 bg-black/15 rounded-full blur-2xl pointer-events-none" />
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl pointer-events-none" />
             <div className="relative z-10 flex flex-col h-full min-h-[200px] justify-between">
@@ -245,7 +245,7 @@ export default function WhyChooseUs() {
             <Link
               href="/contact"
               prefetch={false}
-              className="group/btn shrink-0 flex items-center justify-center gap-3 bg-orange-500 hover:bg-white hover:text-zinc-900 text-white font-black text-[11px] uppercase tracking-[0.2em] px-7 py-4 rounded-[18px] sm:rounded-2xl transition-all duration-300 no-underline shadow-[0_8px_25px_rgba(249,115,22,0.3)] w-full md:w-auto"
+              className="group/btn shrink-0 flex items-center justify-center gap-3 bg-orange-700 hover:bg-white hover:text-zinc-900 text-white font-black text-[11px] uppercase tracking-[0.2em] px-7 py-4 rounded-[18px] sm:rounded-2xl transition-all duration-300 no-underline shadow-[0_8px_25px_rgba(194,65,12,0.3)] w-full md:w-auto"
             >
               Start This Month
               <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />

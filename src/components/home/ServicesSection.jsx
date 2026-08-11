@@ -177,7 +177,7 @@ export default function ServicesSection({ mode }) {
                       <p className="text-zinc-400 text-[11px] font-light mt-1">Ready for a full account takeover? Let's talk.</p>
                     </div>
                  </div>
-                 <Link href="/contact" prefetch={false} className="px-8 py-3.5 bg-orange-500 text-white rounded-xl font-montserrat font-black text-sm uppercase tracking-[0.15em] hover:bg-orange-600 transition-all duration-300 no-underline whitespace-nowrap shadow-lg shadow-orange-500/25">
+                 <Link href="/contact" prefetch={false} className="px-8 py-3.5 bg-orange-700 text-white rounded-xl font-montserrat font-black text-sm uppercase tracking-[0.15em] hover:bg-orange-800 transition-all duration-300 no-underline whitespace-nowrap shadow-lg shadow-orange-700/25">
                    Get Custom Strategy Proposal
                  </Link>
                </div>

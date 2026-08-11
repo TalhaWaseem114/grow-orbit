@@ -54,7 +54,7 @@ const deliverables = [
 
 export default function Deliverables() {
   return (
-    <section className="py-20 sm:py-32 bg-[#fafafa] relative overflow-hidden">
+    <section id="packages" className="py-20 sm:py-32 bg-[#fafafa] relative overflow-hidden scroll-mt-24">
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.035]"
         style={{

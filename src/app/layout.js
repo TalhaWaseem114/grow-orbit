@@ -78,6 +78,8 @@ export default function RootLayout({ children }) {
       <head>
         <link rel="preconnect" href="https://res.cloudinary.com" crossOrigin="anonymous" />
         <link rel="dns-prefetch" href="https://res.cloudinary.com" />
+      </head>
+      <body className="antialiased font-sans" suppressHydrationWarning>
         <noscript>
           <img
             height="1"
@@ -87,8 +89,6 @@ export default function RootLayout({ children }) {
             alt="Meta Pixel"
           />
         </noscript>
-      </head>
-      <body className="antialiased font-sans" suppressHydrationWarning>
         <PWARegister />
         {children}
         <Analytics />

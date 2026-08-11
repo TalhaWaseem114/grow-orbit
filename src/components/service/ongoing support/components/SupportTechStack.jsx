@@ -23,7 +23,7 @@ export default function SupportTechStack() {
   ];
 
   return (
-    <section className="w-full bg-white overflow-hidden">
+    <section id="matrix" className="w-full bg-white overflow-hidden scroll-mt-24">
       <div className="grid grid-cols-1 lg:grid-cols-2">
 
         {/* Left: Terminal Side */}

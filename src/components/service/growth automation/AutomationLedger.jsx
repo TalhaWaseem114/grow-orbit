@@ -13,7 +13,7 @@ export default function AutomationLedger() {
   ];
 
   return (
-    <div className="bg-zinc-950 py-24 md:py-32 border-y border-white/5 relative overflow-hidden">
+    <div id="matrix" className="bg-zinc-950 py-24 md:py-32 border-y border-white/5 relative overflow-hidden scroll-mt-24">
       {/* Ambient Color Blossoms */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-[600px] h-[600px] bg-orange-500/10 rounded-full blur-[160px]" />

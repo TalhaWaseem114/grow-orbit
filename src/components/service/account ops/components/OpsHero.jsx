@@ -123,7 +123,7 @@ export default function OpsHero() {
                 </HeroButton>
 
                 <a
-                  href="#packages"
+                  href="#matrix"
                   className="group flex items-center justify-center sm:justify-start gap-3 text-zinc-400 hover:text-zinc-900 font-bold text-[11px] uppercase tracking-widest px-2 py-4 transition-colors no-underline"
                 >
                   View Packages <ChevronRight size={13} className="group-hover:translate-x-1 transition-transform" />

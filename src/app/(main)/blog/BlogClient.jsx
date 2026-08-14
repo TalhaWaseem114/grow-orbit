@@ -63,9 +63,9 @@ export default function BlogClient({ initialPosts }) {
     return posts;
   }, [activeCategory, searchQuery, initialPosts]);
 
-  const featuredPosts = initialPosts.filter((p) => p.featured).slice(0, 2);
-  // If no explicitly featured posts, fallback to the latest two
-  const displayFeatured = featuredPosts.length > 0 ? featuredPosts : initialPosts.slice(0, 2);
+  const displayFeatured = useMemo(() => {
+    return initialPosts.filter((p) => p.featured === true).slice(0, 2);
+  }, [initialPosts]);
 
   return (
     <main className="bg-[#fafafa] text-zinc-900 min-h-screen">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
-import { Plus, Edit3, Trash2, Eye, Clock, Search, FileText, Save, Image, ArrowUpRight, ExternalLink, Tag, CheckCircle, Circle, Calendar, MoreHorizontal, MessageSquare, Send, CornerDownRight, X, ShieldAlert, Maximize2, Minimize2 } from "lucide-react";
+import { Plus, Edit3, Trash2, Eye, Clock, Search, FileText, Save, Image, ArrowUpRight, ExternalLink, Tag, CheckCircle, Circle, Calendar, MoreHorizontal, MessageSquare, Send, CornerDownRight, X, ShieldAlert, Maximize2, Minimize2, Star } from "lucide-react";
 import Link from "next/link";
 import { collection, doc, getDocs, setDoc, deleteDoc, addDoc, serverTimestamp, query, orderBy, updateDoc } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
@@ -359,6 +359,7 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
         avatar: null 
       },
       status,
+      featured: editingPost?.featured || false,
       views: editingPost?.views || 0,
       content: editorBody.split("\n\n").filter(Boolean).map((text) => {
         let type = "paragraph";
@@ -456,6 +457,38 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
       );
     } catch (error) {
       console.error("Error updating status:", error);
+    }
+  };
+
+  const toggleFeatured = async (post) => {
+    const isCurrentlyFeatured = !!post.featured;
+    if (!isCurrentlyFeatured) {
+      const currentlyFeaturedCount = posts.filter(p => p.featured).length;
+      if (currentlyFeaturedCount >= 2) {
+        alert("Maximum 2 articles can be featured at a time. Please unfeature an article first.");
+        return;
+      }
+    }
+
+    const newFeaturedState = !isCurrentlyFeatured;
+
+    // Optimistic UI update
+    setPosts(prev => prev.map(p => p.id === post.id ? { ...p, featured: newFeaturedState } : p));
+
+    try {
+      const postRef = doc(db, "blogs", post.id);
+      await updateDoc(postRef, { featured: newFeaturedState });
+      if (logActivity) {
+        logActivity(
+          "TOGGLE_FEATURED",
+          newFeaturedState ? `Featured article "${post.title}"` : `Unfeatured article "${post.title}"`
+        );
+      }
+    } catch (error) {
+      console.error("Error toggling featured status:", error);
+      // Rollback optimistic update
+      setPosts(prev => prev.map(p => p.id === post.id ? { ...p, featured: isCurrentlyFeatured } : p));
+      alert("Failed to update featured status. Check Firebase permissions.");
     }
   };
 
@@ -1772,6 +1805,11 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4, flexWrap: "wrap" }}>
                     <span style={{ fontSize: 13, fontWeight: 700, color: "#fff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: isMobile ? 200 : 400 }}>{post.title}</span>
                     <span style={{ fontSize: 9, fontWeight: 800, color: st.color, background: st.bg, border: `1px solid ${st.border}`, borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.1em" }}>{st.label}</span>
+                    {post.featured && (
+                      <span style={{ fontSize: 9, fontWeight: 800, color: "#eab308", background: "rgba(234,179,8,0.1)", border: "1px solid rgba(234,179,8,0.25)", borderRadius: 100, padding: "2px 8px", textTransform: "uppercase", letterSpacing: "0.1em", display: "inline-flex", alignItems: "center", gap: 3 }}>
+                        <Star size={9} fill="#eab308" /> Featured
+                      </span>
+                    )}
                   </div>
                   <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
                     <span style={{ fontSize: 10, color: "#525252" }}>{post.category}</span>
@@ -1781,6 +1819,37 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
 
                 {/* Actions */}
                 <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+                  <button
+                    onClick={() => toggleFeatured(post)}
+                    title={post.featured ? "Unfeature Post" : "Feature Post (Max 2)"}
+                    style={{
+                      width: 32,
+                      height: 32,
+                      borderRadius: 8,
+                      background: post.featured ? "rgba(234, 179, 8, 0.12)" : "rgba(255,255,255,0.04)",
+                      border: post.featured ? "1px solid rgba(234, 179, 8, 0.35)" : "1px solid rgba(255,255,255,0.06)",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      color: post.featured ? "#eab308" : "#525252",
+                      transition: "all 0.2s"
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!post.featured) {
+                        e.currentTarget.style.color = "#eab308";
+                        e.currentTarget.style.borderColor = "rgba(234, 179, 8, 0.3)";
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!post.featured) {
+                        e.currentTarget.style.color = "#525252";
+                        e.currentTarget.style.borderColor = "rgba(255,255,255,0.06)";
+                      }
+                    }}
+                  >
+                    <Star size={13} fill={post.featured ? "#eab308" : "none"} />
+                  </button>
                   <button
                     onClick={() => openEditPost(post)}
                     title="Edit"

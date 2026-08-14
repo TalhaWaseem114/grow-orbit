@@ -23,6 +23,8 @@ export function getReadTime(post) {
 export function parseMarkdownText(text) {
   if (!text) return "";
   return text
+    .replace(/\[\s?\]\s*/g, '☑ ')
+    .replace(/\[x\]\s*/gi, '✅ ')
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-zinc-900">$1</strong>')
     .replace(/\[(.*?)\]\((.*?)\)/g, (match, anchor, url) => {
       const isInternal = url.startsWith('/') || url.includes('groworbit.com') || url.includes('groworbitofficial.com');

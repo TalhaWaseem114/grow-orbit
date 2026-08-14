@@ -73,9 +73,6 @@ export default async function Page() {
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       let data = doc.data();
-      if (data.author && data.author.name === "Talha Waseem") {
-        data.author.name = "Ali";
-      }
       posts.push({ id: doc.id, ...data });
     });
     // Sort by date descending

@@ -86,10 +86,7 @@ export default async function Page({ params }) {
     
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
-      let data = doc.data();
-      if (data.author && data.author.name === "Talha Waseem") {
-        data.author.name = "Ali";
-      }
+      const data = doc.data();
       post = { id: doc.id, ...data };
 
       if (post.category) {
@@ -102,9 +99,6 @@ export default async function Page({ params }) {
         relatedSnap.forEach((relatedDoc) => {
           if (relatedDoc.id !== post.id) {
             let rpData = relatedDoc.data();
-            if (rpData.author && rpData.author.name === "Talha Waseem") {
-              rpData.author.name = "Ali";
-            }
             relatedPosts.push({ id: relatedDoc.id, ...rpData });
           }
         });
@@ -162,7 +156,7 @@ export default async function Page({ params }) {
               "name": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).name,
               "jobTitle": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).role,
               "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/blog/author/${getAuthorSlugByName(post.author?.name)}`,
-              "sameAs": Object.values(getAuthorBySlug(getAuthorSlugByName(post.author?.name)).socialLinks).filter(Boolean)
+              "sameAs": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).socialLinks ? Object.values(getAuthorBySlug(getAuthorSlugByName(post.author?.name)).socialLinks).filter(Boolean) : []
             },
             "publisher": {
               "@type": "Organization",
@@ -176,6 +170,32 @@ export default async function Page({ params }) {
           })
         }}
       />
+
+      {/* FAQPage JSON-LD Structured Data Schema for Google Rich Snippets */}
+      {post.content && post.content.some(b => b.type === "faq") && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": post.content
+                .filter(b => b.type === "faq")
+                .map(b => {
+                  const parts = b.text.split("|");
+                  return {
+                    "@type": "Question",
+                    "name": parts[0],
+                    "acceptedAnswer": {
+                      "@type": "Answer",
+                      "text": parts.slice(1).join("|")
+                    }
+                  };
+                })
+            })
+          }}
+        />
+      )}
 
       {/* ── HERO / COVER ── */}
       <section className="relative pt-[60px] sm:pt-[70px]">
@@ -316,7 +336,7 @@ export default async function Page({ params }) {
                 const hookText = parts[2] || "";
                 
                 const isInternal = url.startsWith("/");
-                const btnClass = "inline-flex items-center justify-center bg-gradient-to-br from-orange-500 to-orange-600 text-white font-black text-sm sm:text-base uppercase tracking-widest px-8 sm:px-12 py-4 sm:py-5 rounded-full shadow-xl shadow-orange-500/20 hover:scale-105 hover:shadow-orange-500/40 transition-all duration-300";
+                const btnClass = "w-full sm:w-auto inline-flex items-center justify-center bg-gradient-to-br from-orange-500 to-orange-600 text-white font-black text-xs sm:text-sm md:text-base uppercase tracking-wider sm:tracking-widest px-5 sm:px-10 py-3.5 sm:py-5 rounded-2xl sm:rounded-full shadow-xl shadow-orange-500/20 hover:scale-105 hover:shadow-orange-500/40 transition-all duration-300 text-center leading-normal whitespace-normal max-w-full my-2";
 
                 return (
                   <div key={i} className="flex flex-col items-center justify-center my-16 text-center">
@@ -415,6 +435,28 @@ export default async function Page({ params }) {
                       </li>
                     ))}
                   </ul>
+                );
+              }
+              if (block.type === "faq" || block.type === "accordion") {
+                const parts = block.text.split("|");
+                const question = parts[0];
+                const answer = parts.slice(1).join("|");
+                return (
+                  <details key={i} className="group my-4 bg-white border border-zinc-200/80 rounded-2xl overflow-hidden shadow-[0_4px_20px_-4px_rgba(0,0,0,0.03)] hover:border-orange-500/40 transition-all duration-300">
+                    <summary className="flex items-center justify-between p-5 sm:p-6 cursor-pointer text-base sm:text-lg font-bold text-zinc-900 list-none select-none group-open:text-orange-600 transition-colors">
+                      <span className="flex items-center gap-3">
+                        <span className="w-2.5 h-2.5 rounded-full bg-orange-500 shrink-0"></span>
+                        {question}
+                      </span>
+                      <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-500 group-open:bg-orange-500 group-open:text-white group-open:rotate-180 transition-all duration-300 text-xs font-bold shrink-0 ml-4">
+                        ↓
+                      </span>
+                    </summary>
+                    <div
+                      className="px-6 pb-6 pt-3 text-zinc-600 text-sm sm:text-base leading-relaxed border-t border-zinc-100 bg-zinc-50/50"
+                      dangerouslySetInnerHTML={{ __html: parseMarkdownText(answer) }}
+                    />
+                  </details>
                 );
               }
               if (block.type === "table") {

@@ -2,49 +2,31 @@
  * Authors Directory - E-E-A-T Credentials and Profiles
  */
 export const AUTHORS = {
-  "ali": {
-    slug: "ali",
-    name: "Ali",
-    role: "Founder & Growth Architect",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop", 
-    bio: "Ali is the Founder and Growth Architect at Grow Orbit. With over 8 years of hands-on experience building and scaling 7-figure and 8-figure Amazon brands, Ali specializes in click-through rate (CTR) engineering, PPC efficiency architecture, and conversion-first listing systems. He has helped scale dozens of international brands to top-of-search dominance.",
+  "talha-waseem": {
+    slug: "talha-waseem",
+    name: "Talha Waseem",
+    role: "Technical Strategist",
+    avatar: "https://res.cloudinary.com/dciggvulg/image/upload/v1786712729/groworbit/authors/talha-waseem-avatar.jpg", 
+    bio: "Talha Waseem is a Technical Strategist at Grow Orbit specializing in click-through rate (CTR) engineering, Amazon PPC architecture, and conversion-first listing systems. He works directly with brand owners to optimize visual assets, eliminate ad waste, and scale top-of-search dominance.",
     credentials: [
-      "8+ Years Amazon PPC Architecture",
-      "Managed $12M+ Amazon Ad Spend",
-      "Scaled 40+ International Brands",
-      "Founder of 2 7-Figure Brands"
-    ],
-    socialLinks: {
-      linkedin: "https://www.linkedin.com/in/ali",
-      twitter: "https://twitter.com/ali",
-      website: "https://www.groworbitofficial.com"
-    }
+      "Amazon Technical Strategist",
+      "CTR & Listing Optimization Specialist",
+      "Data-Driven PPC Architecture",
+      "Conversion & Funnel Engineering"
+    ]
   }
 };
 
 /**
- * Returns author details by slug, with fallback to Ali
+ * Returns author details by slug, with fallback to Talha Waseem
  */
 export function getAuthorBySlug(slug) {
-  if (!slug) return AUTHORS["ali"];
-  const cleanSlug = slug.toLowerCase().trim();
-  // Map talha or others to ali as requested
-  if (cleanSlug === "talha-waseem" || cleanSlug === "talha") {
-    return AUTHORS["ali"];
-  }
-  return AUTHORS[cleanSlug] || AUTHORS["ali"];
+  return AUTHORS["talha-waseem"];
 }
 
 /**
  * Helper to slugify an author name
  */
 export function getAuthorSlugByName(name) {
-  if (!name) return "ali";
-  const cleanName = name.toLowerCase().trim();
-  if (cleanName.includes("talha") || cleanName.includes("waseem")) {
-    return "ali";
-  }
-  return cleanName
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+  return "talha-waseem";
 }

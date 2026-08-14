@@ -57,11 +57,8 @@ export default async function AuthorPage({ params }) {
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
-      let data = doc.data();
-      if (data.author && data.author.name === "Talha Waseem") {
-        data.author.name = "Ali";
-      }
-      if (data.author?.name === author.name) {
+      const data = doc.data();
+      if (!data.author?.name || data.author?.name?.toLowerCase().includes("talha") || data.author?.name?.toLowerCase().includes("ali") || data.author?.name?.toLowerCase() === author.name.toLowerCase()) {
         authorPosts.push({ id: doc.id, ...data });
       }
     });
@@ -115,7 +112,7 @@ export default async function AuthorPage({ params }) {
     "url": `${siteUrl}/blog/author/${author.slug}`,
     "image": author.avatar,
     "description": author.bio,
-    "sameAs": Object.values(author.socialLinks).filter(Boolean)
+    "sameAs": author.socialLinks ? Object.values(author.socialLinks).filter(Boolean) : []
   };
 
   return (
@@ -190,44 +187,6 @@ export default async function AuthorPage({ params }) {
                     </span>
                   ))}
                 </div>
-              </div>
-
-              {/* Social links */}
-              <div className="flex justify-center md:justify-start items-center gap-4 pt-4 border-t border-zinc-800">
-                <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">
-                  Connect:
-                </span>
-                {author.socialLinks.linkedin && (
-                  <a
-                    href={author.socialLinks.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-orange-500 flex items-center justify-center text-white transition-all hover:scale-105"
-                    aria-label={`${author.name}'s LinkedIn Profile`}
-                  >
-                    <Linkedin size={14} />
-                  </a>
-                )}
-                {author.socialLinks.twitter && (
-                  <a
-                    href={author.socialLinks.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-orange-500 flex items-center justify-center text-white transition-all hover:scale-105"
-                    aria-label={`${author.name}'s Twitter Profile`}
-                  >
-                    <Twitter size={14} />
-                  </a>
-                )}
-                {author.socialLinks.website && (
-                  <a
-                    href={author.socialLinks.website}
-                    className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-orange-500 flex items-center justify-center text-white transition-all hover:scale-105"
-                    aria-label={`${author.name}'s Personal Website`}
-                  >
-                    <Globe size={14} />
-                  </a>
-                )}
               </div>
 
             </div>

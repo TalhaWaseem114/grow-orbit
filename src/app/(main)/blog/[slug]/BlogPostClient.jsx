@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
   Heart,
-  MessageSquare, Send, Linkedin, Twitter, Globe, Award
+  MessageSquare, Send, Globe, Award
 } from "lucide-react";
 import { doc, getDoc, updateDoc, increment, collection, getDocs, addDoc, serverTimestamp, query, orderBy } from "firebase/firestore/lite";
 import { onAuthStateChanged } from "firebase/auth";
@@ -204,18 +204,6 @@ export default function BlogPostClient({ post }) {
               <Link href={`/blog/author/${authorSlug}`} className="text-lg font-black text-zinc-900 no-underline hover:text-orange-500 transition-colors">
                 {authorDetails.name}
               </Link>
-              <div className="flex justify-center sm:justify-start gap-2.5">
-                {authorDetails.socialLinks?.linkedin && (
-                  <a href={authorDetails.socialLinks.linkedin} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-orange-500 transition-colors" aria-label={`${authorDetails.name}'s LinkedIn Profile`}>
-                    <Linkedin size={14} />
-                  </a>
-                )}
-                {authorDetails.socialLinks?.twitter && (
-                  <a href={authorDetails.socialLinks.twitter} target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-orange-500 transition-colors" aria-label={`${authorDetails.name}'s Twitter Profile`}>
-                    <Twitter size={14} />
-                  </a>
-                )}
-              </div>
             </div>
             <p className="text-xs font-mono uppercase text-zinc-600 mb-4">{authorDetails.role}</p>
             <p className="text-sm text-zinc-500 font-light leading-relaxed mb-6">

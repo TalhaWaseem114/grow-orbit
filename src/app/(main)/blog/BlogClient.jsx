@@ -9,9 +9,16 @@ import {
 import { useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { BLOG_CATEGORIES } from "@/data/blogData";
+import { getAuthorBySlug, getAuthorSlugByName } from "@/data/authorData";
 
 const montserrat = { fontFamily: "'Montserrat', sans-serif" };
 const serif = { fontFamily: "'Playfair Display', serif" };
+
+function getAuthorAvatar(post) {
+  if (post?.author?.avatar) return post.author.avatar;
+  const authorData = getAuthorBySlug(getAuthorSlugByName(post?.author?.name));
+  return authorData?.avatar || "https://res.cloudinary.com/dciggvulg/image/upload/v1786712729/groworbit/authors/talha-waseem-avatar.jpg";
+}
 
 // Helper to dynamically calculate reading time based on content word count
 function getReadTime(post) {
@@ -160,9 +167,17 @@ export default function BlogClient({ initialPosts }) {
                         {post.title}
                       </h2>
                       <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                        <div className="flex items-center gap-4">
-                          <span className="text-[10px] font-bold text-white/60">
-                            {post.author?.name || "Grow Orbit"}
+                        <div className="flex items-center gap-3">
+                          <div className="w-6 h-6 rounded-full overflow-hidden relative shrink-0 border border-white/20">
+                            <Image
+                              src={getAuthorAvatar(post)}
+                              alt={post.author?.name || "Talha Waseem"}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <span className="text-[10px] font-bold text-white/90">
+                            {post.author?.name || "Talha Waseem"}
                           </span>
                           <span className="flex items-center gap-1.5 text-[10px] font-bold text-white/60">
                             <Clock size={10} /> {getReadTime(post)}
@@ -269,12 +284,17 @@ export default function BlogClient({ initialPosts }) {
                       {/* Footer */}
                       <div className="flex items-center justify-between pt-5 border-t border-zinc-100">
                         <div className="flex items-center gap-3">
-                          <div className="w-7 h-7 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white text-[10px] font-black">
-                            {post.author?.name ? post.author.name[0] : "G"}
+                          <div className="w-7 h-7 rounded-full overflow-hidden relative shrink-0 border border-zinc-100 shadow-sm">
+                            <Image
+                              src={getAuthorAvatar(post)}
+                              alt={post.author?.name || "Talha Waseem"}
+                              fill
+                              className="object-cover"
+                            />
                           </div>
                           <div>
                             <p className="text-[10px] font-bold text-zinc-700 leading-none">
-                              {post.author?.name || "Grow Orbit"}
+                              {post.author?.name || "Talha Waseem"}
                             </p>
                             <p className="text-[9px] text-zinc-600 mt-0.5" suppressHydrationWarning>
                               {new Date(post.date).toLocaleDateString("en-US", {

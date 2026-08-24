@@ -1,23 +1,28 @@
 export const DEFAULT_CLAUSES = [
   {
     id: "term-commitment",
-    title: "TERM & COMMITMENT",
-    text: "The initial term is <strong>{{initial_term}}</strong>, renewing monthly. Either party may terminate with 30 days written notice."
+    title: "TERM & PROFIT SHARE COMMITMENT",
+    text: "The initial partnership term shall remain active for <strong>{{initial_term}}</strong> or until the <strong>complete sell-through of the inaugural inventory batch</strong>, whichever milestone occurs first. Upon fulfillment of this initial term, the agreement will transition automatically to an ongoing monthly partnership, under which Grow Orbit will charge a <strong>10% performance fee on net monthly profits</strong> generated from the Amazon account."
   },
   {
     id: "payment-terms",
     title: "PAYMENT TERMS",
-    text: "Payment will be initiated immediately upon contract signature binding. Subsequent monthly investments are processed on the 1st of each billing cycle."
+    text: "The total fee is payable across three installments: the initial payment is due upon contract execution, the second installment is due one month thereafter, and the remaining balance is due three months from the agreement date. Invoices are processed electronically and payable upon receipt."
   },
   {
-    id: "client-responsibilities",
-    title: "CLIENT RESPONSIBILITIES",
-    text: "Client will provide necessary access (Seller Central, Ads, Brand Registry). Performance depends on inventory, market, and factors beyond Agency control."
+    id: "inventory-management",
+    title: "INVENTORY MANAGEMENT & RESTOCKING",
+    text: "Grow Orbit will actively monitor inventory levels and provide timely restock notifications when stock reaches defined reorder thresholds. The Client remains solely responsible for funding and bearing all costs associated with inventory manufacturing, purchasing, and logistics."
   },
   {
-    id: "confidentiality-termination",
-    title: "CONFIDENTIALITY & TERMINATION",
-    text: "Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term."
+    id: "amazon-fees-ppc",
+    title: "AMAZON FEES & ADVERTISING EXPENSES",
+    text: "All Amazon platform fees (including referral, FBA, and storage fees) and direct PPC advertising expenditures shall be borne solely by the Client and paid directly from the Client's Amazon account."
+  },
+  {
+    id: "confidentiality",
+    title: "CONFIDENTIALITY",
+    text: "Both parties agree to keep all proprietary business data, store analytics, and strategies strictly confidential."
   },
   {
     id: "governing-law",

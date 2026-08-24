@@ -2,273 +2,38 @@
 
 import React, { useState, useEffect, useRef, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { X, Save, Send, Eye, EyeOff, Copy, Check, Loader, FileText, ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
+import {
+  X, Save, Send, Eye, EyeOff, Copy, Check, Loader, FileText,
+  ArrowLeft, ChevronDown, ChevronRight, Bookmark, ArrowUp, ArrowDown, Plus, RotateCcw
+} from "lucide-react";
 import { db } from "@/firebase/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-
-// ─── Built-in Templates ───────────────────────────────────────────────────────
-const BUILT_IN_TEMPLATES = [
-  {
-    id: "amazon-full",
-    name: "Amazon Growth Partnership",
-    category: "Amazon",
-    body: `<h2>AMAZON GROWTH PARTNERSHIP AGREEMENT</h2>
-<p>This Agreement is made between Grow Orbit ("Agency") and <strong>{{client_name}}</strong> of <strong>{{company_name}}</strong> ("Client") on the date above.</p>
-
-{{services_list}}
-
-<h3>1. TERM & COMMITMENT</h3>
-<p>The initial term is <strong>{{initial_term}}</strong>, renewing monthly. Either party may terminate with 30 days written notice.</p>
-
-<h3>2. PAYMENT TERMS</h3>
-<p>Payment will be initiated immediately upon contract signature binding. Subsequent monthly investments are processed on the 1st of each billing cycle.</p>
-
-<h3>3. CLIENT RESPONSIBILITIES</h3>
-<p>Client will provide necessary access (Seller Central, Ads, Brand Registry). Performance depends on inventory, market, and factors beyond Agency control.</p>
-
-<h3>4. CONFIDENTIALITY & TERMINATION</h3>
-<p>Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term.</p>
-
-<h3>5. GOVERNING LAW</h3>
-<p>This agreement is governed by the laws of the jurisdiction where Grow Orbit is registered.</p>
-
-<p><em>IN WITNESS WHEREOF, the parties have executed this Agreement as of the date first written above.</em></p>`
-  }
-];
-
-const SERVICE_PRESETS = [
-  { name: "Full Account Management", description: "End-to-end management of inventory, listing optimization, PPC, and daily store operations.", price: "2500" },
-  { name: "Amazon PPC Management", description: "Optimization, monitoring, and scaling of Sponsored Products, Brands, Display, and Video campaigns.", price: "1500" },
-  { name: "SEO & Listing Optimization", description: "In-depth keyword research, rewriting titles, bullet points, and backend search terms.", price: "500" },
-  { name: "Brand Store & A+ Design", description: "Design, layout, and implementation of premium A+ Content and customized storefront.", price: "800" },
-  { name: "Account Audit & Strategy", description: "In-depth account analysis, PPC auditing, inventory check, and custom growth road map.", price: "1000" }
-];
-
-// ─── Variable chips ────────────────────────────────────────────────────────────
-const VARIABLES = [
-  { label: "Client Name",  tag: "{{client_name}}" },
-  { label: "Company",      tag: "{{company_name}}" },
-  { label: "Email",        tag: "{{client_email}}" },
-  { label: "Location",     tag: "{{location}}" },
-  { label: "Initial Term", tag: "{{initial_term}}" },
-  { label: "Monthly Inv",  tag: "{{monthly_investment}}" },
-  { label: "Auto Renewal", tag: "{{auto_renewal}}" },
-  { label: "Date",         tag: "{{contract_date}}" },
-  { label: "Services",     tag: "{{services_list}}" },
-];
-
-function formatRetainerValue(val) {
-  if (!val) return "—";
-  const clean = String(val).trim().replace(/[\$,]/g, "");
-  const num = Number(clean);
-  return (!isNaN(num) && clean !== "") ? `$${num.toLocaleString()}` : val;
-}
-
-function formatInvestmentValue(val) {
-  if (!val) return "—";
-  const clean = String(val).trim().replace(/[\$,]/g, "");
-  const num = Number(clean);
-  return (!isNaN(num) && clean !== "") ? `$${num.toLocaleString()} USD` : val;
-}
-
-function buildServicesHtml(services, monthlyRetainer) {
-  const items = (services && services.length > 0) ? services : [];
-  if (items.length === 0 && !monthlyRetainer) return "";
-
-  let rows = "";
-  let total = 0;
-  items.forEach((s, i) => {
-    const price = Number(s.price) || 0;
-    total += price;
-    const descHtml = s.description ? `<div style="font-size: 11px; color: #64748b; font-weight: 400; margin-top: 4px; line-height: 1.4;">${s.description}</div>` : "";
-    rows += `
-      <tr>
-        <td style="padding: 14px 16px; font-size: 13px; color: #334155; border-bottom: 1px solid #f1f5f9; vertical-align: top;">${i + 1}</td>
-        <td style="padding: 14px 16px; font-size: 13px; color: #0f172a; font-weight: 600; border-bottom: 1px solid #f1f5f9; vertical-align: top;">
-          <div>${s.name || "—"}</div>
-          ${descHtml}
-        </td>
-        <td style="padding: 14px 16px; font-size: 13px; color: #0f172a; font-weight: 700; text-align: right; border-bottom: 1px solid #f1f5f9; vertical-align: top;">$${price.toLocaleString()}</td>
-      </tr>`;
-  });
-
-  if (total === 0 && monthlyRetainer) {
-    const clean = String(monthlyRetainer).trim().replace(/[\$,]/g, "");
-    const num = Number(clean);
-    total = (!isNaN(num) && clean !== "") ? num : 0;
-  }
-
-  return `
-    <div style="margin: 8px 0 32px 0;">
-      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
-        <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: center; background: #fff7ed; border-radius: 10px; width: 40px; height: 40px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-        </div>
-        <div>
-          <div style="font-size: 15px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: 0.02em;">Services & Pricing</div>
-          <div style="font-size: 11px; color: #64748b;">The following services are included in this agreement</div>
-        </div>
-      </div>
-      <table style="width: 100%; border-collapse: collapse; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
-        <thead>
-          <tr style="background: #0f172a;">
-            <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #94a3b8; text-align: left; text-transform: uppercase; letter-spacing: 0.05em; width: 50px;">#</th>
-            <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #94a3b8; text-align: left; text-transform: uppercase; letter-spacing: 0.05em;">Service</th>
-            <th style="padding: 12px 16px; font-size: 11px; font-weight: 700; color: #94a3b8; text-align: right; text-transform: uppercase; letter-spacing: 0.05em; width: 120px;">Price</th>
-          </tr>
-        </thead>
-        <tbody>${rows}</tbody>
-        <tfoot>
-          <tr style="background: #f8fafc;">
-            <td colspan="2" style="padding: 14px 16px; font-size: 14px; font-weight: 800; color: #0f172a; text-align: right;">Total Amount</td>
-            <td style="padding: 14px 16px; font-size: 16px; font-weight: 800; color: #ea580c; text-align: right;">$${total.toLocaleString()} USD</td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>`;
-}
-
-function migrateToPlaceholders(body) {
-  if (!body) return "";
-  let updated = body;
-  
-  // 1. Term & Commitment
-  updated = updated.replace(
-    /The\s+initial\s+term\s+is\s+<strong>\{\{initial_term\}\}<\/strong>,\s*renewing\s+monthly\.\s*Either\s+party\s+may\s+terminate\s+with\s+30\s+days\s+written\s+notice\./gi,
-    "{{term_commitment}}"
-  );
-  updated = updated.replace(
-    /The\s+initial\s+term\s+is\s+<strong>6\s+Months<\/strong>,\s*renewing\s+monthly\.\s*Either\s+party\s+may\s+terminate\s+with\s+30\s+days\s+written\s+notice\./gi,
-    "{{term_commitment}}"
-  );
-  updated = updated.replace(
-    /The\s+initial\s+term\s+is\s+<strong>3\s+Months<\/strong>,\s*renewing\s+monthly\.\s*Either\s+party\s+may\s+terminate\s+with\s+30\s+days\s+written\s+notice\./gi,
-    "{{term_commitment}}"
-  );
-
-  // 2. Payment Terms
-  updated = updated.replace(
-    /Payment\s+will\s+be\s+initiated\s+immediately\s+upon\s+contract\s+signature\s+binding\.\s*Subsequent\s+monthly\s+investments\s+are\s+processed\s+on\s+the\s+1st\s+of\s+each\s+billing\s+cycle\./gi,
-    "{{payment_terms_text}}"
-  );
-
-  // 3. Client Responsibilities
-  updated = updated.replace(
-    /Client\s+will\s+provide\s+necessary\s+access\s*\(Seller\s+Central,\s*Ads,\s*Brand\s+Registry\)\.\s*Performance\s+depends\s+on\s+inventory,\s*market,\s*and\s+factors\s+beyond\s+Agency\s+control\./gi,
-    "{{client_responsibilities}}"
-  );
-
-  // 4. Confidentiality & Termination
-  updated = updated.replace(
-    /Both\s+parties\s+agree\s+to\s+keep\s+all\s+non-public\s+information\s+confidential\.\s*Agreements\s+can\s+be\s+terminated\s+with\s+30\s+days\s+written\s+notice\s+after\s+the\s+initial\s+term\./gi,
-    "{{confidentiality_termination}}"
-  );
-
-  // 5. Governing Law
-  updated = updated.replace(
-    /This\s+agreement\s+is\s+governed\s+by\s+the\s+laws\s+of\s+the\s+jurisdiction\s+where\s+Grow\s+Orbit\s+is\s+registered\./gi,
-    "{{governing_law}}"
-  );
-
-  return updated;
-}
-
-function compilePreview(body, fields) {
-  const fmt = (v) => {
-    if (!v) return "—";
-    const d = new Date(v);
-    return isNaN(d) ? v : d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-  };
-  let html = (body || "");
-  html = migrateToPlaceholders(html);
-
-  // Fallback for older contracts that had "and the Client" instead of placeholders
-  if (!html.includes("{{client_name}}")) {
-    const clientStr = fields.companyName 
-      ? `<strong>${fields.clientName || "—"}</strong> of <strong>${fields.companyName}</strong>`
-      : `<strong>${fields.clientName || "—"}</strong>`;
-    html = html
-      .replace(/and\s+the\s+Client\s*\("Client"\)/gi, `and ${clientStr} ("Client")`)
-      .replace(/and\s+the\s+Client\s*\(“Client”\)/gi, `and ${clientStr} ("Client")`);
-  }
-
-  html = html
-    .split("{{term_commitment}}").join(fields.termCommitmentText || "The initial term is <strong>{{initial_term}}</strong>, renewing monthly. Either party may terminate with 30 days written notice.")
-    .split("{{payment_terms_text}}").join(fields.paymentTermsText || "Payment will be initiated immediately upon contract signature binding. Subsequent monthly investments are processed on the 1st of each billing cycle.")
-    .split("{{client_responsibilities}}").join(fields.clientResponsibilitiesText || "Client will provide necessary access (Seller Central, Ads, Brand Registry). Performance depends on inventory, market, and factors beyond Agency control.")
-    .split("{{confidentiality_termination}}").join(fields.confidentialityTerminationText || "Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term.")
-    .split("{{governing_law}}").join(fields.governingLawText || "This agreement is governed by the laws of the jurisdiction where Grow Orbit is registered.");
-
-  html = html
-    .split("{{client_name}}").join(fields.clientName || "—")
-    .split("{{company_name}}").join(fields.companyName || "—")
-    .split("{{client_email}}").join(fields.clientEmail || "—")
-    .split("{{client_phone}}").join(fields.clientPhone || "—")
-    .split("{{requested_service}}").join(fields.requestedService || "—")
-    .split("{{monthly_retainer}}").join(formatRetainerValue(fields.monthlyRetainer))
-    .split("{{term_length}}").join(fields.termLength || "—")
-    .split("{{payment_terms}}").join(fields.paymentTerms || "—")
-    .split("{{location}}").join(fields.location || "—")
-    .split("{{auto_renewal}}").join(fields.autoRenewal || "—")
-    .split("{{monthly_investment}}").join(formatInvestmentValue(fields.monthlyRetainer))
-    .split("{{initial_term}}").join(fields.termLength || "—")
-    .split("{{contract_date}}").join(fmt(fields.contractDate))
-    .split("{{start_date}}").join(fmt(fields.startDate))
-    .split("{{end_date}}").join(fmt(fields.endDate))
-    .split("{{services_list}}").join(buildServicesHtml(fields.services, fields.monthlyRetainer));
-
-  // Auto-format clauses
-  html = html.replace(/<h3>(\d+)\.\s*(.*?)<\/h3>\s*<p>([\s\S]*?)<\/p>/g, (match, number, title, text) => {
-    let iconPath = '';
-    switch(number) {
-      case '1': iconPath = '<path d="M20 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>'; break;
-      case '2': iconPath = '<rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>'; break;
-      case '3': iconPath = '<circle cx="12" cy="12" r="10"/><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/><path d="M12 18V6"/>'; break;
-      case '4': iconPath = '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'; break;
-      case '5': iconPath = '<line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>'; break;
-      case '6': iconPath = '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'; break;
-      case '7': iconPath = '<path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>'; break;
-      case '8': iconPath = '<path d="M14 13.5V16.5l-4 4-4-4 4-4h3"/><path d="M14 13.5L20 7.5a2.12 2.12 0 0 0-3-3l-6 6"/><path d="M15.5 15l2 2"/><path d="M8.5 8l-2-2"/>'; break;
-      default: iconPath = '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>';
-    }
-
-    const paddedNumber = number.padStart(2, '0');
-    
-    return `
-      <div style="display: flex; gap: 24px; padding: 24px 0; border-bottom: 1px solid #f1f5f9;">
-        <div style="flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; background: #fff7ed; border-radius: 12px; padding: 12px 16px; width: 85px; height: 48px;">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1e293b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            ${iconPath}
-          </svg>
-          <span style="color: #ea580c; font-weight: 800; font-size: 15px;">${paddedNumber}</span>
-        </div>
-        <div>
-          <div style="font-size: 13px; font-weight: 800; color: #0f172a; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.02em;">${title}</div>
-          <div style="font-size: 13px; line-height: 1.6; color: #334155;">${text}</div>
-        </div>
-      </div>
-    `;
-  });
-
-  return html;
-}
+import {
+  DEFAULT_CLAUSES,
+  BUILT_IN_TEMPLATES,
+  SERVICE_PRESETS,
+  VARIABLES,
+  formatInvestmentValue,
+  formatDate,
+  compileContractBody
+} from "@/utils/contractHelper";
 
 // ─── HTML Syntax Highlighter ──────────────────────────────────
 const highlightHtml = (code) => {
   if (!code) return "";
-  
+
   let escaped = code
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#x27;");
-  
+
   const regex = /(&lt;!--[\s\S]*?--&gt;)/g;
   const tagRegex = /(&lt;\/?[a-zA-Z0-9\-]+(?:[\s\S]*?)&gt;)/g;
-  
+
   let highlighted = escaped.replace(regex, '<span style="color: #71717a; font-style: italic;">$1</span>');
-  
+
   return highlighted.replace(tagRegex, (match) => {
     let highlightedTag = match;
     highlightedTag = highlightedTag.replace(/(\s[a-zA-Z0-9\-]+=)/g, '<span style="color: #fb923c;">$1</span>');
@@ -321,7 +86,7 @@ const CodeEditor = ({ value, onChange, onFocus, onBlur, placeholder, id, refText
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%", minHeight: rows ? `${rows * 20}px` : "200px" }}>
-      <div 
+      <div
         id={`${id}-backdrop`}
         style={{
           position: "absolute",
@@ -380,11 +145,11 @@ function ContractBuilderWorkspace() {
   const [focusedField, setFocusedField] = useState(null);
   const [zoom, setZoom] = useState(0.65);
   const [error, setError] = useState("");
-  
+
   const [clientDetailsOpen, setClientDetailsOpen] = useState(true);
   const [agreementMetaOpen, setAgreementMetaOpen] = useState(true);
   const [servicesOpen, setServicesOpen] = useState(true);
-  const [clausesOpen, setClausesOpen] = useState(false);
+  const [clausesOpen, setClausesOpen] = useState(true);
 
   // Contract fields
   const [clientName, setClientName]           = useState("");
@@ -402,12 +167,10 @@ function ContractBuilderWorkspace() {
   const [templateBody, setTemplateBody]       = useState("");
   const [services, setServices]               = useState([{ name: "", description: "", price: "" }]);
 
-  // Clause fields
-  const [termCommitmentText, setTermCommitmentText] = useState("The initial term is <strong>{{initial_term}}</strong>, renewing monthly. Either party may terminate with 30 days written notice.");
-  const [paymentTermsText, setPaymentTermsText] = useState("Payment will be initiated immediately upon contract signature binding. Subsequent monthly investments are processed on the 1st of each billing cycle.");
-  const [clientResponsibilitiesText, setClientResponsibilitiesText] = useState("Client will provide necessary access (Seller Central, Ads, Brand Registry). Performance depends on inventory, market, and factors beyond Agency control.");
-  const [confidentialityTerminationText, setConfidentialityTerminationText] = useState("Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term.");
-  const [governingLawText, setGoverningLawText] = useState("This agreement is governed by the laws of the jurisdiction where Grow Orbit is registered.");
+  // Dynamic clauses list state
+  const [clauses, setClauses]                 = useState(DEFAULT_CLAUSES);
+  const [isSavingDefaults, setIsSavingDefaults] = useState(false);
+  const [defaultSaveMessage, setDefaultSaveMessage] = useState("");
 
   const [signatureType, setSignatureType]     = useState("type");
   const [typedSignature, setTypedSignature]   = useState("");
@@ -436,10 +199,22 @@ function ContractBuilderWorkspace() {
           // Creating a new contract from a lead
           const leadDocRef = doc(db, "leads", leadId);
           const leadSnap = await getDoc(leadDocRef);
-          
+
           if (leadSnap.exists()) {
             const leadData = leadSnap.data();
-            
+
+            // Fetch default clauses from Firebase settings if available
+            let initialClauses = DEFAULT_CLAUSES;
+            try {
+              const settingsRes = await fetch("/api/contracts/settings");
+              const settingsData = await settingsRes.json();
+              if (settingsData.success && Array.isArray(settingsData.clauses) && settingsData.clauses.length > 0) {
+                initialClauses = settingsData.clauses;
+              }
+            } catch (err) {
+              console.warn("Could not fetch settings defaults, using fallback:", err);
+            }
+
             // Create contract draft in database first
             const res = await fetch("/api/contracts", {
               method: "POST",
@@ -456,10 +231,11 @@ function ContractBuilderWorkspace() {
                 paymentTerms: "Net 30",
                 location: leadData.location || "USA",
                 autoRenewal: "Yes, after 3 months",
-                templateBody: BUILT_IN_TEMPLATES[0].body
+                templateBody: BUILT_IN_TEMPLATES[0].body,
+                clauses: initialClauses
               })
             });
-            
+
             const data = await res.json();
             if (data.success) {
               // Redirect to url with the new contract ID
@@ -487,18 +263,29 @@ function ContractBuilderWorkspace() {
 
   const parseDateToInputString = (val) => {
     if (!val) return "";
+    if (typeof val === "string" && /^\d{4}-\d{2}-\d{2}$/.test(val.trim())) {
+      return val.trim();
+    }
     let d = null;
     if (val instanceof Date) {
       d = val;
     } else if (typeof val === "object") {
-      const seconds = val.seconds !== undefined ? val.seconds : val._seconds;
-      if (seconds !== undefined) {
-        d = new Date(seconds * 1000);
+      if (typeof val.toDate === "function") {
+        d = val.toDate();
+      } else {
+        const seconds = val.seconds !== undefined ? val.seconds : val._seconds;
+        if (seconds !== undefined) {
+          d = new Date(seconds * 1000);
+        }
       }
     } else {
       d = new Date(val);
     }
-    return d && !isNaN(d.getTime()) ? d.toISOString().substring(0, 10) : "";
+    if (!d || isNaN(d.getTime())) return "";
+    const year = d.getFullYear();
+    const month = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
   };
 
   const initializeFields = (contractData) => {
@@ -521,11 +308,18 @@ function ContractBuilderWorkspace() {
     );
     setTemplateBody(contractData.templateBody || BUILT_IN_TEMPLATES[0].body);
     setServices(contractData.services && contractData.services.length > 0 ? contractData.services : [{ name: "", description: "", price: "" }]);
-    setTermCommitmentText(contractData.termCommitmentText || "The initial term is <strong>{{initial_term}}</strong>, renewing monthly. Either party may terminate with 30 days written notice.");
-    setPaymentTermsText(contractData.paymentTermsText || "Payment will be initiated immediately upon contract signature binding. Subsequent monthly investments are processed on the 1st of each billing cycle.");
-    setClientResponsibilitiesText(contractData.clientResponsibilitiesText || "Client will provide necessary access (Seller Central, Ads, Brand Registry). Performance depends on inventory, market, and factors beyond Agency control.");
-    setConfidentialityTerminationText(contractData.confidentialityTerminationText || "Both parties agree to keep all non-public information confidential. Agreements can be terminated with 30 days written notice after the initial term.");
-    setGoverningLawText(contractData.governingLawText || "This agreement is governed by the laws of the jurisdiction where Grow Orbit is registered.");
+
+    // Load dynamic clauses from contract or legacy fields
+    const loadedClauses = (contractData.clauses && Array.isArray(contractData.clauses) && contractData.clauses.length > 0)
+      ? contractData.clauses
+      : [
+          { id: "term-commitment", title: "TERM & COMMITMENT", text: contractData.termCommitmentText || DEFAULT_CLAUSES[0].text },
+          { id: "payment-terms", title: "PAYMENT TERMS", text: contractData.paymentTermsText || DEFAULT_CLAUSES[1].text },
+          { id: "client-responsibilities", title: "CLIENT RESPONSIBILITIES", text: contractData.clientResponsibilitiesText || DEFAULT_CLAUSES[2].text },
+          { id: "confidentiality-termination", title: "CONFIDENTIALITY & TERMINATION", text: contractData.confidentialityTerminationText || DEFAULT_CLAUSES[3].text },
+          { id: "governing-law", title: "GOVERNING LAW", text: contractData.governingLawText || DEFAULT_CLAUSES[4].text }
+        ];
+    setClauses(loadedClauses);
   };
 
   const isLocked = currentContract ? !["draft", "awaiting_review"].includes(currentContract.status) : false;
@@ -533,10 +327,10 @@ function ContractBuilderWorkspace() {
     ? `${typeof window !== "undefined" ? window.location.origin : ""}/contract/${currentContract.id}`
     : null;
 
-  const fields = { 
-    clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, 
+  const fields = {
+    clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer,
     termLength, paymentTerms, contractDate, startDate, location, autoRenewal, services,
-    termCommitmentText, paymentTermsText, clientResponsibilitiesText, confidentialityTerminationText, governingLawText
+    clauses
   };
 
   // ── Auto-save ──
@@ -546,29 +340,118 @@ function ContractBuilderWorkspace() {
     if (autoSaveTimer.current) clearTimeout(autoSaveTimer.current);
     autoSaveTimer.current = setTimeout(async () => {
       try {
+        const payload = {
+          clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer,
+          termLength, paymentTerms, contractDate, startDate, templateBody, location, autoRenewal, services,
+          clauses,
+          isAutoSave: true,
+          ...extra
+        };
         const res = await fetch(`/api/contracts/${currentContract.id}`, {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ 
-            clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, 
-            termLength, paymentTerms, contractDate, startDate, templateBody, location, autoRenewal, services,
-            termCommitmentText, paymentTermsText, clientResponsibilitiesText, confidentialityTerminationText, governingLawText,
-            isAutoSave: true, ...extra 
-          })
+          body: JSON.stringify(payload)
         });
         const data = await res.json();
-        if (data.success) { 
-          setSaveStatus("Saved"); 
-          setCurrentContract(data.contract); 
+        if (data.success) {
+          setSaveStatus("Saved");
+          setCurrentContract(data.contract);
         }
         else setSaveStatus("Error");
       } catch { setSaveStatus("Error"); }
     }, 1500);
   }, [
-    currentContract, clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, 
+    currentContract, clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer,
     termLength, paymentTerms, contractDate, startDate, templateBody, location, autoRenewal, services, isLocked,
-    termCommitmentText, paymentTermsText, clientResponsibilitiesText, confidentialityTerminationText, governingLawText
+    clauses
   ]);
+
+  // ── Save Current Clauses as Default in Firebase ──
+  const handleSaveAsDefault = async () => {
+    if (isSavingDefaults) return;
+    setIsSavingDefaults(true);
+    setDefaultSaveMessage("");
+    try {
+      const res = await fetch("/api/contracts/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ clauses })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setDefaultSaveMessage("Saved as Firebase Default! ✓");
+        setTimeout(() => setDefaultSaveMessage(""), 3500);
+      } else {
+        setDefaultSaveMessage("Error: " + (data.error || "Failed to save"));
+      }
+    } catch (err) {
+      setDefaultSaveMessage("Failed to save default T&C");
+    } finally {
+      setIsSavingDefaults(false);
+    }
+  };
+
+  // ── Load Firebase Default Clauses ──
+  const handleLoadFirebaseDefaults = async () => {
+    if (isLocked) return;
+    if (!window.confirm("Reset this contract's clauses to the defaults stored in Firebase?")) return;
+    try {
+      const res = await fetch("/api/contracts/settings");
+      const data = await res.json();
+      if (data.success && Array.isArray(data.clauses) && data.clauses.length > 0) {
+        setClauses(data.clauses);
+        triggerAutoSave({ clauses: data.clauses });
+      } else {
+        alert("No custom default clauses found in Firebase.");
+      }
+    } catch (err) {
+      alert("Failed to load defaults from Firebase.");
+    }
+  };
+
+  // ── Clause Handlers ──
+  const handleClauseChange = (idx, key, val) => {
+    if (isLocked) return;
+    const updated = [...clauses];
+    updated[idx] = { ...updated[idx], [key]: val };
+    setClauses(updated);
+    triggerAutoSave({ clauses: updated });
+  };
+
+  const handleAddClause = () => {
+    if (isLocked) return;
+    const newClause = {
+      id: `clause-${Date.now()}`,
+      title: `NEW CLAUSE ${clauses.length + 1}`,
+      text: "Write clause details here. You can use variables like <strong>{{initial_term}}</strong>."
+    };
+    const updated = [...clauses, newClause];
+    setClauses(updated);
+    triggerAutoSave({ clauses: updated });
+  };
+
+  const handleRemoveClause = (idx) => {
+    if (isLocked) return;
+    if (clauses.length <= 1) {
+      alert("A contract must have at least one clause.");
+      return;
+    }
+    const updated = clauses.filter((_, i) => i !== idx);
+    setClauses(updated);
+    triggerAutoSave({ clauses: updated });
+  };
+
+  const handleMoveClause = (idx, direction) => {
+    if (isLocked) return;
+    const newIdx = idx + direction;
+    if (newIdx < 0 || newIdx >= clauses.length) return;
+    const updated = [...clauses];
+    const temp = updated[idx];
+    updated[idx] = updated[newIdx];
+    updated[newIdx] = temp;
+    setClauses(updated);
+    triggerAutoSave({ clauses: updated });
+  };
 
   // ── Insert variable tag at cursor ──
   const insertVar = (tag) => {
@@ -598,10 +481,10 @@ function ContractBuilderWorkspace() {
       await fetch(`/api/contracts/${currentContract.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer, 
+        body: JSON.stringify({
+          clientName, companyName, clientEmail, clientPhone, requestedService, monthlyRetainer,
           termLength, paymentTerms, contractDate, startDate, templateBody, services, location, autoRenewal,
-          termCommitmentText, paymentTermsText, clientResponsibilitiesText, confidentialityTerminationText, governingLawText
+          clauses
         })
       });
       // Then publish
@@ -629,7 +512,7 @@ function ContractBuilderWorkspace() {
   // ── Copy formatted email outreach template ──
   const copyRichEmail = async () => {
     if (!shareLink || !isLocked) return;
-    
+
     const htmlEmail = `<!DOCTYPE html>
 <html>
 <head>
@@ -673,52 +556,52 @@ function ContractBuilderWorkspace() {
           </tr>
         </table>
       </div>
-      
+
       <!-- Body -->
       <div class="email-body" style="padding: 28px 20px; background-color: #f0f4f8; text-align: left;">
         <h1 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Growth Partnership Agreement</h1>
-        
+
         <div style="font-size: 15px; color: #334155; line-height: 1.6; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
           <p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 16px;">Hi ${clientName || "Partner"},</p>
-          
+
           <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
             We have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.
           </p>
-          
+
           <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
             We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!
           </p>
-          
+
           <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
             If you have any questions or queries, please feel free to reply directly to this email.
           </p>
-          
+
           <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
             Please click the button below to view the full agreement and complete the secure e-signature process:
           </p>
-          
+
           <!-- CTA Button -->
           <div style="text-align: center; margin-bottom: 28px; margin-top: 16px;">
             <a href="${shareLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #ffffff !important; padding: 14px 36px; min-width: 240px; max-width: 100%; box-sizing: border-box; border-radius: 50px; font-size: 13px; font-weight: 800; text-decoration: none; box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25); border: 3px solid #fdba74; text-transform: uppercase; letter-spacing: 0.06em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center;">
               ✍️ Review & Sign Agreement
             </a>
           </div>
-          
+
           <!-- Separator -->
           <div style="height: 1px; background-color: rgba(15, 23, 42, 0.06); margin: 30px 0 24px 0; border-radius: 1px;"></div>
-          
+
           <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 20px;">
             Warm regards,<br />
             <strong style="color: #0f172a; font-size: 16px;">The Grow <span style="color: #f97316;">Orbit</span> Team</strong>
           </p>
-          
+
           <p style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin-top: 24px; border-top: 1px dashed rgba(15, 23, 42, 0.06); padding-top: 16px;">
             This is a secure, legally-binding electronic signature process. If you have any questions, please let us know.
           </p>
         </div>
-        
+
         <hr style="border: 0; border-top: 1px solid transparent; margin: 36px 0 24px 0;">
-        
+
         <!-- Footer -->
         <div style="text-align: center; color: #94a3b8; font-size: 11px; line-height: 1.6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
           <p style="font-weight: 700; color: #64748B; text-transform: uppercase; letter-spacing: 0.1em; margin-top: 0; margin-bottom: 4px;">Grow Orbit Agency</p>
@@ -795,10 +678,10 @@ function ContractBuilderWorkspace() {
 
   return (
     <div style={{ height: "100vh", display: "flex", flexDirection: "column", background: "#0a0a0a", overflow: "hidden", color: "#fff", fontFamily: "'Inter', sans-serif" }}>
-      
+
       {/* ── Header ── */}
       <div style={{ display: "flex", alignItems: "center", gap: "16px", padding: "14px 20px", borderBottom: "1px solid rgba(255,255,255,0.06)", flexShrink: 0, background: "#121212" }}>
-        <button 
+        <button
           onClick={() => router.push("/admin-dashboard")}
           style={{ display: "flex", alignItems: "center", gap: "6px", padding: "6px 12px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", color: "#94a3b8", cursor: "pointer", fontSize: "11px", fontWeight: 700 }}
         >
@@ -817,9 +700,9 @@ function ContractBuilderWorkspace() {
 
         {/* Reset Template */}
         {!isLocked && (
-          <button 
+          <button
             onClick={() => {
-              if (window.confirm("Are you sure you want to reset this contract to the default template? This will restore the dynamic placeholders (like the services table) and overwrite any manual text edits you made to the template body.")) {
+              if (window.confirm("Are you sure you want to reset this contract to the default template? This will restore the dynamic placeholders (services & clauses) and overwrite manual text edits you made to the template body.")) {
                 setTemplateBody(BUILT_IN_TEMPLATES[0].body);
                 triggerAutoSave({ templateBody: BUILT_IN_TEMPLATES[0].body });
               }
@@ -850,14 +733,14 @@ function ContractBuilderWorkspace() {
           </div>
         ) : (
           <div style={{ display: "flex", gap: "8px" }}>
-            <button 
+            <button
               onClick={() => router.push(`/contract/${currentContract.id}`)}
               style={{ display: "flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", border: "1px solid rgba(249,115,22,0.3)", background: "rgba(249,115,22,0.1)", color: "#f97316", cursor: "pointer", fontSize: "11px", fontWeight: 700 }}
             >
               <Eye size={13}/>
               View Contract Page
             </button>
-            <button 
+            <button
               onClick={() => setIsEmailModalOpen(true)}
               style={{ display: "flex", alignItems: "center", gap: "6px", padding: "7px 14px", borderRadius: "8px", border: "none", background: "linear-gradient(135deg,#f97316,#ea580c)", color: "#fff", cursor: "pointer", fontSize: "11px", fontWeight: 800 }}
             >
@@ -878,8 +761,8 @@ function ContractBuilderWorkspace() {
       <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
 
         {/* Left: Input Fields */}
-        <div style={{ width: "380px", flexShrink: 0, overflowY: "auto", padding: "20px 24px", borderRight: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: "16px", background: "#121212" }}>
-          
+        <div style={{ width: "390px", flexShrink: 0, overflowY: "auto", padding: "20px 20px", borderRight: "1px solid rgba(255,255,255,0.06)", display: "flex", flexDirection: "column", gap: "16px", background: "#121212" }}>
+
           {isLocked && (
             <div style={{ background: "rgba(234,88,12,0.1)", border: "1px solid rgba(234,88,12,0.3)", borderRadius: "8px", padding: "10px 12px", marginBottom: "8px", display: "flex", gap: "8px", alignItems: "center" }}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -889,14 +772,15 @@ function ContractBuilderWorkspace() {
             </div>
           )}
 
-          <div 
-            onClick={() => setClientDetailsOpen(!clientDetailsOpen)} 
+          {/* 1. Client Details */}
+          <div
+            onClick={() => setClientDetailsOpen(!clientDetailsOpen)}
             style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", paddingBottom: "6px", borderBottom: "1px solid rgba(255,255,255,0.08)", marginTop: "4px" }}
           >
             <span style={{ fontSize: "10px", fontWeight: 800, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase" }}>Client Details</span>
             {clientDetailsOpen ? <ChevronDown size={14} color="#64748b" /> : <ChevronRight size={14} color="#64748b" />}
           </div>
-          
+
           {clientDetailsOpen && (
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               <div>
@@ -933,8 +817,9 @@ function ContractBuilderWorkspace() {
             </div>
           )}
 
-          <div 
-            onClick={() => setAgreementMetaOpen(!agreementMetaOpen)} 
+          {/* 2. Agreement Meta */}
+          <div
+            onClick={() => setAgreementMetaOpen(!agreementMetaOpen)}
             style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", paddingBottom: "6px", borderBottom: "1px solid rgba(255,255,255,0.08)", marginTop: "12px" }}
           >
             <span style={{ fontSize: "10px", fontWeight: 800, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase" }}>Agreement Meta</span>
@@ -953,7 +838,7 @@ function ContractBuilderWorkspace() {
                 <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Initial Term</div>
                 <select value={termLength} disabled={isLocked} onChange={e => { setTermLength(e.target.value); triggerAutoSave({ termLength: e.target.value }); }}
                   style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#0a0a0a", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
-                  {["3 Months","6 Months","12 Months","Month-to-month","Project-based"].map(o => <option key={o} value={o}>{o}</option>)}
+                  {["1 Month","3 Months","6 Months","8 Months","12 Months","Month-to-month","Project-based"].map(o => <option key={o} value={o}>{o}</option>)}
                 </select>
               </div>
 
@@ -970,21 +855,21 @@ function ContractBuilderWorkspace() {
                 <div style={{ fontSize: "10px", color: "#64748b", fontWeight: 700, marginBottom: "4px" }}>Auto Renewal</div>
                 <select value={autoRenewal} disabled={isLocked} onChange={e => { setAutoRenewal(e.target.value); triggerAutoSave({ autoRenewal: e.target.value }); }}
                   style={{ width: "100%", padding: "8px 10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "#090d16", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "12px", outline: "none", cursor: isLocked ? "not-allowed" : "pointer", opacity: isLocked ? 0.6 : 1 }}>
-                  {["Yes, after 3 months","Yes, month-to-month","No","Custom"].map(o => <option key={o} value={o}>{o}</option>)}
+                  {["Yes, after 1 month","Yes, after 3 months","Yes, after 6 months","Yes, after 8 months","Yes, after 12 months","Yes, month-to-month","No","Custom"].map(o => <option key={o} value={o}>{o}</option>)}
                 </select>
               </div>
             </div>
           )}
 
-          {/* ─── Services & Pricing ─── */}
-          <div 
-            onClick={() => setServicesOpen(!servicesOpen)} 
+          {/* 3. Services & Pricing */}
+          <div
+            onClick={() => setServicesOpen(!servicesOpen)}
             style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", paddingBottom: "6px", borderBottom: "1px solid rgba(255,255,255,0.08)", marginTop: "12px" }}
           >
             <span style={{ fontSize: "10px", fontWeight: 800, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase" }}>Services & Pricing</span>
             {servicesOpen ? <ChevronDown size={14} color="#64748b" /> : <ChevronRight size={14} color="#64748b" />}
           </div>
-          
+
           {servicesOpen && (
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               {/* Presets Row */}
@@ -1015,10 +900,10 @@ function ContractBuilderWorkspace() {
                 {services.map((svc, idx) => (
                   <div key={idx} style={{ padding: "8px", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "8px", background: "rgba(255,255,255,0.01)", display: "flex", flexDirection: "column", gap: "6px" }}>
                     <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
-                      <input 
-                        type="text" 
-                        placeholder="Service name" 
-                        value={svc.name} 
+                      <input
+                        type="text"
+                        placeholder="Service name"
+                        value={svc.name}
                         disabled={isLocked}
                         onChange={e => {
                           const updated = [...services];
@@ -1028,10 +913,10 @@ function ContractBuilderWorkspace() {
                         }}
                         style={{ flex: 1, padding: "6px 8px", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.03)", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "11px", outline: "none", boxSizing: "border-box", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}
                       />
-                      <input 
-                        type="number" 
-                        placeholder="$" 
-                        value={svc.price} 
+                      <input
+                        type="number"
+                        placeholder="$"
+                        value={svc.price}
                         disabled={isLocked}
                         onChange={e => {
                           const updated = [...services];
@@ -1042,7 +927,7 @@ function ContractBuilderWorkspace() {
                         style={{ width: "65px", padding: "6px 8px", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.08)", background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.03)", color: isLocked ? "#64748b" : "#f1f5f9", fontSize: "11px", outline: "none", boxSizing: "border-box", cursor: isLocked ? "not-allowed" : "text", opacity: isLocked ? 0.6 : 1 }}
                       />
                       {!isLocked && services.length > 1 && (
-                        <button 
+                        <button
                           onClick={() => {
                             const updated = services.filter((_, i) => i !== idx);
                             setServices(updated);
@@ -1054,10 +939,10 @@ function ContractBuilderWorkspace() {
                         </button>
                       )}
                     </div>
-                    <input 
-                      type="text" 
-                      placeholder="Detail (e.g. End-to-end PPC scaling)" 
-                      value={svc.description || ""} 
+                    <input
+                      type="text"
+                      placeholder="Detail (e.g. End-to-end PPC scaling)"
+                      value={svc.description || ""}
                       disabled={isLocked}
                       onChange={e => {
                         const updated = [...services];
@@ -1070,9 +955,9 @@ function ContractBuilderWorkspace() {
                   </div>
                 ))}
               </div>
-              
+
               {!isLocked && (
-                <button 
+                <button
                   onClick={() => {
                     const updated = [...services, { name: "", description: "", price: "" }];
                     setServices(updated);
@@ -1080,18 +965,153 @@ function ContractBuilderWorkspace() {
                   }}
                   style={{ width: "100%", padding: "7px", borderRadius: "8px", border: "1px dashed rgba(249,115,22,0.3)", background: "rgba(249,115,22,0.05)", color: "#f97316", cursor: "pointer", fontSize: "11px", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}
                 >
-                  + Add Service
+                  <Plus size={13} /> Add Service
                 </button>
               )}
             </div>
           )}
+
+          {/* 4. Terms & Conditions (Dynamic Clauses) */}
+          <div
+            onClick={() => setClausesOpen(!clausesOpen)}
+            style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer", paddingBottom: "6px", borderBottom: "1px solid rgba(255,255,255,0.08)", marginTop: "12px" }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span style={{ fontSize: "10px", fontWeight: 800, color: "#94a3b8", letterSpacing: "0.1em", textTransform: "uppercase" }}>Terms & Conditions</span>
+              <span style={{ fontSize: "9px", fontWeight: 700, padding: "1px 6px", borderRadius: "100px", background: "rgba(249,115,22,0.15)", color: "#f97316" }}>{clauses.length}</span>
+            </div>
+            {clausesOpen ? <ChevronDown size={14} color="#64748b" /> : <ChevronRight size={14} color="#64748b" />}
+          </div>
+
+          {clausesOpen && (
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+
+              {/* Default T&C Action Buttons */}
+              {!isLocked && (
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px", background: "rgba(255,255,255,0.02)", padding: "10px", borderRadius: "8px", border: "1px solid rgba(255,255,255,0.05)" }}>
+                  <div style={{ display: "flex", gap: "6px" }}>
+                    <button
+                      onClick={handleSaveAsDefault}
+                      disabled={isSavingDefaults}
+                      style={{ flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", padding: "6px 10px", borderRadius: "6px", border: "1px solid rgba(249,115,22,0.3)", background: "rgba(249,115,22,0.1)", color: "#f97316", fontSize: "10px", fontWeight: 700, cursor: "pointer" }}
+                    >
+                      {isSavingDefaults ? <Loader size={11} className="animate-spin" /> : <Bookmark size={11} />}
+                      Save as Default
+                    </button>
+                    <button
+                      onClick={handleLoadFirebaseDefaults}
+                      style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", padding: "6px 10px", borderRadius: "6px", border: "1px solid rgba(255,255,255,0.08)", background: "rgba(255,255,255,0.03)", color: "#94a3b8", fontSize: "10px", fontWeight: 600, cursor: "pointer" }}
+                      title="Load Firebase Defaults"
+                    >
+                      <RotateCcw size={11} /> Load Defaults
+                    </button>
+                  </div>
+                  {defaultSaveMessage && (
+                    <div style={{ fontSize: "10px", fontWeight: 700, color: defaultSaveMessage.includes("Error") ? "#ef4444" : "#22c55e", textAlign: "center", marginTop: "2px" }}>
+                      {defaultSaveMessage}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Clause Cards List */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+                {clauses.map((c, idx) => (
+                  <div
+                    key={c.id || idx}
+                    style={{ padding: "10px", border: "1px solid rgba(255,255,255,0.06)", borderRadius: "8px", background: "rgba(255,255,255,0.015)", display: "flex", flexDirection: "column", gap: "6px" }}
+                  >
+                    {/* Clause Header: Number, Move Up/Down, Remove */}
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                        <span style={{ fontSize: "10px", fontWeight: 800, color: "#f97316", background: "rgba(249,115,22,0.1)", padding: "2px 6px", borderRadius: "4px" }}>
+                          #{String(idx + 1).padStart(2, "0")}
+                        </span>
+                        <input
+                          type="text"
+                          value={c.title}
+                          disabled={isLocked}
+                          placeholder="Clause Title (e.g. PAYMENT TERMS)"
+                          onChange={e => handleClauseChange(idx, "title", e.target.value)}
+                          style={{ fontSize: "11px", fontWeight: 700, color: isLocked ? "#64748b" : "#f1f5f9", background: "transparent", border: "none", outline: "none", width: "190px", textTransform: "uppercase" }}
+                        />
+                      </div>
+                      {!isLocked && (
+                        <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+                          <button
+                            onClick={() => handleMoveClause(idx, -1)}
+                            disabled={idx === 0}
+                            style={{ background: "none", border: "none", color: idx === 0 ? "#334155" : "#94a3b8", cursor: idx === 0 ? "not-allowed" : "pointer", padding: "2px" }}
+                            title="Move Up"
+                          >
+                            <ArrowUp size={12} />
+                          </button>
+                          <button
+                            onClick={() => handleMoveClause(idx, 1)}
+                            disabled={idx === clauses.length - 1}
+                            style={{ background: "none", border: "none", color: idx === clauses.length - 1 ? "#334155" : "#94a3b8", cursor: idx === clauses.length - 1 ? "not-allowed" : "pointer", padding: "2px" }}
+                            title="Move Down"
+                          >
+                            <ArrowDown size={12} />
+                          </button>
+                          {clauses.length > 1 && (
+                            <button
+                              onClick={() => handleRemoveClause(idx)}
+                              style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", padding: "2px", marginLeft: "4px" }}
+                              title="Delete Clause"
+                            >
+                              <X size={13} />
+                            </button>
+                          )}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Clause Text */}
+                    <textarea
+                      rows={3}
+                      value={c.text}
+                      disabled={isLocked}
+                      placeholder="Type clause text here..."
+                      onChange={e => handleClauseChange(idx, "text", e.target.value)}
+                      style={{
+                        width: "100%",
+                        padding: "6px 8px",
+                        borderRadius: "6px",
+                        border: "1px solid rgba(255,255,255,0.06)",
+                        background: isLocked ? "rgba(255,255,255,0.01)" : "rgba(255,255,255,0.02)",
+                        color: isLocked ? "#64748b" : "#cbd5e1",
+                        fontSize: "11px",
+                        lineHeight: "1.4",
+                        outline: "none",
+                        resize: "vertical",
+                        boxSizing: "border-box",
+                        fontFamily: "inherit"
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+
+              {!isLocked && (
+                <button
+                  onClick={handleAddClause}
+                  style={{ width: "100%", padding: "7px", borderRadius: "8px", border: "1px dashed rgba(249,115,22,0.3)", background: "rgba(249,115,22,0.05)", color: "#f97316", cursor: "pointer", fontSize: "11px", fontWeight: 700, display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}
+                >
+                  <Plus size={13} /> Add Clause
+                </button>
+              )}
+
+            </div>
+          )}
+
         </div>
 
         {/* Center & Right: Editor / Preview Pane */}
         <div style={{ flex: 1, display: "flex", overflow: "hidden", background: "#0a0a0a" }}>
             {/* Letterhead Preview */}
             <div style={{ flex: 1, overflowY: "auto", padding: "40px", background: "#121212", position: "relative", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
-              
+
               {/* Zoom Controls Overlay */}
               <div style={{ position: "fixed", bottom: "32px", right: "32px", display: "flex", alignItems: "center", gap: "12px", background: "#1e293b", padding: "10px 16px", borderRadius: "100px", zIndex: 50, boxShadow: "0 4px 24px rgba(0,0,0,0.6)", border: "1px solid rgba(255,255,255,0.1)" }}>
                 <button onClick={() => setZoom(z => Math.max(0.2, z - 0.1))} style={{ width: "28px", height: "28px", borderRadius: "50%", background: "rgba(255,255,255,0.1)", border: "none", color: "#fff", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "18px" }}>-</button>
@@ -1101,17 +1121,17 @@ function ContractBuilderWorkspace() {
 
               {/* Scaled Container Wrapper */}
               <div style={{ width: 1440 * zoom, height: 2100 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
-                <div style={{ 
+                <div style={{
                   position: "absolute",
                   top: 0,
                   left: 0,
-                  width: "1440px", 
-                  height: "2100px", 
-                  background: "#fff", 
-                  borderRadius: "24px", 
+                  width: "1440px",
+                  height: "2100px",
+                  background: "#fff",
+                  borderRadius: "24px",
                   overflow: "hidden",
-                  padding: "80px 80px", 
-                  boxShadow: "0 10px 40px rgba(0,0,0,0.5)", 
+                  padding: "80px 80px",
+                  boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
                   fontFamily: "'Inter', sans-serif",
                   transform: `scale(${zoom})`,
                   transformOrigin: "top left",
@@ -1119,11 +1139,11 @@ function ContractBuilderWorkspace() {
                 }}>
 
                 {/* Brand Banner */}
-                <div style={{ 
-                  display: "flex", 
-                  alignItems: "stretch", 
+                <div style={{
+                  display: "flex",
+                  alignItems: "stretch",
                   justifyContent: "space-between",
-                  margin: "-80px -80px 48px -80px", 
+                  margin: "-80px -80px 48px -80px",
                   height: "160px",
                   position: "relative",
                   background: "#fff",
@@ -1136,10 +1156,10 @@ function ContractBuilderWorkspace() {
                       <img src="/logo.png" alt="Grow Orbit Logo" style={{ height: "48px", objectFit: "contain" }} />
                       <span style={{ fontSize: "22px", fontWeight: 900, fontFamily: "'Montserrat', sans-serif", letterSpacing: "-0.5px" }}><span style={{ color: "#1e293b" }}>GROW</span> <span style={{ color: "#ea580c" }}>ORBIT</span></span>
                     </div>
-                    
+
                     {/* Divider */}
                     <div style={{ width: "2px", height: "56px", background: "#e2e8f0", margin: "0 32px" }}></div>
-                    
+
                     {/* Title & ID */}
                     <div>
                       <div style={{ fontSize: "24px", fontWeight: 800, color: "#0f172a", marginBottom: "4px", fontFamily: "'Montserrat', sans-serif" }}>Contract for Amazon Growth Partnership</div>
@@ -1148,13 +1168,13 @@ function ContractBuilderWorkspace() {
                   </div>
 
                   {/* Right Dark Section */}
-                  <div style={{ 
-                    position: "absolute", 
-                    top: 0, 
-                    right: 0, 
-                    bottom: 0, 
-                    width: "calc(40% - 30px)", 
-                    background: "#0f172a", 
+                  <div style={{
+                    position: "absolute",
+                    top: 0,
+                    right: 0,
+                    bottom: 0,
+                    width: "calc(40% - 30px)",
+                    background: "#0f172a",
                     clipPath: "polygon(15% 0, 100% 0, 100% 100%, 0% 100%)",
                     display: "flex",
                     alignItems: "center",
@@ -1175,11 +1195,11 @@ function ContractBuilderWorkspace() {
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Stepper */}
                 <div style={{ display: "flex", justifyContent: "center", marginBottom: "48px" }}>
                   <div style={{ display: "flex", alignItems: "flex-start", width: "100%", maxWidth: "800px", justifyContent: "space-between", position: "relative" }}>
-                    
+
                     {/* Connecting Lines */}
                     <div style={{ position: "absolute", top: "24px", left: "12%", right: "12%", height: "2px", background: "#f1f5f9", zIndex: 0 }}></div>
 
@@ -1210,10 +1230,9 @@ function ContractBuilderWorkspace() {
                   </div>
                 </div>
 
-
                 {/* 2-Column Document Layout */}
                 <div style={{ display: "grid", gridTemplateColumns: "820px 420px", gap: "40px" }}>
-                  
+
                   {/* Left Column (Contract Details) */}
                   <div style={{ border: "1.5px solid #e2e8f0", borderRadius: "16px", padding: "40px", minHeight: "1000px", background: "#fff", color: "#1e293b", fontFamily: "'Inter', sans-serif" }}>
                     {previewMode ? (
@@ -1226,7 +1245,7 @@ function ContractBuilderWorkspace() {
                           .contract-preview-container strong { font-weight: 700; color: #f97316; }
                           .contract-preview-container em { font-style: italic; color: #64748b; }
                         `}</style>
-                        <div dangerouslySetInnerHTML={{ __html: compilePreview(templateBody, fields) }} />
+                        <div dangerouslySetInnerHTML={{ __html: compileContractBody(templateBody, fields) }} />
                       </div>
                     ) : (
                       <textarea
@@ -1257,7 +1276,6 @@ function ContractBuilderWorkspace() {
                       />
                     )}
 
-
                     {/* Disclaimer Box */}
                     <div style={{ marginTop: "32px", padding: "20px 24px", background: "#fff7ed", borderRadius: "12px", display: "flex", gap: "20px", alignItems: "flex-start" }}>
                       <div style={{ color: "#ea580c", flexShrink: 0, marginTop: "2px" }}>
@@ -1274,10 +1292,10 @@ function ContractBuilderWorkspace() {
                       </div>
                     </div>
                   </div>
-                  
+
                   {/* Right Column (Client Information) */}
                   <div style={{ border: "1px solid #e2e8f0", borderRadius: "16px", minHeight: "1000px", background: "#fff", display: "flex", flexDirection: "column", fontFamily: "'Inter', sans-serif", overflow: "hidden" }}>
-                    
+
                     {/* Header */}
                     <div style={{ background: "#0f172a", padding: "36px 24px", display: "flex", gap: "16px", alignItems: "center" }}>
                       <div style={{ flexShrink: 0, width: "40px", height: "40px", borderRadius: "50%", border: "1px solid #ea580c", display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -1356,9 +1374,8 @@ function ContractBuilderWorkspace() {
                               Contract Signed & Executed ✍️
                             </div>
                             <div style={{ border: "1px solid #e2e8f0", borderRadius: "12px", background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)", padding: "24px", position: "relative", overflow: "hidden", marginBottom: "12px" }}>
-                              {/* Subtle corner accent */}
                               <div style={{ position: "absolute", top: 0, right: 0, width: "60px", height: "60px", background: "linear-gradient(135deg, transparent 50%, rgba(234,88,12,0.06) 50%)", borderRadius: "0 12px 0 0" }}></div>
-                              
+
                               {currentContract.signature?.method === "type" ? (
                                 <>
                                   <div style={{ textAlign: "center", padding: "16px 0" }}>
@@ -1389,7 +1406,7 @@ function ContractBuilderWorkspace() {
                               Client Section (Disabled in Builder)
                             </div>
                             <div style={{ fontSize: "12px", color: "#64748b", marginBottom: "16px" }}>Choose how you'd like to sign</div>
-                            
+
                             {/* Toggle Buttons */}
                             <div style={{ display: "flex", gap: "8px", marginBottom: "20px" }}>
                               <div onClick={() => setSignatureType("type")} style={{ flex: 1, padding: "8px 0", background: signatureType === "type" ? "#fff7ed" : "#fff", border: signatureType === "type" ? "1px solid #ea580c" : "1px solid #f1f5f9", borderRadius: "8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", cursor: "pointer", transition: "all 0.2s" }}>
@@ -1457,9 +1474,8 @@ function ContractBuilderWorkspace() {
                           </div>
 
                           <div style={{ border: "1px solid #e2e8f0", borderRadius: "12px", background: "linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)", padding: "24px", position: "relative", overflow: "hidden" }}>
-                            {/* Subtle corner accent */}
                             <div style={{ position: "absolute", top: 0, right: 0, width: "60px", height: "60px", background: "linear-gradient(135deg, transparent 50%, rgba(234,88,12,0.06) 50%)", borderRadius: "0 12px 0 0" }}></div>
-                            
+
                             {/* Digital signature name */}
                             <div style={{ textAlign: "center", padding: "16px 0" }}>
                               <div style={{ fontSize: "32px", fontFamily: "'Georgia', 'Times New Roman', serif", fontWeight: 400, color: "#0f172a", letterSpacing: "1px" }}>Ali Haider</div>
@@ -1472,7 +1488,7 @@ function ContractBuilderWorkspace() {
                               <span style={{ fontSize: "10px", fontWeight: 700, color: "#ea580c", textTransform: "uppercase", letterSpacing: "1.5px" }}>Digitally Signed</span>
                             </div>
                           </div>
-                          
+
                           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "16px" }}>
                             <div>
                               <div style={{ fontSize: "13px", fontWeight: 700, color: "#0f172a" }}>Ali Haider</div>
@@ -1492,13 +1508,13 @@ function ContractBuilderWorkspace() {
 
                 {/* Horizontal Summary Bar */}
                 <div style={{ marginTop: "40px", background: "#0f172a", borderRadius: "16px", padding: "32px 48px", display: "flex", justifyContent: "space-between", alignItems: "center", fontFamily: "'Inter', sans-serif" }}>
-                  
+
                   {/* Item 1: Agreement Date */}
                   <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
                     <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ea580c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                     <div>
                       <div style={{ fontSize: "13px", color: "#94a3b8", fontWeight: 500, marginBottom: "4px" }}>Agreement Date</div>
-                      <div style={{ fontSize: "15px", color: "#f8fafc", fontWeight: 800 }}>{contractDate ? new Date(contractDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }) : "—"}</div>
+                      <div style={{ fontSize: "15px", color: "#f8fafc", fontWeight: 800 }}>{formatDate(contractDate)}</div>
                     </div>
                   </div>
 
@@ -1547,7 +1563,7 @@ function ContractBuilderWorkspace() {
                     Powered by <span style={{ color: "#f97316", fontWeight: 600 }}>Grow Orbit</span> Secure Contracts
                   </div>
                 </div>
-                
+
                 </div>
               </div>
             </div>
@@ -1584,8 +1600,8 @@ function ContractBuilderWorkspace() {
                 <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 800, color: "#fff" }}>Client Outreach Email</h3>
                 <p style={{ margin: "4px 0 0 0", fontSize: "13px", color: "#94a3b8" }}>Send this pre-formatted email to your client to request their signature.</p>
               </div>
-              <button 
-                onClick={() => setIsEmailModalOpen(false)} 
+              <button
+                onClick={() => setIsEmailModalOpen(false)}
                 style={{ background: "rgba(255,255,255,0.04)", border: "none", color: "#94a3b8", borderRadius: "50%", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: "14px", fontWeight: "bold" }}
               >
                 ✕
@@ -1595,153 +1611,96 @@ function ContractBuilderWorkspace() {
             {/* Subject Line */}
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
               <label style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>Subject Line</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={emailSubject}
                 onChange={(e) => setEmailSubject(e.target.value)}
-                style={{ width: "100%", padding: "10px 14px", borderRadius: "8px", background: "#0a0a0a", border: "1px solid rgba(255,255,255,0.08)", color: "#fff", fontSize: "13px", outline: "none", boxSizing: "border-box" }}
+                style={{
+                  background: "#090d16",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  borderRadius: "10px",
+                  padding: "10px 14px",
+                  color: "#fff",
+                  fontSize: "13px",
+                  outline: "none"
+                }}
               />
             </div>
 
-            {/* Warning if Draft */}
-            {!isLocked && (
-              <div style={{ background: "rgba(234,88,12,0.1)", border: "1px solid rgba(234,88,12,0.2)", borderRadius: "8px", padding: "12px 16px", fontSize: "12px", color: "#fb923c", lineHeight: 1.5 }}>
-                <strong>Draft Mode:</strong> The email button/link will not be workable until the contract is published and active.
-              </div>
-            )}
-
-            {/* Preview Box */}
+            {/* Email Preview Card */}
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-              <label style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>Email Content Preview</label>
-              <div style={{ background: "#e2ebf5", borderRadius: "12px", padding: "16px", maxHeight: "320px", overflowY: "auto", border: "1px solid #cbd5e1" }}>
-                <div style={{
-                  maxWidth: "100%",
-                  margin: "0 auto",
-                  backgroundColor: "#f0f4f8",
-                  borderRadius: "16px",
-                  overflow: "hidden",
-                  border: "3px solid #ffffff",
-                  fontFamily: "'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-                  color: "#333",
-                  textAlign: "left"
-                }}>
-                  {/* Header */}
-                  <div style={{ background: "linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 50%, #050505 100%)", padding: "16px", textAlign: "center", borderBottom: "3px solid #f97316" }}>
-                    <div style={{ fontSize: "18px", fontWeight: 900, letterSpacing: "0.03em", color: "#ffffff", fontFamily: "'Montserrat', sans-serif" }}>
-                      GROW <span style={{ color: "#f97316" }}>ORBIT</span>
-                    </div>
-                    <div style={{ fontSize: "7px", fontWeight: 700, color: "#a1a1aa", letterSpacing: "0.12em", textTransform: "uppercase", marginTop: "2px" }}>
-                      WE RANK. YOU SELL. IT'S THAT SIMPLE.
-                    </div>
-                  </div>
-                  
-                  {/* Body */}
-                  <div style={{ padding: "20px", backgroundColor: "#f0f4f8" }}>
-                    <h1 style={{ fontSize: "16px", fontWeight: 800, color: "#0f172a", marginTop: 0, marginBottom: "12px", fontFamily: "'Montserrat', sans-serif" }}>
-                      Growth Partnership Agreement
-                    </h1>
-                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#475569", marginTop: 0, marginBottom: "12px" }}>
-                      Hi {clientName || "[Client Name]"},
-                    </p>
-                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
-                      We have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.
-                    </p>
-                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
-                      We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!
-                    </p>
-                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
-                      If you have any questions or queries, please feel free to reply directly to this email.
-                    </p>
-                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "16px" }}>
-                      Please click the button below to view the full agreement and complete the secure e-signature process:
-                    </p>
-                    
-                    {/* CTA Button */}
-                    <div style={{ textAlign: "center", margin: "16px 0" }}>
-                      <span style={{
-                        display: "inline-block",
-                        background: "linear-gradient(135deg, #f97316, #ea580c)",
-                        color: "#ffffff",
-                        padding: "10px 24px",
-                        borderRadius: "50px",
-                        fontSize: "12px",
-                        fontWeight: 800,
-                        textTransform: "uppercase",
-                        letterSpacing: "0.06em",
-                        boxShadow: "0 6px 15px rgba(234, 88, 12, 0.2)",
-                        border: "2px solid #fdba74"
-                      }}>
-                        ✍️ Review & Sign Agreement
-                      </span>
-                    </div>
-                    
-                    {/* Separator */}
-                    <div style={{ height: "1px", backgroundColor: "rgba(15, 23, 42, 0.06)", margin: "20px 0 16px 0" }}></div>
-                    
-                    <p style={{ fontSize: "13px", lineHeight: "1.6", color: "#4b5563", marginBottom: "12px" }}>
-                      Warm regards,<br />
-                      <strong style={{ color: "#0f172a", fontSize: "14px" }}>The Grow <span style={{ color: "#f97316" }}>Orbit</span> Team</strong>
-                    </p>
-                    
-                    <p style={{ fontSize: "10px", color: "#94a3b8", lineHeight: "1.4", marginTop: "16px", borderTop: "1px dashed rgba(15, 23, 42, 0.06)", paddingTop: "12px" }}>
-                      This is a secure, legally-binding electronic signature process. If you have any questions, please let us know.
-                    </p>
-                    
-                    <hr style={{ border: 0, borderTop: "1px solid transparent", margin: "24px 0 16px 0" }} />
-                    
-                    {/* Footer */}
-                    <div style={{ textAlign: "center", color: "#94a3b8", fontSize: "10px", lineHeight: "1.5" }}>
-                      <p style={{ fontWeight: 700, color: "#64748B", textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>Grow Orbit Agency</p>
-                      <p style={{ margin: "2px 0 0 0" }}>support@groworbitofficial.com</p>
-                    </div>
-                  </div>
+              <label style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>Email Preview</label>
+              <div style={{
+                background: "#090d16",
+                border: "1px solid rgba(255,255,255,0.06)",
+                borderRadius: "12px",
+                padding: "20px",
+                maxHeight: "220px",
+                overflowY: "auto",
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+                fontSize: "13px",
+                color: "#cbd5e1",
+                lineHeight: "1.6"
+              }}>
+                <p style={{ margin: 0 }}>Hi {clientName || "Partner"},</p>
+                <p style={{ margin: 0 }}>We have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.</p>
+                <div style={{ padding: "8px 12px", background: "rgba(249,115,22,0.1)", border: "1px dashed rgba(249,115,22,0.3)", borderRadius: "8px", color: "#f97316", fontSize: "12px", fontWeight: 600 }}>
+                  ✍️ Link: {shareLink || "Generated upon publish"}
                 </div>
+                <p style={{ margin: 0 }}>Warm regards,<br /><strong>The Grow Orbit Team</strong></p>
               </div>
             </div>
 
-            {/* Actions */}
-            <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "20px" }}>
+            {/* Modal Actions */}
+            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "8px" }}>
               <button
                 onClick={() => setIsEmailModalOpen(false)}
-                style={{ padding: "10px 20px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", background: "transparent", color: "#94a3b8", fontSize: "13px", fontWeight: 700, cursor: "pointer" }}
+                style={{
+                  background: "transparent",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: "#94a3b8",
+                  borderRadius: "10px",
+                  padding: "10px 18px",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  cursor: "pointer"
+                }}
               >
                 Close
               </button>
-              
               <button
                 onClick={copyRichEmail}
-                disabled={!isLocked}
-                style={{ 
-                  padding: "10px 24px", 
-                  border: "none", 
-                  borderRadius: "8px", 
-                  background: isLocked ? "linear-gradient(135deg,#f97316,#ea580c)" : "#4b5563", 
-                  color: "#fff", 
-                  fontSize: "13px", 
-                  fontWeight: 800, 
-                  cursor: isLocked ? "pointer" : "not-allowed",
+                style={{
+                  background: "linear-gradient(135deg, #f97316, #ea580c)",
+                  border: "none",
+                  color: "#fff",
+                  borderRadius: "10px",
+                  padding: "10px 24px",
+                  fontSize: "12px",
+                  fontWeight: 800,
+                  cursor: "pointer",
                   display: "flex",
                   alignItems: "center",
-                  gap: "8px",
-                  opacity: isLocked ? 1 : 0.6
+                  gap: "8px"
                 }}
               >
-                {emailCopied ? <Check size={15}/> : <Copy size={15}/>}
-                {emailCopied ? "Copied Email HTML!" : "Copy Formatted Email"}
+                {emailCopied ? <Check size={14} /> : <Copy size={14} />}
+                {emailCopied ? "Copied Formatted Email!" : "Copy Full HTML Email"}
               </button>
             </div>
-
           </div>
         </div>
       )}
 
-      {/* ── SUCCESS PUBLISH MODAL ── */}
+      {/* ── SUCCESS MODAL AFTER PUBLISH ── */}
       {showSuccessModal && (
         <div style={{
           position: "fixed",
           inset: 0,
-          background: "rgba(9, 13, 22, 0.8)",
-          backdropFilter: "blur(4px)",
+          background: "rgba(9, 13, 22, 0.85)",
+          backdropFilter: "blur(6px)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -1751,81 +1710,89 @@ function ContractBuilderWorkspace() {
             background: "#121212",
             border: "1px solid rgba(255,255,255,0.08)",
             borderRadius: "24px",
-            padding: "32px",
+            padding: "36px",
             width: "500px",
-            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
-            display: "flex",
-            flexDirection: "column",
-            gap: "24px",
+            textAlign: "center",
+            boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.6)",
             fontFamily: "'Inter', sans-serif"
           }}>
-            {/* Header */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.06)", paddingBottom: "16px" }}>
-              <div>
-                <h3 style={{ margin: 0, fontSize: "18px", fontWeight: 800, color: "#fff" }}>Agreement Published!</h3>
-                <p style={{ margin: "4px 0 0 0", fontSize: "13px", color: "#94a3b8" }}>The contract has been locked and the e-signature workflow is now active.</p>
-              </div>
-              <button 
-                onClick={() => setShowSuccessModal(false)} 
-                style={{ background: "rgba(255,255,255,0.04)", border: "none", color: "#94a3b8", borderRadius: "50%", width: "32px", height: "32px", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", fontSize: "14px", fontWeight: "bold" }}
-              >
-                ✕
-              </button>
+            <div style={{ width: "56px", height: "56px", borderRadius: "50%", background: "rgba(34, 197, 94, 0.15)", border: "1px solid rgba(34, 197, 94, 0.3)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 16px auto", color: "#22c55e" }}>
+              <Check size={28} />
             </div>
-
-            {/* Link Box */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-              <label style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>E-Sign Link for Client</label>
-              <div style={{ display: "flex", gap: "8px" }}>
-                <input 
-                  type="text" 
-                  readOnly 
-                  value={shareLink || ""} 
-                  style={{ flex: 1, padding: "10px 14px", borderRadius: "8px", background: "#0a0a0a", border: "1px solid rgba(255,255,255,0.08)", color: "#94a3b8", fontSize: "12px", outline: "none" }}
-                />
-                <button 
-                  onClick={copyLink} 
-                  style={{ display: "flex", alignItems: "center", gap: "6px", padding: "10px 16px", borderRadius: "8px", border: "none", background: "rgba(255,255,255,0.04)", color: "#fff", cursor: "pointer", fontSize: "12px", fontWeight: 700, transition: "all 0.2s" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
-                >
-                  {copied ? <Check size={14} color="#22c55e" /> : <Copy size={14} />}
-                  {copied ? "Copied" : "Copy Link"}
-                </button>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div style={{ display: "flex", gap: "12px", justifyContent: "flex-end", borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "20px" }}>
+            <h3 style={{ margin: "0 0 8px 0", fontSize: "20px", fontWeight: 800, color: "#fff" }}>Contract Published!</h3>
+            <p style={{ margin: "0 0 24px 0", fontSize: "13px", color: "#94a3b8", lineHeight: "1.5" }}>
+              The agreement is now locked and ready to be signed by <strong>{clientName || "the client"}</strong>.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
               <button
-                onClick={() => setShowSuccessModal(false)}
-                style={{ padding: "10px 20px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", background: "transparent", color: "#94a3b8", fontSize: "13px", fontWeight: 700, cursor: "pointer" }}
+                onClick={copyLink}
+                style={{
+                  background: "linear-gradient(135deg, #f97316, #ea580c)",
+                  border: "none",
+                  color: "#fff",
+                  borderRadius: "12px",
+                  padding: "12px",
+                  fontSize: "13px",
+                  fontWeight: 800,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px"
+                }}
               >
-                Close Editor
+                {copied ? <Check size={16} /> : <Copy size={16} />}
+                {copied ? "Copied E-Sign Link!" : "Copy E-Sign Link"}
               </button>
               <button
                 onClick={() => {
                   setShowSuccessModal(false);
-                  router.push(`/contract/${currentContract.id}`);
+                  setIsEmailModalOpen(true);
                 }}
-                style={{ padding: "10px 24px", border: "none", borderRadius: "8px", background: "linear-gradient(135deg,#f97316,#ea580c)", color: "#fff", fontSize: "13px", fontWeight: 800, cursor: "pointer", display: "flex", alignItems: "center", gap: "8px" }}
+                style={{
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  color: "#fff",
+                  borderRadius: "12px",
+                  padding: "12px",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px"
+                }}
               >
-                <Eye size={15}/> View Agreement
+                <Send size={15} />
+                Send Outreach Email
+              </button>
+              <button
+                onClick={() => setShowSuccessModal(false)}
+                style={{
+                  background: "transparent",
+                  border: "none",
+                  color: "#64748b",
+                  fontSize: "12px",
+                  cursor: "pointer",
+                  marginTop: "6px"
+                }}
+              >
+                Stay in Builder
               </button>
             </div>
-
           </div>
         </div>
       )}
+
     </div>
   );
 }
 
-// Parent Wrapper with Suspense boundary
 export default function ContractBuilderPage() {
   return (
     <Suspense fallback={
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#0a0a0a", color: "#fff" }}>
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "#090d16", color: "#fff" }}>
         <Loader className="animate-spin text-orange-500" size={32} />
       </div>
     }>
@@ -1833,4 +1800,3 @@ export default function ContractBuilderPage() {
     </Suspense>
   );
 }
-

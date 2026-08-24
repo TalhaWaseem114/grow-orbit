@@ -287,6 +287,12 @@ export default function ContractDetailsPage() {
   };
 
   const formatDateDisplay = (val) => {
+    if (!val) return "—";
+    if (typeof val === "string" && /^\d{4}-\d{2}-\d{2}$/.test(val.trim())) {
+      const [y, m, d] = val.trim().split("-");
+      const dateObj = new Date(Number(y), Number(m) - 1, Number(d));
+      return dateObj.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+    }
     const d = parseSafeDate(val);
     if (!d) return "—";
     return d.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });

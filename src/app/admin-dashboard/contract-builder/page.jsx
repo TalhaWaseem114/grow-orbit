@@ -511,7 +511,9 @@ function ContractBuilderWorkspace() {
 
   // ── Copy formatted email outreach template ──
   const copyRichEmail = async () => {
-    if (!shareLink || !isLocked) return;
+    if (!shareLink) return;
+
+    const targetLink = shareLink.startsWith("http") ? shareLink : `https://www.groworbitofficial.com/contract/${currentContract.id}`;
 
     const htmlEmail = `<!DOCTYPE html>
 <html>
@@ -562,45 +564,98 @@ function ContractBuilderWorkspace() {
         <h1 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 0; margin-bottom: 20px; line-height: 1.3; letter-spacing: -0.02em; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Growth Partnership Agreement</h1>
 
         <div style="font-size: 15px; color: #334155; line-height: 1.6; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-          <p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 16px;">Hi ${clientName || "Partner"},</p>
+          <p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px;">Hi ${clientName || "Partner"},</p>
 
-          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
-            We have successfully drafted our Amazon Growth Partnership Agreement and it is ready for your review and digital signature.
+          <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+            I hope you're having a productive week.
           </p>
 
-          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
-            We are incredibly excited about the opportunity to partner with you and help take your brand's growth to the next level. Let's sign the contract and begin this amazing journey together!
+          <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+            We are excited to share our official <strong>Amazon Growth Partnership Agreement</strong> with you. Our team at <strong>Grow Orbit</strong> has finalized all scope parameters and deliverables for your account launch and scale.
           </p>
 
-          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
-            If you have any questions or queries, please feel free to reply directly to this email.
+          <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+            Here is an executive summary of the agreement terms:
           </p>
 
-          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 24px;">
-            Please click the button below to view the full agreement and complete the secure e-signature process:
+          <!-- Executive Summary Card (Bulletproof Table Structure) -->
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+            <tr>
+              <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 20px 24px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13.5px; line-height: 1.8; color: #334155; border-collapse: collapse; margin: 0;">
+                  <tr>
+                    <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px;">&#128196;</td>
+                    <td style="padding-bottom: 12px; vertical-align: top; color: #334155;"><strong style="color: #0f172a;">Agreement Scope:</strong> Full Amazon Account Management &amp; Brand Launch</td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px;">&#9201;</td>
+                    <td style="padding-bottom: 12px; vertical-align: top; color: #334155;"><strong style="color: #0f172a;">Initial Term:</strong> ${termLength || "8 Months"} or Complete 1st Batch Sell-Through</td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px;">&#128179;</td>
+                    <td style="padding-bottom: 12px; vertical-align: top; color: #334155;"><strong style="color: #0f172a;">Total Package Fee:</strong> ${monthlyRetainer ? "$" + Number(monthlyRetainer).toLocaleString() + " USD" : "$8,500 USD"} (3 Flexible Installments)</td>
+                  </tr>
+                  <tr>
+                    <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px;">&#128200;</td>
+                    <td style="padding-bottom: 12px; vertical-align: top; color: #334155;"><strong style="color: #0f172a;">Long-Term Scale:</strong> Transitions to 10% Monthly Profit Share post-term</td>
+                  </tr>
+                  <tr>
+                    <td style="vertical-align: top; width: 34px; font-size: 16px;">&#128274;</td>
+                    <td style="vertical-align: top; color: #334155;"><strong style="color: #0f172a;">Digital Verification:</strong> Pre-signed by Grow Orbit CEO Ali Haider</td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+
+          <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+            Please click the button below to review the full agreement online and complete the secure digital signature process:
           </p>
 
           <!-- CTA Button -->
-          <div style="text-align: center; margin-bottom: 28px; margin-top: 16px;">
-            <a href="${shareLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #ffffff !important; padding: 14px 36px; min-width: 240px; max-width: 100%; box-sizing: border-box; border-radius: 50px; font-size: 13px; font-weight: 800; text-decoration: none; box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25); border: 3px solid #fdba74; text-transform: uppercase; letter-spacing: 0.06em; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; text-align: center;">
+          <div style="text-align: center; margin-bottom: 28px; margin-top: 28px;">
+            <a href="${targetLink}" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #f97316, #ea580c); color: #ffffff !important; padding: 14px 40px; min-width: 240px; max-width: 100%; box-sizing: border-box; border-radius: 50px; font-size: 13px; font-weight: 700; text-decoration: none; box-shadow: 0 10px 25px rgba(234, 88, 12, 0.25); border: 3px solid #fed7aa; text-transform: uppercase; letter-spacing: 1px; font-family: 'Montserrat', sans-serif; text-align: center;">
               ✍️ Review & Sign Agreement
             </a>
           </div>
 
-          <!-- Separator -->
-          <div style="height: 1px; background-color: rgba(15, 23, 42, 0.06); margin: 30px 0 24px 0; border-radius: 1px;"></div>
-
-          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 20px;">
-            Warm regards,<br />
-            <strong style="color: #0f172a; font-size: 16px;">The Grow <span style="color: #f97316;">Orbit</span> Team</strong>
+          <p style="font-size: 12.5px; line-height: 1.6; color: #64748b; margin-bottom: 24px; text-align: center;">
+            Direct Contract Link: <a href="${targetLink}" target="_blank" style="color: #f97316; text-decoration: underline; font-weight: 600;">${targetLink}</a>
           </p>
 
-          <p style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin-top: 24px; border-top: 1px dashed rgba(15, 23, 42, 0.06); padding-top: 16px;">
-            This is a secure, legally-binding electronic signature process. If you have any questions, please let us know.
+          <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px;">
+            Once signed, an executed PDF copy will automatically be generated for your records.
+          </p>
+
+          <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px;">
+            If you have any questions before signing, feel free to reply directly to this email or reach out on WhatsApp:
+          </p>
+
+          <!-- Contact & WhatsApp Card -->
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+            <tr>
+              <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 20px;">
+                <p style="font-size: 13px; margin-top: 0; margin-bottom: 8px;">
+                  &#128241; <strong>WhatsApp Support:</strong> <strong style="color: #f97316;">+1 (912) 820-5916</strong>
+                </p>
+                <p style="font-size: 13px; margin: 0;">
+                  &#9993; <strong>Official Email:</strong> <a href="mailto:support@groworbitofficial.com" style="color: #f97316; text-decoration: none; font-weight: 600;">support@groworbitofficial.com</a>
+                </p>
+              </td>
+            </tr>
+          </table>
+
+          <p style="font-size: 14px; line-height: 1.7; color: #4b5563; margin-bottom: 16px;">
+            Warm regards,<br />
+            <strong style="color: #0f172a; font-size: 15px;">The Grow <span style="color: #f97316;">Orbit</span> Team</strong>
+          </p>
+
+          <p style="font-size: 11px; color: #94a3b8; line-height: 1.5; margin-top: 20px; border-top: 1px dashed rgba(15, 23, 42, 0.06); padding-top: 14px;">
+            This is a secure, legally-binding electronic signature link powered by Grow Orbit.
           </p>
         </div>
 
-        <hr style="border: 0; border-top: 1px solid transparent; margin: 36px 0 24px 0;">
+        <hr style="border: 0; border-top: 1px solid transparent; margin: 24px 0 16px 0;">
 
         <!-- Footer -->
         <div style="text-align: center; color: #94a3b8; font-size: 11px; line-height: 1.6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
@@ -619,7 +674,7 @@ function ContractBuilderWorkspace() {
 </html>
     `;
 
-    const plainText = `Hi ${clientName || "Partner"},\n\nI have drafted our Amazon Growth Partnership Agreement and it is ready for your signature. We are incredibly excited to partner with you and help grow your brand. Let's sign this contract and begin this amazing journey together!\n\nReview & Sign Agreement: ${shareLink}\n\nBest regards,\nGrow Orbit Team`;
+    const plainText = `Hi ${clientName || "Partner"},\n\nI hope you're having a productive week.\n\nWe are excited to share our official Amazon Growth Partnership Agreement with you. Our team at Grow Orbit has finalized all scope parameters and deliverables for your account launch and scale.\n\nExecutive Summary:\n- Agreement Scope: Full Amazon Account Management & Brand Launch\n- Initial Term: ${termLength || "8 Months"} or Complete 1st Batch Sell-Through\n- Total Package Fee: ${monthlyRetainer ? "$" + Number(monthlyRetainer).toLocaleString() + " USD" : "$8,500 USD"} (3 Flexible Installments)\n- Long-Term Scale: Transitions to 10% Monthly Profit Share post-term\n- Digital Verification: Pre-signed by Grow Orbit CEO Ali Haider\n\nReview & Sign Agreement: ${targetLink}\n\nOnce signed, an executed PDF copy will automatically be generated for your records.\n\nWhatsApp Support: +1 (912) 820-5916\n\nWarm regards,\nThe Grow Orbit Team`;
 
     try {
       const typeHtml = "text/html";

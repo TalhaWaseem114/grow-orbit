@@ -9,7 +9,7 @@ export const sandboxContractBody = `<!-- HIDE_DEFAULT_CTA -->
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  We are excited to share our official <strong>Amazon Growth Partnership Agreement</strong> with you. Our team at <strong>Grow Orbit</strong> has finalized all scope parameters, milestones, and deliverables for your account launch and scale.
+  We are excited to share our official <strong>Amazon Growth Partnership Agreement</strong> with you. Our team at <strong>Grow Orbit</strong> has finalized all scope parameters and deliverables for your account launch and scale.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
@@ -77,7 +77,7 @@ export const sandboxContractBody = `<!-- HIDE_DEFAULT_CTA -->
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
           <td align="center" bgcolor="#f97316" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 14px 40px; border-radius: 50px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
-            <a href="https://www.groworbitofficial.com/contract/89Z89hOcRymXZSMWxgBF" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <a href="https://www.groworbitofficial.com/contract/89Z89hOcRymXZSMWxgBF" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
               ✍️ Review &amp; Sign Agreement
             </a>
           </td>
@@ -92,7 +92,7 @@ export const sandboxContractBody = `<!-- HIDE_DEFAULT_CTA -->
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  Once signed, an executed PDF copy will automatically be generated for your records, and our onboarding team will initiate the launch sequence immediately.
+  Once signed, an executed PDF copy will automatically be generated for your records.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">

@@ -1175,13 +1175,13 @@ function ContractBuilderWorkspace() {
               </div>
 
               {/* Scaled Container Wrapper */}
-              <div style={{ width: 1440 * zoom, height: 2300 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
+              <div style={{ width: 1440 * zoom, height: 2450 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
                 <div style={{
                   position: "absolute",
                   top: 0,
                   left: 0,
                   width: "1440px",
-                  height: "2300px",
+                  height: "2450px",
                   background: "#fff",
                   borderRadius: "24px",
                   overflow: "hidden",

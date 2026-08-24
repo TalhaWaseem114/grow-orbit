@@ -462,17 +462,17 @@ export default function ContractDetailsPage() {
         <div className="contract-workspace-scroll" style={{ flex: 1, overflow: "auto", padding: "40px", background: "#090d16", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
           
           {/* Scaled Container Wrapper */}
-          <div className="contract-scaled-wrapper" style={{ width: 1440 * zoom, height: 2300 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
+          <div className="contract-scaled-wrapper" style={{ width: 1440 * zoom, height: 2450 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
             
             <div className="contract-paper-sheet" style={{ 
               position: "absolute",
               top: 0,
               left: 0,
               width: "1440px", 
-              height: "2300px", 
+              height: "2450px", 
               background: "#fff", 
               borderRadius: "24px", 
-              overflow: "hidden",
+              overflow: "hidden", 
               padding: "80px 80px", 
               boxShadow: "0 10px 40px rgba(0,0,0,0.5)", 
               fontFamily: "'Inter', sans-serif",
@@ -1248,11 +1248,11 @@ export default function ContractDetailsPage() {
 
           .contract-scaled-wrapper {
             width: 1440px !important;
-            height: 2300px !important;
+            height: 2450px !important;
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            transform: scale(0.51) !important;
+            transform: scale(0.48) !important;
             transform-origin: top left !important;
             display: block !important;
           }
@@ -1262,7 +1262,7 @@ export default function ContractDetailsPage() {
             top: 0 !important;
             left: 0 !important;
             width: 1440px !important;
-            height: 2300px !important;
+            height: 2450px !important;
             padding: 80px 80px 100px 80px !important;
             box-shadow: none !important;
             border-radius: 0 !important;

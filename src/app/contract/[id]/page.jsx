@@ -1248,11 +1248,11 @@ export default function ContractDetailsPage() {
 
           .contract-scaled-wrapper {
             width: 1440px !important;
-            height: 2100px !important;
+            height: 2300px !important;
             position: absolute !important;
             left: 0 !important;
             top: 0 !important;
-            transform: scale(0.55) !important;
+            transform: scale(0.51) !important;
             transform-origin: top left !important;
             display: block !important;
           }
@@ -1262,8 +1262,8 @@ export default function ContractDetailsPage() {
             top: 0 !important;
             left: 0 !important;
             width: 1440px !important;
-            height: 2100px !important;
-            padding: 80px !important;
+            height: 2300px !important;
+            padding: 80px 80px 100px 80px !important;
             box-shadow: none !important;
             border-radius: 0 !important;
             background: #ffffff !important;

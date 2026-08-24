@@ -7,7 +7,7 @@ export const DEFAULT_CLAUSES = [
   {
     id: "payment-terms",
     title: "PAYMENT TERMS",
-    text: "The total fee is payable across three installments: the initial payment is due upon contract execution, the second installment is due one month thereafter, and the remaining balance is due three months from the agreement date. Invoices are processed electronically and payable upon receipt."
+    text: "The total fee is payable across three installments: the initial payment is due upon contract execution, the second installment is due one month thereafter, and the remaining balance is due three months from the agreement date. Invoices are processed electronically and payments shall be remitted directly to the authorized corporate bank account below:<br/><br/><strong>• Account Name:</strong> CAM & SONS VALUE VENTURES INC.<br/><strong>• Bank Account Number:</strong> 8480892731<br/><strong>• ACH Routing Number:</strong> 026073150<br/><strong>• Fedwire Routing Number:</strong> 026073008<br/><strong>• SWIFT Code:</strong> CMFGUS33<br/><strong>• Bank Name:</strong> Community Federal Savings Bank<br/><strong>• Location:</strong> United States of America"
   },
   {
     id: "inventory-management",

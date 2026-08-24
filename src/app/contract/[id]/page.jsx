@@ -462,14 +462,14 @@ export default function ContractDetailsPage() {
         <div className="contract-workspace-scroll" style={{ flex: 1, overflow: "auto", padding: "40px", background: "#090d16", display: "flex", justifyContent: "center", alignItems: "flex-start" }}>
           
           {/* Scaled Container Wrapper */}
-          <div className="contract-scaled-wrapper" style={{ width: 1440 * zoom, height: 2100 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
+          <div className="contract-scaled-wrapper" style={{ width: 1440 * zoom, height: 2300 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
             
             <div className="contract-paper-sheet" style={{ 
               position: "absolute",
               top: 0,
               left: 0,
               width: "1440px", 
-              height: "2100px", 
+              height: "2300px", 
               background: "#fff", 
               borderRadius: "24px", 
               overflow: "hidden",

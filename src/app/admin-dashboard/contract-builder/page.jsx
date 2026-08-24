@@ -180,6 +180,25 @@ function ContractBuilderWorkspace() {
   const textareaRef = useRef(null);
   const autoSaveTimer = useRef(null);
   const fileInputRef = useRef(null);
+  const docRef = useRef(null);
+  const [paperHeight, setPaperHeight] = useState(2500);
+
+  // Auto-expand paper canvas height to fit all content cleanly
+  useEffect(() => {
+    if (!docRef.current) return;
+    const updateHeight = () => {
+      if (docRef.current) {
+        const h = docRef.current.scrollHeight;
+        if (h > 0) {
+          setPaperHeight(Math.max(h + 40, 2500));
+        }
+      }
+    };
+    updateHeight();
+    const ro = new ResizeObserver(updateHeight);
+    ro.observe(docRef.current);
+    return () => ro.disconnect();
+  }, [templateBody, clauses, services, previewMode, clientName, companyName]);
 
   // Load contract or create new draft on mount
   useEffect(() => {
@@ -1120,23 +1139,26 @@ function ContractBuilderWorkspace() {
               </div>
 
               {/* Scaled Container Wrapper */}
-              <div style={{ width: 1440 * zoom, height: 2100 * zoom, position: "relative", flexShrink: 0, transition: "all 0.2s" }}>
-                <div style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "1440px",
-                  height: "2100px",
-                  background: "#fff",
-                  borderRadius: "24px",
-                  overflow: "hidden",
-                  padding: "80px 80px",
-                  boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
-                  fontFamily: "'Inter', sans-serif",
-                  transform: `scale(${zoom})`,
-                  transformOrigin: "top left",
-                  transition: "transform 0.2s"
-                }}>
+              <div style={{ width: 1440 * zoom, height: paperHeight * zoom, position: "relative", flexShrink: 0, transition: "width 0.2s, height 0.2s" }}>
+                <div 
+                  ref={docRef}
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "1440px",
+                    minHeight: `${paperHeight}px`,
+                    background: "#fff",
+                    borderRadius: "24px",
+                    overflow: "hidden",
+                    padding: "80px 80px 100px 80px",
+                    boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
+                    fontFamily: "'Inter', sans-serif",
+                    transform: `scale(${zoom})`,
+                    transformOrigin: "top left",
+                    transition: "transform 0.2s"
+                  }}
+                >
 
                 {/* Brand Banner */}
                 <div style={{

@@ -9,7 +9,7 @@ export const sandboxContractBody = `<!-- HIDE_DEFAULT_CTA -->
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  We are excited to share our official <strong>Amazon Growth Partnership Agreement</strong> with you. Our team at <strong>Grow Orbit</strong> has finalized all scope parameters and deliverables for your account launch and scale.
+  We are excited to share our official <strong> Amazon Growth Partnership Agreement</strong> with you. Our team at <strong>Grow Orbit</strong> has finalized all scope parameters and deliverables for your account launch and scale.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">

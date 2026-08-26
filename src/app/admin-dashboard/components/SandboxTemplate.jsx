@@ -113,6 +113,163 @@ export const sandboxContractBody = `<!-- HIDE_DEFAULT_CTA -->
   </tr>
 </table>`;
 
+export const sandboxMicrophoneSubject = "Competitor Sample Procurement — Wireless Lavalier Microphone Benchmarking 🎙️";
+export const sandboxMicrophoneHeadline = "Product Benchmarking & Competitor Sample Procurement";
+
+export const sandboxMicrophoneBody = `<!-- HIDE_DEFAULT_CTA -->
+<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">Hi Amir,</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  I hope you're having a productive week.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  As part of our in-depth product research and market validation process for the <strong>Wireless Lavalier Microphone</strong>, we have identified three top-performing competitor listings on Amazon. We would like to order physical samples of each for hands-on, side-by-side benchmarking.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  We already have our own manufacturer sample in hand and have run multiple rounds of testing with <strong>very strong preliminary results</strong>. To guarantee our final product achieves clear competitive differentiation in the market, we want to perform a comprehensive physical comparison across build quality, packaging, accessories, audio performance, and overall user experience.
+</p>
+
+<!-- Evaluation Pillars Card -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 18px 22px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13.5px; line-height: 1.7; color: #334155; border-collapse: collapse; margin: 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        <tr>
+          <td style="padding-bottom: 10px; vertical-align: top; width: 34px; font-size: 16px;">&#127897;&#65039;</td>
+          <td style="padding-bottom: 10px; vertical-align: top; color: #334155;"><strong style="color: #0f172a;">Audio Clarity &amp; Noise Cancellation:</strong> Signal stability, latency, wind resistance, and background noise suppression.</td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 10px; vertical-align: top; width: 34px; font-size: 16px;">&#128295;</td>
+          <td style="padding-bottom: 10px; vertical-align: top; color: #334155;"><strong style="color: #0f172a;">Build Quality &amp; Ergonomics:</strong> Casing durability, clip mechanism resilience, and tactile weight.</td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 10px; vertical-align: top; width: 34px; font-size: 16px;">&#128230;</td>
+          <td style="padding-bottom: 10px; vertical-align: top; color: #334155;"><strong style="color: #0f172a;">Packaging &amp; Unboxing:</strong> Box presentation, interior layout, insert aesthetics, and customer perceived value.</td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top; width: 34px; font-size: 16px;">&#128268;</td>
+          <td style="vertical-align: top; color: #334155;"><strong style="color: #0f172a;">Included Accessories:</strong> Adapters, windscreens, charging case integration, and user manual clarity.</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 16px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  Here are the three target competitor listings on Amazon:
+</p>
+
+<!-- Competitor 1 Card -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 16px;">
+  <tr>
+    <td bgcolor="#ffffff" style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td valign="top">
+            <div style="font-size: 11px; font-weight: 800; color: #ea580c; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Competitor Benchmark 01</div>
+            <div style="font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">Hollyland Wireless Microphone</div>
+            <div style="font-size: 12.5px; color: #64748b; line-height: 1.5; margin-bottom: 12px;">Top-tier market benchmark for intelligent noise cancellation and premium transmitter build.</div>
+            <div>
+              <a href="https://www.amazon.com/Hollyland-Wireless-Microphone-Intelligent-Vlogging/dp/B0F3DC7WWM" target="_blank" style="display: inline-block; background-color: #f97316; color: #ffffff !important; padding: 8px 18px; border-radius: 6px; font-size: 12px; font-weight: 700; text-decoration: none; font-family: 'Montserrat', sans-serif;">
+                View on Amazon &#8594;
+              </a>
+            </div>
+            <div style="font-size: 11.5px; color: #94a3b8; margin-top: 8px; word-break: break-all;">
+              Direct Link: <a href="https://www.amazon.com/Hollyland-Wireless-Microphone-Intelligent-Vlogging/dp/B0F3DC7WWM" target="_blank" style="color: #f97316; text-decoration: underline;">https://www.amazon.com/Hollyland-Wireless-Microphone-Intelligent-Vlogging/dp/B0F3DC7WWM</a>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- Competitor 2 Card -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 16px;">
+  <tr>
+    <td bgcolor="#ffffff" style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td valign="top">
+            <div style="font-size: 11px; font-weight: 800; color: #ea580c; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Competitor Benchmark 02</div>
+            <div style="font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">NPTCL Wireless Microphone</div>
+            <div style="font-size: 12.5px; color: #64748b; line-height: 1.5; margin-bottom: 12px;">High-velocity mass-market benchmark for bundle packaging, multi-device adapters, and value pricing.</div>
+            <div>
+              <a href="https://www.amazon.com/NPTCL-Wireless-Microphone-Recording-Instagram/dp/B0CKT4V1PP" target="_blank" style="display: inline-block; background-color: #f97316; color: #ffffff !important; padding: 8px 18px; border-radius: 6px; font-size: 12px; font-weight: 700; text-decoration: none; font-family: 'Montserrat', sans-serif;">
+                View on Amazon &#8594;
+              </a>
+            </div>
+            <div style="font-size: 11.5px; color: #94a3b8; margin-top: 8px; word-break: break-all;">
+              Direct Link: <a href="https://www.amazon.com/NPTCL-Wireless-Microphone-Recording-Instagram/dp/B0CKT4V1PP" target="_blank" style="color: #f97316; text-decoration: underline;">https://www.amazon.com/NPTCL-Wireless-Microphone-Recording-Instagram/dp/B0CKT4V1PP</a>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- Competitor 3 Card -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td bgcolor="#ffffff" style="background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 18px 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td valign="top">
+            <div style="font-size: 11px; font-weight: 800; color: #ea580c; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;">Competitor Benchmark 03</div>
+            <div style="font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 6px;">BOYA Wireless Lavalier Microphone</div>
+            <div style="font-size: 12.5px; color: #64748b; line-height: 1.5; margin-bottom: 12px;">Well-established category benchmark for compact charging case design and user review sentiments.</div>
+            <div>
+              <a href="https://www.amazon.com/dp/B0FY57FFX2" target="_blank" style="display: inline-block; background-color: #f97316; color: #ffffff !important; padding: 8px 18px; border-radius: 6px; font-size: 12px; font-weight: 700; text-decoration: none; font-family: 'Montserrat', sans-serif;">
+                View on Amazon &#8594;
+              </a>
+            </div>
+            <div style="font-size: 11.5px; color: #94a3b8; margin-top: 8px; word-break: break-all;">
+              Direct Link: <a href="https://www.amazon.com/dp/B0FY57FFX2" target="_blank" style="color: #f97316; text-decoration: underline;">https://www.amazon.com/dp/B0FY57FFX2</a>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- Procurement Action Card -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td bgcolor="#fff7ed" style="background-color: #fff7ed; border: 1.5px solid #fdba74; border-radius: 8px; padding: 18px 22px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+      <div style="font-size: 14px; font-weight: 800; color: #9a3412; margin-bottom: 8px;">&#128722; Action Requested — Sample Procurement</div>
+      <p style="font-size: 13.5px; line-height: 1.7; color: #431407; margin: 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        Could you please go ahead and purchase <strong>one unit of each</strong> of the three products above? Once placed, please let us know the estimated delivery dates so we can schedule the testing session.
+      </p>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  As soon as the units arrive, we will benchmark them directly against our own product specifications and use the findings to sharpen our <strong>product positioning, listing copy, image creatives, packaging aesthetics, and overall launch strategy</strong> before going live.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  If you have any questions or need anything adjusted, feel free to reply directly or reach out via WhatsApp:
+</p>
+
+<!-- Contact Support Card -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+      <p style="font-size: 13px; margin-top: 0; margin-bottom: 8px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        &#128241; <strong>WhatsApp Support:</strong> <strong style="color: #f97316;">+1 (912) 820-5916</strong>
+      </p>
+      <p style="font-size: 13px; margin: 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        &#9993; <strong>Official Email:</strong> <a href="mailto:support@groworbitofficial.com" style="color: #f97316; text-decoration: none; font-weight: 600;">support@groworbitofficial.com</a>
+      </p>
+    </td>
+  </tr>
+</table>`;
+
 export const sandboxId = "sandbox-contract-agreement";
 export const sandboxSubject = sandboxContractSubject;
 export const sandboxHeadline = sandboxContractHeadline;
@@ -126,16 +283,16 @@ export const SANDBOX_DRAFTS = [
     body: sandboxContractBody
   },
   {
+    id: "sandbox-microphone-benchmarking",
+    subject: sandboxMicrophoneSubject,
+    headline: sandboxMicrophoneHeadline,
+    body: sandboxMicrophoneBody
+  },
+  {
     id: "sandbox-faraz-proposal",
     subject: "Product Sourcing Proposal — Three Opportunities for Your Review 🚀",
     headline: "Custom Product Sourcing & Market Intelligence Blueprint",
     body: sandboxContractBody
-  },
-  {
-    id: "sandbox-rehan-proposal",
-    subject: "Your Custom Product Sourcing & Market Analysis Proposal 🚀",
-    headline: "Custom Product Sourcing & Market Analysis Blueprint",
-    body: sandboxBody
   },
   {
     id: "sandbox-roadmap",

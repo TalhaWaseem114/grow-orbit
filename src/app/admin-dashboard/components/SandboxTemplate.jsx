@@ -124,11 +124,11 @@ export const sandboxMicrophoneBody = `<!-- HIDE_DEFAULT_CTA -->
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin: 0 0 20px 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  As part of our in-depth product research and market validation process for the <strong>Wireless Lavalier Microphone</strong>, our team at <strong>Grow Orbit</strong> has identified three top-performing competitor listings on Amazon. We would like to order physical samples of each for hands-on, side-by-side benchmarking.
+  As part of our in-depth product research and market validation process for the <strong> Wireless Lavalier Microphone</strong>, our team at <strong>Grow Orbit</strong> has identified three top-performing competitor listings on Amazon. We would like to order physical samples of each for hands-on, side-by-side benchmarking.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin: 0 0 20px 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  We already have our own manufacturer sample in hand and have run multiple rounds of testing with <strong>very strong preliminary results</strong>. To guarantee our final product achieves clear competitive differentiation in the market, we want to perform a comprehensive physical comparison across build quality, packaging, accessories, audio performance, and overall user experience.
+  We already have our own manufacturer sample in hand and have run multiple rounds of testing with <strong> very strong preliminary results</strong>. To guarantee our final product achieves clear competitive differentiation in the market, we want to perform a comprehensive physical comparison across build quality, packaging, accessories, audio performance, and overall user experience.
 </p>
 
 <!-- Evaluation Pillars Card (Table-Based for GoDaddy Webmail) -->
@@ -313,7 +313,7 @@ export const sandboxMicrophoneBody = `<!-- HIDE_DEFAULT_CTA -->
         </tr>
         <tr>
           <td style="font-size: 13.5px; line-height: 1.7; color: #431407; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-            Could you please go ahead and purchase <strong>one unit of each</strong> of the three products from the links above? Once placed, please let us know the estimated delivery dates so we can schedule the testing session.
+            Could you please go ahead and purchase <strong> one unit of each</strong> of the three products from the links above? Once placed, please let us know the estimated delivery dates so we can schedule the testing session.
           </td>
         </tr>
       </table>
@@ -322,7 +322,7 @@ export const sandboxMicrophoneBody = `<!-- HIDE_DEFAULT_CTA -->
 </table>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin: 0 0 20px 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-  As soon as the units arrive, we will benchmark them directly against our own product specifications and use the findings to sharpen our <strong>product positioning, listing copy, image creatives, packaging aesthetics, and overall launch strategy</strong> before going live.
+  As soon as the units arrive, we will benchmark them directly against our own product specifications and use the findings to sharpen our <strong> product positioning, listing copy, image creatives, packaging aesthetics, and overall launch strategy</strong> before going live.
 </p>
 
 <p style="font-size: 14px; line-height: 1.7; color: #334155; margin: 0 0 24px 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">

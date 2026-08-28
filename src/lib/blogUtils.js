@@ -19,13 +19,15 @@ export function getReadTime(post) {
   return `${minutes} min read`;
 }
 
-// Helper to parse bold (**text**) and links ([anchor](url)) in markdown text
+// Helper to parse bold (**text**), italic (*text*), inline code (`code`), and links ([anchor](url)) in markdown text
 export function parseMarkdownText(text) {
   if (!text) return "";
   return text
     .replace(/\[\s?\]\s*/g, '☑ ')
     .replace(/\[x\]\s*/gi, '✅ ')
     .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-zinc-900">$1</strong>')
+    .replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, '<em class="italic text-zinc-700">$1</em>')
+    .replace(/`([^`]+)`/g, '<code class="bg-zinc-100 text-zinc-800 px-1.5 py-0.5 rounded text-[13px] font-mono border border-zinc-200">$1</code>')
     .replace(/\[(.*?)\]\((.*?)\)/g, (match, anchor, url) => {
       const isInternal = url.startsWith('/') || url.includes('groworbit.com') || url.includes('groworbitofficial.com');
       const targetAttr = isInternal ? '' : ' target="_blank" rel="noopener noreferrer"';

@@ -28,6 +28,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
   const { slug } = resolvedParams;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
 
   try {
     const q = query(collection(db, "blogs"), where("slug", "==", slug), where("status", "==", "published"));
@@ -36,20 +37,26 @@ export async function generateMetadata({ params }) {
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
       const post = doc.data();
+      const canonicalUrl = `${baseUrl}/blog/${slug}`;
+      const coverImg = post.coverImage || "https://images.unsplash.com/photo-1460925895917-afdab827c52f";
       
       return {
         title: `${post.title} | Grow Orbit`,
         description: post.excerpt || `Read ${post.title} on Grow Orbit.`,
+        alternates: {
+          canonical: canonicalUrl,
+        },
         openGraph: {
           title: post.title,
           description: post.excerpt,
-          url: `${process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"}/blog/${slug}`,
+          url: canonicalUrl,
           type: "article",
           publishedTime: post.date,
-          authors: [post.author?.name || "Grow Orbit"],
+          modifiedTime: post.lastModified || post.date,
+          authors: [post.author?.name || "Talha Waseem"],
           images: [
             {
-              url: post.coverImage || "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
+              url: coverImg,
               width: 1200,
               height: 630,
               alt: post.title,
@@ -60,7 +67,7 @@ export async function generateMetadata({ params }) {
           card: "summary_large_image",
           title: post.title,
           description: post.excerpt,
-          images: [post.coverImage || "https://images.unsplash.com/photo-1460925895917-afdab827c52f"],
+          images: [coverImg],
         },
       };
     }
@@ -134,6 +141,41 @@ export default async function Page({ params }) {
   const montserrat = { fontFamily: "'Montserrat', sans-serif" };
   const serif = { fontFamily: "'Playfair Display', serif" };
 
+  // Extract FAQ items for Google Rich Snippet Structured Data
+  const faqItems = [];
+  if (post?.content && Array.isArray(post.content)) {
+    // 1. Check explicit "faq" type blocks
+    post.content.filter(b => b.type === "faq").forEach(b => {
+      const parts = b.text.split("|");
+      if (parts.length >= 2) {
+        faqItems.push({ question: parts[0].trim(), answer: parts.slice(1).join("|").trim() });
+      }
+    });
+
+    // 2. Fallback: Parse heading-h3 + paragraph pairs within FAQ section
+    if (faqItems.length === 0) {
+      let inFaq = false;
+      for (let i = 0; i < post.content.length; i++) {
+        const b = post.content[i];
+        if (b.type === "heading" && b.text.toLowerCase().includes("frequently asked questions")) {
+          inFaq = true;
+          continue;
+        }
+        if (inFaq) {
+          if (b.type === "heading") {
+            break; // next main section reached
+          }
+          if (b.type === "heading-h3" && i + 1 < post.content.length && post.content[i + 1].type === "paragraph") {
+            faqItems.push({
+              question: b.text.trim(),
+              answer: post.content[i + 1].text.trim()
+            });
+          }
+        }
+      }
+    }
+  }
+
   return (
     <main className="bg-[#fafafa] text-zinc-900 min-h-screen">
       {/* Server-Side JSON-LD Structured Data Schema */}
@@ -172,26 +214,21 @@ export default async function Page({ params }) {
       />
 
       {/* FAQPage JSON-LD Structured Data Schema for Google Rich Snippets */}
-      {post.content && post.content.some(b => b.type === "faq") && (
+      {faqItems.length > 0 && (
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "FAQPage",
-              "mainEntity": post.content
-                .filter(b => b.type === "faq")
-                .map(b => {
-                  const parts = b.text.split("|");
-                  return {
-                    "@type": "Question",
-                    "name": parts[0],
-                    "acceptedAnswer": {
-                      "@type": "Answer",
-                      "text": parts.slice(1).join("|")
-                    }
-                  };
-                })
+              "mainEntity": faqItems.map(item => ({
+                "@type": "Question",
+                "name": item.question,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": item.answer
+                }
+              }))
             })
           }}
         />

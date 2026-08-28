@@ -42,6 +42,16 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/blog/main-image-ctr-amazon-2025/",
+        destination: "/blog/amazon-main-image-requirements/",
+        permanent: true,
+      },
+      {
+        source: "/blog/main-image-ctr-amazon-2025",
+        destination: "/blog/amazon-main-image-requirements/",
+        permanent: true,
+      },
+      {
         source: "/amazon-services-landing/",
         destination: "/get-started/amazon-services-landing/",
         permanent: true,

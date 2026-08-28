@@ -3,6 +3,7 @@ import { db } from "@/firebase/firebaseConfig";
 import BlogPostClient from "./BlogPostClient";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowRight, Clock, Calendar, Tag, BookOpen } from "lucide-react";
 import { getReadTime, parseMarkdownText } from "@/lib/blogUtils";
 import { getAuthorBySlug, getAuthorSlugByName } from "@/data/authorData";
@@ -117,25 +118,7 @@ export default async function Page({ params }) {
   }
 
   if (!post) {
-    return (
-      <main className="bg-[#fafafa] min-h-screen flex items-center justify-center px-6">
-        <div className="text-center">
-          <BookOpen size={48} className="text-zinc-300 mx-auto mb-4" />
-          <h1 className="text-2xl font-black text-zinc-900 mb-2">
-            Article Not Found
-          </h1>
-          <p className="text-zinc-500 mb-8">
-            This article doesn't exist or has been moved.
-          </p>
-          <Link
-            href="/blog"
-            className="inline-flex items-center gap-2 bg-zinc-900 text-white px-6 py-3 rounded-full text-[11px] font-bold uppercase tracking-widest no-underline hover:bg-orange-500 transition-all"
-          >
-            <ArrowLeft size={14} /> Back to Blog
-          </Link>
-        </div>
-      </main>
-    );
+    notFound();
   }
 
   const montserrat = { fontFamily: "'Montserrat', sans-serif" };

@@ -247,6 +247,14 @@ export default function InvoicesTab() {
     });
   };
 
+  const handleCopyInvoiceLink = (invoiceId) => {
+    const link = `${window.location.origin}/admin-dashboard/invoice-builder?id=${invoiceId}`;
+    navigator.clipboard.writeText(link).then(() => {
+      setCopiedId(invoiceId);
+      setTimeout(() => setCopiedId(null), 2000);
+    });
+  };
+
   const handleCopyReceiptLink = (receiptId) => {
     const link = `${window.location.origin}/admin-dashboard/receipt-builder?id=${receiptId}`;
     navigator.clipboard.writeText(link).then(() => {
@@ -435,14 +443,24 @@ export default function InvoicesTab() {
                               </div>
                             </Link>
 
-                            {/* Download PDF */}
-                            <a
-                              href={`/api/invoices/${inv.id}/pdf`}
-                              download
-                              title="Download PDF"
-                              style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#c0c0c0", cursor: "pointer" }}
+                            {/* Copy Invoice Link */}
+                            <button
+                              onClick={() => handleCopyInvoiceLink(inv.id)}
+                              title="Copy Invoice Link"
+                              style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: copiedId === inv.id ? "#22c55e" : "#c0c0c0", cursor: "pointer", transition: "all 0.2s" }}
                             >
-                              <Download size={12} style={{ margin: "auto" }} />
+                              {copiedId === inv.id ? <Check size={12} style={{ margin: "auto" }} /> : <Copy size={12} style={{ margin: "auto" }} />}
+                            </button>
+
+                            {/* View / Open Invoice Link */}
+                            <a
+                              href={`/admin-dashboard/invoice-builder?id=${inv.id}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              title="View & Open Invoice"
+                              style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#c0c0c0", cursor: "pointer", transition: "all 0.2s" }}
+                            >
+                              <ExternalLink size={12} style={{ margin: "auto" }} />
                             </a>
 
                             {/* Edit Button */}

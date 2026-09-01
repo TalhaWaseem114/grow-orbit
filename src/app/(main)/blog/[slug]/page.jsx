@@ -487,47 +487,25 @@ export default async function Page({ params }) {
                 const rows = lines.slice(2).map(line => line.split("|").map(c => c.trim()).filter(Boolean));
 
                 return (
-                  <div key={i} className="my-8">
-                    {/* Desktop & Tablet Table View */}
-                    <div className="hidden sm:block overflow-x-auto rounded-2xl border border-zinc-200 shadow-sm bg-white">
-                      <table className="w-full text-left border-collapse text-sm">
-                        <thead>
-                          <tr className="bg-zinc-50 border-b border-zinc-200">
-                            {headers.map((h, idx) => (
-                              <th key={idx} className="p-4 font-bold text-zinc-950 uppercase tracking-wider text-[11px]">{h}</th>
+                  <div key={i} className="my-8 overflow-x-auto rounded-2xl border border-zinc-200 shadow-sm bg-white scrollbar-thin">
+                    <table className="w-full min-w-[540px] sm:min-w-full text-left border-collapse text-xs sm:text-sm">
+                      <thead>
+                        <tr className="bg-zinc-50 border-b border-zinc-200">
+                          {headers.map((h, idx) => (
+                            <th key={idx} className="p-3.5 sm:p-4 font-bold text-zinc-950 uppercase tracking-wider text-[10px] sm:text-[11px] whitespace-nowrap sm:whitespace-normal">{h}</th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-zinc-100">
+                        {rows.map((row, rIdx) => (
+                          <tr key={rIdx} className="hover:bg-zinc-50/70 transition-colors">
+                            {row.map((cell, cIdx) => (
+                              <td key={cIdx} className="p-3.5 sm:p-4 text-zinc-700 leading-relaxed font-normal" dangerouslySetInnerHTML={{ __html: parseMarkdownText(cell) }} />
                             ))}
                           </tr>
-                        </thead>
-                        <tbody className="divide-y divide-zinc-100">
-                          {rows.map((row, rIdx) => (
-                            <tr key={rIdx} className="hover:bg-zinc-50/70 transition-colors">
-                              {row.map((cell, cIdx) => (
-                                <td key={cIdx} className="p-4 text-zinc-700 leading-relaxed font-normal" dangerouslySetInnerHTML={{ __html: parseMarkdownText(cell) }} />
-                              ))}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-
-                    {/* Mobile Responsive Stacked Card View */}
-                    <div className="sm:hidden space-y-4">
-                      {rows.map((row, rIdx) => (
-                        <div key={rIdx} className="bg-white border border-zinc-200/90 rounded-2xl p-5 shadow-sm space-y-3.5 hover:border-orange-500/30 transition-all">
-                          {row.map((cell, cIdx) => (
-                            <div key={cIdx} className="flex flex-col gap-1 border-b border-zinc-100/80 pb-2.5 last:border-b-0 last:pb-0">
-                              <span className="text-[10px] font-black uppercase tracking-wider text-orange-600">
-                                {headers[cIdx] || `Column ${cIdx + 1}`}
-                              </span>
-                              <div 
-                                className="text-sm font-medium text-zinc-800 leading-snug"
-                                dangerouslySetInnerHTML={{ __html: parseMarkdownText(cell) }}
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      ))}
-                    </div>
+                        ))}
+                      </tbody>
+                    </table>
                   </div>
                 );
               }

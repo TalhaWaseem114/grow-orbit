@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import {
-  Plus, Search, Download, Trash2, Edit3, Eye, X, Copy, Check, ExternalLink, FileText, AlertCircle, RefreshCw, Settings
+  Plus, Search, Download, Trash2, Edit3, Eye, X, Copy, Check, ExternalLink, FileText, AlertCircle, RefreshCw, Settings, Receipt
 } from "lucide-react";
 import { db } from "../../../firebase/firebaseConfig";
 import {
@@ -27,6 +27,12 @@ const CONTRACT_STATUS_CONFIG = {
   void:               { label: "Void",               color: "#ef4444", bg: "rgba(239,68,68,0.12)",   border: "rgba(239,68,68,0.2)" },
 };
 
+const RECEIPT_STATUS_CONFIG = {
+  completed: { label: "Completed", color: "#10b981", bg: "rgba(16,185,129,0.12)", border: "rgba(16,185,129,0.25)" },
+  pending:   { label: "Pending",   color: "#f59e0b", bg: "rgba(245,158,11,0.12)",  border: "rgba(245,158,11,0.25)" },
+  refunded:  { label: "Refunded",  color: "#ef4444", bg: "rgba(239,68,68,0.12)",   border: "rgba(239,68,68,0.25)" },
+};
+
 const fmtDate = (d) => {
   if (!d) return "—";
   const date = d.toDate ? d.toDate() : new Date(d);
@@ -48,13 +54,15 @@ const formatRetainerValue = (val) => {
 };
 
 export default function InvoicesTab() {
-  const [activeSegment, setActiveSegment] = useState("invoices"); // "invoices" | "contracts"
+  const [activeSegment, setActiveSegment] = useState("invoices"); // "invoices" | "contracts" | "receipts"
   const [invoices, setInvoices] = useState([]);
   const [contracts, setContracts] = useState([]);
+  const [receipts, setReceipts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [invoiceFilter, setInvoiceFilter] = useState("all"); // "all", "draft", "sent", "paid", "overdue", "cancelled"
   const [contractFilter, setContractFilter] = useState("all"); // "all", "draft", "awaiting_signature", "viewed", "signed", "void"
+  const [receiptFilter, setReceiptFilter] = useState("all"); // "all", "completed", "pending", "refunded"
   const [copiedId, setCopiedId] = useState(null);
 
   // Default Payment Settings states
@@ -65,7 +73,7 @@ export default function InvoicesTab() {
   const [defaultBankAccountNumber, setDefaultBankAccountNumber] = useState("831245678");
   const [defaultBankRoutingNumber, setDefaultBankRoutingNumber] = useState("026073150");
   const [defaultBankSwiftBic, setDefaultBankSwiftBic] = useState("TRWIBEB1XXX");
-  const [defaultPaypalEmail, setDefaultPaypalEmail] = useState("support@groworbitofficial.com");
+  const [defaultPaypalEmail, setDefaultPaypalEmail] = useState("");
 
   useEffect(() => {
     const fetchDefaults = async () => {
@@ -78,7 +86,7 @@ export default function InvoicesTab() {
           if (data.bankAccountNumber) setDefaultBankAccountNumber(data.bankAccountNumber);
           if (data.bankRoutingNumber) setDefaultBankRoutingNumber(data.bankRoutingNumber);
           if (data.bankSwiftBic) setDefaultBankSwiftBic(data.bankSwiftBic);
-          if (data.paypalEmail) setDefaultPaypalEmail(data.paypalEmail);
+          if (data.paypalEmail !== undefined) setDefaultPaypalEmail(data.paypalEmail);
         }
       } catch (err) {
         console.warn("Failed to load invoice payment defaults:", err);
@@ -109,7 +117,6 @@ export default function InvoicesTab() {
     }
   };
 
-
   useEffect(() => {
     // 1. Listen to Invoices
     const qInvoices = query(collection(db, "invoices"), orderBy("createdAt", "desc"));
@@ -131,9 +138,19 @@ export default function InvoicesTab() {
       console.error("Error loading contracts:", err);
     });
 
+    // 3. Listen to Receipts
+    const qReceipts = query(collection(db, "receipts"), orderBy("createdAt", "desc"));
+    const unsubReceipts = onSnapshot(qReceipts, (snap) => {
+      const data = snap.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setReceipts(data);
+    }, (err) => {
+      console.error("Error loading receipts:", err);
+    });
+
     return () => {
       unsubInvoices();
       unsubContracts();
+      unsubReceipts();
     };
   }, []);
 
@@ -171,6 +188,26 @@ export default function InvoicesTab() {
     return res;
   }, [contracts, searchQuery, contractFilter]);
 
+  // Filtered Receipts
+  const filteredReceipts = useMemo(() => {
+    let res = receipts;
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      res = res.filter(r =>
+        r.receiptNumber?.toLowerCase().includes(q) ||
+        r.clientName?.toLowerCase().includes(q) ||
+        r.companyName?.toLowerCase().includes(q) ||
+        r.paymentMethod?.toLowerCase().includes(q) ||
+        r.transactionId?.toLowerCase().includes(q) ||
+        r.invoiceNumber?.toLowerCase().includes(q)
+      );
+    }
+    if (receiptFilter !== "all") {
+      res = res.filter(r => (r.status || "completed") === receiptFilter);
+    }
+    return res;
+  }, [receipts, searchQuery, receiptFilter]);
+
   // Delete handlers
   const handleDeleteInvoice = async (id, num) => {
     if (!window.confirm(`Are you sure you want to permanently delete invoice ${num}?`)) return;
@@ -189,6 +226,16 @@ export default function InvoicesTab() {
       alert("Contract deleted successfully!");
     } catch (e) {
       alert("Failed to delete contract: " + e.message);
+    }
+  };
+
+  const handleDeleteReceipt = async (id, num) => {
+    if (!window.confirm(`Are you sure you want to permanently delete receipt ${num || id}?`)) return;
+    try {
+      await deleteDoc(doc(db, "receipts", id));
+      alert("Receipt deleted successfully!");
+    } catch (e) {
+      alert("Failed to delete receipt: " + e.message);
     }
   };
 
@@ -224,7 +271,7 @@ export default function InvoicesTab() {
         <div>
           <div style={{ fontSize: 10, fontWeight: 700, color: "#ea580c", letterSpacing: "0.3em", textTransform: "uppercase", marginBottom: 6 }}>GROW ORBIT · BILLING HUB</div>
           <h1 style={{ fontSize: 26, fontWeight: 900, letterSpacing: "-0.03em", lineHeight: 1, color: "#fff" }}>
-            {activeSegment === "invoices" ? "Invoices Manager" : "Contracts Manager"}
+            {activeSegment === "invoices" ? "Invoices Manager" : activeSegment === "contracts" ? "Contracts Manager" : "Payment Receipts Manager"}
           </h1>
         </div>
 
@@ -234,7 +281,7 @@ export default function InvoicesTab() {
             <Search size={13} color="#525252" />
             <input
               type="text"
-              placeholder={activeSegment === "invoices" ? "Search invoices…" : "Search contracts…"}
+              placeholder={activeSegment === "invoices" ? "Search invoices…" : activeSegment === "contracts" ? "Search contracts…" : "Search receipts…"}
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               style={{ background: "none", border: "none", color: "#fff", fontSize: 12, fontWeight: 500, width: 220, outline: "none" }}
@@ -257,12 +304,20 @@ export default function InvoicesTab() {
                 </div>
               </Link>
             </div>
+          ) : activeSegment === "receipts" ? (
+            <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+              <Link href="/admin-dashboard/receipt-builder" style={{ textDecoration: "none" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#10b981", color: "#fff", border: "none", borderRadius: 12, padding: "10px 16px", fontSize: 11, fontWeight: 800, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  <Plus size={14} /> New Receipt
+                </div>
+              </Link>
+            </div>
           ) : null}
         </div>
       </div>
 
       {/* Segment Selector Toggle */}
-      <div style={{ display: "flex", gap: 10, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: 3, width: "fit-content" }}>
+      <div style={{ display: "flex", gap: 8, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: 3, width: "fit-content" }}>
         <button
           onClick={() => { setActiveSegment("invoices"); setSearchQuery(""); }}
           style={{ padding: "8px 16px", borderRadius: 10, border: "none", cursor: "pointer", fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.12em",
@@ -282,6 +337,16 @@ export default function InvoicesTab() {
           }}
         >
           Contracts ({contracts.length})
+        </button>
+        <button
+          onClick={() => { setActiveSegment("receipts"); setSearchQuery(""); }}
+          style={{ padding: "8px 16px", borderRadius: 10, border: "none", cursor: "pointer", fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.12em",
+            background: activeSegment === "receipts" ? "#10b981" : "transparent",
+            color: activeSegment === "receipts" ? "#fff" : "#71717a",
+            transition: "all 0.2s"
+          }}
+        >
+          Payment Receipts ({receipts.length})
         </button>
       </div>
 
@@ -356,6 +421,23 @@ export default function InvoicesTab() {
                         </td>
                         <td style={{ padding: "16px", textAlign: "right" }}>
                           <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", alignItems: "center" }}>
+                            {/* Create Receipt Shortcut */}
+                            <Link href={`/admin-dashboard/receipt-builder?invoiceId=${inv.id}`} title="Generate Payment Receipt">
+                              <div style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(16,185,129,0.08)", border: "1px solid rgba(16,185,129,0.2)", color: "#10b981", cursor: "pointer", transition: "all 0.2s" }}>
+                                <Receipt size={12} style={{ margin: "auto" }} />
+                              </div>
+                            </Link>
+
+                            {/* Download PDF */}
+                            <a
+                              href={`/api/invoices/${inv.id}/pdf`}
+                              download
+                              title="Download PDF"
+                              style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#c0c0c0", cursor: "pointer" }}
+                            >
+                              <Download size={12} style={{ margin: "auto" }} />
+                            </a>
+
                             {/* Edit Button */}
                             <Link href={`/admin-dashboard/invoice-builder?id=${inv.id}`} title="Edit Invoice">
                               <div style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#a3a3a3", cursor: "pointer", transition: "all 0.2s" }}>
@@ -381,7 +463,7 @@ export default function InvoicesTab() {
             </div>
           )}
         </>
-      ) : (
+      ) : activeSegment === "contracts" ? (
         <>
           {/* Contracts Segment View */}
           {/* Status Filters */}
@@ -496,6 +578,117 @@ export default function InvoicesTab() {
                               onClick={() => handleDeleteContract(c.id, c.contractNumber)}
                               title="Delete Contract"
                               style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.1)", color: "#ef4444", cursor: "pointer" }}
+                            >
+                              <Trash2 size={12} style={{ margin: "auto" }} />
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          {/* Receipts Segment View */}
+          {/* Status Filters */}
+          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", borderBottom: "1px solid rgba(255,255,255,0.04)", paddingBottom: 12 }}>
+            {["all", "completed", "pending", "refunded"].map((st) => {
+              const count = st === "all" ? receipts.length : receipts.filter(r => (r.status || "completed") === st).length;
+              const cfg = RECEIPT_STATUS_CONFIG[st] || { label: "All", color: "#94a3b8" };
+              const isSelected = receiptFilter === st;
+
+              return (
+                <button
+                  key={st}
+                  onClick={() => setReceiptFilter(st)}
+                  style={{
+                    padding: "6px 12px", borderRadius: 10, fontSize: 10, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", border: "1px solid", cursor: "pointer",
+                    background: isSelected ? (st === "all" ? "rgba(255,255,255,0.08)" : cfg.bg) : "transparent",
+                    color: isSelected ? cfg.color : "#525252",
+                    borderColor: isSelected ? cfg.color : "rgba(255,255,255,0.04)",
+                    transition: "all 0.15s"
+                  }}
+                >
+                  {cfg.label} ({count})
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Receipts List Table */}
+          {filteredReceipts.length === 0 ? (
+            <div style={{ padding: "40px 20px", textAlign: "center", border: "1px dashed rgba(255,255,255,0.06)", borderRadius: 16 }}>
+              <Receipt size={32} color="#525252" style={{ margin: "0 auto 12px auto" }} />
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#fff", marginBottom: 4 }}>No payment receipts found</div>
+              <div style={{ fontSize: 11, color: "#525252", marginBottom: 16 }}>Generate an official receipt when client payments are confirmed.</div>
+              <Link href="/admin-dashboard/receipt-builder" style={{ textDecoration: "none", display: "inline-block" }}>
+                <div style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#10b981", color: "#fff", border: "none", borderRadius: 10, padding: "8px 16px", fontSize: 11, fontWeight: 800, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  <Plus size={13} /> Create First Receipt
+                </div>
+              </Link>
+            </div>
+          ) : (
+            <div style={{ overflowX: "auto", background: "#0a0a0a", border: "1px solid rgba(255,255,255,0.05)", borderRadius: 16 }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", textPosition: "left" }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.05)", background: "rgba(255,255,255,0.01)" }}>
+                    <th style={{ padding: "14px 16px", fontSize: 10, fontWeight: 800, color: "#525252", textTransform: "uppercase", letterSpacing: "0.08em", width: 170 }}>Receipt #</th>
+                    <th style={{ padding: "14px 16px", fontSize: 10, fontWeight: 800, color: "#525252", textTransform: "uppercase", letterSpacing: "0.08em" }}>Client / Company</th>
+                    <th style={{ padding: "14px 16px", fontSize: 10, fontWeight: 800, color: "#525252", textTransform: "uppercase", letterSpacing: "0.08em", width: 130 }}>Payment Date</th>
+                    <th style={{ padding: "14px 16px", fontSize: 10, fontWeight: 800, color: "#525252", textTransform: "uppercase", letterSpacing: "0.08em", width: 140 }}>Payment Method</th>
+                    <th style={{ padding: "14px 16px", fontSize: 10, fontWeight: 800, color: "#525252", textTransform: "uppercase", letterSpacing: "0.08em", width: 140, textAlign: "right" }}>Amount Paid</th>
+                    <th style={{ padding: "14px 16px", fontSize: 10, fontWeight: 800, color: "#525252", textTransform: "uppercase", letterSpacing: "0.08em", width: 130, textAlign: "center" }}>Status</th>
+                    <th style={{ padding: "14px 16px", fontSize: 10, fontWeight: 800, color: "#525252", textTransform: "uppercase", letterSpacing: "0.08em", width: 150, textAlign: "right" }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredReceipts.map((rec) => {
+                    const statusCfg = RECEIPT_STATUS_CONFIG[rec.status] || RECEIPT_STATUS_CONFIG.completed;
+                    const amount = rec.paidAmount || rec.amountPaid || rec.amount || 0;
+
+                    return (
+                      <tr key={rec.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.03)", transition: "background 0.2s" }} className="table-row-hover">
+                        <td style={{ padding: "16px", fontSize: 11, fontWeight: 800, color: "#ea580c" }}>{rec.receiptNumber || rec.id}</td>
+                        <td style={{ padding: "16px" }}>
+                          <div style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{rec.clientName || "—"}</div>
+                          <div style={{ fontSize: 10, color: "#525252", marginTop: 2 }}>{rec.companyName || rec.clientEmail}</div>
+                        </td>
+                        <td style={{ padding: "16px", fontSize: 11, color: "#e4e4e7" }}>{fmtDate(rec.paymentDate || rec.createdAt)}</td>
+                        <td style={{ padding: "16px", fontSize: 11, color: "#e4e4e7" }}>{rec.paymentMethod || "Bank Transfer"}</td>
+                        <td style={{ padding: "16px", fontSize: 12, fontWeight: 800, color: "#10b981", textAlign: "right" }}>{fmtCurrency(amount, rec.currency || "USD")}</td>
+                        <td style={{ padding: "16px", textAlign: "center" }}>
+                          <span style={{ fontSize: 9, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.08em", padding: "4px 10px", borderRadius: 100, border: `1px solid ${statusCfg.color}`, color: statusCfg.color, background: statusCfg.bg }}>
+                            {statusCfg.label}
+                          </span>
+                        </td>
+                        <td style={{ padding: "16px", textAlign: "right" }}>
+                          <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", alignItems: "center" }}>
+                            {/* Download PDF */}
+                            <a
+                              href={`/api/receipts/${rec.id}/pdf`}
+                              download
+                              title="Download Receipt PDF"
+                              style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#c0c0c0", cursor: "pointer" }}
+                            >
+                              <Download size={12} style={{ margin: "auto" }} />
+                            </a>
+
+                            {/* Edit / View Receipt */}
+                            <Link href={`/admin-dashboard/receipt-builder?id=${rec.id}`} title="Edit Receipt">
+                              <div style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#a3a3a3", cursor: "pointer", transition: "all 0.2s" }}>
+                                <Edit3 size={12} style={{ margin: "auto" }} />
+                              </div>
+                            </Link>
+
+                            {/* Delete button */}
+                            <button
+                              onClick={() => handleDeleteReceipt(rec.id, rec.receiptNumber)}
+                              title="Delete Receipt"
+                              style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.1)", color: "#ef4444", cursor: "pointer", transition: "all 0.2s" }}
                             >
                               <Trash2 size={12} style={{ margin: "auto" }} />
                             </button>

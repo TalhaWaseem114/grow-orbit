@@ -423,33 +423,101 @@ const formatDate = (val) => {
 };
 
 const getDeliverables = (item) => {
+  if (Array.isArray(item.deliverables) && item.deliverables.length > 0) {
+    return item.deliverables;
+  }
   const nameLower = (item.name || "").toLowerCase();
+  const descLower = (item.description || "").toLowerCase();
+
+  // 1. Full Brand Launch / End-to-End Sell-Through Package
+  if (
+    nameLower.includes("launch") ||
+    nameLower.includes("brand launch") ||
+    descLower.includes("hunting") ||
+    descLower.includes("sourcing") ||
+    descLower.includes("sell-through") ||
+    (nameLower.includes("management") && (nameLower.includes("launch") || descLower.includes("launch")))
+  ) {
+    return [
+      "Product Hunting & Opportunity Analysis",
+      "Supplier Sourcing & Manufacturing Coordination",
+      "High-Converting 3D Renders & Graphic Infographics",
+      "Brand Storefront & Premium A+ Content Design",
+      "Full SEO Copywriting & Backend Keyword Indexing",
+      "Launch PPC Strategy & 1st Batch Sell-Through"
+    ];
+  }
+
+  // 2. Product Hunting & Sourcing standalone
+  if (nameLower.includes("hunt") || nameLower.includes("sourc") || (nameLower.includes("research") && nameLower.includes("product"))) {
+    return [
+      "In-Depth Niche & Competitor Research",
+      "High-Margin Product Opportunity Analysis",
+      "Supplier Verification & Price Negotiation",
+      "Landed Cost & Profit Margin Analysis"
+    ];
+  }
+
+  // 3. Creative / Graphics / 3D Renders / Store / A+
+  if (nameLower.includes("creative") || nameLower.includes("graphic") || nameLower.includes("render") || nameLower.includes("image") || nameLower.includes("a+") || nameLower.includes("ebc") || nameLower.includes("store")) {
+    return [
+      "Custom 3D Product Modeling & Hero Renders",
+      "High-Converting Lifestyle & Feature Infographics",
+      "Premium A+ Content (EBC) Layouts",
+      "Brand Storefront Design & Custom Widgets"
+    ];
+  }
+
+  // 4. PPC & Advertising
+  if (nameLower.includes("ppc") || nameLower.includes("ad") || nameLower.includes("campaign") || nameLower.includes("marketing")) {
+    return [
+      "Sponsored Products, Brands & Display Setup",
+      "Negative Keyword & Bid Optimization",
+      "ACOS / TACOS Target Management",
+      "Weekly Keyword Harvesting & Search Term Audits"
+    ];
+  }
+
+  // 5. SEO & Listing Optimization
+  if (nameLower.includes("optim") || nameLower.includes("listing") || nameLower.includes("seo") || nameLower.includes("copy")) {
+    return [
+      "High-Volume Keyword Architecture",
+      "Persuasive Title, 5 Bullets & Description",
+      "Backend Search Terms & Indexing Audits",
+      "Conversion Rate Optimization (CRO)"
+    ];
+  }
+
+  // 6. Full Monthly Retainer / Account Management
   if (nameLower.includes("account") || nameLower.includes("management")) {
-    return ["Account Health Monitoring", "Performance Optimization", "Policy & Compliance Management"];
+    return [
+      "24/7 Account Health & Case Management",
+      "Inventory Reorder Threshold Monitoring",
+      "Continuous Listing & PPC Optimization",
+      "Competitor Tracking & Monthly Performance Audits"
+    ];
   }
-  if (nameLower.includes("research") || nameLower.includes("product")) {
-    return ["Market & Competitor Research", "High-Converting Product Ideas", "Keyword Opportunity Report"];
-  }
-  if (nameLower.includes("ppc") || nameLower.includes("ad") || nameLower.includes("campaign")) {
-    return ["Campaign Setup & Optimization", "Bid Management", "ACOS & TACOS Optimization"];
-  }
-  if (nameLower.includes("optim") || nameLower.includes("listing") || nameLower.includes("seo")) {
-    return ["Title, Bullets & Description", "Backend Keywords", "SEO Optimization"];
-  }
-  if (nameLower.includes("creative") || nameLower.includes("content") || nameLower.includes("design") || nameLower.includes("store")) {
-    return ["A+ Content Design", "Brand Store (Basic)", "Infographic Images"];
-  }
-  if (nameLower.includes("report") || nameLower.includes("strategy") || nameLower.includes("consult")) {
-    return ["Monthly Performance Report", "Competitor Analysis", "Strategy Call (Monthly)"];
+
+  // 7. Consultation / Audit / Strategy
+  if (nameLower.includes("report") || nameLower.includes("strategy") || nameLower.includes("consult") || nameLower.includes("audit")) {
+    return [
+      "Deep-Dive Account & Competitor Audit",
+      "Tailored Growth Roadmap & Action Plan",
+      "Live 1-on-1 Strategy Video Consultation"
+    ];
   }
   
   if (item.description) {
     const lines = item.description.split(/[\n;]/).map(l => l.trim().replace(/^[-*✓✓✓\s]+/, "")).filter(Boolean);
     if (lines.length > 1) {
-      return lines.slice(0, 3);
+      return lines;
     }
   }
-  return ["Premium Agency Service Delivery", "Direct Strategy & Consultations", "Account Performance Audits"];
+  return [
+    "Premium Agency Service Delivery",
+    "Direct Strategy & Consultations",
+    "Account Performance & Oversight"
+  ];
 };
 
 export const InvoicePdfDocument = ({ invoice }) => {
@@ -614,7 +682,7 @@ export const InvoicePdfDocument = ({ invoice }) => {
           <Text style={styles.pmTitle}>PAYMENT METHODS</Text>
           <View style={styles.pmGrid}>
             {/* Left: Bank Transfer */}
-            <View style={styles.pmCol1}>
+            <View style={[styles.pmCol1, { width: invoice.paypalEmail ? "42%" : "68%" }]}>
               <Text style={styles.pmSubTitle}>BANK TRANSFER</Text>
               <Text style={styles.pmText}>Bank Name: {invoice.bankName || "Wise (TransferWise)"}</Text>
               <Text style={styles.pmText}>Account Name: {invoice.bankAccountName || "Grow Orbit LLC"}</Text>
@@ -623,12 +691,14 @@ export const InvoicePdfDocument = ({ invoice }) => {
               <Text style={styles.pmText}>SWIFT / BIC: {invoice.bankSwiftBic || "TRWIBEB1XXX"}</Text>
             </View>
 
-            {/* Center: PayPal */}
-            <View style={styles.pmCol2}>
-              <Text style={styles.pmSubTitle}>PAYPAL</Text>
-              <Text style={styles.pmText}>Recipient:</Text>
-              <Text style={[styles.pmText, { color: "#1d4ed8", fontWeight: "bold" }]}>{invoice.paypalEmail || "support@groworbitofficial.com"}</Text>
-            </View>
+            {/* Center: PayPal (Optional) */}
+            {invoice.paypalEmail ? (
+              <View style={styles.pmCol2}>
+                <Text style={styles.pmSubTitle}>PAYPAL</Text>
+                <Text style={styles.pmText}>Recipient:</Text>
+                <Text style={[styles.pmText, { color: "#1d4ed8", fontWeight: "bold" }]}>{invoice.paypalEmail}</Text>
+              </View>
+            ) : null}
 
             {/* Right: Info cards */}
             <View style={styles.pmCol3}>

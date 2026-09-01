@@ -239,36 +239,12 @@ export async function getNextSequenceNumber() {
 }
 
 export async function getNextInvoiceSequenceNumber() {
-  const isAdminOk = await checkAdminOperational();
-  let seqNum = 1;
-  try {
-    if (isAdminOk) {
-      const adminDb = await getAdminDb();
-      const snap = await adminDb.collection("invoices").orderBy("invoiceNumber", "desc").limit(1).get();
-      if (!snap.empty) {
-        const latestInvoice = snap.docs[0].data();
-        const numStr = latestInvoice.invoiceNumber?.split("-")?.pop();
-        const lastNum = parseInt(numStr, 10);
-        if (!isNaN(lastNum)) {
-          seqNum = lastNum + 1;
-        }
-      }
-    } else {
-      const q = query(collection(clientDb, "invoices"), orderBy("invoiceNumber", "desc"), limit(1));
-      const snap = await getDocs(q);
-      if (!snap.empty) {
-        const latestInvoice = snap.docs[0].data();
-        const numStr = latestInvoice.invoiceNumber?.split("-")?.pop();
-        const lastNum = parseInt(numStr, 10);
-        if (!isNaN(lastNum)) {
-          seqNum = lastNum + 1;
-        }
-      }
-    }
-  } catch (error) {
-    console.error("Error generating next invoice sequence number:", error);
-    seqNum = Math.floor(Date.now() / 1000) % 10000;
-  }
-  return seqNum;
+  const now = new Date();
+  const year = now.getFullYear();
+  const dateStr = String(now.getDate()).padStart(2, "0");
+  const monthStr = String(now.getMonth() + 1).padStart(2, "0");
+  const randomNum = Math.floor(1000 + Math.random() * 9000);
+  return `GO-INV-${year}-${dateStr}-${monthStr}-${randomNum}`;
 }
+
 

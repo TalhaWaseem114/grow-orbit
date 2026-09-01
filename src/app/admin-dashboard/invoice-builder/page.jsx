@@ -98,36 +98,111 @@ const getServiceIcon = (name = "") => {
 };
 
 const getDeliverables = (item) => {
+  if (Array.isArray(item.deliverables) && item.deliverables.length > 0) {
+    return item.deliverables;
+  }
   const nameLower = (item.name || "").toLowerCase();
+  const descLower = (item.description || "").toLowerCase();
+
+  // 1. Full Brand Launch / End-to-End Sell-Through Package
+  if (
+    nameLower.includes("launch") ||
+    nameLower.includes("brand launch") ||
+    descLower.includes("hunting") ||
+    descLower.includes("sourcing") ||
+    descLower.includes("sell-through") ||
+    (nameLower.includes("management") && (nameLower.includes("launch") || descLower.includes("launch")))
+  ) {
+    return [
+      "Product Hunting & Opportunity Analysis",
+      "Supplier Sourcing & Manufacturing Coordination",
+      "High-Converting 3D Renders & Graphic Infographics",
+      "Brand Storefront & Premium A+ Content Design",
+      "Full SEO Copywriting & Backend Keyword Indexing",
+      "Launch PPC Strategy & 1st Batch Sell-Through"
+    ];
+  }
+
+  // 2. Product Hunting & Sourcing standalone
+  if (nameLower.includes("hunt") || nameLower.includes("sourc") || (nameLower.includes("research") && nameLower.includes("product"))) {
+    return [
+      "In-Depth Niche & Competitor Research",
+      "High-Margin Product Opportunity Analysis",
+      "Supplier Verification & Price Negotiation",
+      "Landed Cost & Profit Margin Analysis"
+    ];
+  }
+
+  // 3. Creative / Graphics / 3D Renders / Store / A+
+  if (nameLower.includes("creative") || nameLower.includes("graphic") || nameLower.includes("render") || nameLower.includes("image") || nameLower.includes("a+") || nameLower.includes("ebc") || nameLower.includes("store")) {
+    return [
+      "Custom 3D Product Modeling & Hero Renders",
+      "High-Converting Lifestyle & Feature Infographics",
+      "Premium A+ Content (EBC) Layouts",
+      "Brand Storefront Design & Custom Widgets"
+    ];
+  }
+
+  // 4. PPC & Advertising
+  if (nameLower.includes("ppc") || nameLower.includes("ad") || nameLower.includes("campaign") || nameLower.includes("marketing")) {
+    return [
+      "Sponsored Products, Brands & Display Setup",
+      "Negative Keyword & Bid Optimization",
+      "ACOS / TACOS Target Management",
+      "Weekly Keyword Harvesting & Search Term Audits"
+    ];
+  }
+
+  // 5. SEO & Listing Optimization
+  if (nameLower.includes("optim") || nameLower.includes("listing") || nameLower.includes("seo") || nameLower.includes("copy")) {
+    return [
+      "High-Volume Keyword Architecture",
+      "Persuasive Title, 5 Bullets & Description",
+      "Backend Search Terms & Indexing Audits",
+      "Conversion Rate Optimization (CRO)"
+    ];
+  }
+
+  // 6. Full Monthly Retainer / Account Management
   if (nameLower.includes("account") || nameLower.includes("management")) {
-    return ["Account Health Monitoring", "Performance Optimization", "Policy & Compliance Management"];
+    return [
+      "24/7 Account Health & Case Management",
+      "Inventory Reorder Threshold Monitoring",
+      "Continuous Listing & PPC Optimization",
+      "Competitor Tracking & Monthly Performance Audits"
+    ];
   }
-  if (nameLower.includes("research") || nameLower.includes("product")) {
-    return ["Market & Competitor Research", "High-Converting Product Ideas", "Keyword Opportunity Report"];
-  }
-  if (nameLower.includes("ppc") || nameLower.includes("ad") || nameLower.includes("campaign")) {
-    return ["Campaign Setup & Optimization", "Bid Management", "ACOS & TACOS Optimization"];
-  }
-  if (nameLower.includes("optim") || nameLower.includes("listing") || nameLower.includes("seo")) {
-    return ["Title, Bullets & Description", "Backend Keywords", "SEO Optimization"];
-  }
-  if (nameLower.includes("creative") || nameLower.includes("content") || nameLower.includes("design") || nameLower.includes("store")) {
-    return ["A+ Content Design", "Brand Store (Basic)", "Infographic Images"];
-  }
-  if (nameLower.includes("report") || nameLower.includes("strategy") || nameLower.includes("consult")) {
-    return ["Monthly Performance Report", "Competitor Analysis", "Strategy Call (Monthly)"];
+
+  // 7. Consultation / Audit / Strategy
+  if (nameLower.includes("report") || nameLower.includes("strategy") || nameLower.includes("consult") || nameLower.includes("audit")) {
+    return [
+      "Deep-Dive Account & Competitor Audit",
+      "Tailored Growth Roadmap & Action Plan",
+      "Live 1-on-1 Strategy Video Consultation"
+    ];
   }
 
   if (item.description) {
     const lines = item.description.split(/[\n;]/).map(l => l.trim().replace(/^[-*✓✓✓\s]+/, "")).filter(Boolean);
     if (lines.length > 1) {
-      return lines.slice(0, 3);
+      return lines;
     }
   }
-  return ["Premium Agency Service Delivery", "Direct Strategy & Consultations", "Account Performance Audits"];
+  return [
+    "Premium Agency Service Delivery",
+    "Direct Strategic Consultation",
+    "Account Performance & Oversight"
+  ];
 };
 
 const PREDEFINED_SERVICES = [
+  {
+    shortName: "Brand Launch 360",
+    name: "Full Amazon Account Management & Brand Launch",
+    description: "End-to-end launch: Product hunting, supplier sourcing, 3D renders, listing graphics, A+ content, SEO copy, and launch PPC to sell out the inaugural inventory.",
+    price: 8500,
+    quantity: 1
+  },
   {
     shortName: "Account Mgmt",
     name: "Full Account Management",
@@ -231,7 +306,7 @@ function InvoiceBuilderContent() {
   const [bankAccountNumber, setBankAccountNumber] = useState("831245678");
   const [bankRoutingNumber, setBankRoutingNumber] = useState("026073150");
   const [bankSwiftBic, setBankSwiftBic] = useState("TRWIBEB1XXX");
-  const [paypalEmail, setPaypalEmail] = useState("support@groworbitofficial.com");
+  const [paypalEmail, setPaypalEmail] = useState("");
 
   // Collapsible accordion states for sidebar cards
   const [expandedSections, setExpandedSections] = useState({
@@ -256,8 +331,11 @@ function InvoiceBuilderContent() {
   // Next auto-sequenced number preview
   const [invoiceNumberPreview, setInvoiceNumberPreview] = useState(() => {
     const d = new Date();
-    const dateStr = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    return `GO-INV-${dateStr}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const year = d.getFullYear();
+    const dateStr = String(d.getDate()).padStart(2, "0");
+    const monthStr = String(d.getMonth() + 1).padStart(2, "0");
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    return `GO-INV-${year}-${dateStr}-${monthStr}-${randomNum}`;
   });
 
   // Auto-calculate dueDate whenever issueDate or paymentTerms change
@@ -292,7 +370,7 @@ function InvoiceBuilderContent() {
         bankAccountNumber: "831245678",
         bankRoutingNumber: "026073150",
         bankSwiftBic: "TRWIBEB1XXX",
-        paypalEmail: "support@groworbitofficial.com"
+        paypalEmail: ""
       };
 
       try {
@@ -310,7 +388,7 @@ function InvoiceBuilderContent() {
       setBankAccountNumber(globalDefaults.bankAccountNumber);
       setBankRoutingNumber(globalDefaults.bankRoutingNumber);
       setBankSwiftBic(globalDefaults.bankSwiftBic);
-      setPaypalEmail(globalDefaults.paypalEmail);
+      setPaypalEmail(globalDefaults.paypalEmail || "");
 
       if (invoiceId) {
         // Fetch existing invoice
@@ -344,7 +422,7 @@ function InvoiceBuilderContent() {
             if (data.bankAccountNumber) setBankAccountNumber(data.bankAccountNumber);
             if (data.bankRoutingNumber) setBankRoutingNumber(data.bankRoutingNumber);
             if (data.bankSwiftBic) setBankSwiftBic(data.bankSwiftBic);
-            if (data.paypalEmail) setPaypalEmail(data.paypalEmail);
+            if (data.paypalEmail !== undefined) setPaypalEmail(data.paypalEmail || "");
 
             if (data.items && data.items.length > 0) {
               setItems(data.items.map((it, idx) => ({ ...it, id: it.id || Date.now() + idx })));
@@ -368,32 +446,6 @@ function InvoiceBuilderContent() {
         } catch (e) {
           console.error("Failed to load lead details:", e);
         }
-      }
-
-      // Fetch next preview invoice number
-      try {
-        const token = await auth.currentUser?.getIdToken() || "";
-        const res = await fetch("/api/invoices", {
-          headers: { "Authorization": `Bearer ${token}` }
-        });
-        const d = await res.json();
-        if (d.success) {
-          // Calculate next preview number
-          const year = now.getFullYear();
-          const existing = d.invoices
-            .map(inv => {
-              const match = inv.invoiceNumber?.match(/GO-INV-\d{4}-(\d+)/);
-              return match ? parseInt(match[1], 10) : 0;
-            })
-            .filter(n => n > 0);
-          const next = existing.length > 0 ? Math.max(...existing) + 1 : 1;
-          const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
-          if (!invoiceId) {
-            setInvoiceNumberPreview(`GO-INV-${dateStr}-${String(next).padStart(4, "0")}`);
-          }
-        }
-      } catch (err) {
-        console.warn("Failed to generate preview invoice number:", err);
       }
 
       setLoading(false);
@@ -462,6 +514,7 @@ function InvoiceBuilderContent() {
     try {
       const token = await auth.currentUser?.getIdToken() || "";
       const payload = {
+        invoiceNumber: invoiceNumberPreview,
         leadId: leadId || invoice?.leadId || "manual_invoice",
         clientName,
         clientEmail,
@@ -1097,10 +1150,10 @@ function InvoiceBuilderContent() {
                 </div>
 
                 <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                  <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>PayPal Email Recipient</label>
+                  <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>PayPal Email Recipient (Optional)</label>
                   <input
                     type="email"
-                    placeholder="e.g. support@groworbitofficial.com"
+                    placeholder="Leave blank to omit PayPal"
                     value={paypalEmail}
                     onChange={e => setPaypalEmail(e.target.value)}
                     style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
@@ -1453,10 +1506,10 @@ helping you achieve exceptional growth on Amazon.`}
               }}>
                 <div style={{ fontSize: "10.5px", fontWeight: "900", color: "#f97316", letterSpacing: "1px", marginBottom: "14px", fontFamily: "var(--font-montserrat)" }}>PAYMENT METHODS</div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16 }}>
                   {/* Left: Bank details */}
-                  <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                    <div style={{ width: "50px", height: "50px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+                  <div style={{ display: "flex", gap: "10px", alignItems: "center", flex: paypalEmail ? "0 0 45%" : "1" }}>
+                    <div style={{ width: "50px", height: "50px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0 }}>
                       <img src="/bank-logo.png" alt="Bank Logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", fontSize: "10px", lineHeight: "1.6", gap: "3px" }}>
@@ -1469,22 +1522,26 @@ helping you achieve exceptional growth on Amazon.`}
                     </div>
                   </div>
 
-                  {/* Divider Line */}
-                  <div style={{ width: "1px", backgroundColor: "#e2e8f0", margin: "0 15px", alignSelf: "stretch" }}></div>
+                  {paypalEmail ? (
+                    <>
+                      {/* Divider Line */}
+                      <div style={{ width: "1px", backgroundColor: "#e2e8f0", margin: "0 10px", alignSelf: "stretch" }}></div>
 
-                  {/* Center: PayPal details */}
-                  <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                    <div style={{ width: "50px", height: "50px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-                      <img src="/paypal-logo.png" alt="PayPal" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
-                    </div>
-                    <div style={{ display: "flex", flexDirection: "column", fontSize: "10px", lineHeight: "1.6", gap: "3px" }}>
-                      <div style={{ fontWeight: "800", color: "#0f172a", fontSize: "11px", fontFamily: "var(--font-montserrat)" }}>PAYPAL</div>
-                      <div style={{ color: "#64748b" }}>Recipient: <span style={{ fontWeight: "750", color: "#1d4ed8" }}>{paypalEmail || "support@groworbitofficial.com"}</span></div>
-                    </div>
-                  </div>
+                      {/* Center: PayPal details */}
+                      <div style={{ display: "flex", gap: "10px", alignItems: "center", flex: "0 0 25%" }}>
+                        <div style={{ width: "45px", height: "45px", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", flexShrink: 0 }}>
+                          <img src="/paypal-logo.png" alt="PayPal" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                        </div>
+                        <div style={{ display: "flex", flexDirection: "column", fontSize: "10px", lineHeight: "1.6", gap: "3px" }}>
+                          <div style={{ fontWeight: "800", color: "#0f172a", fontSize: "11px", fontFamily: "var(--font-montserrat)" }}>PAYPAL</div>
+                          <div style={{ color: "#64748b" }}>Recipient: <span style={{ fontWeight: "750", color: "#1d4ed8" }}>{paypalEmail}</span></div>
+                        </div>
+                      </div>
+                    </>
+                  ) : null}
 
                   {/* Right: Small Info Cards */}
-                  <div style={{ display: "flex", gap: "14px", paddingLeft: "20px", borderLeft: "2px solid #ffedd5" }}>
+                  <div style={{ display: "flex", gap: "14px", paddingLeft: "20px", borderLeft: "2px solid #ffedd5", flexShrink: 0 }}>
                     <div style={{ display: "flex", flexDirection: "column", gap: "18px", justifyContent: "center" }}>
 
                       {/* Due Date */}

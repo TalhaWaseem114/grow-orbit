@@ -72,8 +72,10 @@ export async function POST(request) {
 
     const now = new Date();
     const year = now.getFullYear();
-    const seqNum = await getNextInvoiceSequenceNumber();
-    const invoiceNumber = `GO-INV-${year}-${String(seqNum).padStart(4, "0")}`;
+    const dateStr = String(now.getDate()).padStart(2, "0");
+    const monthStr = String(now.getMonth() + 1).padStart(2, "0");
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const invoiceNumber = body.invoiceNumber || `GO-INV-${year}-${dateStr}-${monthStr}-${randomNum}`;
 
     const invoiceData = {
       invoiceNumber,

@@ -572,10 +572,11 @@ function ReceiptBuilderContent() {
             <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
               <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Service Description</label>
               <textarea
-                rows={3}
+                rows={4}
                 value={serviceDescription}
                 onChange={e => setServiceDescription(e.target.value)}
-                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none", resize: "none" }}
+                placeholder="Enter scope of deliverables..."
+                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none", resize: "vertical", minHeight: "95px", lineHeight: "1.5" }}
               />
             </div>
           </div>
@@ -668,10 +669,11 @@ function ReceiptBuilderContent() {
             <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
               <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Receipt Notes</label>
               <textarea
-                rows={3}
+                rows={6}
                 value={notes}
                 onChange={e => setNotes(e.target.value)}
-                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none", resize: "none" }}
+                placeholder="Add special notes or terms for this receipt..."
+                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none", resize: "vertical", minHeight: "130px", lineHeight: "1.5" }}
               />
             </div>
           </div>

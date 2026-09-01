@@ -413,7 +413,7 @@ function ReceiptBuilderContent() {
       <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
         
         {/* Left Form Controls Sidebar */}
-        <div className="custom-scrollbar" style={{ width: 440, borderRight: "1px solid rgba(255,255,255,0.08)", background: "#090d16", padding: 22, overflowY: "auto", display: "flex", flexDirection: "column", gap: 16, flexShrink: 0 }}>
+        <div className="custom-scrollbar" style={{ width: 480, borderRight: "1px solid rgba(255,255,255,0.08)", background: "#090d16", padding: 22, overflowY: "auto", display: "flex", flexDirection: "column", gap: 16, flexShrink: 0 }}>
           
           {/* Quick Clear Action */}
           <div>
@@ -438,12 +438,12 @@ function ReceiptBuilderContent() {
                   if (selected) handleSelectInvoice(selected);
                 }}
                 defaultValue=""
-                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, padding: "7px 10px", color: "#fff", fontSize: 11, outline: "none" }}
+                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.1)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
               >
-                <option value="" disabled>-- Select an existing invoice --</option>
+                <option value="" disabled>Select an invoice to auto-fill...</option>
                 {invoicesList.map(inv => (
                   <option key={inv.id} value={inv.id}>
-                    {inv.invoiceNumber} — {inv.clientName} ({fmtCurrency(inv.items?.[0]?.price || 3000, inv.currency || "USD")})
+                    {inv.invoiceNumber} — {inv.clientName} ({fmtCurrency(inv.total || inv.amount || 0, inv.currency)})
                   </option>
                 ))}
               </select>
@@ -454,58 +454,58 @@ function ReceiptBuilderContent() {
           <div style={{ background: "#0d121f", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
             <div style={{ fontSize: 11, fontWeight: 800, color: "#ea580c", letterSpacing: "0.08em", textTransform: "uppercase" }}>Receipt Reference</div>
             
+            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+              <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Receipt #</label>
+              <input
+                type="text"
+                value={receiptNumber}
+                onChange={e => setReceiptNumber(e.target.value)}
+                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#ea580c", fontSize: 12, fontWeight: 700, outline: "none" }}
+              />
+            </div>
+
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Receipt #</label>
-                <input
-                  type="text"
-                  value={receiptNumber}
-                  onChange={e => setReceiptNumber(e.target.value)}
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#ea580c", fontSize: 11, fontWeight: 700, outline: "none" }}
-                />
-              </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Receipt Date</label>
                 <input
                   type="date"
                   value={receiptDate}
                   onChange={e => setReceiptDate(e.target.value)}
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
+                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
                 />
               </div>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Payment Date</label>
                 <input
                   type="date"
                   value={paymentDate}
                   onChange={e => setPaymentDate(e.target.value)}
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
+                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
                 />
               </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Payment Method</label>
                 <select
                   value={paymentMethod}
                   onChange={e => setPaymentMethod(e.target.value)}
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
+                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
                 >
                   {PAYMENT_METHODS.map(m => <option key={m} value={m}>{m}</option>)}
                 </select>
               </div>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-              <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Transaction / Reference ID</label>
-              <input
-                type="text"
-                value={transactionRef}
-                onChange={e => setTransactionRef(e.target.value)}
-                placeholder="e.g. TRX12987654321"
-                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
-              />
+              <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Transaction ID (Optional)</label>
+                <input
+                  type="text"
+                  value={transactionRef}
+                  onChange={e => setTransactionRef(e.target.value)}
+                  placeholder="e.g. TRX12987654321"
+                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
+                />
+              </div>
             </div>
           </div>
 
@@ -519,7 +519,7 @@ function ReceiptBuilderContent() {
                 type="text"
                 value={clientName}
                 onChange={e => setClientName(e.target.value)}
-                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
+                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
               />
             </div>
 
@@ -529,7 +529,7 @@ function ReceiptBuilderContent() {
                 type="text"
                 value={companyName}
                 onChange={e => setCompanyName(e.target.value)}
-                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
+                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
               />
             </div>
 
@@ -540,7 +540,7 @@ function ReceiptBuilderContent() {
                   type="email"
                   value={clientEmail}
                   onChange={e => setClientEmail(e.target.value)}
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
+                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
                 />
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
@@ -549,7 +549,7 @@ function ReceiptBuilderContent() {
                   type="text"
                   value={clientAddress}
                   onChange={e => setClientAddress(e.target.value)}
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
+                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
                 />
               </div>
             </div>
@@ -565,7 +565,7 @@ function ReceiptBuilderContent() {
                 type="text"
                 value={serviceTitle}
                 onChange={e => setServiceTitle(e.target.value)}
-                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
+                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
               />
             </div>
 
@@ -585,36 +585,47 @@ function ReceiptBuilderContent() {
           <div style={{ background: "#0d121f", border: "1px solid rgba(255,255,255,0.06)", borderRadius: 12, padding: 14, display: "flex", flexDirection: "column", gap: 10 }}>
             <div style={{ fontSize: 11, fontWeight: 800, color: "#ea580c", letterSpacing: "0.08em", textTransform: "uppercase" }}>Invoice Financial Settlement</div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-              <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Invoice #</label>
-                <input
-                  type="text"
-                  value={invoiceNumber}
-                  onChange={e => setInvoiceNumber(e.target.value)}
-                  placeholder="e.g. GO-INV-2026-01-09-9881"
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
-                />
-              </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+              <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Invoice #</label>
+              <input
+                type="text"
+                value={invoiceNumber}
+                onChange={e => setInvoiceNumber(e.target.value)}
+                placeholder="e.g. GO-INV-2026-01-09-9881"
+                style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
+              />
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr", gap: 8 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Invoice Date</label>
                 <input
                   type="date"
                   value={invoiceDate}
                   onChange={e => setInvoiceDate(e.target.value)}
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
+                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
                 />
+              </div>
+              <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Currency</label>
+                <select
+                  value={currency}
+                  onChange={e => setCurrency(e.target.value)}
+                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#fff", fontSize: 11, outline: "none" }}
+                >
+                  {CURRENCY_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 8 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
               <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
                 <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Total Due</label>
                 <input
                   type="number"
                   value={totalDue}
                   onChange={e => setTotalDue(e.target.value)}
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#ea580c", fontSize: 11, fontWeight: 700, outline: "none" }}
+                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#ea580c", fontSize: 12, fontWeight: 700, outline: "none" }}
                 />
               </div>
 
@@ -624,19 +635,8 @@ function ReceiptBuilderContent() {
                   type="number"
                   value={paidAmount}
                   onChange={e => setPaidAmount(e.target.value)}
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#10b981", fontSize: 11, fontWeight: 700, outline: "none" }}
+                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "8px 10px", color: "#10b981", fontSize: 12, fontWeight: 700, outline: "none" }}
                 />
-              </div>
-
-              <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700 }}>Currency</label>
-                <select
-                  value={currency}
-                  onChange={e => setCurrency(e.target.value)}
-                  style={{ background: "#080b12", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 6, padding: "6px 8px", color: "#fff", fontSize: 11, outline: "none" }}
-                >
-                  {CURRENCY_OPTIONS.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
               </div>
             </div>
           </div>

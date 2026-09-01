@@ -576,24 +576,14 @@ export default function InvoicesTab() {
                               target="_blank"
                               rel="noreferrer"
                               title="View Public Page"
-                              style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#c0c0c0", cursor: "pointer" }}
+                              style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#c0c0c0", cursor: "pointer", transition: "all 0.2s" }}
                             >
                               <ExternalLink size={12} style={{ margin: "auto" }} />
                             </a>
 
-                            {/* Download PDF */}
-                            <a
-                              href={`/api/contracts/${c.id}/pdf`}
-                              download
-                              title="Download PDF"
-                              style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#c0c0c0", cursor: "pointer" }}
-                            >
-                              <Download size={12} style={{ margin: "auto" }} />
-                            </a>
-
                             {/* Edit */}
                             <Link href={`/admin-dashboard/contract-builder?id=${c.id}`} title="Edit Contract">
-                              <div style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#a3a3a3", cursor: "pointer" }}>
+                              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#a3a3a3", cursor: "pointer", transition: "all 0.2s" }}>
                                 <Edit3 size={12} style={{ margin: "auto" }} />
                               </div>
                             </Link>

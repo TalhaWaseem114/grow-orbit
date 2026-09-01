@@ -343,6 +343,145 @@ export const sandboxMicrophoneBody = `<!-- HIDE_DEFAULT_CTA -->
   </tr>
 </table>`;
 
+export const sandboxReceiptSubject = "Payment Confirmation & Official Receipt — Grow Orbit LLC (#GO-PR-2026-28-08-9881) 🧾";
+export const sandboxReceiptHeadline = "Payment Received | Official Receipt Confirmation";
+
+export const sandboxReceiptBody = `<!-- HIDE_DEFAULT_CTA -->
+<p style="font-size: 14px; line-height: 1.6; color: #475569; margin-top: 0; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">Hi Amir Baig,</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  Thank you for partnering with <strong>Grow Orbit</strong>. We are pleased to confirm that we have successfully received and processed your payment of <strong>$3,000.00 USD</strong>.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  This payment represents <strong>Installment 1 of 3</strong> toward your <strong>Full Amazon Account Management &amp; Brand Launch</strong> package as per Agreement <strong>#GO-2026-25-08-5936</strong>.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  Here is the complete financial summary of your transaction:
+</p>
+
+<!-- Payment Receipt Summary Card (Bulletproof Table Structure) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #16a34a; border-radius: 8px; padding: 20px 24px;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13.5px; line-height: 1.8; color: #334155; border-collapse: collapse; margin: 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        <tr>
+          <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#128196;
+          </td>
+          <td style="padding-bottom: 12px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Official Receipt #:</strong> <span style="color: #ea580c; font-weight: 800;">#GO-PR-2026-28-08-9881</span>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#128179;
+          </td>
+          <td style="padding-bottom: 12px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Invoice Reference:</strong> GO-INV-2026-28-08-9881
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#128197;
+          </td>
+          <td style="padding-bottom: 12px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Payment Date:</strong> August 28, 2026
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#127974;
+          </td>
+          <td style="padding-bottom: 12px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Payment Method:</strong> Bank Transfer
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#9989;
+          </td>
+          <td style="padding-bottom: 12px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Amount Paid:</strong> <strong style="color: #16a34a; font-size: 15px;">$3,000.00 USD</strong> (Installment 1 of 3)
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#128202;
+          </td>
+          <td style="padding-bottom: 12px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Total Package Value:</strong> $8,500.00 USD
+          </td>
+        </tr>
+        <tr>
+          <td style="padding-bottom: 12px; vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#128176;
+          </td>
+          <td style="padding-bottom: 12px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Remaining Balance:</strong> $5,500.00 USD (Scheduled across subsequent milestones)
+          </td>
+        </tr>
+        <tr>
+          <td style="vertical-align: top; width: 34px; font-size: 16px; font-family: sans-serif;">
+            &#128274;
+          </td>
+          <td style="vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+            <strong style="color: #0f172a;">Verification:</strong> <span style="background: #dcfce7; color: #15803d; font-weight: 800; padding: 2px 8px; border-radius: 4px; font-size: 11px;">PAID &amp; DIGITALLY SIGNED</span>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  You can view, verify, and download your high-resolution official PDF receipt by clicking the button below:
+</p>
+
+<!-- CTA Button -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 28px; margin-bottom: 28px;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td align="center" bgcolor="#f97316" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 14px 40px; border-radius: 50px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+            <a href="https://drive.google.com/file/d/1Wal9qAFq-SrAP4IPkXlaqEUAgCVcsFUh/view?usp=sharing" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; line-height: 1.2; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+              📄 View Official Payment Receipt
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 12.5px; line-height: 1.6; color: #64748b; margin-bottom: 24px; text-align: center; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  Direct Receipt Link: <a href="https://drive.google.com/file/d/1Wal9qAFq-SrAP4IPkXlaqEUAgCVcsFUh/view?usp=sharing" target="_blank" style="color: #f97316; text-decoration: underline; font-weight: 600;">https://drive.google.com/file/d/1Wal9qAFq-SrAP4IPkXlaqEUAgCVcsFUh/view?usp=sharing</a>
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  With this milestone complete, our team has actively initiated the first sprint of deliverables including product hunting &amp; validation, sourcing outreach, and 3D visual planning.
+</p>
+
+<p style="font-size: 14px; line-height: 1.7; color: #334155; margin-bottom: 24px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+  If you have any questions or require additional documentation, please feel free to contact us anytime:
+</p>
+
+<!-- Contact & Support Links Card -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 24px;">
+  <tr>
+    <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 20px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+      <p style="font-size: 13px; margin-top: 0; margin-bottom: 8px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        &#128241; <strong>WhatsApp Support:</strong> <strong style="color: #f97316;">+1 (912) 820-5916</strong>
+      </p>
+      <p style="font-size: 13px; margin: 0; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+        &#9993; <strong>Official Email:</strong> <a href="mailto:support@groworbitofficial.com" style="color: #f97316; text-decoration: none; font-weight: 600;">support@groworbitofficial.com</a>
+      </p>
+    </td>
+  </tr>
+</table>`;
+
 export const sandboxId = "sandbox-contract-agreement";
 export const sandboxSubject = sandboxContractSubject;
 export const sandboxHeadline = sandboxContractHeadline;
@@ -362,10 +501,10 @@ export const SANDBOX_DRAFTS = [
     body: sandboxMicrophoneBody
   },
   {
-    id: "sandbox-faraz-proposal",
-    subject: "Product Sourcing Proposal — Three Opportunities for Your Review 🚀",
-    headline: "Custom Product Sourcing & Market Intelligence Blueprint",
-    body: sandboxContractBody
+    id: "sandbox-receipt-confirmation",
+    subject: sandboxReceiptSubject,
+    headline: sandboxReceiptHeadline,
+    body: sandboxReceiptBody
   },
   {
     id: "sandbox-roadmap",

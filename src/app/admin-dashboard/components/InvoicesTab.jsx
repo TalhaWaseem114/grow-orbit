@@ -239,11 +239,18 @@ export default function InvoicesTab() {
     }
   };
 
-  // Copy helper
   const handleCopyLink = (contractId) => {
     const link = `${window.location.origin}/contract/${contractId}/`;
     navigator.clipboard.writeText(link).then(() => {
       setCopiedId(contractId);
+      setTimeout(() => setCopiedId(null), 2000);
+    });
+  };
+
+  const handleCopyReceiptLink = (receiptId) => {
+    const link = `${window.location.origin}/admin-dashboard/receipt-builder?id=${receiptId}`;
+    navigator.clipboard.writeText(link).then(() => {
+      setCopiedId(receiptId);
       setTimeout(() => setCopiedId(null), 2000);
     });
   };
@@ -667,14 +674,24 @@ export default function InvoicesTab() {
                         </td>
                         <td style={{ padding: "16px", textAlign: "right" }}>
                           <div style={{ display: "flex", gap: 8, justifyContent: "flex-end", alignItems: "center" }}>
-                            {/* Download PDF */}
-                            <a
-                              href={`/api/receipts/${rec.id}/pdf`}
-                              download
-                              title="Download Receipt PDF"
-                              style={{ display: "flex", alignItems: "center", justifyPosition: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#c0c0c0", cursor: "pointer" }}
+                            {/* Copy Receipt Link */}
+                            <button
+                              onClick={() => handleCopyReceiptLink(rec.id)}
+                              title="Copy Receipt Link"
+                              style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: copiedId === rec.id ? "#22c55e" : "#c0c0c0", cursor: "pointer", transition: "all 0.2s" }}
                             >
-                              <Download size={12} style={{ margin: "auto" }} />
+                              {copiedId === rec.id ? <Check size={12} style={{ margin: "auto" }} /> : <Copy size={12} style={{ margin: "auto" }} />}
+                            </button>
+
+                            {/* View / Open Receipt Link */}
+                            <a
+                              href={`/admin-dashboard/receipt-builder?id=${rec.id}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              title="View & Open Receipt"
+                              style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 28, height: 28, borderRadius: 8, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)", color: "#c0c0c0", cursor: "pointer", transition: "all 0.2s" }}
+                            >
+                              <ExternalLink size={12} style={{ margin: "auto" }} />
                             </a>
 
                             {/* Edit / View Receipt */}

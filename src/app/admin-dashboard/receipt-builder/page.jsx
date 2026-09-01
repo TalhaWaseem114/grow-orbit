@@ -97,7 +97,7 @@ function ReceiptBuilderContent() {
   const [signatoryTitle, setSignatoryTitle] = useState("Accounts Manager");
 
   const [notes, setNotes] = useState(
-    "Thank you for partnering with Grow Orbit.\nThis official receipt confirms payment of $3,000.00 USD (Installment 1 of 3) toward the full Amazon Brand Launch package ($8,500.00 USD total) as per Agreement #GO-2026-25-08-5936.\nRemaining balance of $5,500.00 USD is scheduled across subsequent milestones."
+    "Thank you for partnering with Grow Orbit.\nThis official receipt confirms payment of $3,000.00 USD (Installment 1 of 3) toward the full Amazon Brand Launch package ($8,500.00 USD total) as per Agreement #GO-2026-25-08-5936.\nRemaining balance of $5,500.00 USD is due in the next two months."
   );
 
   const [companyPhone, setCompanyPhone] = useState("+1 (302) 823-6826");

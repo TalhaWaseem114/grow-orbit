@@ -419,7 +419,7 @@ export const sandboxReceiptBody = `<!-- HIDE_DEFAULT_CTA -->
             &#128176;
           </td>
           <td style="padding-bottom: 12px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-            <strong style="color: #0f172a;">Remaining Balance:</strong> $5,500.00 USD (Scheduled across subsequent milestones)
+            <strong style="color: #0f172a;">Remaining Balance:</strong> $5,500.00 USD (Due in the next two months)
           </td>
         </tr>
         <tr>

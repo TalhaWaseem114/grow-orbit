@@ -38,7 +38,7 @@ export async function generateMetadata({ params }) {
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
       const post = doc.data();
-      const canonicalUrl = `${baseUrl}/blog/${slug}`;
+      const canonicalUrl = `${baseUrl}/blog/${slug}/`;
       const coverImg = post.coverImage || "https://images.unsplash.com/photo-1460925895917-afdab827c52f";
       
       return {

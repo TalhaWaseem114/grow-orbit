@@ -34,13 +34,13 @@ export async function generateMetadata({ params }) {
   try {
     const q = query(collection(db, "blogs"), where("slug", "==", slug), where("status", "==", "published"));
     const querySnapshot = await getDocs(q);
-    
+
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
       const post = doc.data();
       const canonicalUrl = `${baseUrl}/blog/${slug}/`;
       const coverImg = post.coverImage || "https://images.unsplash.com/photo-1460925895917-afdab827c52f";
-      
+
       return {
         title: `${post.title} | Grow Orbit`,
         description: post.excerpt || `Read ${post.title} on Grow Orbit.`,
@@ -91,7 +91,7 @@ export default async function Page({ params }) {
   try {
     const q = query(collection(db, "blogs"), where("slug", "==", slug), where("status", "==", "published"));
     const querySnapshot = await getDocs(q);
-    
+
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
       const data = doc.data();
@@ -99,7 +99,7 @@ export default async function Page({ params }) {
 
       if (post.category) {
         const relatedQ = query(
-          collection(db, "blogs"), 
+          collection(db, "blogs"),
           where("category", "==", post.category),
           where("status", "==", "published")
         );
@@ -170,7 +170,7 @@ export default async function Page({ params }) {
             "@type": "BlogPosting",
             "mainEntityOfPage": {
               "@type": "WebPage",
-              "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/blog/${post.slug || post.id}`
+              "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/blog/${post.slug || post.id}/`
             },
             "headline": post.title,
             "image": [post.coverImage],
@@ -324,7 +324,7 @@ export default async function Page({ params }) {
                 return (
                   <div key={i} className="flex gap-4 items-start bg-orange-50/50 border-l-4 border-orange-500 py-6 px-6 sm:px-8 rounded-r-2xl my-10">
                     <span className="text-2xl mt-1 leading-none">💡</span>
-                    <div 
+                    <div
                       className="text-zinc-800 font-medium leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: parseMarkdownText(block.text) }}
                     />
@@ -339,11 +339,11 @@ export default async function Page({ params }) {
                 if (!videoId) return null;
                 return (
                   <div key={i} className="relative w-full overflow-hidden rounded-2xl bg-zinc-900 my-10 shadow-2xl" style={{ paddingBottom: "56.25%" }}>
-                    <iframe 
-                      className="absolute top-0 left-0 w-full h-full border-0" 
-                      src={`https://www.youtube.com/embed/${videoId}`} 
+                    <iframe
+                      className="absolute top-0 left-0 w-full h-full border-0"
+                      src={`https://www.youtube.com/embed/${videoId}`}
                       title={videoTitle}
-                      allowFullScreen 
+                      allowFullScreen
                     />
                   </div>
                 );
@@ -354,7 +354,7 @@ export default async function Page({ params }) {
                 const url = parts[0];
                 const btnText = parts[1];
                 const hookText = parts[2] || "";
-                
+
                 const isInternal = url.startsWith("/");
                 const btnClass = "w-full sm:w-auto inline-flex items-center justify-center bg-gradient-to-br from-orange-500 to-orange-600 text-white font-black text-xs sm:text-sm md:text-base uppercase tracking-wider sm:tracking-widest px-5 sm:px-10 py-3.5 sm:py-5 rounded-2xl sm:rounded-full shadow-xl shadow-orange-500/20 hover:scale-105 hover:shadow-orange-500/40 transition-all duration-300 text-center leading-normal whitespace-normal max-w-full my-2";
 
@@ -370,10 +370,10 @@ export default async function Page({ params }) {
                         {btnText}
                       </Link>
                     ) : (
-                      <a 
-                        href={url} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                      <a
+                        href={url}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className={btnClass}
                       >
                         {btnText}
@@ -521,7 +521,7 @@ export default async function Page({ params }) {
               );
             })}
           </article>
-          
+
           <EditorialGuidelines updatedDate={post.lastModified || post.date} authorName={post.author?.name} />
 
           {/* Client-Side Interactive Components (Upvotes, Comments) */}

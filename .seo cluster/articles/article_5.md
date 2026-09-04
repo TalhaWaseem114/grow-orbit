@@ -17,7 +17,7 @@ A product image can look polished, follow Amazon's rules, and still get ignored.
 
 Open a competitive Amazon search page and you will see why. Most products already have a white background, reasonable lighting, clean cutouts, and similar framing. Nothing is technically wrong with most of the images. The problem is that several of them look almost interchangeable.
 
-That is where better main image design matters.
+That is where building high-converting Amazon product images becomes a real design problem, not just a photography task.
 
 The goal is not to make the image more dramatic just for the sake of looking premium. It is to make the product clearer, more recognizable, and more competitive at the exact size a shopper sees it.
 
@@ -45,9 +45,7 @@ A strong image usually does several things well at the same time:
 
 None of these works on its own.
 
-A larger image will not help if the product is confusing. Better lighting will not help if the wrong shoppers are seeing the listing. A beautiful render will not help if it changes the product.
-
-The goal is simple:
+A larger image will not help if the product is confusing. Lighting improvements fall flat when the wrong shoppers are landing on the listing in the first place. And a beautiful render that misrepresents what arrives in the box creates returns, not conversions.
 
 > **Make the right product easier to understand and easier to choose.**
 
@@ -327,6 +325,10 @@ A 3/4 angle works well when it reveals useful depth, side features, or physical 
 
 Photography captures the real product directly, while 3D rendering gives you total control over camera perspective, lighting, reflections, material finishes, and consistency across variations. For the MAIN image slot, always verify category compliance and ensure the render is 100% true-to-life.
 
+### Do 3D renders improve Amazon listing click-through rate?
+
+3D renders eliminate common studio problems like camera glare, dust particles, and physical lens distortion that can make a product look less defined at thumbnail size. When the render accurately represents the product and the lighting is optimized for white-background separation, sellers often see measurable CTR improvements. The key factor is accuracy: a render that exaggerates the product will hurt conversions even if it earns more initial clicks.
+
 ### Can I A/B test an Amazon main image?
 
 Yes. Brand Registered sellers can use Amazon's Manage Your Experiments (MYE) tool to run live split tests between two main images. Amazon measures not only click-through rate, but also downstream conversion rates and total unit sales.
@@ -335,9 +337,9 @@ Yes. Brand Registered sellers can use Amazon's Manage Your Experiments (MYE) too
 
 ## Design for the Decision, Not the Camera
 
-A premium Amazon image does not need to be complicated. It needs to make the right product obvious.
+A premium Amazon image does not need to be complicated. It needs to make the right product obvious, at the exact size a real shopper actually sees it.
 
-Start with the search results. See what your competitors are doing. Find the visual weakness that gives them an advantage, and fix that specific problem:
+The most reliable starting point is always the search results page for the keyword you want to rank on. Look at the five products sitting next to yours and find the specific visual weakness your current image has compared to theirs:
 
 * Sometimes the answer is a tighter crop.
 * Sometimes it is better lighting contrast.

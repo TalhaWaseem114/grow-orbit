@@ -168,14 +168,16 @@ export default function Navbar() {
     <>
       <header
         ref={headerRef}
-        className={`fixed z-50 transition-all duration-300 ${
+        className={`fixed z-50 left-1/2 -translate-x-1/2 transition-all duration-300 ease-out border ${
           pathname.includes("get-started") ? "lg:hidden" : ""
         } ${
           isSticky
-            ? `top-1.5 sm:top-2.5 inset-x-2 sm:inset-x-4 max-w-7xl mx-auto rounded-full ${
-                isAboutPage ? "bg-zinc-950 border-white/10" : "bg-white border-zinc-200 shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
-              } border py-2 sm:py-2.5`
-            : "top-0 left-0 right-0 w-full bg-transparent border border-transparent py-3 sm:py-5"
+            ? `top-1.5 sm:top-2.5 w-[calc(100%-16px)] sm:w-[calc(100%-32px)] max-w-7xl rounded-full ${
+                isAboutPage
+                  ? "bg-zinc-950 border-white/10 shadow-[0_10px_35px_rgba(0,0,0,0.5)]"
+                  : "bg-white border-zinc-200 shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
+              } py-2 sm:py-2.5`
+            : "top-0 w-full max-w-7xl rounded-full bg-transparent border-transparent py-3 sm:py-5 shadow-none"
         }`}
       >
         {/* ════════════════════════════════════════
@@ -213,9 +215,9 @@ export default function Navbar() {
                   className="object-contain w-auto h-auto"
                 />
               </div>
-              <span className="text-[15px] sm:text-base font-black tracking-tight uppercase flex gap-1 transition-colors">
-                <span className={isDarkTextNeeded ? "text-[#2B3036]" : "text-white"}>GROW</span>
-                <span className={isDarkTextNeeded ? "text-orange-600" : "text-[#F1A52B]"}>ORBIT</span>
+              <span className="text-[15px] sm:text-base font-black tracking-tight uppercase flex gap-1">
+                <span className={`transition-colors duration-300 ${isDarkTextNeeded ? "text-[#2B3036]" : "text-white"}`}>GROW</span>
+                <span className={`transition-colors duration-300 ${isDarkTextNeeded ? "text-orange-600" : "text-[#F1A52B]"}`}>ORBIT</span>
               </span>
             </Link>
           </div>
@@ -249,9 +251,9 @@ export default function Navbar() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-xl font-black tracking-tight uppercase flex gap-1.5 transition-colors">
-                <span className={isDarkTextNeeded ? "text-[#2B3036]" : "text-white"}>GROW</span>
-                <span className={isDarkTextNeeded ? "text-orange-600" : "text-[#F1A52B]"}>ORBIT</span>
+              <span className="text-xl font-black tracking-tight uppercase flex gap-1.5">
+                <span className={`transition-colors duration-300 ${isDarkTextNeeded ? "text-[#2B3036]" : "text-white"}`}>GROW</span>
+                <span className={`transition-colors duration-300 ${isDarkTextNeeded ? "text-orange-600" : "text-[#F1A52B]"}`}>ORBIT</span>
               </span>
             </Link>
           </div>

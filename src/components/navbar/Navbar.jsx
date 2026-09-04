@@ -23,7 +23,18 @@ export default function Navbar() {
   const headerRef = useRef(null);
   const userDropdownRef = useRef(null);
 
-  const lightPages = ["service", "contact", "case-study", "blog", "portfolio", "amazon-tools"];
+  const lightPages = [
+    "service",
+    "contact",
+    "case-study",
+    "blog",
+    "portfolio",
+    "amazon-tools",
+    "glossary",
+    "faq",
+    "privacy-policy",
+    "terms-of-service"
+  ];
   const darkThemedPages = [
     "/service", // Added the main services index because it has a dark header
     "/service/full/amazon-management",

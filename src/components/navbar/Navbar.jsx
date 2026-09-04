@@ -172,7 +172,7 @@ export default function Navbar() {
           pathname.includes("get-started") ? "lg:hidden" : ""
         } ${
           isSticky
-            ? `top-2.5 sm:top-3.5 inset-x-3 sm:inset-x-6 max-w-7xl mx-auto rounded-full ${
+            ? `top-1.5 sm:top-2.5 inset-x-2 sm:inset-x-4 max-w-7xl mx-auto rounded-full ${
                 isAboutPage ? "bg-zinc-950/95 border-white/10" : "bg-white/95 border-zinc-200/80 shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
               } backdrop-blur-md border py-2 sm:py-2.5`
             : "top-0 left-0 right-0 w-full bg-transparent border border-transparent py-3 sm:py-5"

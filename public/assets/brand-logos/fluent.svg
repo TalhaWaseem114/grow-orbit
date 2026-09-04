@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 170 44" fill="none">
+  <!-- Fluent Icon: Geometric spark/intersection -->
+  <g transform="translate(6, 6)">
+    <rect x="6" y="6" width="18" height="18" rx="4" transform="rotate(45 15 15)" stroke="#18181B" stroke-width="2.5" fill="none"/>
+    <circle cx="15" cy="15" r="4" fill="#8B5CF6"/>
+    <line x1="15" y1="3" x2="15" y2="8" stroke="#8B5CF6" stroke-width="2.5" stroke-linecap="round"/>
+    <line x1="15" y1="22" x2="15" y2="27" stroke="#8B5CF6" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+  <!-- Fluent Typography -->
+  <text x="50" y="26" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="900" letter-spacing="3" fill="#18181B">FLUENT</text>
+  <text x="51" y="36" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7" font-weight="700" letter-spacing="2.6" fill="#8B5CF6">STUDIO GOODS</text>
+</svg>

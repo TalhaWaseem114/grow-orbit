@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 44" fill="none">
+  <!-- Flow Icon: Minimalist continuous aerodynamic wave -->
+  <g transform="translate(6, 6)">
+    <path d="M4 22C8 22 10 10 16 10C22 10 24 22 28 22" stroke="#0284C7" stroke-width="3.5" stroke-linecap="round"/>
+    <path d="M4 14C8 14 10 6 16 6C22 6 24 14 28 14" stroke="#18181B" stroke-width="3.5" stroke-linecap="round" opacity="0.85"/>
+  </g>
+  <!-- Flow Typography -->
+  <text x="46" y="27" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="22" font-weight="900" letter-spacing="2.5" fill="#18181B">FLOW</text>
+  <text x="47" y="37" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7" font-weight="700" letter-spacing="2.4" fill="#0284C7">ACTIVEWEAR</text>
+</svg>

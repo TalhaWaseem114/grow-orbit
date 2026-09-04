@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 175 44" fill="none">
+  <!-- Cognit Icon: Geometric prism facet -->
+  <g transform="translate(6, 6)">
+    <path d="M16 2L29 9.5V24.5L16 32L3 24.5V9.5L16 2Z" stroke="#18181B" stroke-width="2.5" fill="none"/>
+    <path d="M16 2V17L29 24.5" stroke="#0D9488" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M16 17L3 24.5" stroke="#18181B" stroke-width="2.5" stroke-linejoin="round"/>
+    <circle cx="16" cy="17" r="3" fill="#0D9488"/>
+  </g>
+  <!-- Cognit Typography -->
+  <text x="52" y="26" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="900" letter-spacing="3" fill="#18181B">COGNIT</text>
+  <text x="53" y="36" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7" font-weight="700" letter-spacing="2.4" fill="#64748B">COMMERCE LABS</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 190 44" fill="none">
+  <!-- PureBloom Icon: Minimalist botanical blossom -->
+  <g transform="translate(6, 6)">
+    <circle cx="16" cy="16" r="14" stroke="#18181B" stroke-width="1.5" fill="none" opacity="0.2"/>
+    <path d="M16 6C16 12 11 16 6 16C11 16 16 20 16 26C16 20 21 16 26 16C21 16 16 12 16 6Z" fill="#BE185D"/>
+    <circle cx="16" cy="16" r="3" fill="#FFFFFF"/>
+  </g>
+  <!-- PureBloom Typography -->
+  <text x="50" y="26" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="19" font-weight="800" letter-spacing="3" fill="#18181B">PUREBLOOM</text>
+  <text x="51" y="36" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7" font-weight="700" letter-spacing="2.6" fill="#BE185D">BOTANICALS</text>
+</svg>

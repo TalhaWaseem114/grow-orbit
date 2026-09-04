@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 165 44" fill="none">
+  <!-- Digit Icon: Modern geometric D monogram -->
+  <g transform="translate(6, 6)">
+    <rect x="2" y="2" width="6" height="28" rx="2" fill="#18181B"/>
+    <path d="M10 4H18C25.1797 4 31 9.8203 31 17C31 24.1797 25.1797 30 18 30H10" stroke="#6366F1" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="18" cy="17" r="3.5" fill="#6366F1"/>
+  </g>
+  <!-- Digit Typography -->
+  <text x="50" y="26" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="21" font-weight="900" letter-spacing="3" fill="#18181B">DIGIT</text>
+  <text x="51" y="36" font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="7" font-weight="700" letter-spacing="2.6" fill="#64748B">DATA GEAR</text>
+</svg>

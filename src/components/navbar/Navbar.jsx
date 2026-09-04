@@ -173,8 +173,8 @@ export default function Navbar() {
         } ${
           isSticky
             ? `top-1.5 sm:top-2.5 inset-x-2 sm:inset-x-4 max-w-7xl mx-auto rounded-full ${
-                isAboutPage ? "bg-zinc-950/95 border-white/10" : "bg-white/95 border-zinc-200/80 shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
-              } backdrop-blur-md border py-2 sm:py-2.5`
+                isAboutPage ? "bg-zinc-950 border-white/10" : "bg-white border-zinc-200 shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
+              } border py-2 sm:py-2.5`
             : "top-0 left-0 right-0 w-full bg-transparent border border-transparent py-3 sm:py-5"
         }`}
       >

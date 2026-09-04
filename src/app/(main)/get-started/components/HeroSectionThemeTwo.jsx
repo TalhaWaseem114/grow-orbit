@@ -136,7 +136,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
             <div className="fade-up delay-2 mb-10 flex flex-col items-start lg:hidden">
               <button
                 onClick={scrollToForm}
-                className="group relative inline-flex w-full lg:w-auto items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#FF4E00] to-[#F29F05] px-6 sm:px-10 py-4 sm:py-[17px] text-white font-black text-[10px] sm:text-[12px] uppercase tracking-[0.15em] sm:tracking-[0.22em] transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_15px_50px_rgba(255,78,0,0.45)] active:scale-95"
+                className="group relative inline-flex w-full lg:w-auto items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-[#FF4E00] via-[#FF7A00] to-[#F29F05] px-6 sm:px-10 py-4 sm:py-[17px] text-white font-black text-[10px] sm:text-[12px] uppercase tracking-[0.15em] sm:tracking-[0.22em] transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_15px_50px_rgba(255,78,0,0.45)] active:scale-95"
               >
                 {/* Skewed Shimmer Beam */}
                 <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-15deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-15deg)_translateX(100%)]">

@@ -307,10 +307,8 @@ export default function LeadForm({ theme = "light", compact = false }) {
       <button
         type="submit"
         disabled={loading || submitted}
-        className={`w-full font-black text-[11px] uppercase tracking-[0.2em] text-white bg-orange-500 transition-all duration-300 shadow-[0_8px_30px_rgba(249,115,22,0.3)] disabled:opacity-50 flex items-center justify-center gap-3 group ${
+        className={`w-full font-black text-[11px] uppercase tracking-[0.2em] text-white bg-gradient-to-r from-[#FF5C00] via-[#FF7A00] to-[#FFA726] hover:brightness-110 active:scale-[0.99] transition-all duration-300 shadow-[0_8px_30px_rgba(249,115,22,0.35)] disabled:opacity-50 flex items-center justify-center gap-3 group ${
           compact ? "py-3 rounded-xl" : "py-4 rounded-2xl"
-        } ${
-          isDark ? "hover:bg-white hover:text-black" : "hover:bg-zinc-900"
         }`}
       >
         {loading ? "Sending..." : (

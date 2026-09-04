@@ -77,7 +77,7 @@ export default function StickyNavbar({ scrolled, scrollToForm }) {
           {/* CTA */}
           <button
             onClick={scrollToForm}
-            className="px-6 py-2.5 bg-orange-500 hover:bg-white text-white hover:text-black rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 shadow-lg shadow-orange-500/20"
+            className="px-6 py-2.5 bg-gradient-to-r from-[#FF5C00] via-[#FF7A00] to-[#FFA726] hover:brightness-110 text-white rounded-full text-[10px] font-black uppercase tracking-widest transition-all duration-300 shadow-lg shadow-orange-500/20 active:scale-95 cursor-pointer border-none"
           >
             Book My Meeting
           </button>

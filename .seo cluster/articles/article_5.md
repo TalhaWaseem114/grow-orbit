@@ -6,7 +6,7 @@ primary_keyword: "high-converting amazon product images"
 target_anchor_text: "high-converting Amazon product images"
 internal_link_url: "/service/listing-optimization"
 slug: "high-converting-amazon-product-images"
-cover_image: "/images/article image/4/high-converting-amazon-product-images.avif"
+cover_image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200&auto=format&fit=crop"
 ---
 
 # How Premium Brands Design High-Converting Amazon Product Images

@@ -96,6 +96,7 @@ Amazon's general guidance requires the product to occupy at least 85% of the ima
 The common mistake is treating that as the entire design brief.
 
 Two images can both meet the requirement and still produce very different impressions:
+
 * One might leave the product visually small because of unnecessary empty space around an awkward shape.
 * Another might use the available area much more effectively while preserving the complete product.
 
@@ -116,6 +117,7 @@ Pure white backgrounds (`#FFFFFF`) create a unique design challenge.
 The product needs to remain visually separate from the background without introducing unnecessary graphics or color.
 
 This is especially difficult with products that are:
+
 * White or pale pastel
 * Metallic or chrome
 * Glossy or highly reflective
@@ -125,12 +127,14 @@ This is especially difficult with products that are:
 Flat lighting can remove depth. Excessive contrast can make the product look artificial. The answer is **controlled lighting**.
 
 ### Look at the Edges First
+
 Check whether the light is helping you see:
-* Product shape and outer silhouette
-* Material transitions (e.g. matte body with a glossy cap)
-* Curves and bevels
-* Seams and structural joints
-* Packaging details and important labels
+
+* **Product Shape:** Clean outer silhouette separated from the pure white background.
+* **Material Transitions:** Crisp boundary between different surface finishes (e.g. matte body with a glossy cap).
+* **Curves & Bevels:** Smooth specular highlights that communicate volume and curvature.
+* **Seams & Joints:** Well-defined structural lines showing product craftsmanship.
+* **Packaging Details:** Sharp, readable label typography without glare blowout.
 
 A highlight should explain the surface. It should not hide the information the shopper needs. This is particularly important for cosmetics, consumer electronics, polished tools, glass products, and reflective supplement bottles.
 
@@ -141,6 +145,7 @@ A highlight should explain the surface. It should not hide the information the s
 A three-quarter (3/4) angle can be useful because it reveals more than a flat front-facing photograph.
 
 It can show:
+
 * Width and depth
 * Physical construction and thickness
 * Side features, ports, or grip textures
@@ -162,19 +167,22 @@ That is a much better question than: *“Which angle looks more premium?”* A p
 This is one area where experienced product designers and photographers think differently from someone simply preparing a product cutout.
 
 A camera does not capture a product without perspective distortion. Lens choice, camera distance, and camera position affect how the product appears:
+
 * A wide-angle lens placed too close to a product exaggerates the front and makes the rear look disproportionately small.
 * A longer focal lens placed farther away produces a flatter, more controlled orthographic perspective.
 
 That matters when the true proportions of the product are part of the selling proposition.
 
 ### Where 3D Product Rendering Excels
-A properly built 3D product CAD model gives you total mathematical control over:
-* Precise camera position and focal perspective
-* Lighting direction and soft shadow diffusion
-* Reflection placement and glare reduction
-* Realistic material response (roughness, metallicity, subsurface scattering)
-* Exact rotation angles
-* 100% visual consistency across an entire multi-SKU catalog
+
+A properly built 3D product CAD model gives you total mathematical control over every key visual parameter:
+
+* **Camera Perspective:** Dial in the focal distance with zero wide-angle lens distortion.
+* **Lighting & Shadow Diffusion:** Cast soft, ray-traced contact shadows that anchor the product naturally on `#FFFFFF`.
+* **Specular Reflection Control:** Eliminate blinding studio glare from glossy labels, glass, and chrome surfaces.
+* **Realistic Material Physics:** Accurately simulate subsurface light scattering, metalness, and surface roughness.
+* **Exact Rotation Angles:** Lock in the ideal 3/4 depth angle that communicates volume instantly.
+* **100% Catalog Consistency:** Replicate identical lighting, angle, and framing across an entire multi-SKU lineup.
 
 That can be especially useful for products with reflective packaging, complex geometry, or difficult studio setups.
 
@@ -194,6 +202,7 @@ An image can look excellent at full 4K resolution on a desktop monitor and compl
 That is because micro-details disappear first.
 
 Try this yourself: open your product image on your phone and reduce it to approximately the size of an Amazon search result thumbnail. Then ask:
+
 * *Can I identify the product instantly?*
 * *Can I tell what category it belongs to?*
 * *Can I see its primary physical characteristics?*
@@ -218,6 +227,7 @@ Imagine a search page containing ten similar black supplement bottles, ten wirel
 The answer is not adding non-compliant badges or promotional text to the MAIN image. It is the **product presentation itself**.
 
 Look for opportunities in:
+
 * Dynamic viewing angle
 * Maximum frame fill
 * High-contrast edge separation
@@ -328,6 +338,7 @@ Yes. Brand Registered sellers can use Amazon's Manage Your Experiments (MYE) too
 A premium Amazon image does not need to be complicated. It needs to make the right product obvious.
 
 Start with the search results. See what your competitors are doing. Find the visual weakness that gives them an advantage, and fix that specific problem:
+
 * Sometimes the answer is a tighter crop.
 * Sometimes it is better lighting contrast.
 * Sometimes it is a dynamic 3/4 perspective.

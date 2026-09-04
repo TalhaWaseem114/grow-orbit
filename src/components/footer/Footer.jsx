@@ -99,6 +99,7 @@ export default function Footer() {
     { name: "Blog",       url: "/blog"      },
     { name: "About",      url: "/about"     },
     { name: "FAQ",        url: "/faq"       },
+    { name: "Glossary",   url: "/glossary"  },
     { name: "Contact",    url: "/contact"   },
   ];
 

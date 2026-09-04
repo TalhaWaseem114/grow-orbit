@@ -174,7 +174,7 @@ That is a much better question than: *“Which angle looks more premium?”* A p
 
 ## 4. Understand Camera Perspective and 3D Control
 
-Camera perspective and 3D rendering determine how optical distortion, focal length, and virtual studio lighting shape a shopper's perception of product scale, material craftsmanship, and physical depth on Amazon's pure white canvas.
+Camera perspective and [3D product rendering](/glossary/3d-rendering) determine how optical distortion, focal length, and virtual studio lighting shape a shopper's perception of product scale, material craftsmanship, and physical depth on Amazon's pure white canvas.
 
 This is one area where experienced product designers and photographers think differently from someone simply preparing a product cutout.
 
@@ -270,7 +270,7 @@ This does not mean artificially exaggerating it: it means avoiding compositions 
 
 At some point, you have to stop debating whether Version A or Version B "looks better."
 
-If your brand is Brand Registered on Amazon, you can test alternate product images on eligible listings using **Manage Your Experiments (MYE)** and learn which version performs better with actual customers. Across dozens of client split tests managed through MYE, 3D rendered hero images with controlled ray-traced lighting outperformed standard camera photography in 74% of tests, primarily driven by sharper label contrast and superior edge definition on mobile screens.
+If your brand is Brand Registered on Amazon, you can test alternate product images on eligible listings using **[Manage Your Experiments (MYE)](/glossary/mye)** and learn which version performs better with actual customers. Across dozens of client split tests managed through MYE, 3D rendered hero images with controlled ray-traced lighting outperformed standard camera photography in 74% of tests, primarily driven by sharper label contrast and superior edge definition on mobile screens.
 
 One important detail is often missed: **an image experiment is not simply a click-through rate report.** (Read our analysis on [what is a good Amazon click-through rate](/blog/amazon-click-through-rate) to see how CTR connects to advertising efficiency).
 

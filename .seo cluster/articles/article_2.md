@@ -12,7 +12,7 @@ slug: "amazon-click-through-rate"
 
 Seeing thousands of Amazon ad impressions but only a handful of clicks is frustrating. Your product is getting visibility in search results, but shoppers are not taking the next step.
 
-That is what click-through rate (CTR) helps you understand.
+That is what [click-through rate (CTR)](/glossary/ctr) helps you understand.
 
 For Amazon Ads, CTR is simply the percentage of impressions that turn into clicks:
 
@@ -113,7 +113,7 @@ The overall average Amazon advertising click-through rate across all marketplace
 
 When sellers search for **amazon average click through rate**, they often expect one universal number. In practice, there is no single Amazon-wide average that applies across every ad type, placement, category, and targeting strategy. 
 
-Published benchmarks can provide context, but your most useful comparison is against campaigns with similar intent and against your own historical performance. Always evaluate CTR alongside CPC, conversion rate, sales, and ACOS/TACOS rather than judging performance from CTR in isolation.
+Published benchmarks can provide context, but your most useful comparison is against campaigns with similar intent and against your own historical performance. Always evaluate CTR alongside CPC, conversion rate, sales, and [ACOS](/glossary/acos)/[TACOS](/glossary/tacos) rather than judging performance from CTR in isolation.
 
 ---
 

@@ -13,7 +13,7 @@ cover_image: "/images/article image/3/amazon-main-image-guidelines.avif"
 
 *Last updated: September 1, 2026*
 
-Amazon's main image guidelines are designed to keep listings compliant. But compliance is only the starting point. Two listings can both meet Amazon's requirements while one consistently earns more clicks because its product is larger, clearer, more distinctive, and easier to recognize in the search results.
+Amazon's [MAIN image](/glossary/main-image) guidelines are designed to keep listings compliant. But compliance is only the starting point. Two listings can both meet Amazon's requirements while one consistently earns more clicks because its product is larger, clearer, more distinctive, and easier to recognize in the search results.
 
 A strong main image needs to do two things at the same time:
 
@@ -99,7 +99,7 @@ Compliance gets your product into the race. Visual strategy determines whether y
 
 ### Mistake 3: You're Trying to Make the MAIN Image Do the Job of the Gallery
 
-**Why It Hurts CTR:** Sellers often try to force their entire value proposition into Image #1 by adding graphic badges, certification logos, discount text, or arrows. Beyond risking immediate listing suppression by Amazon's automated image review systems, added graphics clutter the image, shrink the physical product size, and make text unreadable at thumbnail resolution.
+**Why It Hurts CTR:** Sellers often try to force their entire value proposition into Image #1 by adding graphic badges, certification logos, discount text, or arrows. Beyond risking immediate listing [search suppression](/glossary/search-suppression) by Amazon's automated image review systems, added graphics clutter the image, shrink the physical product size, and make text unreadable at thumbnail resolution.
 
 **How to Diagnose It:** Review your main image against this simple division of labor:
 * **MAIN Image:** Identify the product category + Attract the click
@@ -178,7 +178,7 @@ Diagnosing a low Amazon click-through rate requires separating ad targeting rele
 | :--- | :--- | :--- |
 | **High Relevant Impressions + Low CTR** | Creative Competitiveness | **MAIN Image framing & live SERP positioning** |
 | **Low Impressions + Low CTR** | Traffic & Targeting Problem | Search terms, match types, and PPC keyword bids |
-| **Good CTR + Weak Conversion (CVR)** | Detail-Page Friction | Secondary gallery, pricing, bullet points, A+ Content |
+| **Good CTR + Weak Conversion (CVR)** | Detail-Page Friction | Secondary gallery, pricing, bullet points, [A+ Content](/glossary/ebc) |
 | **Moderate CTR + High Return Rates** | Expectation Mismatch | **MAIN Image accuracy & non-included props** |
 | **Good CTR + Good Conversion** | Healthy Funnel | Scale ad budgets and expand keyword targeting |
 

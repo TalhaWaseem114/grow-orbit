@@ -68,6 +68,68 @@ export const GLOSSARY_TERMS = {
       { name: "Audit & Strategy", url: "/service/audit-strategy" },
       { name: "Product Sourcing & Hunting", url: "/service/product-hunting-sourcing" }
     ]
+  },
+  "ctr": {
+    term: "CTR",
+    fullName: "Click-Through Rate",
+    definition: "An essential Amazon advertising and organic performance metric measuring the percentage of shoppers who click on a product listing after viewing its impression in search results or browse nodes. Calculated as (Clicks ÷ Impressions) × 100.",
+    example: "If your Sponsored Products ad receives 10,000 impressions and generates 50 clicks, your CTR is 0.50%. Sponsored Products Top-of-Search placements typically achieve CTRs above 1.00%.",
+    relatedTools: [
+      { name: "Amazon CTR Benchmarks Guide", url: "/blog/amazon-click-through-rate" },
+      { name: "Main Image CTR Optimization", url: "/service/design/main-image-ctr" },
+      { name: "Listing Optimization", url: "/service/listing-optimization" }
+    ]
+  },
+  "main-image": {
+    term: "MAIN Image",
+    fullName: "Amazon Main Product Hero Image",
+    definition: "The primary product photograph or 3D render displayed in Amazon search results and the first slot of the detail page gallery. Amazon Seller Central strictly mandates a pure white background (RGB 255, 255, 255), at least 85% frame fill, and prohibits added text, badges, borders, or non-included accessories.",
+    example: "A kitchen brand optimizing their MAIN image from 85% basic fill to 92% mobile framing with ray-traced contact shadows increased mobile click share by 24% without changing PPC bids.",
+    relatedTools: [
+      { name: "Amazon Main Image Requirements", url: "/blog/amazon-main-image-requirements" },
+      { name: "7 Costly Main Image Mistakes", url: "/blog/amazon-main-image-guidelines" },
+      { name: "Listing Image Systems", url: "/service/design/listing-image-systems" }
+    ]
+  },
+  "mye": {
+    term: "MYE",
+    fullName: "Manage Your Experiments",
+    definition: "Amazon's official A/B testing tool in Seller Central for Brand Registered sellers. It allows brands to split-test two versions of a main image, title, bullet points, or A+ Content simultaneously across real marketplace shoppers to measure differences in sales, conversion rate, and revenue.",
+    example: "A brand uses MYE to run a 6-week split test comparing an isometric 3D render against a standard front-facing photo, identifying a winning asset that generated a 12% lift in units sold.",
+    relatedTools: [
+      { name: "High-Converting Product Images Guide", url: "/blog/high-converting-amazon-product-images" },
+      { name: "Audit & Strategy", url: "/service/audit-strategy" }
+    ]
+  },
+  "3d-rendering": {
+    term: "3D Product Rendering",
+    fullName: "CGI & 3D Product Visualization",
+    definition: "The computer-aided creation of photorealistic product imagery using CAD models, virtual studio lighting, and ray-traced material physics. For Amazon sellers, 3D rendering provides 100% control over lighting reflections, exact camera angles, and perfect catalog consistency across color and size variations without studio glare or lens distortion.",
+    example: "Supplement brands frequently render metallic foil labels and clear bottles in 3D software (such as Blender or Cinema 4D) to ensure crisp typography and eliminate camera reflections on pure white backgrounds.",
+    relatedTools: [
+      { name: "High-Converting Amazon Product Images", url: "/blog/high-converting-amazon-product-images" },
+      { name: "Design & Creative Hub", url: "/service/design-creative" }
+    ]
+  },
+  "search-suppression": {
+    term: "Search Suppression",
+    fullName: "Amazon Listing Search Suppression",
+    definition: "A status where Amazon automatically removes an ASIN from customer search results and browse categories due to policy non-compliance, most commonly caused by non-white main image backgrounds, promotional badges, low resolution below 1,000px, or missing vital product attributes.",
+    example: "When an automated Seller Central image bot detects an unapproved '100% Organic' badge on a hero image, the listing status changes to 'Suppressed' until a compliant white-background image is uploaded.",
+    relatedTools: [
+      { name: "Amazon Main Image Requirements", url: "/blog/amazon-main-image-requirements" },
+      { name: "Listing Optimization Service", url: "/service/listing-optimization" }
+    ]
+  },
+  "ebc": {
+    term: "A+ Content",
+    fullName: "Enhanced Brand Content (EBC)",
+    definition: "A premium visual branding feature in Amazon Seller Central that allows Brand Registered owners to replace standard plain-text descriptions with rich modular layouts, comparison matrices, high-resolution lifestyle imagery, and brand story modules.",
+    example: "Adding a comparison matrix and lifestyle benefit banners via A+ Content routinely increases listing conversion rates by an average of 5% to 10% by addressing pre-purchase buyer objections.",
+    relatedTools: [
+      { name: "Enhanced Brand Content (A+)", url: "/service/design/enhanced-brand-content" },
+      { name: "Brand Store Design", url: "/service/design/brand-store" }
+    ]
   }
 };
 

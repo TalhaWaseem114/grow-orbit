@@ -115,7 +115,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
 
             {/* Main Heading */}
             <h1
-              className="text-white mb-6 sm:mb-8 uppercase text-[40px] sm:text-6xl md:text-[68px] lg:text-[72px] font-black tracking-tighter leading-[0.95] sm:leading-[0.9]"
+              className="text-white mb-6 sm:mb-8 uppercase text-[42px] sm:text-[62px] md:text-[70px] lg:text-[74px] font-black tracking-tighter leading-[0.95] sm:leading-[0.9]"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               Turn Amazon<br />

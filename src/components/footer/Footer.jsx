@@ -485,26 +485,28 @@ export default function Footer() {
           {/* Divider on mobile */}
           <div className="border-t border-white/5 md:border-0" />
 
-          {/* Navigation Accordion */}
-          <FooterAccordion title="Navigation" actionLabel={null} actionHref={null}>
-            <nav className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:gap-x-8 gap-y-2 md:gap-y-2" aria-label="Footer Navigation">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  href={link.url}
-                  className="text-zinc-400 text-[12px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1 px-1 md:py-1.5 md:px-2 md:min-h-[28px] md:inline-flex md:items-center md:text-[11px]"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </nav>
-          </FooterAccordion>
+          {/* Navigation Accordion (Mobile Only) */}
+          <div className="md:hidden">
+            <FooterAccordion title="Navigation" actionLabel={null} actionHref={null}>
+              <nav className="grid grid-cols-2 sm:grid-cols-3 gap-y-2" aria-label="Footer Mobile Navigation">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.url}
+                    className="text-zinc-400 text-[12px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1 px-1"
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+              </nav>
+            </FooterAccordion>
+          </div>
         </div>
 
         {/* ══════════════════════════════════════
             GIANT WATERMARK TEXT (Desktop Only)
         ══════════════════════════════════════ */}
-        <div className="hidden md:flex w-full justify-center items-center py-12 md:py-16 border-t border-b border-white/5 my-8 select-none overflow-hidden relative z-10" aria-hidden="true">
+        <div className="hidden md:flex w-full justify-center items-center py-10 md:py-14 border-t border-b border-white/5 mt-8 mb-6 select-none overflow-hidden relative z-10" aria-hidden="true">
           <svg className="w-full h-auto max-h-[14rem] overflow-visible pointer-events-none" viewBox="0 0 1000 160" aria-hidden="true" role="img">
             <text
               x="50%"
@@ -518,6 +520,24 @@ export default function Footer() {
             </text>
           </svg>
         </div>
+
+        {/* ══════════════════════════════════════
+            DESKTOP NAVIGATION (Centered Under GROW ORBIT)
+        ══════════════════════════════════════ */}
+        <nav
+          className="hidden md:flex items-center justify-center flex-wrap gap-x-8 lg:gap-x-10 gap-y-3 pb-8 mb-4 relative z-10"
+          aria-label="Footer Desktop Navigation"
+        >
+          {navLinks.map((link) => (
+            <Link
+              key={link.name}
+              href={link.url}
+              className="text-zinc-400 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1.5 px-2 inline-flex items-center"
+            >
+              {link.name}
+            </Link>
+          ))}
+        </nav>
 
         {/* ══════════════════════════════════════
             BOTTOM BAR

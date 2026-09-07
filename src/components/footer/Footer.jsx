@@ -20,14 +20,14 @@ function FooterAccordion({ title, actionLabel, actionHref, children, defaultOpen
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="md:hidden w-full flex items-center justify-between py-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-lg"
+        className="md:hidden w-full flex items-center justify-between py-3.5 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-lg group transition-colors"
       >
-        <span className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono">
+        <span className={`uppercase tracking-[0.3em] text-[10px] font-black font-mono transition-colors ${open ? "text-orange-400" : "text-zinc-400 group-hover:text-zinc-200"}`}>
           {title}
         </span>
         <ChevronDown
-          size={14}
-          className={`text-zinc-500 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          size={15}
+          className={`transition-transform duration-300 ${open ? "rotate-180 text-orange-400" : "text-zinc-500 group-hover:text-zinc-300"}`}
         />
       </button>
 
@@ -469,12 +469,12 @@ export default function Footer() {
 
           {/* Services Accordion */}
           <FooterAccordion title="All Services" actionLabel="Browse All" actionHref="/service">
-            <nav className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-2.5 md:gap-y-3" aria-label="Services Quick Links">
+            <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-2 md:gap-y-3" aria-label="Services Quick Links">
               {serviceLinks.map((s, i) => (
                 <Link
                   key={i}
                   href={s.url}
-                  className="text-zinc-400 text-[12px] font-medium hover:text-white transition-colors no-underline leading-snug focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-0.5"
+                  className="text-zinc-400 text-[12px] font-medium hover:text-white transition-colors no-underline leading-snug focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1 px-1 inline-block"
                 >
                   {s.name}
                 </Link>
@@ -487,12 +487,12 @@ export default function Footer() {
 
           {/* Navigation Accordion */}
           <FooterAccordion title="Navigation" actionLabel={null} actionHref={null}>
-            <nav className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:gap-x-8 gap-y-2.5 md:gap-y-2" aria-label="Footer Navigation">
+            <nav className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:gap-x-8 gap-y-2 md:gap-y-2" aria-label="Footer Navigation">
               {navLinks.map((link) => (
                 <Link
                   key={link.name}
                   href={link.url}
-                  className="text-zinc-400 text-[12px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1 md:py-1.5 md:px-2 md:min-h-[28px] md:inline-flex md:items-center md:text-[11px]"
+                  className="text-zinc-400 text-[12px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1 px-1 md:py-1.5 md:px-2 md:min-h-[28px] md:inline-flex md:items-center md:text-[11px]"
                 >
                   {link.name}
                 </Link>
@@ -502,10 +502,10 @@ export default function Footer() {
         </div>
 
         {/* ══════════════════════════════════════
-            GIANT WATERMARK TEXT
+            GIANT WATERMARK TEXT (Desktop Only)
         ══════════════════════════════════════ */}
-        <div className="w-full flex justify-center items-center py-8 md:py-16 border-t border-b border-white/5 my-4 md:my-8 select-none overflow-hidden relative z-10" aria-hidden="true">
-          <svg className="w-full h-auto max-h-[8rem] md:max-h-[14rem] overflow-visible pointer-events-none" viewBox="0 0 1000 160" aria-hidden="true" role="img">
+        <div className="hidden md:flex w-full justify-center items-center py-12 md:py-16 border-t border-b border-white/5 my-8 select-none overflow-hidden relative z-10" aria-hidden="true">
+          <svg className="w-full h-auto max-h-[14rem] overflow-visible pointer-events-none" viewBox="0 0 1000 160" aria-hidden="true" role="img">
             <text
               x="50%"
               y="55%"
@@ -522,7 +522,7 @@ export default function Footer() {
         {/* ══════════════════════════════════════
             BOTTOM BAR
         ══════════════════════════════════════ */}
-        <div className="relative z-10 pt-4 flex flex-col gap-2.5">
+        <div className="relative z-10 pt-6 md:pt-4 border-t border-white/5 md:border-0 flex flex-col gap-2.5">
 
           {/* Logo + Copyright */}
           <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 pt-0">

@@ -10,7 +10,7 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-export default function MasonryGrid({ items }) {
+export default function MasonryGrid({ items, priorityFirst = false }) {
   const containerRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -59,14 +59,14 @@ export default function MasonryGrid({ items }) {
     <div ref={containerRef} className="w-full min-h-[400px]">
       {/* Desktop: 4 columns */}
       <div className="hidden md:flex items-start gap-5 w-full">
-        <div className="flex-1 flex flex-col gap-5">{c1d.map((item, i) => <PortfolioCard key={item.id} item={item} priority={i === 0} />)}</div>
-        <div className="flex-1 flex flex-col gap-5 mt-14">{c2d.map((item, i) => <PortfolioCard key={item.id} item={item} priority={i === 0} />)}</div>
-        <div className="flex-1 flex flex-col gap-5 -mt-4">{c3d.map((item, i) => <PortfolioCard key={item.id} item={item} priority={i === 0} />)}</div>
-        <div className="flex-1 flex flex-col gap-5 mt-8">{c4d.map((item, i) => <PortfolioCard key={item.id} item={item} priority={i === 0} />)}</div>
+        <div className="flex-1 flex flex-col gap-5">{c1d.map((item, i) => <PortfolioCard key={item.id} item={item} priority={priorityFirst && i === 0} />)}</div>
+        <div className="flex-1 flex flex-col gap-5 mt-14">{c2d.map((item, i) => <PortfolioCard key={item.id} item={item} priority={priorityFirst && i === 0} />)}</div>
+        <div className="flex-1 flex flex-col gap-5 -mt-4">{c3d.map((item, i) => <PortfolioCard key={item.id} item={item} priority={priorityFirst && i === 0} />)}</div>
+        <div className="flex-1 flex flex-col gap-5 mt-8">{c4d.map((item, i) => <PortfolioCard key={item.id} item={item} priority={priorityFirst && i === 0} />)}</div>
       </div>
       {/* Mobile/Tablet: Single or Double based on viewport */}
       <div className="md:hidden flex flex-col gap-6 w-full">
-        {items.map((item, i) => <PortfolioCard key={item.id} item={item} priority={i < 2} />)}
+        {items.map((item, i) => <PortfolioCard key={item.id} item={item} priority={priorityFirst && i === 0} />)}
       </div>
     </div>
   );

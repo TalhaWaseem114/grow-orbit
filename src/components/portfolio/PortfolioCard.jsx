@@ -42,6 +42,16 @@ export default function PortfolioCard({ item, priority = false }) {
     setActiveSrc(item.src);
   }, [item]);
 
+  // Ensure Cloudinary images have automatic format and quality capping
+  const getOptimizedSrc = (src) => {
+    if (typeof src === "string" && src.includes("cloudinary.com") && !src.includes("f_auto,q_auto")) {
+      return src.replace("/upload/", "/upload/f_auto,q_auto,w_600/");
+    }
+    return src;
+  };
+
+  const optimizedActiveSrc = getOptimizedSrc(activeSrc);
+
   return (
     <Link
       href={`/portfolio/${item.id}`}
@@ -52,10 +62,10 @@ export default function PortfolioCard({ item, priority = false }) {
       {/* Edge-to-Edge Image Container */}
       <div className="relative w-full aspect-square bg-[#fafafa] dark:bg-zinc-950 overflow-hidden">
         <Image
-          src={activeSrc}
+          src={optimizedActiveSrc}
           alt={item.outcome || "Portfolio Item"}
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
           priority={priority}
           className="object-cover group-hover:scale-[1.03] transition-transform duration-700 ease-out"
           placeholder={activeSrc?.includes('cloudinary.com/') ? "blur" : "empty"}

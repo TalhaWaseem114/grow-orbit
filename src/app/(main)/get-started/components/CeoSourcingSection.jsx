@@ -12,13 +12,16 @@ export default function CeoSourcingSection() {
   const carouselRef = useRef(null);
 
   const handleScroll = () => {
-    const container = carouselRef.current;
-    if (!container) return;
-    const maxScroll = container.scrollWidth - container.clientWidth;
-    const progress = maxScroll > 0 ? (container.scrollLeft / maxScroll) * 100 : 0;
-    setScrollProgress(progress);
-    setCanScrollLeft(container.scrollLeft > 2);
-    setCanScrollRight(container.scrollLeft < maxScroll - 2);
+    if (typeof window === "undefined") return;
+    window.requestAnimationFrame(() => {
+      const container = carouselRef.current;
+      if (!container) return;
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      const progress = maxScroll > 0 ? (container.scrollLeft / maxScroll) * 100 : 0;
+      setScrollProgress(progress);
+      setCanScrollLeft(container.scrollLeft > 2);
+      setCanScrollRight(container.scrollLeft < maxScroll - 2);
+    });
   };
 
   React.useEffect(() => {
@@ -99,12 +102,13 @@ export default function CeoSourcingSection() {
               }}
             >
               <Image
-                src={optimizeCloudinaryUrl("https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif", 800)}
+                src={optimizeCloudinaryUrl("https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif", 500)}
                 alt="Coach Ali Haider - CEO & Founder"
                 fill
-                sizes="(max-width: 1024px) 100vw, 400px"
+                sizes="(max-width: 640px) 90vw, 400px"
                 className="object-cover transition-all duration-750 group-hover:scale-105"
-                priority
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent" />
 
@@ -202,10 +206,10 @@ export default function CeoSourcingSection() {
                   }}
                 >
                   <Image
-                    src={optimizeCloudinaryUrl(pic.img, 500)}
+                    src={optimizeCloudinaryUrl(pic.img, 400)}
                     alt={pic.title}
                     fill
-                    sizes="(max-width: 640px) 220px, 300px"
+                    sizes="(max-width: 640px) 220px, 280px"
                     loading="lazy"
                     decoding="async"
                     className="object-cover transition-transform duration-750 ease-out group-hover:scale-105"

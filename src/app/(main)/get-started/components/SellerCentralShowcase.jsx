@@ -97,12 +97,12 @@ export default function SellerCentralShowcase({
                     width={390}
                     height={844}
                     className={`w-full h-auto ${isHighlighted ? "relative z-10" : ""}`}
-                    quality={isHighlighted ? 90 : 85}
-                    priority={isHighlighted}
+                    quality={75}
+                    loading="lazy"
                     sizes={
                       isHighlighted
-                        ? "(max-width: 640px) 36vw, 280px"
-                        : "(max-width: 640px) 28vw, 220px"
+                        ? "(max-width: 640px) 34vw, 240px"
+                        : "(max-width: 640px) 28vw, 180px"
                     }
                   />
                 </div>

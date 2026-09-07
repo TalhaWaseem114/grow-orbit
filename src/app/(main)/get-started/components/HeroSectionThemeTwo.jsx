@@ -76,7 +76,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
                 e.preventDefault();
                 document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-orange-500 bg-gradient-to-br from-[#FF4E00] to-[#F29F05] px-6 py-2.5 text-white font-bold text-[10px] uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] hover:shadow-[0_15px_50px_rgba(255,78,0,0.45)] active:scale-95 cursor-pointer outline-none"
+              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-orange-400/40 bg-gradient-to-r from-[#FF5C00] via-[#FF7A00] to-[#FFA726] px-6 py-2.5 text-white font-bold text-[10px] uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] hover:brightness-110 hover:shadow-[0_15px_50px_rgba(255,92,0,0.45)] active:scale-95 cursor-pointer outline-none"
             >
               Portfolio
             </button>

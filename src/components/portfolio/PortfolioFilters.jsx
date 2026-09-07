@@ -75,7 +75,7 @@ function FilterBar({ activeKey, onSelect }) {
             <span className={isActive ? "text-orange-400" : "text-zinc-500"}>{f.icon}</span>
             {f.label}
             {f.key === "Full Brand Package" && (
-               <span className="bg-orange-500 text-zinc-950 text-[7px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-full ml-1">
+               <span className="bg-orange-500 text-white text-[7px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-full ml-1">
                  Complete
                </span>
             )}
@@ -97,7 +97,7 @@ function MaterialFilterBar({ activeMaterial, onSelect }) {
                onClick={() => onSelect(mat)}
                className={`shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full text-[8.5px] sm:text-[9px] font-bold uppercase tracking-widest transition-all duration-300 border
                  ${isActive
-                   ? "bg-zinc-900 text-white border-zinc-900 shadow-[0_4px_10px_rgba(0,0,0,0.12)]"
+                   ? "bg-white text-orange-600 border-orange-100 shadow-[0_4px_10px_rgba(249,115,22,0.1)]"
                    : "bg-transparent text-zinc-600 border-transparent hover:border-zinc-200 hover:text-zinc-900 hover:bg-black/5"
                  }`}
              >
@@ -170,7 +170,7 @@ export default function PortfolioFilters({
               <SlidersHorizontal size={13} />
               Filters
               {(activeKey !== "all" || activeMaterial !== "All Materials" || activeNiche !== "All Categories") && (
-                <span className="flex items-center justify-center w-5 h-5 rounded-full bg-orange-500 text-zinc-950 text-[9px] font-black">
+                <span className="flex items-center justify-center w-5 h-5 rounded-full bg-orange-500 text-white text-[9px] font-black">
                   {(activeKey !== "all" ? 1 : 0) + (activeMaterial !== "All Materials" ? 1 : 0) + (activeNiche !== "All Categories" ? 1 : 0)}
                 </span>
               )}
@@ -179,7 +179,7 @@ export default function PortfolioFilters({
             {/* Active filter chips preview */}
             <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar flex-1">
               {activeKey !== "all" && (
-                <span className="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-800 text-[9px] font-bold uppercase tracking-wide">
+                <span className="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-100 text-orange-600 text-[9px] font-bold uppercase tracking-wide">
                   {activeFilter?.label || activeKey}
                   <button onClick={() => onCategorySelect("all")} aria-label="Remove category filter" className="ml-0.5 hover:text-orange-800 transition-colors"><X size={10} /></button>
                 </span>
@@ -302,8 +302,8 @@ export default function PortfolioFilters({
                         onClick={() => setTempMaterial(mat)}
                         className={`px-4 py-2.5 rounded-2xl text-[10px] font-bold uppercase tracking-wide transition-all duration-300 border
                           ${isSelected
-                            ? "bg-orange-500 text-zinc-950 font-black border-orange-500 shadow-md"
-                            : "bg-zinc-50 text-zinc-600 border-zinc-200 hover:border-zinc-400 hover:text-zinc-900"
+                            ? "bg-orange-500 text-white border-orange-500 shadow-md"
+                            : "bg-zinc-50 text-zinc-500 border-zinc-200 hover:border-orange-300 hover:text-orange-600"
                           }`}
                       >
                         {mat}

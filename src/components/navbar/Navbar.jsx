@@ -172,12 +172,12 @@ export default function Navbar() {
           pathname.includes("get-started") ? "lg:hidden" : ""
         } ${
           isSticky
-            ? `top-1.5 sm:top-2.5 w-[calc(100%-16px)] sm:w-[calc(100%-32px)] max-w-7xl rounded-full ${
+            ? `top-1.5 sm:top-2.5 lg:top-3 w-[calc(100%-16px)] sm:w-[calc(100%-32px)] lg:w-[calc(100%-48px)] xl:w-[calc(100%-64px)] 2xl:w-[calc(100%-80px)] max-w-[1720px] rounded-full ${
                 isAboutPage
                   ? "bg-zinc-950 border-white/10 shadow-[0_10px_35px_rgba(0,0,0,0.5)]"
                   : "bg-white border-zinc-200 shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
-              } py-2 sm:py-2.5`
-            : "top-0 w-full max-w-7xl rounded-full bg-transparent border-transparent py-3 sm:py-5 shadow-none"
+              } py-2`
+            : "top-0 w-full max-w-[1720px] rounded-full bg-transparent border-transparent py-3 sm:py-5 lg:py-4 shadow-none"
         }`}
       >
         {/* ════════════════════════════════════════
@@ -238,11 +238,11 @@ export default function Navbar() {
         {/* ════════════════════════════════════════
             DESKTOP NAVBAR (hidden lg:flex)
         ════════════════════════════════════════ */}
-        <div className="hidden lg:flex w-full px-6 lg:px-8 xl:px-8 items-center justify-between">
+        <div className="hidden lg:flex w-full px-[10px] items-center justify-between gap-4 xl:gap-6">
           {/* Logo */}
-          <div className="flex-1 flex justify-start">
-            <Link href="/" prefetch={false} className="flex items-center gap-2.5 no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-xl">
-              <div className="relative flex items-center justify-center w-10 h-10">
+          <div className="shrink-0 flex items-center ml-[10px]">
+            <Link href="/" prefetch={false} className="flex items-center gap-2.5 xl:gap-3 no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-xl">
+              <div className="relative flex items-center justify-center w-9 h-9 xl:w-10 xl:h-10">
                 <Image
                   src="/logo.png"
                   alt="Grow Orbit Logo"
@@ -251,7 +251,7 @@ export default function Navbar() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-xl font-black tracking-tight uppercase flex gap-1.5">
+              <span className="text-lg xl:text-xl font-black tracking-tight uppercase flex gap-1.5 whitespace-nowrap">
                 <span className={`transition-colors duration-300 ${isDarkTextNeeded ? "text-[#2B3036]" : "text-white"}`}>GROW</span>
                 <span className={`transition-colors duration-300 ${isDarkTextNeeded ? "text-orange-600" : "text-[#F1A52B]"}`}>ORBIT</span>
               </span>
@@ -259,7 +259,7 @@ export default function Navbar() {
           </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex lg:items-center gap-3.5 xl:gap-5 justify-center" aria-label="Desktop Navigation">
+          <nav className="hidden lg:flex items-center gap-2 lg:gap-2.5 xl:gap-3.5 2xl:gap-4 justify-center flex-1 min-w-0" aria-label="Desktop Navigation">
             {navItems.map((item) => {
               let path = `/${item.toLowerCase().replace(/\s+/g, "-")}`;
               if (item === "Home") path = "/";
@@ -271,12 +271,12 @@ export default function Navbar() {
 
               if (isService) {
                 return (
-                  <div key={item}>
+                  <div key={item} className="shrink-0">
                     <button
                       onClick={() => setMegaMenuOpen(!megaMenuOpen)}
                       aria-expanded={megaMenuOpen}
                       aria-haspopup="true"
-                      className={`nav-link flex items-center gap-1 text-[11px] font-bold uppercase tracking-wider transition-colors cursor-pointer outline-none bg-transparent border-none p-0 focus-visible:text-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm
+                      className={`nav-link whitespace-nowrap flex items-center gap-1 text-[11px] xl:text-[11.5px] 2xl:text-[12px] font-bold uppercase tracking-wider transition-colors cursor-pointer outline-none bg-transparent border-none p-0 focus-visible:text-orange-500 focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm
                         ${isActive || megaMenuOpen ? "text-orange-500 nav-link-active" : textColorClass}
                         ${!(isActive || megaMenuOpen) && hoverColorClass}`}
                     >
@@ -295,7 +295,7 @@ export default function Navbar() {
                   key={item}
                   href={path}
                   prefetch={false}
-                  className={`nav-link text-[11px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm
+                  className={`nav-link whitespace-nowrap shrink-0 text-[11px] xl:text-[11.5px] 2xl:text-[12px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm
                     ${isActive ? "text-orange-500 nav-link-active" : textColorClass}
                     ${!isActive && hoverColorClass}`}
                 >
@@ -306,44 +306,33 @@ export default function Navbar() {
           </nav>
 
           {/* Auth section — desktop */}
-          <div className="hidden lg:flex flex-1 items-center justify-end gap-3 xl:gap-4">
+          <div className="hidden lg:flex shrink-0 items-center justify-end gap-3 xl:gap-4 2xl:gap-5">
             {!user ? (
               <>
-                <a href="/login/" className={`nav-link text-[11px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
+                <a href="/login/" className={`nav-link whitespace-nowrap shrink-0 text-[11px] xl:text-[11.5px] 2xl:text-[12px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
                   Sign In
                 </a>
-                <a href="/register/" className={`nav-link text-[11px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
+                <a href="/register/" className={`nav-link whitespace-nowrap shrink-0 text-[11px] xl:text-[11.5px] 2xl:text-[12px] font-bold uppercase tracking-wider transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500/50 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm ${textColorClass} ${hoverColorClass}`}>
                   Register
                 </a>
                 <Link
                   href="/get-started"
                   prefetch={false}
-                  className={`relative overflow-hidden px-5 py-2.5 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
+                  className={`whitespace-nowrap shrink-0 relative overflow-hidden px-5 xl:px-6 py-2.5 rounded-full text-[11px] xl:text-[11.5px] font-bold uppercase tracking-wider transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
                     ${isDarkTextNeeded
-                      ? "bg-black text-white hover:bg-orange-600 shadow-lg hover:shadow-orange-500/25"
-                      : "bg-white text-black hover:bg-orange-500 hover:text-white shadow-lg hover:shadow-orange-500/25"
+                      ? "bg-black text-white hover:bg-orange-600 shadow-md hover:shadow-orange-500/25"
+                      : "bg-white text-black hover:bg-orange-500 hover:text-white shadow-md hover:shadow-orange-500/25"
                     }`}
                 >
                   Get Started
                 </Link>
               </>
             ) : (
-              <div className="flex items-center gap-3 lg:gap-4">
-                <Link
-                  href="/get-started"
-                  prefetch={false}
-                  className={`relative overflow-hidden px-4 py-2 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
-                    ${isDarkTextNeeded
-                      ? "bg-black text-white hover:bg-orange-600 shadow-lg hover:shadow-orange-500/25"
-                      : "bg-white text-black hover:bg-orange-500 hover:text-white shadow-lg hover:shadow-orange-500/25"
-                    }`}
-                >
-                  Get Started
-                </Link>
-                <div className="relative" ref={userDropdownRef}>
+              <div className="flex items-center gap-3 xl:gap-4 shrink-0">
+                <div className="relative shrink-0" ref={userDropdownRef}>
                   <button
                     onClick={() => setUserDropdownOpen(prev => !prev)}
-                    className={`flex items-center gap-2 cursor-pointer bg-transparent border-none outline-none transition-opacity hover:opacity-80 ${textColorClass}`}
+                    className={`whitespace-nowrap shrink-0 flex items-center gap-2 xl:gap-2.5 cursor-pointer bg-transparent border-none outline-none transition-opacity hover:opacity-80 ${textColorClass}`}
                   >
                     <div className="h-8.5 w-8.5 rounded-full overflow-hidden border border-white/20 relative shrink-0">
                       {user.photoURL ? (
@@ -354,7 +343,7 @@ export default function Navbar() {
                         </div>
                       )}
                     </div>
-                    <div className="hidden xl:block text-left">
+                    <div className="hidden lg:block text-left">
                       <p className={`text-xs font-semibold leading-none ${textColorClass}`}>
                         {user.displayName || "User"}
                       </p>
@@ -362,7 +351,7 @@ export default function Navbar() {
                         {role === "admin" ? "Admin" : "Online"}
                       </p>
                     </div>
-                    <ChevronDown size={14} className={`hidden xl:block transition-transform duration-200 ${userDropdownOpen ? "rotate-180" : ""} ${isDarkTextNeeded ? "text-gray-400" : "text-gray-400"}`} />
+                    <ChevronDown size={14} className={`hidden lg:block transition-transform duration-200 ${userDropdownOpen ? "rotate-180" : ""} ${isDarkTextNeeded ? "text-gray-400" : "text-gray-400"}`} />
                   </button>
 
                   {/* User Dropdown */}
@@ -393,6 +382,18 @@ export default function Navbar() {
                     </div>
                   )}
                 </div>
+
+                <Link
+                  href="/get-started"
+                  prefetch={false}
+                  className={`whitespace-nowrap shrink-0 relative overflow-hidden px-4.5 xl:px-5 py-2.5 rounded-full text-[10.5px] xl:text-[11px] font-bold uppercase tracking-wider transition-all no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none
+                    ${isDarkTextNeeded
+                      ? "bg-black text-white hover:bg-orange-600 shadow-md hover:shadow-orange-500/25"
+                      : "bg-white text-black hover:bg-orange-500 hover:text-white shadow-md hover:shadow-orange-500/25"
+                    }`}
+                >
+                  Get Started
+                </Link>
               </div>
             )}
           </div>

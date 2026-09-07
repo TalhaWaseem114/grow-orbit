@@ -122,7 +122,7 @@ export default function Hero({ mode }) {
               <Link
                 href="/get-started"
                 prefetch={false}
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-br from-[#FF4E00] to-[#F29F05] px-8 sm:px-12 py-4 sm:py-5 text-white font-black text-[10px] sm:text-[11px] uppercase tracking-[0.15em] sm:tracking-[0.25em] transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_15px_50px_rgba(255,78,0,0.45)] active:scale-95 whitespace-nowrap no-underline focus-visible:ring-4 focus-visible:ring-orange-500/50 outline-none"
+                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-[#FF4E00] via-[#FF7A00] to-[#F29F05] px-8 sm:px-12 py-4 sm:py-5 text-white font-black text-[10px] sm:text-[11px] uppercase tracking-[0.15em] sm:tracking-[0.25em] transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_15px_50px_rgba(255,78,0,0.45)] active:scale-95 whitespace-nowrap no-underline focus-visible:ring-4 focus-visible:ring-orange-500/50 outline-none"
               >
                 {/* Skewed Shimmer Beam */}
                 <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-15deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-15deg)_translateX(100%)]">
@@ -324,24 +324,51 @@ export default function Hero({ mode }) {
       {/* COMPACT SERVICE MATRIX */}
       <div className="grid grid-cols-2 gap-2 mb-6">
         {[
-          { name: "SEO", status: "Ranking High", icon: <Search size={10} />, progress: "90%", gradient: "from-emerald-500 to-emerald-400", colSpan: 1 },
-          { name: "PPC", status: "8.4x ROAS", icon: <Zap size={10} />, progress: "75%", gradient: "from-orange-500 to-orange-400", colSpan: 1 },
-          { name: "Inventory Log", status: "In-Stock", icon: <Box size={10} />, progress: "100%", gradient: "from-blue-500 to-blue-400", colSpan: 2 }
+          { 
+            name: "SEO", 
+            status: "Ranking High", 
+            icon: <Search size={10} />, 
+            progress: "90%", 
+            barGradient: "bg-gradient-to-r from-emerald-500 to-teal-400 shadow-[0_0_8px_rgba(16,185,129,0.35)]",
+            badgeColor: "text-emerald-400 border-emerald-500/25 bg-emerald-500/10",
+            iconColor: "text-emerald-400 bg-emerald-500/10",
+            colSpan: 1 
+          },
+          { 
+            name: "PPC", 
+            status: "8.4x ROAS", 
+            icon: <Zap size={10} />, 
+            progress: "75%", 
+            barGradient: "bg-gradient-to-r from-[#FF5C00] via-orange-500 to-amber-400 shadow-[0_0_8px_rgba(255,92,0,0.35)]",
+            badgeColor: "text-orange-400 border-orange-500/25 bg-orange-500/10",
+            iconColor: "text-orange-400 bg-orange-500/10",
+            colSpan: 1 
+          },
+          { 
+            name: "Inventory Log", 
+            status: "In-Stock", 
+            icon: <Box size={10} />, 
+            progress: "100%", 
+            barGradient: "bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-300 shadow-[0_0_8px_rgba(59,130,246,0.35)]",
+            badgeColor: "text-cyan-400 border-cyan-500/25 bg-cyan-500/10",
+            iconColor: "text-cyan-400 bg-cyan-500/10",
+            colSpan: 2 
+          }
         ].map((service, i) => (
           <div key={i} className={`flex flex-col px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors duration-300 ${service.colSpan === 2 ? 'col-span-2' : 'col-span-1'}`}>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded-lg bg-white/5 flex items-center justify-center text-zinc-400 shrink-0">
+                <div className={`w-5 h-5 rounded-lg flex items-center justify-center shrink-0 ${service.iconColor}`}>
                   {service.icon}
                 </div>
                 <span className="text-[9px] font-bold text-zinc-300 uppercase tracking-wide truncate">{service.name}</span>
               </div>
-              <div className="text-[7px] font-mono font-bold text-zinc-400 bg-black/40 px-1.5 py-0.5 rounded border border-white/5 shrink-0 ml-1">
+              <div className={`text-[7px] font-mono font-bold px-1.5 py-0.5 rounded border shrink-0 ml-1 ${service.badgeColor}`}>
                 {service.status}
               </div>
             </div>
-            <div className="w-full h-[2px] bg-zinc-900/80 rounded-full overflow-hidden relative mt-auto">
-              <div className="absolute top-0 left-0 h-full bg-gradient-to-r from-orange-600 to-orange-400 progress-bar-fill" style={{ width: service.progress }} data-width={service.progress} />
+            <div className="w-full h-[2.5px] bg-zinc-900/80 rounded-full overflow-hidden relative mt-auto">
+              <div className={`absolute top-0 left-0 h-full rounded-full ${service.barGradient} progress-bar-fill`} style={{ width: service.progress }} data-width={service.progress} />
             </div>
           </div>
         ))}

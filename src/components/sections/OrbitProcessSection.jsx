@@ -48,6 +48,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
         <div className="relative">
           {/* Large Background Watermark */}
           <div
+            aria-hidden="true"
             className="absolute
               top-[30px] right-0 rotate-90 origin-center translate-x-[40%]
               sm:top-[20px] sm:left-0 sm:right-auto sm:rotate-0 sm:origin-center sm:-translate-y-[70%] sm:translate-x-0
@@ -85,8 +86,8 @@ export default function OrbitProcessSection({ scrollToForm }) {
           <div className="h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-zinc-900" />
 
           <div className="flex items-center justify-between px-4 sm:px-10 py-3 sm:py-4 border-b border-zinc-50 gap-2">
-            <div className="flex items-center gap-1.5 font-mono text-[7px] sm:text-[9px] font-black tracking-[0.2em] sm:tracking-[0.3em] uppercase text-zinc-400 shrink-1 truncate">
-              <span className="text-orange-500 text-[10px] sm:text-[13px] leading-none">{">_"}</span>
+            <div className="flex items-center gap-1.5 font-mono text-[7px] sm:text-[9px] font-black tracking-[0.2em] sm:tracking-[0.3em] uppercase text-zinc-600 shrink-1 truncate">
+              <span className="text-[#c2410c] text-[10px] sm:text-[13px] leading-none">{">_"}</span>
               <span className="truncate">BRAND_LIFECYCLE</span>
             </div>
             <div className="flex items-center gap-1.5 bg-emerald-50 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-emerald-100 shrink-0">
@@ -246,7 +247,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
               <div className="mt-14 flex justify-center">
                 <div className="flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-full px-5 py-2.5">
                   <RefreshCw size={11} strokeWidth={2.5} className="text-orange-500 shrink-0" />
-                  <span className="text-[9px] font-black uppercase tracking-[0.1em] text-orange-600 whitespace-nowrap">Continuous Brand Evolution</span>
+                  <span className="text-[9px] font-black uppercase tracking-[0.1em] text-[#c2410c] whitespace-nowrap">Continuous Brand Evolution</span>
                 </div>
               </div>
             </div>
@@ -263,7 +264,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
           </div>
           <button
             onClick={scrollToForm}
-            className="group w-full sm:w-auto flex items-center justify-center gap-2.5 bg-orange-500 hover:bg-white hover:text-zinc-900 text-white font-black text-[10px] uppercase tracking-[0.2em] px-6 py-3.5 rounded-xl transition-all duration-300 no-underline"
+            className="group w-full sm:w-auto flex items-center justify-center gap-2.5 bg-[#c2410c] hover:bg-orange-600 text-white font-black text-[10px] uppercase tracking-[0.2em] px-6 py-3.5 rounded-xl transition-all duration-300 no-underline"
           >
             Start The Process
             <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />

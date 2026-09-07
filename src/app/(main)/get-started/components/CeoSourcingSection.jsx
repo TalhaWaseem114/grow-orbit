@@ -144,6 +144,7 @@ export default function CeoSourcingSection() {
               <div className="flex gap-3">
                 <a
                   href="mailto:support@groworbitofficial.com"
+                  aria-label="Email support"
                   className="w-10 h-10 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 flex items-center justify-center text-zinc-300 hover:text-white transition-all duration-300"
                 >
                   <Mail size={16} />
@@ -174,6 +175,7 @@ export default function CeoSourcingSection() {
               onClick={() => {
                 carouselRef.current?.scrollBy({ left: -320, behavior: "smooth" });
               }}
+              aria-label="Previous image"
               className={`absolute left-2 sm:-left-6 lg:-left-8 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-zinc-950/80 hover:bg-orange-500 border border-white/10 flex items-center justify-center text-white/90 hover:text-white transition-all duration-300 z-35 shadow-lg ${
                 canScrollLeft ? "opacity-100 pointer-events-auto scale-100" : "opacity-0 pointer-events-none scale-90"
               }`}
@@ -230,6 +232,7 @@ export default function CeoSourcingSection() {
               onClick={() => {
                 carouselRef.current?.scrollBy({ left: 320, behavior: "smooth" });
               }}
+              aria-label="Next image"
               className={`absolute right-8 sm:right-16 lg:right-20 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-zinc-950/80 hover:bg-orange-500 border border-white/10 flex items-center justify-center text-white/90 hover:text-white transition-all duration-300 z-35 shadow-lg ${
                 canScrollRight ? "opacity-100 pointer-events-auto scale-100" : "opacity-0 pointer-events-none scale-90"
               }`}
@@ -247,6 +250,7 @@ export default function CeoSourcingSection() {
                 onClick={() => {
                   carouselRef.current?.scrollBy({ left: -320, behavior: "smooth" });
                 }}
+                aria-label="Previous image"
                 className="w-8 h-8 rounded-full border border-zinc-800 hover:border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white transition-all duration-200 bg-zinc-900"
               >
                 <ArrowLeft size={13} />
@@ -256,6 +260,7 @@ export default function CeoSourcingSection() {
                 onClick={() => {
                   carouselRef.current?.scrollBy({ left: 320, behavior: "smooth" });
                 }}
+                aria-label="Next image"
                 className="w-8 h-8 rounded-full border border-zinc-800 hover:border-zinc-700 flex items-center justify-center text-zinc-400 hover:text-white transition-all duration-200 bg-zinc-900"
               >
                 <ArrowRight size={13} />
@@ -287,6 +292,7 @@ export default function CeoSourcingSection() {
                 <button
                   className="absolute top-4 right-4 text-white hover:scale-105 bg-black/60 hover:bg-zinc-900 border border-white/15 w-8 h-8 rounded-full flex items-center justify-center text-lg font-light focus:outline-none transition-all z-40"
                   onClick={() => setActiveImage(null)}
+                  aria-label="Close modal"
                 >
                   &times;
                 </button>

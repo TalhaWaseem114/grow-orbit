@@ -47,6 +47,7 @@ export default function OrbitTestimonialsSection() {
         <div className="relative">
           {/* Large Background Watermark */}
           <div
+            aria-hidden="true"
             className="absolute
               top-[30px] right-0 rotate-90 origin-center translate-x-[40%]
               sm:top-[20px] sm:left-0 sm:right-auto sm:rotate-0 sm:origin-center sm:-translate-y-[70%] sm:translate-x-0
@@ -72,7 +73,7 @@ export default function OrbitTestimonialsSection() {
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             BRANDS THAT SCALED <span
-              className="italic font-light text-zinc-400 lowercase tracking-normal"
+              className="italic font-normal text-zinc-600 lowercase tracking-normal"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               with us.

@@ -69,10 +69,10 @@ function FilterBar({ activeKey, onSelect }) {
             className={`shrink-0 flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.15em] sm:tracking-[0.18em] transition-all duration-300 whitespace-nowrap border
               ${isActive
                 ? "bg-zinc-900 text-white border-zinc-900 shadow-[0_20px_40px_-10px_rgba(0,0,0,0.12)]"
-                : "bg-white text-zinc-400 border-zinc-200 hover:text-zinc-900 hover:border-zinc-400"
+                : "bg-white text-zinc-600 border-zinc-200 hover:text-zinc-900 hover:border-zinc-400"
               }`}
           >
-            <span className={isActive ? "text-orange-400" : "text-zinc-400"}>{f.icon}</span>
+            <span className={isActive ? "text-orange-400" : "text-zinc-500"}>{f.icon}</span>
             {f.label}
             {f.key === "Full Brand Package" && (
                <span className="bg-orange-500 text-white text-[7px] font-black uppercase tracking-wide px-1.5 py-0.5 rounded-full ml-1">
@@ -97,8 +97,8 @@ function MaterialFilterBar({ activeMaterial, onSelect }) {
                onClick={() => onSelect(mat)}
                className={`shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full text-[8.5px] sm:text-[9px] font-bold uppercase tracking-widest transition-all duration-300 border
                  ${isActive
-                   ? "bg-white text-orange-500 border-orange-100 shadow-[0_4px_10px_rgba(249,115,22,0.1)]"
-                   : "bg-transparent text-zinc-400 border-transparent hover:border-zinc-200 hover:text-zinc-600 hover:bg-black/5"
+                   ? "bg-white text-[#c2410c] border-orange-100 shadow-[0_4px_10px_rgba(249,115,22,0.1)]"
+                   : "bg-transparent text-zinc-600 border-transparent hover:border-zinc-200 hover:text-zinc-900 hover:bg-black/5"
                  }`}
              >
                {mat}
@@ -181,19 +181,19 @@ export default function PortfolioFilters({
               {activeKey !== "all" && (
                 <span className="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-100 text-orange-600 text-[9px] font-bold uppercase tracking-wide">
                   {activeFilter?.label || activeKey}
-                  <button onClick={() => onCategorySelect("all")} className="ml-0.5 hover:text-orange-800 transition-colors"><X size={10} /></button>
+                  <button onClick={() => onCategorySelect("all")} aria-label="Remove category filter" className="ml-0.5 hover:text-orange-800 transition-colors"><X size={10} /></button>
                 </span>
               )}
               {activeMaterial !== "All Materials" && (
                 <span className="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-700 text-[9px] font-bold uppercase tracking-wide">
                   {activeMaterial}
-                  <button onClick={() => onMaterialSelect("All Materials")} className="ml-0.5 hover:text-zinc-900 transition-colors"><X size={10} /></button>
+                  <button onClick={() => onMaterialSelect("All Materials")} aria-label="Remove material filter" className="ml-0.5 hover:text-zinc-900 transition-colors"><X size={10} /></button>
                 </span>
               )}
               {activeNiche !== "All Categories" && (
                 <span className="shrink-0 flex items-center gap-1 px-3 py-1.5 rounded-full bg-zinc-100 border border-zinc-200 text-zinc-700 text-[9px] font-bold uppercase tracking-wide">
                   {activeNiche}
-                  <button onClick={() => onNicheSelect("All Categories")} className="ml-0.5 hover:text-zinc-900 transition-colors"><X size={10} /></button>
+                  <button onClick={() => onNicheSelect("All Categories")} aria-label="Remove niche filter" className="ml-0.5 hover:text-zinc-900 transition-colors"><X size={10} /></button>
                 </span>
               )}
             </div>
@@ -253,6 +253,7 @@ export default function PortfolioFilters({
               </div>
               <button
                 onClick={() => setIsMobileDrawerOpen(false)}
+                aria-label="Close filters"
                 className="w-8 h-8 rounded-full bg-zinc-100 hover:bg-zinc-200 flex items-center justify-center transition-colors"
               >
                 <X size={14} className="text-zinc-600" />

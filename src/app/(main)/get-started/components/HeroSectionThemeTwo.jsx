@@ -235,12 +235,12 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
               <p className="text-orange-500 font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.2em] mb-1.5">
                 Free Strategy Meeting
               </p>
-              <h3
+              <h2
                 className="text-lg sm:text-xl font-black tracking-tight text-white uppercase leading-snug"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
                 Tell us about your brand. <span className="text-orange-500">We'll show you exactly how to scale it.</span>
-              </h3>
+              </h2>
             </div>
 
             <LeadForm theme="dark" compact={true} />

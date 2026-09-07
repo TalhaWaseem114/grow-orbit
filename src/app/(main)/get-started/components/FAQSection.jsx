@@ -48,12 +48,12 @@ export default function FAQSection({ scrollToForm }) {
 
         {/* Header — compact, centered */}
         <div className="text-center mb-12">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-orange-500/80 mb-3">06 / Quick Answers</p>
+          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#c2410c] font-bold mb-3">06 / Quick Answers</p>
           <h2
             className="text-4xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            Frequently Asked <span className="italic font-light text-zinc-400 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Frequently Asked <span className="italic font-normal text-zinc-600 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
               questions.
             </span>
           </h2>
@@ -71,12 +71,15 @@ export default function FAQSection({ scrollToForm }) {
               }`}
             >
               <button
+                id={`faq-question-${i}`}
+                aria-expanded={openIndex === i}
+                aria-controls={`faq-answer-${i}`}
                 className="w-full flex items-center justify-between px-5 sm:px-7 py-6 text-left group"
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
               >
                 <div className="flex items-center gap-4">
-                  <span className={`text-[10px] font-mono transition-colors shrink-0 ${
-                    openIndex === i ? "text-orange-500" : "text-zinc-300"
+                  <span className={`text-[10px] font-mono font-bold transition-colors shrink-0 ${
+                    openIndex === i ? "text-[#c2410c]" : "text-zinc-600"
                   }`}>
                     0{i + 1}
                   </span>
@@ -87,13 +90,16 @@ export default function FAQSection({ scrollToForm }) {
                 <div className={`shrink-0 w-8 h-8 ml-4 rounded-full flex items-center justify-center transition-all duration-500 ${
                   openIndex === i
                     ? "bg-orange-500 text-white rotate-180"
-                    : "bg-zinc-100 text-zinc-400 group-hover:bg-zinc-200"
+                    : "bg-zinc-100 text-zinc-600 group-hover:bg-zinc-200"
                 }`}>
                   {openIndex === i ? <Minus size={15} /> : <Plus size={15} />}
                 </div>
               </button>
 
               <div
+                id={`faq-answer-${i}`}
+                role="region"
+                aria-labelledby={`faq-question-${i}`}
                 className="transition-all duration-500 ease-in-out overflow-hidden"
                 style={{
                   maxHeight: openIndex === i ? "200px" : "0",
@@ -103,7 +109,7 @@ export default function FAQSection({ scrollToForm }) {
                 <div className="px-5 sm:px-5 pb-6 pt-0 ml-0 sm:ml-10">
                   <div className="relative pl-4 sm:pl-5">
                     <div className="absolute left-0 top-1 bottom-1 w-[2px] bg-gradient-to-b from-orange-500 via-orange-400 to-transparent rounded-full" />
-                    <div className="text-[13px] sm:text-[14px] text-zinc-500 leading-relaxed font-light">
+                    <div className="text-[13px] sm:text-[14px] text-zinc-600 leading-relaxed font-normal">
                       {faq.a}
                     </div>
                   </div>

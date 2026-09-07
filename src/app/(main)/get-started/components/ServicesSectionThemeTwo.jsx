@@ -63,6 +63,7 @@ export default function ServicesSectionThemeTwo() {
       <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
         {/* Large Background Watermark */}
         <div
+          aria-hidden="true"
           className="absolute top-[30px] right-0 rotate-90 origin-center translate-x-[40%] sm:top-[-120px] sm:left-[30px] sm:translate-x-0 sm:rotate-0 sm:origin-center sm:translate-y-0 font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.09] pointer-events-none select-none whitespace-nowrap z-0"
           style={{
             fontFamily: "Arial, sans-serif",
@@ -76,7 +77,7 @@ export default function ServicesSectionThemeTwo() {
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 sm:mb-20">
           <div className="max-w-xl">
             {/* Eyebrow */}
-            <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-orange-500/80 mb-3">02 / What We Do</p>
+            <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-[#c2410c] font-bold mb-3">02 / What We Do</p>
 
             {/* Main Heading */}
             <h2
@@ -103,7 +104,7 @@ export default function ServicesSectionThemeTwo() {
 
             <Link
               href="/service"
-              className="group flex items-center gap-2 text-orange-500 font-bold text-[11px] uppercase tracking-[0.2em] hover:text-orange-600 transition-colors no-underline whitespace-nowrap"
+              className="group flex items-center gap-2 text-[#c2410c] font-bold text-[11px] uppercase tracking-[0.2em] hover:text-orange-600 transition-colors no-underline whitespace-nowrap"
             >
               See All 18 Services
               <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
@@ -123,7 +124,7 @@ export default function ServicesSectionThemeTwo() {
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-500 shadow-[0_0_15px_rgba(249,115,22,0.1)] group-hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]">
                   <service.icon size={15} className="text-orange-500 group-hover:text-white transition-colors duration-500" />
                 </div>
-                <span className="text-orange-500/40 text-[9px] sm:text-[11px] font-bold tracking-wider">{service.number}</span>
+                <span className="text-[#c2410c] text-[9px] sm:text-[11px] font-bold tracking-wider">{service.number}</span>
               </div>
 
               {/* Title */}
@@ -142,7 +143,7 @@ export default function ServicesSectionThemeTwo() {
               {/* Stat */}
               <div className="mt-auto pt-3 border-t border-zinc-100">
                 <p
-                  className="text-orange-500 text-lg sm:text-xl font-black tracking-tight leading-none mb-0.5"
+                  className="text-[#c2410c] text-lg sm:text-xl font-black tracking-tight leading-none mb-0.5"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   {service.stat}

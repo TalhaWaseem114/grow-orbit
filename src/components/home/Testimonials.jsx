@@ -29,7 +29,7 @@ export default function TestimonialSection() {
           <h2 className="text-[48px] font-montserrat font-black leading-[1] tracking-tighter text-zinc-950 uppercase">
             Client{" "}
             <span
-              className="italic font-light text-zinc-600 normal-case"
+              className="italic font-light text-zinc-500 normal-case"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               Feedback

@@ -71,7 +71,7 @@ export default function FAQSection({ scrollToForm }) {
             >
               Frequently Asked<br />
               <span
-                className="italic font-light text-zinc-600 lowercase tracking-normal"
+                className="italic font-light text-zinc-500 lowercase tracking-normal"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 questions.

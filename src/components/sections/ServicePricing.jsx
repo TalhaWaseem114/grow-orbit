@@ -266,7 +266,7 @@ export default function ServicePricing({
             Transparent pricing<br />
             <span
               style={{ fontFamily: "'Playfair Display', serif" }}
-              className="italic font-light text-zinc-600 lowercase tracking-normal"
+              className="italic font-light text-zinc-500 lowercase tracking-normal"
             >
               with clear deliverables.
             </span>

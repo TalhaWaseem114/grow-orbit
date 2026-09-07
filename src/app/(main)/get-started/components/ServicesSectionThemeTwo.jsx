@@ -171,7 +171,7 @@ export default function ServicesSectionThemeTwo() {
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               Every Lever That <span
-                className="text-zinc-600 italic font-normal lowercase tracking-normal text-[32px] sm:text-[38px] md:text-[46px]"
+                className="text-zinc-500 italic font-normal lowercase tracking-normal text-[32px] sm:text-[38px] md:text-[46px]"
                 style={{ fontFamily: "'Playfair Display', serif" }}
               >
                 moves revenue.

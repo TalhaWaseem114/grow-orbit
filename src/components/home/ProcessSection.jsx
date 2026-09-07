@@ -50,7 +50,7 @@ export default function ProcessSection() {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-32 gap-10">
           <div>
             <h2 className="text-5xl md:text-[72px] font-montserrat font-black leading-none tracking-tighter text-zinc-950 uppercase">
-              FROM IDEA TO <span className="italic font-light text-zinc-600 normal-case" style={playfair}>revenue.</span>
+              FROM IDEA TO <span className="italic font-light text-zinc-500 normal-case" style={playfair}>revenue.</span>
             </h2>
           </div>
           <div className="max-w-sm mb-2">

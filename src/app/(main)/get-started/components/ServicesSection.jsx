@@ -37,7 +37,7 @@ export default function ServicesSection() {
               className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
-              Every lever that <span className="italic font-light text-zinc-600 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>moves revenue.</span>
+              Every lever that <span className="italic font-light text-zinc-500 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>moves revenue.</span>
             </h2>
             <p className="text-zinc-500 text-sm font-light leading-relaxed mt-4 max-w-lg">
               Amazon growth doesn’t come from ads alone, it comes from fixing every layer that drives conversion.

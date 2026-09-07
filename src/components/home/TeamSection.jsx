@@ -36,7 +36,7 @@ export default function TeamSection() {
           </span>
           <h2 className="text-[32px] sm:text-[48px] font-montserrat font-black leading-[1] tracking-tighter text-zinc-950 uppercase mb-6">
             Our team, <br/>
-            <span className="italic text-zinc-600 font-light normal-case" style={{ fontFamily: "'Playfair Display', serif" }}>your strategists.</span>
+            <span className="italic text-zinc-500 font-light normal-case" style={{ fontFamily: "'Playfair Display', serif" }}>your strategists.</span>
           </h2>
           <p className="text-base text-gray-500 max-w-sm mb-8 leading-relaxed">
             We thrive on teamwork, <span className="text-black font-semibold">turning individual strengths into shared success.</span> We turn ideas into digital products.

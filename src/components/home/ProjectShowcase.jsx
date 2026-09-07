@@ -110,7 +110,7 @@ export default function Portfolio() {
           <div className="max-w-xl">
             <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-1"><span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />Featured Work</div>
             <h2 className="text-[48px] font-montserrat font-black leading-[1] tracking-tighter text-zinc-950 uppercase mt-4">
-              Revenue <span className="italic font-light text-zinc-600 normal-case" style={{ fontFamily: "'Playfair Display', serif" }}>Systems</span>
+              Revenue <span className="italic font-light text-zinc-500 normal-case" style={{ fontFamily: "'Playfair Display', serif" }}>Systems</span>
             </h2>
           </div>
           <p className="text-gray-500 text-xl font-light max-w-sm mt-8 md:mt-0 leading-relaxed">

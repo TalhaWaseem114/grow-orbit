@@ -8,9 +8,9 @@ export default function OrbitBridgeCTA({ scrollToForm }) {
       </p>
       <button
         onClick={scrollToForm}
-        className="group inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-zinc-950 text-orange-400 hover:text-white font-extrabold text-[11px] uppercase tracking-widest hover:gap-3 transition-all shadow-sm border border-zinc-800"
+        className="group inline-flex items-center gap-2 px-7 py-3 rounded-full bg-gradient-to-r from-orange-500 to-orange-600 hover:brightness-110 text-white font-extrabold text-[11px] uppercase tracking-widest hover:gap-3 transition-all shadow-md shadow-orange-500/20"
       >
-        Book Your Free 15-Min Meeting <ArrowRight size={13} className="text-orange-400 group-hover:text-white group-hover:translate-x-0.5 transition-transform" />
+        Book Your Free 15-Min Meeting <ArrowRight size={13} className="group-hover:translate-x-0.5 transition-transform" />
       </button>
     </div>
   );

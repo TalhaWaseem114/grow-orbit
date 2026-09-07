@@ -94,9 +94,11 @@ export default function ServicesSectionThemeTwo() {
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 sm:mb-20">
           <div className="max-w-xl">
             {/* Eyebrow */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-3 shadow-sm border border-zinc-800">
+            <div className="flex items-center gap-2 mb-3">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-              02 / What We Do
+              <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-zinc-900 font-bold">
+                02 / What We Do
+              </p>
             </div>
 
             {/* Main Heading */}
@@ -124,10 +126,10 @@ export default function ServicesSectionThemeTwo() {
 
             <Link
               href="/service"
-              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-950 text-orange-400 hover:text-white font-bold text-[10px] uppercase tracking-[0.2em] transition-all duration-300 no-underline whitespace-nowrap shadow-sm border border-zinc-800"
+              className="group inline-flex items-center gap-2 text-zinc-900 hover:text-orange-500 font-bold text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 no-underline whitespace-nowrap"
             >
               See All 18 Services
-              <ArrowUpRight size={13} className="text-orange-400 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+              <ArrowUpRight size={14} className="text-orange-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             </Link>
           </div>
         </div>

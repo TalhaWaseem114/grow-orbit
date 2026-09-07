@@ -48,15 +48,17 @@ export default function FAQSection({ scrollToForm }) {
 
         {/* Header — compact, centered */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-3 shadow-sm border border-zinc-800">
+          <div className="inline-flex items-center justify-center gap-2 mb-3">
             <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-            06 / Quick Answers
+            <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-zinc-900 font-bold">
+              06 / Quick Answers
+            </p>
           </div>
           <h2
             className="text-4xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            Frequently Asked <span className="italic font-normal text-zinc-600 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Frequently Asked <span className="italic font-normal text-zinc-500 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
               questions.
             </span>
           </h2>

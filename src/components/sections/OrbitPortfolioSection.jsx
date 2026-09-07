@@ -40,8 +40,13 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
 
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 relative z-10">
             <div className="max-w-xl">
-              {/* Eyebrow — App Style */}
-              <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-orange-700 mb-3 font-bold flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-orange-600" />03 / Portfolio</p>
+              {/* Eyebrow */}
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-zinc-900 font-bold">
+                  03 / Portfolio
+                </p>
+              </div>
               <h2
                 className="text-zinc-900 text-3xl sm:text-4xl md:text-[44px] font-black uppercase tracking-tighter leading-[1.1] mb-4"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}

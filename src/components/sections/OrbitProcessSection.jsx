@@ -82,7 +82,12 @@ export default function OrbitProcessSection({ scrollToForm }) {
           {/* Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
             <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-3"><span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />05 / Our Process</div>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-zinc-900 font-bold">
+                  05 / Our Process
+                </p>
+              </div>
               <h2
                 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}

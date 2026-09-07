@@ -80,8 +80,13 @@ export default function OrbitTestimonialsSection() {
 
           {/* Section Label — App Style */}
           <div className="relative z-10">
-            {/* Eyebrow — App Style */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-3"><span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />06 / Testimonials</div>
+            {/* Eyebrow */}
+            <div className="flex items-center gap-2 mb-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+              <p className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.35em] text-zinc-900 font-bold">
+                06 / Testimonials
+              </p>
+            </div>
           </div>
 
           {/* Headline */}
@@ -90,7 +95,7 @@ export default function OrbitTestimonialsSection() {
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             BRANDS THAT SCALED <span
-              className="italic font-normal text-zinc-600 lowercase tracking-normal"
+              className="italic font-normal text-zinc-500 lowercase tracking-normal"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               with us.

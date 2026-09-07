@@ -97,7 +97,7 @@ function MaterialFilterBar({ activeMaterial, onSelect }) {
                onClick={() => onSelect(mat)}
                className={`shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full text-[8.5px] sm:text-[9px] font-bold uppercase tracking-widest transition-all duration-300 border
                  ${isActive
-                   ? "bg-white text-[#c2410c] border-orange-100 shadow-[0_4px_10px_rgba(249,115,22,0.1)]"
+                   ? "bg-white text-orange-600 border-orange-100 shadow-[0_4px_10px_rgba(249,115,22,0.1)]"
                    : "bg-transparent text-zinc-600 border-transparent hover:border-zinc-200 hover:text-zinc-900 hover:bg-black/5"
                  }`}
              >

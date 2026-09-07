@@ -35,7 +35,7 @@ export default function TrustedBrands() {
         <div className="text-center mb-20 relative z-10">
           <div className="inline-flex items-center gap-3 mb-6">
             <div className="w-12 h-[1px] bg-orange-500/30" />
-            <span className="font-bold text-[10px] font-mono uppercase tracking-[0.5em] text-[#c2410c]">
+            <span className="font-bold text-[10px] font-mono uppercase tracking-[0.5em] text-orange-600">
               Portfolio Alpha
             </span>
             <div className="w-12 h-[1px] bg-orange-500/30" />
@@ -44,7 +44,7 @@ export default function TrustedBrands() {
             className="text-4xl md:text-6xl font-black tracking-tighter text-zinc-900 uppercase leading-[0.9]"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            80+ Brands <span className="text-[#c2410c]">Scaled</span><br />
+            80+ Brands <span className="text-orange-600">Scaled</span><br />
             <span className="italic font-normal text-zinc-600 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>to new orbits of revenue.</span>
           </h2>
         </div>

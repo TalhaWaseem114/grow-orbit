@@ -114,7 +114,7 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
                 <Link href="/portfolio" prefetch={false} className="flex items-center justify-center gap-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 font-black text-[10px] uppercase tracking-widest px-6 py-3.5 rounded-2xl no-underline transition-all duration-300">
                   Explore More Work <ArrowUpRight size={12} />
                 </Link>
-                <Link href="/get-started" prefetch={false} className="flex items-center justify-center gap-2 bg-orange-700 hover:bg-orange-800 text-white font-black text-sm uppercase tracking-widest px-7 py-3.5 rounded-2xl no-underline transition-all duration-300 shadow-md">
+                <Link href="/get-started" prefetch={false} className="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-500 text-white font-black text-sm uppercase tracking-widest px-7 py-3.5 rounded-2xl no-underline transition-all duration-300 shadow-md">
                   Talk to Us <ArrowRight size={13} />
                 </Link>
               </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useRef, useEffect } from "react";
 import { Search, Package, Rocket, Image as ImageIcon, BarChart3, Settings, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
@@ -54,7 +55,70 @@ const services = [
   },
 ];
 
+/* ── Shared Card Component ── */
+function ServiceCard({ service, className = "" }) {
+  return (
+    <div
+      className={`group relative bg-white border border-zinc-100 rounded-2xl p-4 sm:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-xl hover:shadow-orange-500/5 hover:border-orange-500/20 transition-all duration-500 cursor-default active:scale-[0.98] ${className}`}
+    >
+      {/* Icon + Number row */}
+      <div className="flex items-start justify-between mb-5">
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-500 shadow-[0_0_15px_rgba(249,115,22,0.1)] group-hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]">
+          <service.icon size={15} className="text-orange-500 group-hover:text-white transition-colors duration-500" />
+        </div>
+        <span className="text-zinc-500 font-mono text-[10px] sm:text-[11px] font-bold tracking-wider">{service.number}</span>
+      </div>
+
+      {/* Title */}
+      <h3
+        className="text-zinc-900 text-[11px] sm:text-[13px] font-extrabold uppercase tracking-tight mb-2 leading-tight h-[2.4em] flex items-center"
+        style={{ fontFamily: "'Montserrat', sans-serif" }}
+      >
+        {service.title}
+      </h3>
+
+      {/* Description */}
+      <p className="text-zinc-600 text-[11px] font-normal leading-relaxed mb-4">
+        {service.description}
+      </p>
+
+      {/* Stat (WCAG Large Text >=18.66px bold: 20px font-black passes 3.0:1 threshold with orange-600) */}
+      <div className="mt-auto pt-3 border-t border-zinc-100">
+        <p
+          className="text-orange-600 text-[20px] sm:text-2xl font-black tracking-tight leading-none mb-0.5"
+          style={{ fontFamily: "'Montserrat', sans-serif" }}
+        >
+          {service.stat}
+        </p>
+        <p className="text-zinc-500 text-[9px] font-semibold uppercase tracking-wider">
+          {service.statLabel}
+        </p>
+      </div>
+    </div>
+  );
+}
+
 export default function ServicesSectionThemeTwo() {
+  const scrollRef = useRef(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const handleScroll = () => {
+    if (!scrollRef.current) return;
+    const container = scrollRef.current;
+    const cardWidth = container.children[0]?.offsetWidth + 12 || 280; // 12px gap
+    const newIndex = Math.round(container.scrollLeft / cardWidth);
+    if (newIndex !== activeIndex && newIndex >= 0 && newIndex < services.length) {
+      setActiveIndex(newIndex);
+    }
+  };
+
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [activeIndex]);
+
   return (
     <section className="relative bg-white py-20 sm:py-28 overflow-hidden">
       {/* Subtle background pattern */}
@@ -91,7 +155,7 @@ export default function ServicesSectionThemeTwo() {
           </svg>
         </div>
         {/* ── Header Area ── */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 sm:mb-20">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-12 sm:mb-20">
           <div className="max-w-xl">
             {/* Eyebrow */}
             <div className="flex items-center gap-2 mb-3">
@@ -120,10 +184,8 @@ export default function ServicesSectionThemeTwo() {
             </p>
           </div>
 
-          {/* Right side — Orbital graphic + CTA */}
+          {/* Right side — CTA */}
           <div className="flex items-center gap-8 mt-8 lg:mt-0">
-
-
             <Link
               href="/service"
               className="group inline-flex items-center gap-2 text-zinc-900 hover:text-orange-500 font-bold text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 no-underline whitespace-nowrap"
@@ -134,47 +196,43 @@ export default function ServicesSectionThemeTwo() {
           </div>
         </div>
 
-        {/* ── Service Cards Grid ── */}
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2 sm:gap-3">
-          {services.map((service, i) => (
-            <div
-              key={i}
-              className="group relative bg-white border border-zinc-100 rounded-2xl p-4 sm:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-xl hover:shadow-orange-500/5 hover:border-orange-500/20 transition-all duration-500 cursor-default active:scale-[0.98]"
-            >
-              {/* Icon + Number row */}
-              <div className="flex items-start justify-between mb-5">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-500 shadow-[0_0_15px_rgba(249,115,22,0.1)] group-hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]">
-                  <service.icon size={15} className="text-orange-500 group-hover:text-white transition-colors duration-500" />
-                </div>
-                <span className="text-zinc-500 font-mono text-[10px] sm:text-[11px] font-bold tracking-wider">{service.number}</span>
-              </div>
-
-              {/* Title */}
-              <h3
-                className="text-zinc-900 text-[11px] sm:text-[13px] font-extrabold uppercase tracking-tight mb-2 leading-tight h-[2.4em] flex items-center"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
+        {/* ── MOBILE: Horizontal Snap Carousel (< lg) ── */}
+        <div className="lg:hidden -mx-6 sm:-mx-8">
+          <div
+            ref={scrollRef}
+            className="flex gap-3 overflow-x-auto snap-x snap-mandatory no-scrollbar px-6 sm:px-8 pb-2"
+            style={{ WebkitOverflowScrolling: "touch" }}
+          >
+            {services.map((service, i) => (
+              <div
+                key={i}
+                className="snap-start shrink-0"
+                style={{ width: "min(75vw, 280px)" }}
               >
-                {service.title}
-              </h3>
-
-              {/* Description */}
-              <p className="text-zinc-600 text-[11px] font-normal leading-relaxed mb-4">
-                {service.description}
-              </p>
-
-              {/* Stat (WCAG Large Text >=18.66px bold: 20px font-black passes 3.0:1 threshold with orange-600) */}
-              <div className="mt-auto pt-3 border-t border-zinc-100">
-                <p
-                  className="text-orange-600 text-[20px] sm:text-2xl font-black tracking-tight leading-none mb-0.5"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  {service.stat}
-                </p>
-                <p className="text-zinc-500 text-[9px] font-semibold uppercase tracking-wider">
-                  {service.statLabel}
-                </p>
+                <ServiceCard service={service} className="h-full" />
               </div>
-            </div>
+            ))}
+            {/* Trailing spacer so last card can snap fully */}
+            <div className="shrink-0 w-3 sm:w-5" aria-hidden="true" />
+          </div>
+
+          {/* Scroll indicator dots */}
+          <div className="flex items-center justify-center gap-1.5 mt-5">
+            {services.map((_, i) => (
+              <div
+                key={i}
+                className={`h-1 rounded-full transition-all duration-300 ${
+                  i === activeIndex ? "w-6 bg-orange-500" : "w-2 bg-zinc-200"
+                }`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* ── DESKTOP: 6-Column Grid (lg+) ── */}
+        <div className="hidden lg:grid lg:grid-cols-3 xl:grid-cols-6 gap-3">
+          {services.map((service, i) => (
+            <ServiceCard key={i} service={service} />
           ))}
         </div>
       </div>

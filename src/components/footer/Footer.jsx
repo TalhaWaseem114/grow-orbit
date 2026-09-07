@@ -6,7 +6,64 @@ import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getSavedUtmData } from "@/utils/utmTracker";
-import { ArrowRight, Zap, TrendingUp } from "lucide-react";
+import { ArrowRight, Zap, TrendingUp, ChevronDown } from "lucide-react";
+
+
+/* ── Accordion wrapper (mobile-only collapse) ── */
+function FooterAccordion({ title, actionLabel, actionHref, children, defaultOpen = false }) {
+  const [open, setOpen] = useState(defaultOpen);
+
+  return (
+    <div>
+      {/* Header — tappable on mobile, static label on md+ */}
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-expanded={open}
+        className="md:hidden w-full flex items-center justify-between py-3 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-lg"
+      >
+        <span className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono">
+          {title}
+        </span>
+        <ChevronDown
+          size={14}
+          className={`text-zinc-500 transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      {/* Static label for md+ (non-collapsible) */}
+      <div className="hidden md:flex items-center gap-4 mb-2">
+        <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono">{title}</p>
+        {actionLabel && actionHref && (
+          <Link
+            href={actionHref}
+            className="inline-flex items-center gap-1.5 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline"
+          >
+            {actionLabel} <ArrowRight size={11} />
+          </Link>
+        )}
+      </div>
+
+      {/* Collapsible body — always visible on md+, animated on mobile */}
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out md:!max-h-none md:!opacity-100 ${
+          open ? "max-h-[600px] opacity-100 pb-4" : "max-h-0 opacity-0"
+        }`}
+      >
+        {/* Mobile "Browse All" link inside the accordion */}
+        {actionLabel && actionHref && (
+          <Link
+            href={actionHref}
+            className="md:hidden inline-flex items-center gap-1.5 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline mb-3"
+          >
+            {actionLabel} <ArrowRight size={11} />
+          </Link>
+        )}
+        {children}
+      </div>
+    </div>
+  );
+}
 
 
 export default function Footer() {
@@ -89,7 +146,6 @@ export default function Footer() {
     }
   };
 
-  /* ── GSAP input focus ── */
   /* ── Nav data ── */
   const navLinks = [
     { name: "Home",       url: "/"          },
@@ -131,7 +187,7 @@ export default function Footer() {
     <div className="px-3 pb-3 md:px-6 md:pb-6 mt-10 md:mt-20">
       <footer
         role="contentinfo"
-        className="bg-[#0A0A0B] text-white pt-24 pb-12 px-6 md:px-12 rounded-[40px] md:rounded-[60px] relative overflow-hidden shadow-[0_40px_100px_-10px_rgba(0,0,0,0.5)]"
+        className="bg-[#0A0A0B] text-white pt-16 md:pt-24 pb-[76px] sm:pb-[88px] md:pb-12 px-5 sm:px-6 md:px-12 rounded-[32px] md:rounded-[60px] relative overflow-hidden shadow-[0_40px_100px_-10px_rgba(0,0,0,0.5)]"
         style={{ fontFamily: "'Montserrat', sans-serif" }}
       >
       {/* ── Orbit ring bg decoration ── */}
@@ -182,16 +238,16 @@ export default function Footer() {
         {/* ══════════════════════════════════════
             TOP SECTION: Headline + Form
         ══════════════════════════════════════ */}
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-16 lg:gap-20 pb-20">
+        <div className="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-20 pb-14 md:pb-20">
 
           {/* Left — headline + info */}
-          <div className="lg:w-1/2 pt-6">
+          <div className="lg:w-1/2 pt-2 md:pt-6">
 
             {/* Main headline */}
             <h3
-              className="font-black leading-[0.88] tracking-tighter mb-8 uppercase"
+              className="font-black leading-[0.88] tracking-tighter mb-6 md:mb-8 uppercase"
               style={{
-                fontSize: "clamp(3.2rem, 8.5vw, 6.8rem)",
+                fontSize: "clamp(2.6rem, 8.5vw, 6.8rem)",
                 fontFamily: "'Montserrat', sans-serif",
               }}
             >
@@ -204,7 +260,7 @@ export default function Footer() {
               </span>
             </h3>
 
-            <p className="text-zinc-400 text-xl font-light max-w-lg leading-relaxed mb-16">
+            <p className="text-zinc-400 text-base md:text-xl font-light max-w-lg leading-relaxed mb-10 md:mb-16">
               Ready to stop guessing and start growing? Tell us what you're working on —{" "}
               <span className="text-white font-medium">
                 we'll map the right path in a free 15-minute call.
@@ -212,7 +268,7 @@ export default function Footer() {
             </p>
 
             {/* Promise cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5 mb-10 md:mb-16">
               {[
                 {
                   icon: <Zap size={18} />,
@@ -227,7 +283,7 @@ export default function Footer() {
               ].map((item, i) => (
                 <div
                   key={i}
-                  className="flex items-start gap-4 bg-white/[0.04] border border-white/8 rounded-2xl p-5 hover:border-orange-500/30 transition-colors duration-300"
+                  className="flex items-start gap-4 bg-white/[0.04] border border-white/8 rounded-2xl p-4 sm:p-5 hover:border-orange-500/30 transition-colors duration-300"
                 >
                   <div className="w-9 h-9 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
                     {item.icon}
@@ -241,9 +297,9 @@ export default function Footer() {
             </div>
 
             {/* Social + contact info row */}
-            <div className="flex items-start justify-between gap-8 border-t border-white/8 pt-10 flex-wrap">
+            <div className="flex items-start justify-between gap-6 border-t border-white/8 pt-8 md:pt-10 flex-wrap">
               <div>
-                <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-4">Follow Us</p>
+                <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-3 md:mb-4">Follow Us</p>
                 <div className="flex flex-col gap-2">
                   {socialLinks.map((s) => (
                     <Link
@@ -261,7 +317,7 @@ export default function Footer() {
               </div>
 
               <div className="text-right">
-                <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-4">Contact Us</p>
+                <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-3 md:mb-4">Contact Us</p>
                 <div className="flex flex-col gap-1 items-end">
                   <a href="mailto:support@groworbitofficial.com" className="text-zinc-100 text-[12px] font-semibold hover:text-orange-500 transition-colors">
                     support@groworbitofficial.com
@@ -282,7 +338,7 @@ export default function Footer() {
 
           {/* Right — white form card */}
           <div className="lg:w-[460px] w-full shrink-0">
-            <div className="bg-white text-zinc-900 p-5 sm:p-7 md:p-11 rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.5)] lg:sticky lg:top-10">
+            <div className="bg-white text-zinc-900 p-5 sm:p-7 md:p-11 rounded-[32px] md:rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.5)] lg:sticky lg:top-10">
               <h3
                 className="text-2xl font-black tracking-tight mb-1 uppercase"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
@@ -407,41 +463,49 @@ export default function Footer() {
         </div>
 
         {/* ══════════════════════════════════════
-            MIDDLE: Services quick-links
+            MIDDLE: Collapsible Services + Navigation
         ══════════════════════════════════════ */}
-        <div className="py-14">
-          <div className="flex flex-col md:flex-row gap-10">
-            {/* Label */}
-            <div className="md:w-48 shrink-0">
-              <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-2">All Services</p>
-              <Link
-                href="/service"
-                className="inline-flex items-center gap-1.5 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline"
-              >
-                Browse All <ArrowRight size={11} />
-              </Link>
-            </div>
+        <div className="py-8 md:py-14 space-y-1 md:space-y-10 border-t border-white/5">
 
-            {/* Links grid */}
-            <nav className="flex-1 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-3" aria-label="Services Quick Links">
+          {/* Services Accordion */}
+          <FooterAccordion title="All Services" actionLabel="Browse All" actionHref="/service">
+            <nav className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-2.5 md:gap-y-3" aria-label="Services Quick Links">
               {serviceLinks.map((s, i) => (
                 <Link
                   key={i}
                   href={s.url}
-                  className="text-zinc-400 text-[12px] font-medium hover:text-white transition-colors no-underline leading-snug focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
+                  className="text-zinc-400 text-[12px] font-medium hover:text-white transition-colors no-underline leading-snug focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-0.5"
                 >
                   {s.name}
                 </Link>
               ))}
             </nav>
-          </div>
+          </FooterAccordion>
+
+          {/* Divider on mobile */}
+          <div className="border-t border-white/5 md:border-0" />
+
+          {/* Navigation Accordion */}
+          <FooterAccordion title="Navigation" actionLabel={null} actionHref={null}>
+            <nav className="grid grid-cols-2 sm:grid-cols-3 md:flex md:flex-wrap md:gap-x-8 gap-y-2.5 md:gap-y-2" aria-label="Footer Navigation">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.url}
+                  className="text-zinc-400 text-[12px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1 md:py-1.5 md:px-2 md:min-h-[28px] md:inline-flex md:items-center md:text-[11px]"
+                >
+                  {link.name}
+                </Link>
+              ))}
+            </nav>
+          </FooterAccordion>
         </div>
 
         {/* ══════════════════════════════════════
             GIANT WATERMARK TEXT
         ══════════════════════════════════════ */}
-        <div className="w-full flex justify-center items-center py-12 md:py-16 border-t border-b border-white/5 my-8 select-none overflow-hidden relative z-10" aria-hidden="true">
-          <svg className="w-full h-auto max-h-[14rem] overflow-visible pointer-events-none" viewBox="0 0 1000 160" aria-hidden="true" role="img">
+        <div className="w-full flex justify-center items-center py-8 md:py-16 border-t border-b border-white/5 my-4 md:my-8 select-none overflow-hidden relative z-10" aria-hidden="true">
+          <svg className="w-full h-auto max-h-[8rem] md:max-h-[14rem] overflow-visible pointer-events-none" viewBox="0 0 1000 160" aria-hidden="true" role="img">
             <text
               x="50%"
               y="55%"
@@ -460,20 +524,7 @@ export default function Footer() {
         ══════════════════════════════════════ */}
         <div className="relative z-10 pt-4 flex flex-col gap-2.5">
 
-          {/* Upper Row: Nav links */}
-          <nav className="w-full flex flex-wrap items-center justify-center gap-x-8 gap-y-2 pb-0" aria-label="Footer Navigation">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                href={link.url}
-                className="text-zinc-400 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1.5 px-2 min-h-[28px] inline-flex items-center"
-              >
-                {link.name}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Lower Row: Left Logo & Right Copyright / Legal */}
+          {/* Logo + Copyright */}
           <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 pt-0">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl">
@@ -498,12 +549,14 @@ export default function Footer() {
             </Link>
 
             {/* Copyright & Legal Links */}
-            <div className="flex flex-col sm:flex-row items-center gap-4 text-zinc-500 text-[10px] uppercase tracking-widest font-black font-mono shrink-0">
+            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-zinc-500 text-[10px] uppercase tracking-widest font-black font-mono shrink-0 text-center">
               <span>© 2010–2026 Grow Orbit.</span>
               <span className="hidden sm:inline text-zinc-800">|</span>
-              <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors no-underline py-1.5 px-2 min-h-[28px] inline-flex items-center">Privacy Policy</Link>
-              <span className="hidden sm:inline text-zinc-800">|</span>
-              <Link href="/terms-of-service" className="hover:text-orange-500 transition-colors no-underline py-1.5 px-2 min-h-[28px] inline-flex items-center">Terms of Service</Link>
+              <div className="flex items-center gap-3">
+                <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors no-underline py-1 px-1 sm:py-1.5 sm:px-2 inline-flex items-center">Privacy Policy</Link>
+                <span className="text-zinc-800">|</span>
+                <Link href="/terms-of-service" className="hover:text-orange-500 transition-colors no-underline py-1 px-1 sm:py-1.5 sm:px-2 inline-flex items-center">Terms of Service</Link>
+              </div>
             </div>
           </div>
 

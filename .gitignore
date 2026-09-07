@@ -52,3 +52,5 @@ portfolio_downloads/
 .seo cluster/
 /.seo cluster/
 
+# Temporary lighthouse reports
+lighthouse-report*

@@ -98,7 +98,7 @@ export default function PortfolioCard({ item, priority = false }) {
 
         {/* Floating Tag - Top Center Edge */}
         <div className="absolute -top-[1px] left-1/2 -translate-x-1/2 z-20 flex">
-          <div className="bg-orange-500/95 text-white text-[7px] font-black uppercase tracking-widest px-3 py-1 rounded-b-xl shadow-[0_2px_8px_rgba(249,115,22,0.3)] border border-orange-400/20 border-t-0 flex items-center justify-center text-center">
+          <div className="bg-orange-500/95 text-zinc-950 text-[7px] font-black uppercase tracking-widest px-3 py-1 rounded-b-xl shadow-[0_2px_8px_rgba(249,115,22,0.3)] border border-orange-400/20 border-t-0 flex items-center justify-center text-center">
             <span>{item.category}{item.services?.includes("A+ Content") ? " / A+" : ""}</span>
           </div>
         </div>

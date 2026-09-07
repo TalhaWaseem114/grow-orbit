@@ -90,7 +90,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(249,115,22,0.12),transparent_60%)] pointer-events-none" />
 
           <div className="relative z-10 max-w-2xl fade-up lg:mt-2">
-            <div className="relative mb-6 sm:mb-12 -ml-[17px] sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[5px] sm:translate-y-[20px]">
+            <div className="relative mb-6 sm:mb-12 -ml-[15px] sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[5px] sm:translate-y-[20px]">
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.6)]" />
                 <div className="w-8 sm:w-12 h-px bg-orange-500/30" />

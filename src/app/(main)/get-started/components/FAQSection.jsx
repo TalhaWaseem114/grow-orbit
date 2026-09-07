@@ -58,7 +58,7 @@ export default function FAQSection({ scrollToForm }) {
             className="text-4xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
-            Frequently Asked <span className="italic font-normal text-zinc-500 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
+            Frequently Asked <span className="italic font-normal text-zinc-600 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>
               questions.
             </span>
           </h2>

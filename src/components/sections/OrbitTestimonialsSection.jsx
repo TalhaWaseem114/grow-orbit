@@ -95,7 +95,7 @@ export default function OrbitTestimonialsSection() {
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             BRANDS THAT SCALED <span
-              className="italic font-normal text-zinc-500 lowercase tracking-normal"
+              className="italic font-normal text-zinc-600 lowercase tracking-normal"
               style={{ fontFamily: "'Playfair Display', serif" }}
             >
               with us.

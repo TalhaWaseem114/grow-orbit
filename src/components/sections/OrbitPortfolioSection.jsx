@@ -51,7 +51,7 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
                 className="text-zinc-900 text-3xl sm:text-4xl md:text-[44px] font-black uppercase tracking-tighter leading-[1.1] mb-4"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                Our Work in <span className="text-zinc-700 italic font-normal lowercase tracking-normal text-[32px] sm:text-[38px] md:text-[46px]" style={{ fontFamily: "'Playfair Display', serif" }}>Real-Time.</span>
+                Our Work in <span className="text-zinc-600 italic font-normal lowercase tracking-normal text-[32px] sm:text-[38px] md:text-[46px]" style={{ fontFamily: "'Playfair Display', serif" }}>Real-Time.</span>
               </h2>
             </div>
             {/* Desktop version - hidden on mobile */}

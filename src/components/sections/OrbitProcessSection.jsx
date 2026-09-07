@@ -92,7 +92,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
                 className="text-3xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                From Idea To <span className="italic font-normal text-zinc-700 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>Revenue.</span>
+                From Idea To <span className="italic font-normal text-zinc-600 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>Revenue.</span>
               </h2>
             </div>
             <p className="text-zinc-600 text-sm font-normal max-w-[260px] leading-relaxed md:pb-2">

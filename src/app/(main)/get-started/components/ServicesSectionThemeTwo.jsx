@@ -61,23 +61,43 @@ export default function ServicesSectionThemeTwo() {
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
 
       <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
-        {/* Large Background Watermark */}
+        {/* Large Background Watermark (SVG vector - exempt from text contrast) */}
         <div
           aria-hidden="true"
-          className="absolute top-[30px] right-0 rotate-90 origin-center translate-x-[40%] sm:top-[-120px] sm:left-[30px] sm:translate-x-0 sm:rotate-0 sm:origin-center sm:translate-y-0 font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.09] pointer-events-none select-none whitespace-nowrap z-0"
-          style={{
-            fontFamily: "Arial, sans-serif",
-            WebkitTextStroke: "1.5px #000",
-            color: "transparent"
-          }}
+          className="absolute top-[30px] right-0 rotate-90 origin-center translate-x-[40%] sm:top-[-120px] sm:left-[30px] sm:translate-x-0 sm:rotate-0 sm:origin-center sm:translate-y-0 pointer-events-none select-none z-0 overflow-visible"
         >
-          SERVICES
+          <svg
+            className="h-[60px] sm:h-[100px] md:h-[160px] w-auto overflow-visible opacity-[0.08]"
+            viewBox="0 0 680 140"
+            fill="none"
+            aria-hidden="true"
+          >
+            <text
+              x="0"
+              y="110"
+              fill="none"
+              stroke="#000"
+              strokeWidth="2"
+              style={{
+                fontFamily: "Arial, sans-serif",
+                fontWeight: 900,
+                fontSize: "140px",
+                letterSpacing: "-0.05em",
+                textTransform: "uppercase"
+              }}
+            >
+              SERVICES
+            </text>
+          </svg>
         </div>
         {/* ── Header Area ── */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-16 sm:mb-20">
           <div className="max-w-xl">
             {/* Eyebrow */}
-            <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-orange-600 font-bold mb-3">02 / What We Do</p>
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-3 shadow-sm border border-zinc-800">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+              02 / What We Do
+            </div>
 
             {/* Main Heading */}
             <h2
@@ -104,10 +124,10 @@ export default function ServicesSectionThemeTwo() {
 
             <Link
               href="/service"
-              className="group flex items-center gap-2 text-orange-600 font-bold text-[11px] uppercase tracking-[0.2em] hover:text-orange-500 transition-colors no-underline whitespace-nowrap"
+              className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-950 text-orange-400 hover:text-white font-bold text-[10px] uppercase tracking-[0.2em] transition-all duration-300 no-underline whitespace-nowrap shadow-sm border border-zinc-800"
             >
               See All 18 Services
-              <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
+              <ArrowUpRight size={13} className="text-orange-400 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
             </Link>
           </div>
         </div>
@@ -124,7 +144,7 @@ export default function ServicesSectionThemeTwo() {
                 <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-orange-50 border border-orange-100 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 transition-all duration-500 shadow-[0_0_15px_rgba(249,115,22,0.1)] group-hover:shadow-[0_0_20px_rgba(249,115,22,0.4)]">
                   <service.icon size={15} className="text-orange-500 group-hover:text-white transition-colors duration-500" />
                 </div>
-                <span className="text-orange-600 text-[9px] sm:text-[11px] font-bold tracking-wider">{service.number}</span>
+                <span className="text-zinc-500 font-mono text-[10px] sm:text-[11px] font-bold tracking-wider">{service.number}</span>
               </div>
 
               {/* Title */}
@@ -140,10 +160,10 @@ export default function ServicesSectionThemeTwo() {
                 {service.description}
               </p>
 
-              {/* Stat */}
+              {/* Stat (WCAG Large Text >=18.66px bold: 20px font-black passes 3.0:1 threshold with orange-600) */}
               <div className="mt-auto pt-3 border-t border-zinc-100">
                 <p
-                  className="text-orange-600 text-lg sm:text-xl font-black tracking-tight leading-none mb-0.5"
+                  className="text-orange-600 text-[20px] sm:text-2xl font-black tracking-tight leading-none mb-0.5"
                   style={{ fontFamily: "'Montserrat', sans-serif" }}
                 >
                   {service.stat}

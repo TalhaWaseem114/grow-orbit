@@ -46,20 +46,37 @@ export default function OrbitProcessSection({ scrollToForm }) {
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
         <div className="relative">
-          {/* Large Background Watermark */}
+          {/* Large Background Watermark (SVG vector) */}
           <div
             aria-hidden="true"
             className="absolute
               top-[30px] right-0 rotate-90 origin-center translate-x-[40%]
               sm:top-[20px] sm:left-0 sm:right-auto sm:rotate-0 sm:origin-center sm:-translate-y-[70%] sm:translate-x-0
-              font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.09] pointer-events-none select-none whitespace-nowrap"
-            style={{
-              fontFamily: "Arial, sans-serif",
-              WebkitTextStroke: "1.5px #000",
-              color: "transparent"
-            }}
+              pointer-events-none select-none z-0 overflow-visible"
           >
-            PROCESS
+            <svg
+              className="h-[60px] sm:h-[100px] md:h-[160px] w-auto overflow-visible opacity-[0.08]"
+              viewBox="0 0 650 140"
+              fill="none"
+              aria-hidden="true"
+            >
+              <text
+                x="0"
+                y="110"
+                fill="none"
+                stroke="#000"
+                strokeWidth="2"
+                style={{
+                  fontFamily: "Arial, sans-serif",
+                  fontWeight: 900,
+                  fontSize: "140px",
+                  letterSpacing: "-0.05em",
+                  textTransform: "uppercase"
+                }}
+              >
+                PROCESS
+              </text>
+            </svg>
           </div>
 
           {/* Header */}
@@ -134,7 +151,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
 
                       {/* Num badge (pinned to orbit) */}
                       <div className={`absolute -bottom-5 lg:-bottom-6 left-1/2 -translate-x-1/2 z-20 bg-white border rounded-full w-6 h-6 flex items-center justify-center shadow-sm transition-all duration-500 ${s.dark ? "border-zinc-200" : "border-zinc-100 group-hover:border-orange-200"}`}>
-                        <span className={`text-[8px] font-black tracking-widest ${s.dark ? "text-zinc-500" : "text-zinc-400 group-hover:text-orange-500"}`}>
+                        <span className={`text-[8px] font-black tracking-widest ${s.dark ? "text-zinc-500" : "text-zinc-600 group-hover:text-orange-500"}`}>
                           {s.num}
                         </span>
                       </div>
@@ -210,7 +227,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
 
                         {/* Num badge (pinned to orbit) */}
                         <div className={`absolute -bottom-1 -right-1 z-20 bg-white border rounded-full w-4 h-4 flex items-center justify-center shadow-xs ${s.dark ? "border-zinc-200" : "border-zinc-200"}`}>
-                          <span className={`text-[6px] font-black tracking-widest ${s.dark ? "text-zinc-700" : "text-orange-700"}`}>
+                          <span className={`text-[6px] font-black tracking-widest ${s.dark ? "text-zinc-700" : "text-zinc-900"}`}>
                             {s.num}
                           </span>
                         </div>
@@ -245,9 +262,9 @@ export default function OrbitProcessSection({ scrollToForm }) {
 
               {/* Loop badge (Mobile) */}
               <div className="mt-14 flex justify-center">
-                <div className="flex items-center gap-2 bg-orange-50 border border-orange-200 rounded-full px-5 py-2.5">
-                  <RefreshCw size={11} strokeWidth={2.5} className="text-orange-500 shrink-0" />
-                  <span className="text-[9px] font-black uppercase tracking-[0.1em] text-orange-600 whitespace-nowrap">Continuous Brand Evolution</span>
+                <div className="flex items-center gap-2 bg-zinc-950 border border-white/10 rounded-full px-5 py-2.5 shadow-sm">
+                  <RefreshCw size={11} strokeWidth={2.5} className="text-orange-400 shrink-0" />
+                  <span className="text-[9px] font-mono font-bold uppercase tracking-[0.2em] text-orange-400 whitespace-nowrap">Continuous Brand Evolution</span>
                 </div>
               </div>
             </div>
@@ -264,7 +281,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
           </div>
           <button
             onClick={scrollToForm}
-            className="group w-full sm:w-auto flex items-center justify-center gap-2.5 bg-orange-600 hover:bg-orange-500 text-white font-black text-[10px] uppercase tracking-[0.2em] px-6 py-3.5 rounded-xl transition-all duration-300 no-underline"
+            className="group w-full sm:w-auto flex items-center justify-center gap-2.5 bg-gradient-to-r from-orange-500 to-orange-600 hover:brightness-110 text-white font-black text-[10px] uppercase tracking-[0.2em] px-6 py-3.5 rounded-xl transition-all duration-300 no-underline shadow-md shadow-orange-500/20"
           >
             Start The Process
             <ArrowRight size={12} className="group-hover:translate-x-0.5 transition-transform" />

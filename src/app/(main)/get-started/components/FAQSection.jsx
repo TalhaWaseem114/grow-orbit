@@ -48,7 +48,10 @@ export default function FAQSection({ scrollToForm }) {
 
         {/* Header — compact, centered */}
         <div className="text-center mb-12">
-          <p className="font-mono text-[10px] uppercase tracking-[0.4em] text-orange-600 font-bold mb-3">06 / Quick Answers</p>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-3 shadow-sm border border-zinc-800">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+            06 / Quick Answers
+          </div>
           <h2
             className="text-4xl md:text-5xl font-black tracking-tighter uppercase leading-[1.1] text-zinc-900"
             style={{ fontFamily: "'Montserrat', sans-serif" }}
@@ -79,7 +82,7 @@ export default function FAQSection({ scrollToForm }) {
               >
                 <div className="flex items-center gap-4">
                   <span className={`text-[10px] font-mono font-bold transition-colors shrink-0 ${
-                    openIndex === i ? "text-orange-600" : "text-zinc-600"
+                    openIndex === i ? "text-zinc-950 font-black" : "text-zinc-600"
                   }`}>
                     0{i + 1}
                   </span>

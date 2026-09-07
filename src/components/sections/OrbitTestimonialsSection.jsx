@@ -45,20 +45,37 @@ export default function OrbitTestimonialsSection() {
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10">
         <div className="relative">
-          {/* Large Background Watermark */}
+          {/* Large Background Watermark (SVG vector) */}
           <div
             aria-hidden="true"
             className="absolute
               top-[30px] right-0 rotate-90 origin-center translate-x-[40%]
               sm:top-[20px] sm:left-0 sm:right-auto sm:rotate-0 sm:origin-center sm:-translate-y-[70%] sm:translate-x-0
-              font-black text-[45px] sm:text-[80px] md:text-[140px] uppercase tracking-tighter opacity-[0.09] pointer-events-none select-none whitespace-nowrap"
-            style={{
-              fontFamily: "Arial, sans-serif",
-              WebkitTextStroke: "1.5px #000",
-              color: "transparent"
-            }}
+              pointer-events-none select-none z-0 overflow-visible"
           >
-            TESTIMONIALS
+            <svg
+              className="h-[60px] sm:h-[100px] md:h-[160px] w-auto overflow-visible opacity-[0.08]"
+              viewBox="0 0 900 140"
+              fill="none"
+              aria-hidden="true"
+            >
+              <text
+                x="0"
+                y="110"
+                fill="none"
+                stroke="#000"
+                strokeWidth="2"
+                style={{
+                  fontFamily: "Arial, sans-serif",
+                  fontWeight: 900,
+                  fontSize: "140px",
+                  letterSpacing: "-0.05em",
+                  textTransform: "uppercase"
+                }}
+              >
+                TESTIMONIALS
+              </text>
+            </svg>
           </div>
 
           {/* Section Label — App Style */}

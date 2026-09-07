@@ -33,12 +33,9 @@ export default function TrustedBrands() {
 
         {/* Header */}
         <div className="text-center mb-20 relative z-10">
-          <div className="inline-flex items-center gap-3 mb-6">
-            <div className="w-12 h-[1px] bg-orange-500/30" />
-            <span className="font-bold text-[10px] font-mono uppercase tracking-[0.5em] text-orange-600">
-              Portfolio Alpha
-            </span>
-            <div className="w-12 h-[1px] bg-orange-500/30" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-950 text-orange-400 font-mono text-[10px] font-bold uppercase tracking-[0.25em] mb-6 shadow-sm border border-zinc-800">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+            Portfolio Alpha
           </div>
           <h2
             className="text-4xl md:text-6xl font-black tracking-tighter text-zinc-900 uppercase leading-[0.9]"

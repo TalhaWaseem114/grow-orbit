@@ -113,7 +113,7 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
             <div className="px-5 sm:px-8 py-5 sm:py-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
               <div>
                 <p className="font-black text-zinc-900 uppercase tracking-tight text-[13px] sm:text-[14px] mb-1">This is what winning listings look like.</p>
-                <p className="text-zinc-600 text-[12px] sm:text-[13px] font-normal">Whether you're launching or scaling — great visuals aren't optional.</p>
+                <p className="text-zinc-600 text-[12px] sm:text-[13px] font-normal">Whether you're launching or scaling, great visuals aren't optional.</p>
               </div>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 sm:gap-3 w-full sm:w-auto shrink-0">
                 <Link href="/portfolio" prefetch={false} className="flex items-center justify-center gap-2 bg-zinc-100 hover:bg-zinc-200 text-zinc-900 font-black text-[10px] uppercase tracking-widest px-6 py-3.5 rounded-2xl no-underline transition-all duration-300">

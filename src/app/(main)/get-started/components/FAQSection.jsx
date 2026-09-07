@@ -12,7 +12,7 @@ import { Plus, Minus, ChevronRight, Terminal } from "lucide-react";
 const faqs = [
   {
     q: "How soon will we see results in sales and profit?",
-    a: "We typically drive noticeable conversion (CVR) and CTR improvements in the first 14 days, with stable, profitable scaling establishing between 30–60 days."
+    a: "We typically drive noticeable conversion (CVR) and CTR improvements in the first 14 days, with stable, profitable scaling establishing between 30-60 days."
   },
   {
     q: "Do I own the listings, creative assets, and advertising accounts?",

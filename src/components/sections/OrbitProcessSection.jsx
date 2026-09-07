@@ -5,8 +5,8 @@ import { Crosshair, Package, Layers, Rocket, RefreshCw, ArrowRight, ArrowDown } 
 const steps = [
   { num: "01", title: "Product Hunting", sub: "Market research & demand validation to find winning products.", icon: <Crosshair size={24} strokeWidth={1.5} />, dark: false },
   { num: "02", title: "Sourcing & Setup", sub: "Supplier vetting, brand registry, and full backend config.", icon: <Package size={24} strokeWidth={1.5} />, dark: false },
-  { num: "03", title: "Launch & Build", sub: "Listings, A+ content, PPC campaigns — built to convert.", icon: <Layers size={24} strokeWidth={1.5} />, dark: false },
-  { num: "04", title: "Scale & Grow", sub: "Optimization, inventory, expansion — sustainable growth.", icon: <Rocket size={24} strokeWidth={1.5} />, dark: false },
+  { num: "03", title: "Launch & Build", sub: "Listings, A+ content, PPC campaigns, all built to convert.", icon: <Layers size={24} strokeWidth={1.5} />, dark: false },
+  { num: "04", title: "Scale & Grow", sub: "Optimization, inventory, expansion for sustainable growth.", icon: <Rocket size={24} strokeWidth={1.5} />, dark: false },
   { num: "∞", title: "Evolve", sub: "Continuous account optimization and brand management.", icon: <RefreshCw size={24} strokeWidth={1.5} />, dark: true },
 ];
 
@@ -96,7 +96,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
               </h2>
             </div>
             <p className="text-zinc-600 text-sm font-normal max-w-[260px] leading-relaxed md:pb-2">
-              One end-to-end system — from product hunting to scaling your brand to $50K–$200K/mo.
+              One end-to-end system from product hunting to scaling your brand to $50K-$200K/mo.
             </p>
           </div>
         </div>

@@ -261,7 +261,7 @@ export default function Footer() {
             </h3>
 
             <p className="text-zinc-400 text-base md:text-xl font-light max-w-lg leading-relaxed mb-10 md:mb-16">
-              Ready to stop guessing and start growing? Tell us what you're working on —{" "}
+              Ready to stop guessing and start growing? Tell us what you're working on and{" "}
               <span className="text-white font-medium">
                 we'll map the right path in a free 15-minute call.
               </span>
@@ -550,7 +550,7 @@ export default function Footer() {
 
             {/* Copyright & Legal Links */}
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-zinc-500 text-[10px] uppercase tracking-widest font-black font-mono shrink-0 text-center">
-              <span>© 2010–2026 Grow Orbit.</span>
+              <span>© 2010-2026 Grow Orbit.</span>
               <span className="hidden sm:inline text-zinc-800">|</span>
               <div className="flex items-center gap-3">
                 <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors no-underline py-1 px-1 sm:py-1.5 sm:px-2 inline-flex items-center">Privacy Policy</Link>

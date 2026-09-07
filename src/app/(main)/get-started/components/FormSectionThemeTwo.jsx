@@ -42,7 +42,7 @@ const FormSectionThemeTwo = forwardRef(function FormSectionThemeTwo(_, ref) {
             Ready to <span className="text-orange-500">Scale?</span>
           </h2>
           <p className="text-zinc-500 text-sm sm:text-base font-light max-w-lg mx-auto leading-relaxed">
-            Tell us where you are — we'll show you a clear path to grow. No pitch, just strategy.
+            Tell us where you are and we'll show you a clear path to grow. No pitch, just strategy.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ const FormSectionThemeTwo = forwardRef(function FormSectionThemeTwo(_, ref) {
                 {
                   icon: Users,
                   title: "80+ Brands Scaled",
-                  desc: "From $0 to $200K/mo — we've built the systems that turn Amazon brands into revenue machines.",
+                  desc: "From $0 to $200K/mo, we've built the systems that turn Amazon brands into revenue machines.",
                 },
               ].map((item, idx) => (
                 <div key={idx} className="flex gap-4 group">

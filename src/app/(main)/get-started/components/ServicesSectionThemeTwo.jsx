@@ -34,7 +34,7 @@ const services = [
     number: "04",
     title: "Creative & A+",
     description: "Convert more shoppers with scroll-stopping visuals and compelling A+ content.",
-    stat: "25–40%",
+    stat: "25-40%",
     statLabel: "Higher Conversion",
   },
   {

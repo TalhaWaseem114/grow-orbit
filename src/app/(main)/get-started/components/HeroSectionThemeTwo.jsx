@@ -128,7 +128,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
               <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden md:block opacity-50 shrink-0" />
               <p className="text-zinc-400 text-[14px] sm:text-[17px] font-light leading-relaxed max-w-xl">
                 We build, launch, and scale Amazon brands from $0
-                to <span className="text-white font-semibold">$50K–$200K+/month</span> with a proven, profit-first system.
+                to <span className="text-white font-semibold">$50K-$200K+/month</span> with a proven, profit-first system.
               </p>
             </div>
 

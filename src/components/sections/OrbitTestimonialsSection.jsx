@@ -149,7 +149,7 @@ export default function OrbitTestimonialsSection() {
 
                 {/* Punchy Review Headline */}
                 <h3 className="text-[15px] sm:text-[16px] font-black uppercase tracking-tight text-zinc-900 mb-3 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  {t.headline[0]} <span className="text-zinc-950 font-black">— {t.headline[1]}</span>
+                  {t.headline[0]} <span className="text-zinc-950 font-black">- {t.headline[1]}</span>
                 </h3>
 
                 {/* Spacious Quote */}

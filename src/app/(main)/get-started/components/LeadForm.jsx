@@ -253,7 +253,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
             <option value="PPC / Ads Management" className={isDark ? "bg-zinc-950 text-white" : ""}>PPC / Ads Management</option>
             <option value="A+ Content & Creative" className={isDark ? "bg-zinc-950 text-white" : ""}>A+ Content & Creative</option>
             <option value="Full Account Management" className={isDark ? "bg-zinc-950 text-white" : ""}>Full Account Management</option>
-            <option value="I'm Not Sure Yet" className={isDark ? "bg-zinc-950 text-white" : ""}>I'm Not Sure Yet — Help Me Decide</option>
+            <option value="I'm Not Sure Yet" className={isDark ? "bg-zinc-950 text-white" : ""}>I'm Not Sure Yet (Help Me Decide)</option>
           </select>
           <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none text-sm">↓</span>
         </div>

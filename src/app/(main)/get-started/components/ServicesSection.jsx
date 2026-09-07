@@ -40,7 +40,7 @@ export default function ServicesSection() {
               Every lever that <span className="italic font-light text-zinc-400 lowercase tracking-normal" style={{ fontFamily: "'Playfair Display', serif" }}>moves revenue.</span>
             </h2>
             <p className="text-zinc-500 text-sm font-light leading-relaxed mt-4 max-w-lg">
-              Amazon growth doesn’t come from ads alone—it comes from fixing every layer that drives conversion.
+              Amazon growth doesn’t come from ads alone, it comes from fixing every layer that drives conversion.
             </p>
           </div>
           <Link href="/service" className="group shrink-0 flex items-center gap-2 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-4 transition-all no-underline pb-1">

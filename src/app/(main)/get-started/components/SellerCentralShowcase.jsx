@@ -11,17 +11,17 @@ export default function SellerCentralShowcase({
   const screens = [
     {
       src: "/images/saler centeral screens/1.jpg",
-      alt: "Amazon Seller Central — Graffixx 61K units sold",
+      alt: "Amazon Seller Central: Graffixx 61K units sold",
       index: 0,
     },
     {
       src: "/images/saler centeral screens/2.jpg",
-      alt: "Amazon Seller Central — Kazvoo 88K units sold",
+      alt: "Amazon Seller Central: Kazvoo 88K units sold",
       index: 1,
     },
     {
       src: "/images/saler centeral screens/3.jpg",
-      alt: "Amazon Seller Central — Dunova 67K units sold",
+      alt: "Amazon Seller Central: Dunova 67K units sold",
       index: 2,
     },
   ];
@@ -64,7 +64,7 @@ export default function SellerCentralShowcase({
             </span>
           </h2>
           <p className="text-zinc-400 text-base sm:text-lg font-light max-w-xl mx-auto leading-relaxed">
-            Live Seller Central screenshots from brands we manage — growth you can see, not just hear about.
+            Live Seller Central screenshots from brands we manage, showing growth you can see, not just hear about.
           </p>
         </div>
 

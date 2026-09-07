@@ -57,7 +57,7 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
                 <div className="flex items-start gap-2.5 mb-4 px-3 py-2 rounded-xl sm:rounded-full border border-orange-500/30 bg-orange-500/10 self-stretch sm:self-start">
                   <div className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse shrink-0 mt-1 sm:mt-0" />
                   <span className="text-white font-bold text-[9px] uppercase tracking-[0.25em] sm:tracking-[0.4em] leading-normal sm:leading-none">
-                    We onboard only 3–4 brands per month — limited spots open for {currentMonth}
+                    We onboard only 3-4 brands per month, with limited spots open for {currentMonth}
                   </span>
                 </div>
 
@@ -97,14 +97,14 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
                 </div>
 
                 <p className="text-[14px] sm:text-[15px] text-zinc-400 font-light leading-relaxed max-w-xl mb-4">
-                  Whether you have a <span className="text-white font-medium">product idea you want to launch</span> or an <span className="text-white font-medium">existing brand you want to scale</span> — this meeting is your starting point. We'll map out exactly where you are, where you want to go, and how to get there.
+                  Whether you have a <span className="text-white font-medium">product idea you want to launch</span> or an <span className="text-white font-medium">existing brand you want to scale</span>, this meeting is your starting point. We'll map out exactly where you are, where you want to go, and how to get there.
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
                   {[
                     "Understand your goals & current stage",
                     "Identify the best path forward for you",
-                    "Get a custom roadmap — idea to revenue",
+                    "Get a custom roadmap from idea to revenue",
                     "Zero pressure, just clarity",
                   ].map((f, j) => (
                     <div key={j} className="flex items-center gap-3">
@@ -115,7 +115,7 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
                 </div>
 
                 <p className="text-[13px] text-zinc-500 font-medium italic mb-5 max-w-md">
-                  Brand new to Amazon? Already selling? It doesn't matter — we meet you where you are and build from there.
+                  Brand new to Amazon? Already selling? It doesn't matter: we meet you where you are and build from there.
                 </p>
 
                 <button
@@ -153,7 +153,7 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
                       { icon: <Search size={13} />, text: "We learn about your goals, product idea, or existing brand" },
                       { icon: <Target size={13} />, text: "Identify the biggest opportunity to move forward" },
                       { icon: <Lightbulb size={13} />, text: "Share one actionable insight you can use immediately" },
-                      { icon: <ClipboardList size={13} />, text: "Map out your next steps — no guesswork" },
+                      { icon: <ClipboardList size={13} />, text: "Map out your next steps with zero guesswork" },
                     ].map((item, j) => (
                         <div key={j} className="flex items-center gap-2.5 py-1.5 border-t border-white/5">
                         <div className="w-7 h-7 rounded-lg bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
@@ -186,8 +186,8 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
                       ))}
                     </div>
                     <div>
-                      <p className="text-[9px] font-bold text-white">80+ brands started here — from first call to first sale</p>
-                      <p className="text-[8px] text-zinc-500">From first call to first sale — we've been there.</p>
+                      <p className="text-[9px] font-bold text-white">80+ brands started here, from first call to first sale</p>
+                      <p className="text-[8px] text-zinc-500">From first call to first sale, we've been there.</p>
                     </div>
                   </div>
                 </div>

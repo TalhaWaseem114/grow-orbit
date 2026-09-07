@@ -23,7 +23,7 @@ export default function DiagnosesSection() {
           </div>
 
           <p className="text-center font-mono text-[10px] uppercase tracking-[0.4em] text-zinc-600 mb-12">
-            Where most Amazon sellers get stuck — and how we solve it
+            Where most Amazon sellers get stuck, and how we solve it
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-white/5 rounded-[40px] overflow-hidden">
@@ -32,15 +32,15 @@ export default function DiagnosesSection() {
               num: "01",
               tag: "PRODUCT_FIT",
               icon: <Search size={22} />,
-              title: "You risk launching the wrong product — and burning months of budget.",
-              body: "Most sellers skip validation and launch blind. We use real demand data, competitor gaps, and margin analysis to find products that are built to win — before you spend a dollar on inventory.",
+              title: "You risk launching the wrong product and burning months of budget.",
+              body: "Most sellers skip validation and launch blind. We use real demand data, competitor gaps, and margin analysis to find products that are built to win before you spend a dollar on inventory.",
               metric: "VALIDATION: REQUIRED"
             },
             {
               num: "02",
               tag: "LAUNCH_GAP",
               icon: <Layout size={22} />,
-              title: "A weak launch means your product dies on page 5 — permanently.",
+              title: "A weak launch means your product dies on page 5, permanently.",
               body: "Images, A+ content, keyword strategy, and brand store need to work together from day one. Miss this, and Amazon's algorithm buries your listing before it ever gets a chance.",
               metric: "LAUNCH_READY: FALSE"
             },
@@ -48,7 +48,7 @@ export default function DiagnosesSection() {
               num: "03",
               tag: "SCALE_BLOCK",
               icon: <Activity size={22} />,
-              title: "You're stuck at the same revenue — watching competitors scale past you.",
+              title: "You're stuck at the same revenue while watching competitors scale past you.",
               body: "Without a unified system connecting PPC, creative, inventory, and organic ranking, growth flatlines. Every month you wait is revenue left on the table for someone else.",
               metric: "GROWTH_CAP: DETECTED"
             },

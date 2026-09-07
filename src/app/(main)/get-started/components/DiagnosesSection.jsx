@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, Layout, Activity } from "lucide-react";
+import { Search, Layers, Activity } from "lucide-react";
 
 export default function DiagnosesSection() {
   return (
@@ -39,7 +39,7 @@ export default function DiagnosesSection() {
             {
               num: "02",
               tag: "LAUNCH_GAP",
-              icon: <Layout size={22} />,
+              icon: <Layers size={22} />,
               title: "A weak launch means your product dies on page 5, permanently.",
               body: "Images, A+ content, keyword strategy, and brand store need to work together from day one. Miss this, and Amazon's algorithm buries your listing before it ever gets a chance.",
               metric: "LAUNCH_READY: FALSE"

@@ -4,22 +4,22 @@ import React, { memo } from 'react';
 import { Sparkles, Activity, Shield, TrendingUp, Target, Rocket } from 'lucide-react';
 
 const BRANDS = [
-  { name: "Brava", src: "/assets/brand-logos/brava.svg" },
-  { name: "Coda", src: "/assets/brand-logos/coda.svg" },
-  { name: "Cognit", src: "/assets/brand-logos/cognit.svg" },
-  { name: "Digit", src: "/assets/brand-logos/digit.svg" },
-  { name: "Ethos", src: "/assets/brand-logos/ethos.svg" },
-  { name: "Flint", src: "/assets/brand-logos/flint.svg" },
-  { name: "Flow", src: "/assets/brand-logos/flow.svg" },
-  { name: "Fluent", src: "/assets/brand-logos/fluent.svg" },
-  { name: "NovaPeak", src: "/assets/brand-logos/novapeak.svg" },
-  { name: "PureBloom", src: "/assets/brand-logos/purebloom.svg" }
+  { name: "Brava", src: "/assets/gemini-logos/brava.avif" },
+  { name: "Coda", src: "/assets/gemini-logos/coda.avif" },
+  { name: "Cognit", src: "/assets/gemini-logos/cognit.avif" },
+  { name: "Digit", src: "/assets/gemini-logos/digit.avif" },
+  { name: "Ethos", src: "/assets/gemini-logos/ethos.avif" },
+  { name: "Flint", src: "/assets/gemini-logos/flint.avif" },
+  { name: "Flow", src: "/assets/gemini-logos/flow.avif" },
+  { name: "Fluent", src: "/assets/gemini-logos/fluent.avif" },
+  { name: "NovaPeak", src: "/assets/gemini-logos/novapeak.avif" },
+  { name: "PureBloom", src: "/assets/gemini-logos/purebloom.avif" }
 ];
 
 const ClientLogosMarquee = ({ 
   bgClass = "bg-[#0A0A0B]", 
   borderClass = "border-b border-white/5",
-  isDark = true
+  isDark = false
 }) => {
   const renderBrandItems = (isClone = false) => (
     <div
@@ -29,20 +29,16 @@ const ClientLogosMarquee = ({
       {BRANDS.map((brand, index) => (
         <div
           key={`${isClone ? 'clone' : 'orig'}-${brand.name}-${index}`}
-          className="flex items-center justify-center mx-8 sm:mx-12 md:mx-14 flex-shrink-0 select-none group/brand"
+          className="flex items-center justify-center mx-6 sm:mx-8 md:mx-10 flex-shrink-0 select-none group/brand"
         >
           <img 
             src={brand.src}
             alt={brand.name}
             loading="lazy"
             decoding="async"
-            width="170"
-            height="44"
-            className={`h-7 sm:h-8 md:h-9 w-auto max-w-none object-contain transition-all duration-300 ${
-              isDark 
-                ? "brightness-0 invert opacity-60 group-hover/brand:opacity-100" 
-                : "opacity-80 group-hover/brand:opacity-100 group-hover/brand:scale-105"
-            }`}
+            width="160"
+            height="48"
+            className="h-8 sm:h-9 md:h-10 w-auto max-w-none object-contain mix-blend-multiply opacity-85 group-hover/brand:opacity-100 group-hover/brand:scale-105 transition-all duration-300"
           />
         </div>
       ))}

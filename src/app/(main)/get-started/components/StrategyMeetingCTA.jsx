@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, PhoneCall, Clock, Search, Target, Lightbulb, ClipboardList, CheckCircle2 } from "lucide-react";
+import { ArrowRight, PhoneCall, Clock, Search, Target, Lightbulb, ClipboardList, CheckCircle2, Gift, CalendarClock } from "lucide-react";
 import Image from "next/image";
 
 export default function StrategyMeetingCTA({ scrollToForm }) {
@@ -197,8 +197,8 @@ export default function StrategyMeetingCTA({ scrollToForm }) {
             {/* Bottom Bar */}
             <div className="mt-8 pt-8 border-t border-white/5 flex flex-wrap justify-center items-center gap-x-16 gap-y-8 relative z-10">
               {[
-                { icon: <Search size={20} />, title: "100% FREE", desc: "No credit card. No catch." },
-                { icon: <ClipboardList size={20} />, title: "LIMITED SLOTS", desc: "Only 3-4 brands per month." },
+                { icon: <Gift size={20} />, title: "100% FREE", desc: "No credit card. No catch." },
+                { icon: <CalendarClock size={20} />, title: "LIMITED SLOTS", desc: "Only 3-4 brands per month." },
                 { icon: <Clock size={20} />, title: "ACT FAST", desc: "Spots fill up every week." },
                 { icon: <Target size={20} />, title: "RESULTS DRIVEN", desc: "Strategies built to scale." },
               ].map((item, i) => (

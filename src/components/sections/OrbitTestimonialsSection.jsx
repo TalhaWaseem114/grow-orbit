@@ -3,7 +3,7 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Star, Quote, ArrowRight, Zap, Clock, Target, LineChart, Percent, Flame, Users, ShieldCheck } from "lucide-react";
+import { Star, ArrowRight, LineChart, Users, ShieldCheck, Zap } from "lucide-react";
 import { caseStudyTestimonials } from "@/data/testimonials";
 
 export default function OrbitTestimonialsSection() {

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, Package, Rocket, Image as ImageIcon, BarChart3, Settings, ArrowUpRight } from "lucide-react";
+import { Search, Package, Rocket, Paintbrush, BarChart3, Activity, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 
 const services = [
@@ -30,7 +30,7 @@ const services = [
     statLabel: "Faster Rankings",
   },
   {
-    icon: ImageIcon,
+    icon: Paintbrush,
     number: "04",
     title: "Creative & A+",
     description: "Convert more shoppers with scroll-stopping visuals and compelling A+ content.",
@@ -46,7 +46,7 @@ const services = [
     statLabel: "ACOS Reduction",
   },
   {
-    icon: Settings,
+    icon: Activity,
     number: "06",
     title: "Full Account Mgmt",
     description: "End-to-end management to scale your brand past $100K/month.",

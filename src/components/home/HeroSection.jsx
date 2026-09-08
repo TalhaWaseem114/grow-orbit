@@ -45,7 +45,7 @@ export default function Hero({ mode }) {
       </div>
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 items-start">
 
           {/* LEFT: FULL BUSINESS CONTENT */}
           <div className="lg:col-span-7 animate-content text-center lg:text-left">
@@ -114,7 +114,7 @@ export default function Hero({ mode }) {
             </div>
 
             {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 sm:gap-6 mb-12 lg:mb-24">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-4 sm:gap-6 mb-4 sm:mb-6 lg:mb-24">
               <Link
                 href="/get-started"
                 prefetch={false}
@@ -141,7 +141,7 @@ export default function Hero({ mode }) {
             </div>
 
             {/* Mobile Inline Trust Strip (Lightweight & Modern) */}
-            <div className="lg:hidden flex flex-col items-center justify-center gap-2 mb-8 mt-1">
+            <div className="lg:hidden flex flex-col items-center justify-center gap-2 mb-2 sm:mb-4 mt-1">
               <span className="font-mono text-[8px] font-bold uppercase tracking-[0.25em] text-zinc-600">
                 Verified Partnerships & Accreditations
               </span>
@@ -244,7 +244,7 @@ export default function Hero({ mode }) {
           </div>
 
           {/* RIGHT: THE ORBIT VELOCITY ENGINE */}
-          <div className="lg:col-span-5 relative group mt-10 lg:mt-[40px] scale-100 sm:scale-100 origin-top lg:origin-center" ref={engineRef}>
+          <div className="lg:col-span-5 relative group mt-1 lg:mt-[40px] scale-100 sm:scale-100 origin-top lg:origin-center" ref={engineRef}>
 
   {/* Outer Floating Accent (Top-Left) */}
   <div className="absolute -top-4 -left-4 lg:-top-10 lg:-left-10 w-24 h-24 border-t-2 border-l-2 border-orange-500/20 rounded-tl-[40px] pointer-events-none" />

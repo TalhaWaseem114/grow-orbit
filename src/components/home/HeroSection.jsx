@@ -134,6 +134,31 @@ export default function Hero({ mode }) {
               </a>
             </div>
 
+            {/* Mobile Inline Trust Strip (Lightweight & Modern) */}
+            <div className="lg:hidden flex flex-col items-center justify-center gap-2 mb-8 mt-1">
+              <span className="font-mono text-[8px] font-bold uppercase tracking-[0.25em] text-zinc-600">
+                Verified Partnerships & Accreditations
+              </span>
+              <div className="inline-flex items-center justify-center flex-wrap gap-x-2.5 gap-y-1 px-3.5 py-2 rounded-full bg-white/[0.03] border border-white/5 text-[9px] font-bold tracking-wider text-zinc-300 shadow-sm">
+                <span className="flex items-center gap-1 text-orange-400">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" className="inline-block">
+                    <path d="M17.5 13.5C14.5 16.5 9.5 16.5 6.5 13.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                    <path d="M17.5 13.5L16 12.5M17.5 13.5L19 12.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                  </svg>
+                  Amazon Ads Partner
+                </span>
+                <span className="text-zinc-700">·</span>
+                <span className="text-zinc-300">Amazon SPN</span>
+                <span className="text-zinc-700">·</span>
+                <span className="text-[#00AEEF]">Helium 10</span>
+                <span className="text-zinc-700">·</span>
+                <span className="flex items-center gap-1 text-emerald-400">
+                  <span>Clutch</span>
+                  <span className="text-orange-400">4.9★</span>
+                </span>
+              </div>
+            </div>
+
             {/* Trusted & Verified Section - Desktop Only */}
             <div className="hidden lg:flex mt-12 mb-6 flex-col items-start">
               <div className="flex items-center gap-3 mb-4 w-full lg:w-auto">

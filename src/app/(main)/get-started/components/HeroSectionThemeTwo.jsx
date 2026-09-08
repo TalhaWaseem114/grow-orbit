@@ -93,12 +93,12 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
         <div className="relative flex-1 flex flex-col justify-start px-5 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-24 sm:pt-24 pb-16 lg:pt-24 lg:pb-20 z-10">
           {/* Subtle low-density texture */}
           <div
-            className="absolute inset-0 opacity-[0.06] pointer-events-none"
+            className="absolute inset-0 opacity-[0.16] pointer-events-none"
             style={{
-              backgroundImage: "radial-gradient(circle, #fff 1px, transparent 1px)",
-              backgroundSize: "44px 44px",
-              maskImage: "radial-gradient(ellipse 90% 80% at 30% 40%, black 30%, transparent 90%)",
-              WebkitMaskImage: "radial-gradient(ellipse 90% 80% at 30% 40%, black 30%, transparent 90%)"
+              backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
+              backgroundSize: "40px 40px",
+              maskImage: "radial-gradient(ellipse 95% 85% at 35% 45%, black 40%, transparent 95%)",
+              WebkitMaskImage: "radial-gradient(ellipse 95% 85% at 35% 45%, black 40%, transparent 95%)"
             }}
           />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(249,115,22,0.12),transparent_60%)] pointer-events-none" />

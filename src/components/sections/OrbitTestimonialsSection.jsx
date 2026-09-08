@@ -212,38 +212,64 @@ export default function OrbitTestimonialsSection() {
         </div>
 
         {/* Global Stats Bar */}
-        <div className="mt-20 relative z-10">
-          <div
-            className="bg-white border border-zinc-100/80 rounded-[24px] py-7 px-6 md:px-8 lg:px-10 grid grid-cols-2 md:grid-cols-5 gap-y-8 gap-x-4 md:gap-x-2 lg:gap-x-6 shadow-[0_12px_40px_rgba(0,0,0,0.015)]"
-          >
-            {[
-              { icon: Users,      val: "80+",   label: "Brands Scaled"      },
-              { icon: Zap,        val: "$12M+", label: "Revenue Driven"     },
-              { icon: LineChart,  val: "37%",   label: "Avg. Lower ACoS"    },
-              { icon: Star,       val: "4.9/5", label: "Client Rating"      },
-              { icon: ShieldCheck, val: "100%",  label: "Results Focused"    },
-            ].map((stat, idx) => (
-              <div
-                key={idx}
-                className={`flex items-center gap-3 relative group ${
-                  idx === 4 ? "col-span-2 md:col-span-1 justify-center md:justify-start" : ""
-                }`}
-              >
-                {/* Icon (No shadow, soft pill BG) */}
-                <div className="w-10 h-10 rounded-xl bg-orange-500/[0.07] flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:bg-orange-500/[0.12]">
-                  <stat.icon size={16} className="text-orange-500" />
+        <div className="mt-8 sm:mt-12 md:mt-20 relative z-10">
+          <div className="bg-white border border-zinc-200/80 rounded-2xl md:rounded-[24px] shadow-[0_10px_35px_rgba(0,0,0,0.03)] overflow-hidden">
+            {/* 2x2 on mobile, 5 columns on desktop */}
+            <div className="grid grid-cols-2 md:grid-cols-5 md:py-7 md:px-8 lg:px-10 md:gap-x-2 lg:gap-x-6">
+              {[
+                { icon: Users,       val: "80+",   label: "Brands Scaled"   },
+                { icon: Zap,         val: "$12M+", label: "Revenue Driven"  },
+                { icon: LineChart,   val: "37%",   label: "Avg. Lower ACoS" },
+                { icon: Star,        val: "4.9/5", label: "Client Rating"   },
+                { icon: ShieldCheck, val: "100%",  label: "Results Focused" },
+              ].map((stat, idx) => (
+                <div
+                  key={idx}
+                  className={`flex items-center gap-3 p-4 sm:p-5 md:p-0 relative group transition-colors ${
+                    idx === 0
+                      ? "border-r border-b md:border-r-0 md:border-b-0 border-zinc-100"
+                      : idx === 1
+                      ? "border-b md:border-b-0 border-zinc-100"
+                      : idx === 2
+                      ? "border-r md:border-r-0 border-zinc-100"
+                      : idx === 3
+                      ? ""
+                      : "hidden md:flex"
+                  }`}
+                >
+                  {/* Icon */}
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-orange-500/[0.08] border border-orange-500/15 flex items-center justify-center shrink-0 transition-all duration-300 group-hover:scale-105 group-hover:bg-orange-500/[0.14]">
+                    <stat.icon size={16} className="text-orange-500" />
+                  </div>
+                  {/* Text */}
+                  <div className="flex flex-col">
+                    <span
+                      className="text-lg sm:text-xl font-extrabold text-zinc-900 leading-none tracking-tight group-hover:text-orange-500 transition-colors"
+                      style={{ fontFamily: "'Montserrat', sans-serif" }}
+                    >
+                      {stat.val}
+                    </span>
+                    <span className="text-[9px] sm:text-[10px] font-bold text-zinc-500 uppercase tracking-wider mt-1 group-hover:text-zinc-600 transition-colors">
+                      {stat.label}
+                    </span>
+                  </div>
                 </div>
-                {/* Text */}
-                <div className="flex flex-col">
-                  <span className="text-lg md:text-xl font-extrabold text-zinc-900 leading-none tracking-tight group-hover:text-orange-500 transition-colors">
-                    {stat.val}
-                  </span>
-                  <span className="text-[10px] font-medium text-zinc-600 uppercase tracking-wider mt-1 group-hover:text-zinc-500 transition-colors">
-                    {stat.label}
-                  </span>
-                </div>
+              ))}
+            </div>
+
+            {/* Mobile Trust Footer Bar for 5th Stat */}
+            <div className="md:hidden bg-gradient-to-r from-orange-500/[0.04] via-orange-500/[0.07] to-orange-500/[0.04] border-t border-orange-500/15 py-2.5 px-4 flex items-center justify-center gap-2">
+              <div className="w-5 h-5 rounded-full bg-orange-500/15 flex items-center justify-center shrink-0">
+                <ShieldCheck size={12} className="text-orange-600" />
               </div>
-            ))}
+              <span className="text-[11px] font-black uppercase tracking-wider text-zinc-900">
+                100% Results Focused
+              </span>
+              <span className="text-zinc-300">•</span>
+              <span className="text-[10px] font-bold text-orange-600/90 uppercase tracking-widest">
+                Guaranteed
+              </span>
+            </div>
           </div>
         </div>
       </div>

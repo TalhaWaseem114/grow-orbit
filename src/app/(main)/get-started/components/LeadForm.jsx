@@ -182,7 +182,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
       {/* Full Name */}
       <div>
         <label htmlFor="lead-name" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
-          isDark ? "text-zinc-400" : "text-zinc-500"
+          isDark ? "text-zinc-300" : "text-zinc-500"
         }`}>Full Name *</label>
         <input
           id="lead-name"
@@ -205,7 +205,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
       {/* Email Address */}
       <div>
         <label htmlFor="lead-email" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
-          isDark ? "text-zinc-400" : "text-zinc-500"
+          isDark ? "text-zinc-300" : "text-zinc-500"
         }`}>Email Address *</label>
         <input
           id="lead-email"
@@ -228,7 +228,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
       {/* Service Dropdown */}
       <div>
         <label htmlFor="lead-service" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
-          isDark ? "text-zinc-400" : "text-zinc-500"
+          isDark ? "text-zinc-300" : "text-zinc-500"
         }`}>Service You're Interested In *</label>
         <div className="relative">
           <select
@@ -262,7 +262,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
       {/* Mobile Number */}
       <div>
         <label htmlFor="lead-whatsapp" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
-          isDark ? "text-zinc-400" : "text-zinc-500"
+          isDark ? "text-zinc-300" : "text-zinc-500"
         }`}>Mobile Number (Optional)</label>
         <input
           id="lead-whatsapp"
@@ -284,7 +284,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
       {/* Anything else? */}
       <div>
         <label htmlFor="lead-pain" className={`block text-[9px] font-bold uppercase tracking-[0.2em] mb-1 pl-1 ${
-          isDark ? "text-zinc-400" : "text-zinc-500"
+          isDark ? "text-zinc-300" : "text-zinc-500"
         }`}>Anything else? (optional)</label>
         <textarea
           id="lead-pain"

@@ -69,7 +69,7 @@ export default function SellerCentralShowcase({
         </div>
 
         {/* Screenshots row */}
-        <div className="flex items-center justify-center gap-4 sm:gap-6 lg:gap-8">
+        <div className="flex items-center justify-center gap-2.5 sm:gap-6 lg:gap-8">
           {screens.map((screen) => {
             const isHighlighted = screen.index === highlightIndex;
             return (
@@ -77,8 +77,8 @@ export default function SellerCentralShowcase({
                 key={screen.index}
                 className={
                   isHighlighted
-                    ? "w-[36%] sm:w-[34%] max-w-[280px] shrink-0 -mt-4 sm:-mt-6"
-                    : "w-[28%] sm:w-[26%] max-w-[220px] shrink-0"
+                    ? "w-[40%] sm:w-[34%] max-w-[280px] shrink-0 -mt-5 sm:-mt-6"
+                    : "w-[26%] sm:w-[26%] max-w-[220px] shrink-0"
                 }
               >
                 <div
@@ -101,8 +101,8 @@ export default function SellerCentralShowcase({
                     loading="lazy"
                     sizes={
                       isHighlighted
-                        ? "(max-width: 640px) 34vw, 240px"
-                        : "(max-width: 640px) 28vw, 180px"
+                        ? "(max-width: 640px) 40vw, 240px"
+                        : "(max-width: 640px) 26vw, 180px"
                     }
                   />
                 </div>

@@ -200,7 +200,7 @@ export default function ServicesSectionThemeTwo() {
         <div className="lg:hidden -mx-6 sm:-mx-8">
           <div
             ref={scrollRef}
-            className="flex gap-3 overflow-x-auto snap-x snap-mandatory no-scrollbar px-6 sm:px-8 pb-2"
+            className="flex gap-3 overflow-x-auto snap-x snap-mandatory no-scrollbar px-6 sm:px-8 scroll-pl-6 sm:scroll-pl-8 pb-2"
             style={{ WebkitOverflowScrolling: "touch" }}
           >
             {services.map((service, i) => (

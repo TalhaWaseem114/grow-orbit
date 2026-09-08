@@ -41,6 +41,12 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
       `}</style>
       <section className="relative min-h-screen flex flex-col lg:flex-row items-stretch overflow-hidden bg-zinc-950">
 
+        {/* ── Top Subtle Dark Gradient (smoothly mixes down) ── */}
+        <div
+          className="absolute top-0 inset-x-0 h-36 sm:h-48 md:h-56 pointer-events-none z-10 bg-gradient-to-b from-black/80 via-black/35 to-transparent"
+          aria-hidden="true"
+        />
+
         {/* ── Desktop Navbar ── */}
         <header className="hidden lg:flex absolute top-6 left-8 md:left-16 lg:left-20 right-8 md:right-16 lg:right-20 items-center justify-between z-50">
           {/* Left: Logo */}

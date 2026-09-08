@@ -179,17 +179,6 @@ function MobileMenu({ onClose, pathname }) {
           {otherServices.map((item) => <MenuItem key={item.name} item={item} onClose={onClose} pathname={pathname} />)}
         </div>
       </div>
-
-      {/* CTA */}
-      <Link
-        href="/contact"
-        prefetch={false}
-        className="flex items-center justify-center gap-2 w-full py-3 rounded-xl bg-linear-to-r from-gray-900 to-gray-800 text-white text-[11px] font-bold uppercase tracking-widest no-underline shadow-lg hover:from-orange-500 hover:to-orange-600 hover:shadow-orange-500/30 hover:-translate-y-0.5 transition-all duration-300"
-        onClick={onClose}
-      >
-        Book Free Strategy Call
-        <ArrowRight size={14} />
-      </Link>
     </div>
   );
 }

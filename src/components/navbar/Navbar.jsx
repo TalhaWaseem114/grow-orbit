@@ -1,7 +1,7 @@
 "use client";
 
 
-import { ChevronDown, LayoutDashboard, LogOut, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, LayoutDashboard, LogIn, LogOut, Menu, UserPlus, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -508,56 +508,59 @@ export default function Navbar() {
           })}
 
           {/* Auth section in drawer */}
-          <div className="pt-3 mt-3 border-t border-zinc-100 space-y-1.5">
+          <div className="pt-3.5 mt-3 border-t border-zinc-100">
             {!user ? (
-              <>
-                <a
+              <div className="grid grid-cols-2 gap-2">
+                <Link
                   href="/login/"
                   onClick={closeMobileMenu}
-                  className="block px-4 py-2.5 rounded-xl text-[12px] font-bold uppercase tracking-widest text-zinc-600 hover:bg-zinc-50 no-underline transition-colors"
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-[11px] font-extrabold uppercase tracking-wider text-zinc-700 bg-zinc-50 hover:bg-zinc-100 border border-zinc-200/80 no-underline transition-all active:scale-[0.98]"
                 >
+                  <LogIn size={13} className="text-zinc-500" />
                   Sign In
-                </a>
-                <a
+                </Link>
+                <Link
                   href="/register/"
                   onClick={closeMobileMenu}
-                  className="block px-4 py-2.5 rounded-xl text-[12px] font-bold uppercase tracking-widest text-zinc-600 hover:bg-zinc-50 no-underline transition-colors"
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-[11px] font-extrabold uppercase tracking-wider text-orange-600 bg-orange-50/80 hover:bg-orange-100 border border-orange-200/80 no-underline transition-all active:scale-[0.98]"
                 >
+                  <UserPlus size={13} className="text-orange-500" />
                   Register
-                </a>
-              </>
+                </Link>
+              </div>
             ) : (
-              <>
+              <div className="grid grid-cols-2 gap-2">
                 <Link
                   href={role === "admin" ? "/admin-dashboard" : "/client-dashboard"}
                   prefetch={false}
                   onClick={closeMobileMenu}
-                  className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 text-[12px] font-bold uppercase tracking-widest transition-colors no-underline"
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-orange-600 bg-orange-50 hover:bg-orange-100 border border-orange-200/80 text-[11px] font-extrabold uppercase tracking-wider transition-all no-underline active:scale-[0.98]"
                 >
-                  <LayoutDashboard size={15} />
-                  {role === "admin" ? "Admin Panel" : "Client Panel"}
+                  <LayoutDashboard size={13} />
+                  {role === "admin" ? "Admin Panel" : "Dashboard"}
                 </Link>
                 <button
                   onClick={() => { closeMobileMenu(); handleLogout(); }}
-                  className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-red-500 hover:bg-red-50 text-[12px] font-bold uppercase tracking-widest transition-colors border-none bg-transparent cursor-pointer"
+                  className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-red-600 bg-red-50 hover:bg-red-100 border border-red-200/80 text-[11px] font-extrabold uppercase tracking-wider transition-all cursor-pointer active:scale-[0.98]"
                 >
-                  <LogOut size={15} />
+                  <LogOut size={13} />
                   Sign Out
                 </button>
-              </>
+              </div>
             )}
           </div>
         </div>
 
         {/* Drawer Bottom CTA */}
-        <div className="p-4 border-t border-zinc-100 bg-zinc-50/50">
+        <div className="p-4 border-t border-zinc-100 bg-zinc-50/60 pb-6 sm:pb-4">
           <Link
             href="/get-started#lead-form"
             prefetch={false}
             onClick={handleGetStartedClick}
-            className="flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl text-[11px] font-black uppercase tracking-widest bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600 no-underline shadow-md shadow-orange-500/20 active:scale-[0.98] transition-all"
+            className="group flex items-center justify-center gap-2 w-full py-3.5 px-4 rounded-xl text-[11px] font-black uppercase tracking-widest bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600 no-underline shadow-lg shadow-orange-500/25 active:scale-[0.98] transition-all"
           >
-            Get Started Now
+            <span>Get Started Now</span>
+            <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
         </div>
       </aside>

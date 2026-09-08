@@ -43,10 +43,8 @@ export default function Hero({ mode }) {
 
           {/* LEFT: FULL BUSINESS CONTENT */}
           <div className="lg:col-span-7 animate-content text-center lg:text-left">
-            <div className="flex items-center justify-center lg:justify-start gap-3 mb-10 lg:mb-8">
-              <div className="w-1.5 h-1.5 bg-orange-500 rounded-full" />
-              <div className="w-6 h-[1px] bg-orange-500/50" />
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">
+            <div className="flex items-center justify-center lg:justify-start mb-6 sm:mb-8">
+              <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.35em] sm:tracking-[0.4em] text-orange-500/90">
                 {mode === "amazon-services" ? "Amazon Operations & PPC Management" :
                  mode === "design-creative" ? "Amazon Visual Engineering & Design" :
                  "Amazon Growth Agency"}
@@ -54,14 +52,14 @@ export default function Hero({ mode }) {
             </div>
 
             <h1
-              className="text-[44px] xs:text-[54px] sm:text-[68px] md:text-[76px] lg:text-[90px] font-black tracking-tighter leading-[0.9] mb-10 lg:mb-12 text-white uppercase"
+              className="text-[52px] xs:text-[60px] sm:text-[74px] md:text-[84px] lg:text-[94px] font-black tracking-tighter leading-[0.88] sm:leading-[0.9] mb-8 sm:mb-10 lg:mb-12 text-white uppercase"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               {mode === "amazon-services" ? (
                 <>
                   Scale your<br />
                   <span className="text-orange-500">Amazon.</span><br />
-                  <span className="italic font-normal lowercase tracking-tight text-zinc-100 block mt-2 text-[32px] xs:text-[40px] sm:text-[52px] md:text-[58px] lg:text-[66px]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="italic font-normal lowercase tracking-tight text-zinc-100 block mt-2.5 sm:mt-2 text-[36px] xs:text-[44px] sm:text-[56px] md:text-[62px] lg:text-[70px]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     zero guesswork.
                   </span>
                 </>
@@ -69,7 +67,7 @@ export default function Hero({ mode }) {
                 <>
                   Scale your<br />
                   <span className="text-orange-500">Conversion.</span><br />
-                  <span className="italic font-normal lowercase tracking-tight text-zinc-100 block mt-2 text-[32px] xs:text-[40px] sm:text-[52px] md:text-[58px] lg:text-[66px]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="italic font-normal lowercase tracking-tight text-zinc-100 block mt-2.5 sm:mt-2 text-[36px] xs:text-[44px] sm:text-[56px] md:text-[62px] lg:text-[70px]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     engineered visuals.
                   </span>
                 </>
@@ -77,14 +75,14 @@ export default function Hero({ mode }) {
                 <>
                   Scale your<br />
                   <span className="text-orange-500">Revenue.</span><br />
-                  <span className="italic font-normal lowercase tracking-tight text-zinc-100 block mt-2 text-[32px] xs:text-[40px] sm:text-[52px] md:text-[58px] lg:text-[66px]" style={{ fontFamily: "'Playfair Display', serif" }}>
+                  <span className="italic font-normal lowercase tracking-tight text-zinc-100 block mt-2.5 sm:mt-2 text-[36px] xs:text-[44px] sm:text-[56px] md:text-[62px] lg:text-[70px]" style={{ fontFamily: "'Playfair Display', serif" }}>
                     zero guesswork.
                   </span>
                 </>
               )}
             </h1>
 
-            <div className="flex gap-6 mb-12 lg:mb-10 justify-center lg:justify-start text-center lg:text-left">
+            <div className="flex gap-6 mb-8 sm:mb-10 justify-center lg:justify-start text-center lg:text-left">
               <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden md:block opacity-50 shrink-0" />
               <div>
                 <p className="text-lg sm:text-xl text-zinc-400 font-light leading-relaxed max-w-xl mb-4 mx-auto lg:mx-0 text-center lg:text-left">
@@ -122,7 +120,7 @@ export default function Hero({ mode }) {
               <Link
                 href="/get-started"
                 prefetch={false}
-                className="group relative inline-flex items-center justify-center overflow-hidden rounded-full bg-gradient-to-r from-[#FF4E00] via-[#FF7A00] to-[#F29F05] px-8 sm:px-12 py-4 sm:py-5 text-white font-black text-[10px] sm:text-[11px] uppercase tracking-[0.15em] sm:tracking-[0.25em] transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_15px_50px_rgba(255,78,0,0.45)] active:scale-95 whitespace-nowrap no-underline focus-visible:ring-4 focus-visible:ring-orange-500/50 outline-none"
+                className="group relative inline-flex w-full sm:w-auto items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-r from-[#FF4E00] via-[#FF7A00] to-[#F29F05] px-6 sm:px-10 py-4.5 sm:py-5 text-white font-black text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-500 hover:scale-[1.02] shadow-[0_10px_30px_rgba(255,78,0,0.35)] hover:shadow-[0_15px_50px_rgba(255,78,0,0.5)] active:scale-95 border border-white/10 whitespace-nowrap no-underline focus-visible:ring-4 focus-visible:ring-orange-500/50 outline-none"
               >
                 {/* Skewed Shimmer Beam */}
                 <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-15deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-15deg)_translateX(100%)]">
@@ -132,7 +130,7 @@ export default function Hero({ mode }) {
                 {/* Button Content */}
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   Book Free Strategy Call
-                  <ArrowRight size={16} className="group-hover:translate-x-1.5 transition-transform duration-300" aria-hidden="true" />
+                  <ArrowRight size={17} className="group-hover:translate-x-1.5 transition-transform duration-300" strokeWidth={2.5} aria-hidden="true" />
                 </span>
               </Link>
               <a

@@ -44,15 +44,18 @@ export default function Hero({ mode }) {
           {/* LEFT: FULL BUSINESS CONTENT */}
           <div className="lg:col-span-7 animate-content text-center lg:text-left">
             <div className="flex items-center justify-center lg:justify-start mb-6 sm:mb-8">
-              <span className="font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.35em] sm:tracking-[0.4em] text-orange-500/90">
-                {mode === "amazon-services" ? "Amazon Operations & PPC Management" :
-                 mode === "design-creative" ? "Amazon Visual Engineering & Design" :
-                 "Amazon Growth Agency"}
-              </span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 shadow-[0_0_15px_rgba(249,115,22,0.08)]">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
+                <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.25em] sm:tracking-[0.3em] text-orange-400">
+                  {mode === "amazon-services" ? "Amazon Operations & PPC Management" :
+                   mode === "design-creative" ? "Amazon Visual Engineering & Design" :
+                   "Amazon Growth Agency"}
+                </span>
+              </div>
             </div>
 
             <h1
-              className="text-[52px] xs:text-[60px] sm:text-[74px] md:text-[84px] lg:text-[94px] font-black tracking-tighter leading-[0.88] sm:leading-[0.9] mb-8 sm:mb-10 lg:mb-12 text-white uppercase"
+              className="text-[52px] xs:text-[60px] sm:text-[74px] md:text-[84px] lg:text-[94px] font-black tracking-tighter leading-[0.88] sm:leading-[0.9] mb-6 sm:mb-8 lg:mb-10 text-white uppercase"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               {mode === "amazon-services" ? (
@@ -82,10 +85,10 @@ export default function Hero({ mode }) {
               )}
             </h1>
 
-            <div className="flex gap-6 mb-8 sm:mb-10 justify-center lg:justify-start text-center lg:text-left">
+            <div className="flex gap-6 mb-6 sm:mb-8 justify-center lg:justify-start text-center lg:text-left">
               <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden md:block opacity-50 shrink-0" />
               <div>
-                <p className="text-lg sm:text-xl text-zinc-400 font-light leading-relaxed max-w-xl mb-4 mx-auto lg:mx-0 text-center lg:text-left">
+                <p className="text-base sm:text-lg lg:text-xl text-zinc-300 font-normal leading-relaxed max-w-xl mx-auto lg:mx-0 text-center lg:text-left">
                   {mode === "amazon-services" ? (
                     "We run your Amazon PPC advertising, organic ranking SEO, and product sourcing operations so you can focus on scale instead of management."
                   ) : mode === "design-creative" ? (
@@ -94,24 +97,13 @@ export default function Hero({ mode }) {
                     "We run your entire Amazon operation across ads, SEO, listings, and core creative so you can focus on building your brand instead of managing it."
                   )}
                 </p>
-                <div className="flex flex-wrap justify-center lg:justify-start gap-6 font-mono text-[9px] text-zinc-400 uppercase tracking-widest">
-                   <div className="flex items-center gap-2">
-                     <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                     <span>Infrastructure_Live</span>
-                   </div>
-                   <div className="flex items-center gap-2">
-                     <Activity size={10} className="text-orange-500" />
-                     <span>Weekly Strategy Reviews</span>
-                   </div>
-                </div>
               </div>
             </div>
 
-
-            <div className="flex items-center justify-center lg:justify-start gap-2 mb-8 lg:mb-6 px-1">
-              <div className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-              <p className="text-[9px] sm:text-[11px] font-bold text-zinc-400 uppercase tracking-[0.1em] sm:tracking-[0.2em]">
-                Currently Accepting 3-4 Brands <span className="mx-1 opacity-30">··</span> Apply Now
+            <div className="flex items-center justify-center lg:justify-start gap-2 mb-6 sm:mb-7 px-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] shrink-0" />
+              <p className="text-[10px] sm:text-[11px] font-semibold text-zinc-400 uppercase tracking-[0.14em] sm:tracking-[0.18em]">
+                Currently Accepting 3-4 Brands <span className="mx-1.5 text-zinc-600">|</span> <span className="text-orange-400 font-bold">Apply Now</span>
               </p>
             </div>
 

@@ -26,16 +26,22 @@ export default function Hero({ mode }) {
         }
       `}</style>
 
-      {/* Atmospheric Background */}
-      <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-transparent via-orange-500/[0.04] to-transparent" />
-        <svg className="absolute inset-0 w-full h-full opacity-[0.04]" xmlns="http://www.w3.org/2000/svg">
-          <pattern id="mgmt-grid" width="80" height="80" patternUnits="userSpaceOnUse">
-            <circle cx="1" cy="1" r="1" fill="#fff" />
-          </pattern>
-          <rect width="100%" height="100%" fill="url(#mgmt-grid)" />
-        </svg>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_60%_40%,rgba(249,115,22,0.12),transparent_55%)]" />
+      {/* Atmospheric Background with Low-Density Masked Dots */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-0 w-full h-[450px] bg-gradient-to-b from-transparent via-orange-500/[0.04] to-transparent" />
+        
+        {/* Low-density dots pattern with dynamic radial mask */}
+        <div
+          className="absolute inset-0 opacity-45"
+          style={{
+            backgroundImage: "radial-gradient(circle, rgba(255, 255, 255, 0.22) 1px, transparent 1px)",
+            backgroundSize: "36px 36px",
+            maskImage: "radial-gradient(ellipse 85% 75% at 50% 30%, black 20%, transparent 80%)",
+            WebkitMaskImage: "radial-gradient(ellipse 85% 75% at 50% 30%, black 20%, transparent 80%)"
+          }}
+        />
+
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_55%_35%,rgba(249,115,22,0.12),transparent_60%)]" />
       </div>
 
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12 relative z-10 w-full">

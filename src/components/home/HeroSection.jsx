@@ -102,8 +102,8 @@ export default function Hero({ mode }) {
 
             <div className="flex items-center justify-center lg:justify-start gap-2 mb-6 sm:mb-7 px-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] shrink-0" />
-              <p className="text-[10px] sm:text-[11px] font-semibold text-zinc-400 uppercase tracking-[0.14em] sm:tracking-[0.18em]">
-                Currently Accepting 3-4 Brands <span className="mx-1.5 text-zinc-600">|</span> <span className="text-orange-400 font-bold">Apply Now</span>
+              <p className="text-[9px] xs:text-[10px] sm:text-[11px] font-semibold text-zinc-400 uppercase tracking-wider sm:tracking-[0.16em] whitespace-nowrap">
+                Currently Accepting 3-4 Brands <span className="mx-1 sm:mx-1.5 text-zinc-600">|</span> <span className="text-orange-400 font-bold">Apply Now</span>
               </p>
             </div>
 

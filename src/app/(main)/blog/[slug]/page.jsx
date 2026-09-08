@@ -386,7 +386,7 @@ export default async function Page({ params }) {
                 return (
                   <h2
                     key={i}
-                    className="text-2xl sm:text-3xl font-black tracking-tight mt-12 mb-4 text-zinc-900"
+                    className="text-2xl sm:text-3xl font-extrabold tracking-tight mt-12 mb-4 text-zinc-900"
                     style={montserrat}
                   >
                     {block.text}
@@ -397,7 +397,7 @@ export default async function Page({ params }) {
                 return (
                   <h3
                     key={i}
-                    className="text-xl sm:text-2xl font-black tracking-tight mt-10 mb-3 text-zinc-900"
+                    className="text-lg sm:text-xl font-bold tracking-tight mt-10 mb-3 text-zinc-800"
                     style={montserrat}
                   >
                     {block.text}
@@ -408,7 +408,7 @@ export default async function Page({ params }) {
                 return (
                   <h4
                     key={i}
-                    className="text-lg sm:text-xl font-bold tracking-tight mt-8 mb-2 text-zinc-900"
+                    className="text-base sm:text-lg font-semibold tracking-tight mt-8 mb-2 text-zinc-800"
                     style={montserrat}
                   >
                     {block.text}
@@ -422,7 +422,7 @@ export default async function Page({ params }) {
                     className="relative pl-8 py-6 my-10 border-l-4 border-orange-500 bg-orange-50/50 rounded-r-2xl pr-8"
                   >
                     <p
-                      className="text-lg sm:text-xl font-bold text-zinc-800 leading-relaxed italic"
+                      className="text-lg sm:text-xl font-medium text-zinc-700 leading-relaxed italic"
                       style={serif}
                       dangerouslySetInnerHTML={{ __html: parseMarkdownText(block.text) }}
                     />
@@ -445,7 +445,7 @@ export default async function Page({ params }) {
                 );
               }
               if (block.type === "list") {
-                const items = block.text.split("\n").map(item => item.replace(/^[-*]\s*/, ""));
+                const items = block.text.split("\n").map(item => item.replace(/^([-*]|\d+\.)\s*/, ""));
                 return (
                   <ul key={i} className="space-y-3 my-6 pl-4 list-none">
                     {items.map((item, idx) => (
@@ -492,7 +492,7 @@ export default async function Page({ params }) {
                       <thead>
                         <tr className="bg-zinc-50 border-b border-zinc-200">
                           {headers.map((h, idx) => (
-                            <th key={idx} className="p-3.5 sm:p-4 font-bold text-zinc-950 uppercase tracking-wider text-[10px] sm:text-[11px] whitespace-nowrap sm:whitespace-normal">{h}</th>
+                            <th key={idx} className="p-3.5 sm:p-4 font-semibold text-zinc-800 uppercase tracking-wider text-[10px] sm:text-[11px] whitespace-nowrap sm:whitespace-normal">{h}</th>
                           ))}
                         </tr>
                       </thead>

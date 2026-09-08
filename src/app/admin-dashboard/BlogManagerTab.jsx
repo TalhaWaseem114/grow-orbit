@@ -361,47 +361,60 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
       status,
       featured: editingPost?.featured || false,
       views: editingPost?.views || 0,
-      content: editorBody.split("\n\n").filter(Boolean).map((text) => {
-        let type = "paragraph";
-        let cleanedText = text;
+      content: (() => {
+        const normalized = editorBody
+          .replace(/\r\n/g, "\n")
+          .replace(/^(#{2,4}\s+[^\n]+)\n(?!\n)/gm, "$1\n\n");
+        return normalized.split("\n\n").filter(Boolean).flatMap((rawText) => {
+          const text = rawText.trim();
+          if (!text) return [];
+          if (/^#{1,4}\s+/.test(text) && text.includes("\n")) {
+            const lines = text.split("\n");
+            return [lines[0].trim(), lines.slice(1).join("\n").trim()].filter(Boolean);
+          }
+          return [text];
+        }).map((text) => {
+          let type = "paragraph";
+          let cleanedText = text;
 
-        if (text.trim() === "---") {
-          type = "divider";
-          cleanedText = "";
-        } else if (text.startsWith("💡 ")) {
-          type = "highlight";
-          cleanedText = text.replace(/^💡\s*/, "");
-        } else if (text.startsWith("@[youtube")) {
-          type = "youtube";
-          const match = text.match(/@\[youtube(?:\|(.*?))?\]\((.*?)\)/);
-          cleanedText = match ? `${match[2]}|${match[1] || "Embedded Video"}` : "";
-        } else if (text.startsWith("%%CTA|")) {
-          type = "cta";
-          cleanedText = text.replace(/^%%CTA\|/, "").replace(/%%$/, "");
-        } else if (text.startsWith("#### ")) {
-          type = "heading-h4";
-          cleanedText = text.replace(/^####\s*/, "");
-        } else if (text.startsWith("### ")) {
-          type = "heading-h3";
-          cleanedText = text.replace(/^###\s*/, "");
-        } else if (text.startsWith("# ") || text.startsWith("## ")) {
-          type = "heading";
-          cleanedText = text.replace(/^#{1,2}\s*/, "");
-        } else if (text.startsWith("> ")) {
-          type = "quote";
-          cleanedText = text.replace(/^>\s*/, "");
-        } else if (text.startsWith("![")) {
-          type = "image";
-          const match = text.match(/!\[(.*?)\]\((.*?)\)/);
-          cleanedText = match ? `${match[2]}|${match[1] || "Blog Image"}` : "";
-        } else if (text.startsWith("- ") || text.startsWith("* ")) {
-          type = "list";
-        } else if (text.startsWith("|")) {
-          type = "table";
-        }
+          if (text.trim() === "---") {
+            type = "divider";
+            cleanedText = "";
+          } else if (text.startsWith("💡 ")) {
+            type = "highlight";
+            cleanedText = text.replace(/^💡\s*/, "");
+          } else if (text.startsWith("@[youtube")) {
+            type = "youtube";
+            const match = text.match(/@\[youtube(?:\|(.*?))?\]\((.*?)\)/);
+            cleanedText = match ? `${match[2]}|${match[1] || "Embedded Video"}` : "";
+          } else if (text.startsWith("%%CTA|")) {
+            type = "cta";
+            cleanedText = text.replace(/^%%CTA\|/, "").replace(/%%$/, "");
+          } else if (text.startsWith("#### ")) {
+            type = "heading-h4";
+            cleanedText = text.replace(/^####\s*/, "");
+          } else if (text.startsWith("### ")) {
+            type = "heading-h3";
+            cleanedText = text.replace(/^###\s*/, "");
+          } else if (text.startsWith("# ") || text.startsWith("## ")) {
+            type = "heading";
+            cleanedText = text.replace(/^#{1,2}\s*/, "");
+          } else if (text.startsWith("> ")) {
+            type = "quote";
+            cleanedText = text.replace(/^>\s*/, "");
+          } else if (text.startsWith("![")) {
+            type = "image";
+            const match = text.match(/!\[(.*?)\]\((.*?)\)/);
+            cleanedText = match ? `${match[2]}|${match[1] || "Blog Image"}` : "";
+          } else if (text.startsWith("- ") || text.startsWith("* ")) {
+            type = "list";
+          } else if (text.startsWith("|")) {
+            type = "table";
+          }
 
-        return { type, text: cleanedText };
-      }),
+          return { type, text: cleanedText };
+        });
+      })(),
     };
 
     try {
@@ -718,8 +731,8 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
     const parsePreviewMarkdown = (text) => {
       if (!text) return "";
       return text
-        .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 800; color: #18181b;">$1</strong>')
-        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #f97316; text-decoration: underline; font-weight: 600;">$1</a>');
+        .replace(/\*\*(.*?)\*\*/g, '<strong style="font-weight: 600; color: #27272a;">$1</strong>')
+        .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color: #ea580c; text-decoration: underline; font-weight: 500;">$1</a>');
     };
 
     return (
@@ -1250,23 +1263,23 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
                   }
                   if (block.type === "heading") {
                     return (
-                      <h2 key={idx} className={`font-black tracking-tight mt-12 mb-4 text-zinc-900 ${isPreviewFullscreen ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"}`} style={{ fontFamily: "'Montserrat', sans-serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
+                      <h2 key={idx} className={`font-extrabold tracking-tight mt-12 mb-4 text-zinc-900 ${isPreviewFullscreen ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"}`} style={{ fontFamily: "'Montserrat', sans-serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
                     );
                   }
                   if (block.type === "heading-h3") {
                     return (
-                      <h3 key={idx} className={`font-black tracking-tight mt-10 mb-3 text-zinc-900 ${isPreviewFullscreen ? "text-xl sm:text-2xl" : "text-lg sm:text-xl"}`} style={{ fontFamily: "'Montserrat', sans-serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
+                      <h3 key={idx} className={`font-bold tracking-tight mt-10 mb-3 text-zinc-800 ${isPreviewFullscreen ? "text-lg sm:text-xl" : "text-base sm:text-lg"}`} style={{ fontFamily: "'Montserrat', sans-serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
                     );
                   }
                   if (block.type === "heading-h4") {
                     return (
-                      <h4 key={idx} className={`font-bold tracking-tight mt-8 mb-2 text-zinc-900 ${isPreviewFullscreen ? "text-lg sm:text-xl" : "text-base sm:text-lg"}`} style={{ fontFamily: "'Montserrat', sans-serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
+                      <h4 key={idx} className={`font-semibold tracking-tight mt-8 mb-2 text-zinc-800 ${isPreviewFullscreen ? "text-base sm:text-lg" : "text-sm sm:text-base"}`} style={{ fontFamily: "'Montserrat', sans-serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
                     );
                   }
                   if (block.type === "quote") {
                     return (
                       <blockquote key={idx} className="relative pl-8 py-6 my-10 border-l-4 border-orange-500 bg-orange-50/50 rounded-r-2xl pr-8">
-                        <p className={`font-bold text-zinc-800 leading-relaxed italic ${isPreviewFullscreen ? "text-lg sm:text-xl" : "text-base sm:text-lg"}`} style={{ fontFamily: "'Playfair Display', serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
+                        <p className={`font-medium text-zinc-700 leading-relaxed italic ${isPreviewFullscreen ? "text-lg sm:text-xl" : "text-base sm:text-lg"}`} style={{ fontFamily: "'Playfair Display', serif" }} dangerouslySetInnerHTML={{ __html: parsePreviewMarkdown(block.text) }} />
                       </blockquote>
                     );
                   }

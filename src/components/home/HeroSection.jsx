@@ -102,8 +102,8 @@ export default function Hero({ mode }) {
 
             <div className="flex items-center justify-center lg:justify-start gap-2 mb-6 sm:mb-7 px-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)] shrink-0" />
-              <p className="text-[9px] xs:text-[10px] sm:text-[11px] font-semibold text-zinc-400 uppercase tracking-wider sm:tracking-[0.16em] whitespace-nowrap">
-                Currently Accepting 3-4 Brands <span className="mx-1 sm:mx-1.5 text-zinc-600">|</span> <span className="text-orange-400 font-bold">Apply Now</span>
+              <p className="text-[9px] xs:text-[10px] sm:text-[11px] font-semibold text-zinc-200 uppercase tracking-wider sm:tracking-[0.16em] whitespace-nowrap">
+                Currently Accepting 3-4 Brands <span className="mx-1 sm:mx-1.5 text-zinc-500">|</span> <span className="text-orange-400 font-bold">Apply Now</span>
               </p>
             </div>
 
@@ -127,14 +127,15 @@ export default function Hero({ mode }) {
               </Link>
               <a
                 href="#services-grid"
-                className="group flex items-center justify-center gap-3 text-zinc-500 hover:text-white font-bold text-[11px] uppercase tracking-widest px-2 py-4 transition-colors no-underline focus-visible:text-white outline-none"
+                className="group flex items-center justify-center gap-2.5 text-zinc-300 hover:text-white font-bold text-[11px] sm:text-xs uppercase tracking-widest px-2 py-3 sm:py-4 transition-colors no-underline focus-visible:text-white outline-none"
               >
-                View Services <ChevronRight size={13} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+                <span>View Services</span>
+                <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform text-zinc-400 group-hover:text-white" aria-hidden="true" />
               </a>
             </div>
 
-            {/* Trusted & Verified Section - Recreated from Reference */}
-            <div className="mt-6 lg:mt-12 mb-6 flex flex-col items-center lg:items-start">
+            {/* Trusted & Verified Section - Desktop Only */}
+            <div className="hidden lg:flex mt-12 mb-6 flex-col items-start">
               <div className="flex items-center gap-3 mb-4 w-full lg:w-auto">
                 <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-zinc-600 whitespace-nowrap">Trusted & Verified By</span>
                 <div className="h-px bg-white/5 flex-1" />

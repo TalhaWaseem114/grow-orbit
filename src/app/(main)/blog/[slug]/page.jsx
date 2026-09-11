@@ -321,6 +321,109 @@ export default async function Page({ params }) {
                 return <hr key={i} className="border-t border-zinc-200 my-16" />;
               }
               if (block.type === "code") {
+                // 1. Pipeline / Funnel Sequence (e.g. A ➔ B ➔ C)
+                if ((block.text.includes("➔") || block.text.includes("→")) && !block.text.includes("\n")) {
+                  const pipeSteps = block.text.split(/[➔→]/).map((s) => s.trim()).filter(Boolean);
+                  return (
+                    <div key={i} className="my-10 bg-gradient-to-br from-zinc-50 via-white to-orange-50/30 border border-zinc-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.04)]">
+                      <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-100">
+                        <div className="flex items-center gap-2.5">
+                          <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                          <h4 className="text-xs font-black uppercase tracking-widest text-zinc-600" style={montserrat}>
+                            Listing Conversion Funnel Pipeline
+                          </h4>
+                        </div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200/60">
+                          End-to-End Flow
+                        </span>
+                      </div>
+                      <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+                        {pipeSteps.map((step, idx) => (
+                          <div key={idx} className="flex items-center gap-2.5 sm:gap-3 my-1">
+                            <div
+                              className={`px-4 py-2.5 rounded-2xl border text-xs sm:text-sm font-bold shadow-xs transition-all flex items-center gap-2.5 ${
+                                idx === pipeSteps.length - 1
+                                  ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white border-orange-500 shadow-orange-500/25 shadow-md"
+                                  : idx === 0
+                                  ? "bg-zinc-900 text-white border-zinc-900"
+                                  : "bg-white text-zinc-800 border-zinc-200/90 hover:border-orange-300"
+                              }`}
+                            >
+                              <span
+                                className={`w-5 h-5 rounded-full text-[10px] flex items-center justify-center font-bold shrink-0 ${
+                                  idx === pipeSteps.length - 1 || idx === 0
+                                    ? "bg-white/20 text-white"
+                                    : "bg-zinc-100 text-zinc-600"
+                                }`}
+                              >
+                                {idx + 1}
+                              </span>
+                              <span>{step}</span>
+                            </div>
+                            {idx < pipeSteps.length - 1 && (
+                              <span className="text-orange-500 font-bold text-sm sm:text-base select-none">
+                                ➔
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // 2. Sequential Decision List (e.g. 1. Question (Role) \n ↓ \n ...)
+                if (block.text.includes("↓") || (block.text.includes("1.") && block.text.includes("2."))) {
+                  const rawLines = block.text.split("\n").map((l) => l.trim()).filter((l) => l && l !== "↓");
+                  const parsedSteps = rawLines.map((line) => {
+                    const m = line.match(/^(\d+)\.\s*(.*?)(?:\s*\((.*?)\))?$/);
+                    if (m) {
+                      return { num: m[1], question: m[2], role: m[3] || "" };
+                    }
+                    return { num: "", question: line, role: "" };
+                  });
+
+                  return (
+                    <div key={i} className="my-10 bg-white border border-zinc-200/90 rounded-3xl p-6 sm:p-8 shadow-[0_4px_24px_-4px_rgba(0,0,0,0.04)]">
+                      <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-100">
+                        <div className="flex items-center gap-2.5">
+                          <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                          <h4 className="text-xs font-black uppercase tracking-widest text-zinc-600" style={montserrat}>
+                            The 7-Question Shopper Decision Flow
+                          </h4>
+                        </div>
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200/60">
+                          Sequential Journey
+                        </span>
+                      </div>
+                      <div className="space-y-3 relative">
+                        <div className="absolute left-[21px] top-6 bottom-6 w-0.5 bg-gradient-to-b from-orange-400 via-zinc-200 to-orange-500 hidden sm:block pointer-events-none" />
+                        {parsedSteps.map((step, idx) => (
+                          <div
+                            key={idx}
+                            className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-zinc-50/70 hover:bg-orange-50/30 border border-zinc-200/60 hover:border-orange-300/80 transition-all duration-200 group"
+                          >
+                            <div className="flex items-center gap-3.5 z-10">
+                              <span className="w-11 h-11 rounded-2xl bg-white border border-zinc-200/90 text-zinc-900 font-black text-xs flex items-center justify-center shadow-xs group-hover:bg-gradient-to-br group-hover:from-orange-500 group-hover:to-orange-600 group-hover:text-white group-hover:border-orange-500 transition-all shrink-0">
+                                0{idx + 1}
+                              </span>
+                              <p className="text-sm sm:text-base font-bold text-zinc-900 leading-snug">
+                                {step.question}
+                              </p>
+                            </div>
+                            {step.role && (
+                              <span className="self-start sm:self-center text-[11px] sm:text-xs font-semibold px-3.5 py-1.5 rounded-full bg-white border border-zinc-200 text-zinc-700 shadow-2xs group-hover:border-orange-200 group-hover:text-orange-900 shrink-0">
+                                {step.role}
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Default standard code block
                 return (
                   <pre
                     key={i}

@@ -1222,6 +1222,99 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
                   if (block.type === "divider") {
                     return <hr key={idx} className="border-t border-zinc-200 my-16" />;
                   }
+                  if (block.type === "code") {
+                    if ((block.text.includes("➔") || block.text.includes("→")) && !block.text.includes("\n")) {
+                      const pipeSteps = block.text.split(/[➔→]/).map((s) => s.trim()).filter(Boolean);
+                      return (
+                        <div key={idx} className="my-10 bg-gradient-to-br from-zinc-50 via-white to-orange-50/30 border border-zinc-200/90 rounded-3xl p-6 sm:p-8 shadow-sm">
+                          <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-100">
+                            <div className="flex items-center gap-2.5">
+                              <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                              <h4 className="text-xs font-black uppercase tracking-widest text-zinc-600" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                                Listing Conversion Funnel Pipeline
+                              </h4>
+                            </div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200/60">
+                              End-to-End Flow
+                            </span>
+                          </div>
+                          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+                            {pipeSteps.map((step, sIdx) => (
+                              <div key={sIdx} className="flex items-center gap-2.5 sm:gap-3 my-1">
+                                <div className={`px-4 py-2.5 rounded-2xl border text-xs sm:text-sm font-bold shadow-xs flex items-center gap-2.5 ${
+                                  sIdx === pipeSteps.length - 1
+                                    ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white border-orange-500 shadow-orange-500/25 shadow-md"
+                                    : sIdx === 0
+                                    ? "bg-zinc-900 text-white border-zinc-900"
+                                    : "bg-white text-zinc-800 border-zinc-200/90"
+                                }`}>
+                                  <span className={`w-5 h-5 rounded-full text-[10px] flex items-center justify-center font-bold shrink-0 ${
+                                    sIdx === pipeSteps.length - 1 || sIdx === 0 ? "bg-white/20 text-white" : "bg-zinc-100 text-zinc-600"
+                                  }`}>
+                                    {sIdx + 1}
+                                  </span>
+                                  <span>{step}</span>
+                                </div>
+                                {sIdx < pipeSteps.length - 1 && (
+                                  <span className="text-orange-500 font-bold text-sm sm:text-base select-none">➔</span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    }
+                    if (block.text.includes("↓") || (block.text.includes("1.") && block.text.includes("2."))) {
+                      const rawLines = block.text.split("\n").map((l) => l.trim()).filter((l) => l && l !== "↓");
+                      const parsedSteps = rawLines.map((line) => {
+                        const m = line.match(/^(\d+)\.\s*(.*?)(?:\s*\((.*?)\))?$/);
+                        if (m) {
+                          return { num: m[1], question: m[2], role: m[3] || "" };
+                        }
+                        return { num: "", question: line, role: "" };
+                      });
+                      return (
+                        <div key={idx} className="my-10 bg-white border border-zinc-200/90 rounded-3xl p-6 sm:p-8 shadow-sm">
+                          <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-100">
+                            <div className="flex items-center gap-2.5">
+                              <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
+                              <h4 className="text-xs font-black uppercase tracking-widest text-zinc-600" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                                The 7-Question Shopper Decision Flow
+                              </h4>
+                            </div>
+                            <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200/60">
+                              Sequential Journey
+                            </span>
+                          </div>
+                          <div className="space-y-3 relative">
+                            <div className="absolute left-[21px] top-6 bottom-6 w-0.5 bg-gradient-to-b from-orange-400 via-zinc-200 to-orange-500 hidden sm:block pointer-events-none" />
+                            {parsedSteps.map((step, sIdx) => (
+                              <div key={sIdx} className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-zinc-50/70 border border-zinc-200/60">
+                                <div className="flex items-center gap-3.5 z-10">
+                                  <span className="w-11 h-11 rounded-2xl bg-white border border-zinc-200/90 text-zinc-900 font-black text-xs flex items-center justify-center shadow-xs shrink-0">
+                                    0{sIdx + 1}
+                                  </span>
+                                  <p className="text-sm sm:text-base font-bold text-zinc-900 leading-snug">
+                                    {step.question}
+                                  </p>
+                                </div>
+                                {step.role && (
+                                  <span className="self-start sm:self-center text-[11px] sm:text-xs font-semibold px-3.5 py-1.5 rounded-full bg-white border border-zinc-200 text-zinc-700 shadow-2xs shrink-0">
+                                    {step.role}
+                                  </span>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    }
+                    return (
+                      <pre key={idx} className="my-8 p-5 sm:p-6 rounded-2xl bg-zinc-950 text-zinc-200 font-mono text-xs sm:text-sm overflow-x-auto border border-zinc-800 shadow-xl whitespace-pre leading-relaxed scrollbar-thin">
+                        <code>{block.text}</code>
+                      </pre>
+                    );
+                  }
                   if (block.type === "highlight") {
                     return (
                       <div key={idx} className="flex gap-4 items-start bg-orange-50/50 border-l-4 border-orange-500 py-6 px-6 sm:px-8 rounded-r-2xl my-10">

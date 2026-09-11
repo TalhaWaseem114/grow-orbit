@@ -1226,19 +1226,21 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
                     if ((block.text.includes("➔") || block.text.includes("→")) && !block.text.includes("\n")) {
                       const pipeSteps = block.text.split(/[➔→]/).map((s) => s.trim()).filter(Boolean);
                       return (
-                        <div key={idx} className="my-10 bg-gradient-to-br from-zinc-50 via-white to-orange-50/30 border border-zinc-200/90 rounded-3xl p-6 sm:p-8 shadow-sm">
-                          <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-100">
+                        <div key={idx} className="my-10 bg-gradient-to-br from-zinc-50 via-white to-orange-50/30 border border-zinc-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-sm">
+                          <div className="flex items-center justify-between gap-4 mb-5 sm:mb-6 pb-3 sm:pb-4 border-b border-zinc-100">
                             <div className="flex items-center gap-2.5">
                               <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
                               <h4 className="text-xs font-black uppercase tracking-widest text-zinc-600" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                                 Listing Conversion Funnel Pipeline
                               </h4>
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200/60">
+                            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-2.5 sm:px-3 py-1 rounded-full border border-orange-200/60 shrink-0">
                               End-to-End Flow
                             </span>
                           </div>
-                          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+
+                          {/* Desktop layout */}
+                          <div className="hidden sm:flex sm:flex-wrap sm:items-center sm:gap-2.5">
                             {pipeSteps.map((step, sIdx) => (
                               <div key={sIdx} className="flex items-center gap-2.5 sm:gap-3 my-1">
                                 <div className={`px-4 py-2.5 rounded-2xl border text-xs sm:text-sm font-bold shadow-xs flex items-center gap-2.5 ${
@@ -1261,6 +1263,46 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
                               </div>
                             ))}
                           </div>
+
+                          {/* Mobile layout: full-width vertical stepper with downward flow */}
+                          <div className="flex flex-col sm:hidden space-y-1.5">
+                            {pipeSteps.map((step, sIdx) => {
+                              const isFirst = sIdx === 0;
+                              const isLast = sIdx === pipeSteps.length - 1;
+                              return (
+                                <div key={sIdx} className="flex flex-col items-center">
+                                  <div className={`w-full flex items-center justify-between px-3.5 py-3 rounded-2xl border transition-all ${
+                                    isLast
+                                      ? "bg-gradient-to-r from-orange-500 to-orange-600 text-white border-orange-500 shadow-md shadow-orange-500/20"
+                                      : isFirst
+                                      ? "bg-zinc-900 text-white border-zinc-900 shadow-xs"
+                                      : "bg-white text-zinc-800 border-zinc-200/90 shadow-2xs"
+                                  }`}>
+                                    <div className="flex items-center gap-3">
+                                      <span className={`w-6 h-6 rounded-lg text-[11px] flex items-center justify-center font-black shrink-0 ${
+                                        isLast || isFirst ? "bg-white/20 text-white" : "bg-orange-50 text-orange-600 border border-orange-200/60"
+                                      }`}>
+                                        {sIdx + 1}
+                                      </span>
+                                      <span className="text-xs font-bold leading-tight">
+                                        {step}
+                                      </span>
+                                    </div>
+                                    <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full shrink-0 ${
+                                      isLast ? "bg-white/25 text-white" : isFirst ? "bg-white/15 text-white/80" : "bg-zinc-100 text-zinc-500"
+                                    }`}>
+                                      {isFirst ? "Entry" : isLast ? "Goal" : `Step 0${sIdx + 1}`}
+                                    </span>
+                                  </div>
+                                  {!isLast && (
+                                    <div className="my-0.5 text-orange-500 flex items-center justify-center">
+                                      <span className="text-xs font-bold leading-none">↓</span>
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
                       );
                     }
@@ -1274,32 +1316,39 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
                         return { num: "", question: line, role: "" };
                       });
                       return (
-                        <div key={idx} className="my-10 bg-white border border-zinc-200/90 rounded-3xl p-6 sm:p-8 shadow-sm">
-                          <div className="flex items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-100">
+                        <div key={idx} className="my-10 bg-white border border-zinc-200/90 rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-sm">
+                          <div className="flex items-center justify-between gap-4 mb-5 sm:mb-6 pb-3 sm:pb-4 border-b border-zinc-100">
                             <div className="flex items-center gap-2.5">
                               <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
                               <h4 className="text-xs font-black uppercase tracking-widest text-zinc-600" style={{ fontFamily: "'Montserrat', sans-serif" }}>
                                 The 7-Question Shopper Decision Flow
                               </h4>
                             </div>
-                            <span className="text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-3 py-1 rounded-full border border-orange-200/60">
+                            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-2.5 sm:px-3 py-1 rounded-full border border-orange-200/60 shrink-0">
                               Sequential Journey
                             </span>
                           </div>
-                          <div className="space-y-3 relative">
+                          <div className="space-y-2.5 sm:space-y-3 relative">
                             <div className="absolute left-[21px] top-6 bottom-6 w-0.5 bg-gradient-to-b from-orange-400 via-zinc-200 to-orange-500 hidden sm:block pointer-events-none" />
                             {parsedSteps.map((step, sIdx) => (
-                              <div key={sIdx} className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-zinc-50/70 border border-zinc-200/60">
-                                <div className="flex items-center gap-3.5 z-10">
-                                  <span className="w-11 h-11 rounded-2xl bg-white border border-zinc-200/90 text-zinc-900 font-black text-xs flex items-center justify-center shadow-xs shrink-0">
+                              <div key={sIdx} className="relative flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3 p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-zinc-50/70 border border-zinc-200/60">
+                                <div className="flex items-start sm:items-center gap-3 sm:gap-3.5 z-10">
+                                  <span className="w-8 h-8 sm:w-11 sm:h-11 rounded-lg sm:rounded-2xl bg-white border border-zinc-200/90 text-zinc-900 font-black text-xs flex items-center justify-center shadow-xs shrink-0 mt-0.5 sm:mt-0">
                                     0{sIdx + 1}
                                   </span>
-                                  <p className="text-sm sm:text-base font-bold text-zinc-900 leading-snug">
-                                    {step.question}
-                                  </p>
+                                  <div>
+                                    <p className="text-xs sm:text-base font-bold text-zinc-900 leading-snug">
+                                      {step.question}
+                                    </p>
+                                    {step.role && (
+                                      <span className="inline-block sm:hidden mt-1.5 text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white border border-zinc-200 text-zinc-700 shadow-2xs">
+                                        {step.role}
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
                                 {step.role && (
-                                  <span className="self-start sm:self-center text-[11px] sm:text-xs font-semibold px-3.5 py-1.5 rounded-full bg-white border border-zinc-200 text-zinc-700 shadow-2xs shrink-0">
+                                  <span className="hidden sm:inline-block text-xs font-semibold px-3.5 py-1.5 rounded-full bg-white border border-zinc-200 text-zinc-700 shadow-2xs shrink-0">
                                     {step.role}
                                   </span>
                                 )}

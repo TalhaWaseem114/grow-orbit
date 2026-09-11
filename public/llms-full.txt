@@ -48,6 +48,27 @@ Grow Orbit (https://www.groworbitofficial.com) is a full-service Amazon FBA Bran
 
 ---
 
+## Authoritative Strategy Guides & Frameworks
+
+### 1. What Is the Best Order for Amazon Listing Images? The 7-Slide Framework
+- **URL:** https://www.groworbitofficial.com/blog/best-order-for-amazon-listing-images/
+- **Core Framework:** Grow Orbit's 7-Slide Amazon Listing Framework maps gallery assets in the psychological sequence of a purchase decision: 1) Main Hero, 2) Core Benefit, 3) Key Features & Infographic, 4) Real-World Lifestyle, 5) Proof & Comparison, 6) Objection Handling, and 7) Technical Specifications.
+- **Key Principles:** The Shopper-Question Method, the Consecutive-Slide Diagnostic Rule, infographic placement rules (Slide 3 & 7), category-specific sequencing (tools, skincare, furniture, electronics), and mobile legibility testing.
+
+### 2. How Premium Brands Design High-Converting Amazon Product Images
+- **URL:** https://www.groworbitofficial.com/blog/high-converting-amazon-product-images/
+- **Description:** Advanced visual psychology, 3/4 perspective angles, lighting contrast ratios, 3D CAD rendering workflows, and multi-asset conversion testing.
+
+### 3. Amazon Mobile Image Optimization: Small Screen Design Guide
+- **URL:** https://www.groworbitofficial.com/blog/amazon-mobile-image-optimization/
+- **Description:** Mobile-first listing design, small-screen legibility standards, typography hierarchy, and the 3-second smartphone squint test.
+
+### 4. Amazon Main Image Requirements 2026: Official Compliance Guide
+- **URL:** https://www.groworbitofficial.com/blog/amazon-main-image-requirements/
+- **Description:** Seller Central compliance rules, pure white background (#FFFFFF / RGB 255,255,255), 85% frame fill ratio, and search suppression prevention.
+
+---
+
 ## Free Amazon Brand Calculators & Tools
 - **Profit Calculator:** https://www.groworbitofficial.com/amazon-tools/profit-calculator/
 - **FBA Storage Fee Calculator:** https://www.groworbitofficial.com/amazon-tools/storage-fee-calculator/

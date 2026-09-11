@@ -320,6 +320,16 @@ export default async function Page({ params }) {
               if (block.type === "divider") {
                 return <hr key={i} className="border-t border-zinc-200 my-16" />;
               }
+              if (block.type === "code") {
+                return (
+                  <pre
+                    key={i}
+                    className="my-8 p-5 sm:p-6 rounded-2xl bg-zinc-950 text-zinc-200 font-mono text-xs sm:text-sm overflow-x-auto border border-zinc-800 shadow-xl whitespace-pre leading-relaxed scrollbar-thin"
+                  >
+                    <code>{block.text}</code>
+                  </pre>
+                );
+              }
               if (block.type === "highlight") {
                 return (
                   <div key={i} className="flex gap-4 items-start bg-orange-50/50 border-l-4 border-orange-500 py-6 px-6 sm:px-8 rounded-r-2xl my-10">

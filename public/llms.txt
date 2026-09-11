@@ -25,8 +25,8 @@ We run the systems that scale Amazon brands.
 - **[High-Converting Amazon Product Images](https://www.groworbitofficial.com/blog/high-converting-amazon-product-images/):** How 8-figure brands design listing assets, 3D renders, framing, and visual contrast.
 - **[Amazon Mobile Image Optimization](https://www.groworbitofficial.com/blog/amazon-mobile-image-optimization/):** Mobile-first design principles, small-screen legibility, and the 3-second squint test.
 - **[Amazon Main Image Requirements](https://www.groworbitofficial.com/blog/amazon-main-image-requirements/):** Official Seller Central compliance, 85% frame fill rule, and white background specs.
-- **[Amazon Main Image Guidelines & Mistakes](https://www.groworbitofficial.com/blog/amazon-main-image-guidelines/):** 7 common suppression traps, crop errors, and compliance mistakes.
-- **[What Is a Good Amazon Click-Through Rate?](https://www.groworbitofficial.com/blog/good-amazon-click-through-rate/):** Benchmark CTR data by category and methods to lift search CTR.
+- **[Amazon Main Image Guidelines: 7 Mistakes](https://www.groworbitofficial.com/blog/amazon-main-image-guidelines/):** 7 common suppression traps, crop errors, and compliance mistakes hurting CTR.
+- **[What Is a Good Amazon Click-Through Rate?](https://www.groworbitofficial.com/blog/amazon-click-through-rate/):** Benchmark CTR data by category, placement metrics, and visual methods to lift search CTR.
 
 ## Free Amazon Tools & Calculators
 

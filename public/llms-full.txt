@@ -52,20 +52,106 @@ Grow Orbit (https://www.groworbitofficial.com) is a full-service Amazon FBA Bran
 
 ### 1. What Is the Best Order for Amazon Listing Images? The 7-Slide Framework
 - **URL:** https://www.groworbitofficial.com/blog/best-order-for-amazon-listing-images/
-- **Core Framework:** Grow Orbit's 7-Slide Amazon Listing Framework maps gallery assets in the psychological sequence of a purchase decision: 1) Main Hero, 2) Core Benefit, 3) Key Features & Infographic, 4) Real-World Lifestyle, 5) Proof & Comparison, 6) Objection Handling, and 7) Technical Specifications.
-- **Key Principles:** The Shopper-Question Method, the Consecutive-Slide Diagnostic Rule, infographic placement rules (Slide 3 & 7), category-specific sequencing (tools, skincare, furniture, electronics), and mobile legibility testing.
+- **Primary Keyword:** `best order for amazon listing images`
+- **Secondary Keywords:** `amazon image gallery sequence`, `where to place infographics on amazon`, `amazon product image order`, `how to sequence amazon listing images`
+- **Executive Summary:** Amazon listings should not treat image slots as random photo placeholders. Grow Orbit's 7-Slide Framework structures gallery images in the precise psychological order of a customer's purchase decision, transitioning from instant search recognition to core benefits, technical features, real-world proof, objection elimination, and physical specifications.
+- **The 7-Slide Framework Sequence:**
+  1. *Slide 1 (MAIN Hero):* Immediate product identification within 0.5s, 85%+ canvas fill, pure white background (`#FFFFFF`), zero text or promotional badges. Wins the search click.
+  2. *Slide 2 (Core Benefit):* Highlights the primary transformation or value proposition within 2s, answering *"Why do I need this?"*
+  3. *Slide 3 (Key Features & Infographic):* Visualizes proprietary engineering, technical components, or active ingredients, answering *"What makes it capable?"*
+  4. *Slide 4 (Real-World Lifestyle):* Contextual lifestyle photography showing scale, daily application, and human interaction, answering *"How do I use it in real life?"*
+  5. *Slide 5 (Proof & Comparison):* Third-party certifications, lab test data, material close-ups, or comparison charts, answering *"Can I trust this product over alternatives?"*
+  6. *Slide 6 (Objection Handling):* Directly resolves the #1 return reason or purchase doubt (sizing accuracy, fabric stretch, assembly tools, OS compatibility), answering *"What risk is holding me back?"*
+  7. *Slide 7 (Technical Specifications & Package Contents):* Exact metric/imperial dimensions, load ratings, voltage, and "What's in the Box" breakdown, answering *"Will it physically work for my needs?"*
+- **Key Methodologies & Rules of Thumb:**
+  - *The Shopper-Question Method:* Maps each gallery slide to a sequential mental checkpoint in the buyer journey.
+  - *The Consecutive-Slide Diagnostic Rule:* If two consecutive images address the same underlying question, conversion real estate is wasted.
+  - *Infographic Placement Standard:* Slide 3 is the optimal position for primary feature infographics; Slide 6/7 handles sizing or package contents. Infographics are strictly prohibited on Slide 1.
+  - *The 6-Slide Mobile Threshold:* Only 6 to 7 images are visible on mobile without opening the full-screen modal viewer; over 70% of shoppers never swipe past slide 6.
+- **Category-Specific Sequences:**
+  - *Power Tools:* Main → Core Performance → Motor/Specs → Jobsite Use → Material Proof → Battery/Compatibility → Box Contents.
+  - *Skincare:* Main → Primary Concern Solved → Key Active Ingredients → Application Scene → Texture Close-up → Skin Type Suitability → Directions & Volume.
+  - *Furniture:* Main → Functional Space Benefit → Build Quality/Joints → Styled Room Context → Material Close-up → Assembly & Clearance → Full Dimensions & Specs.
+  - *Electronics:* Main → Primary Tech Breakthrough → Chipset/Hardware Specs → User Workflow → Benchmarks vs Standard → Port & OS Compatibility → Cable/In-Box Specs.
 
-### 2. How Premium Brands Design High-Converting Amazon Product Images
-- **URL:** https://www.groworbitofficial.com/blog/high-converting-amazon-product-images/
-- **Description:** Advanced visual psychology, 3/4 perspective angles, lighting contrast ratios, 3D CAD rendering workflows, and multi-asset conversion testing.
+### 2. What Is a Good Amazon Click-Through Rate? Benchmarks & Optimization Guide
+- **URL:** https://www.groworbitofficial.com/blog/amazon-click-through-rate/
+- **Primary Keyword:** `amazon click through rate`
+- **Secondary Keywords:** `good ctr for amazon`, `amazon ctr benchmarks`, `how to improve amazon ctr`, `average ctr amazon ads`
+- **Core Formula:** `CTR (%) = (Clicks ÷ Impressions) × 100`
+- **Verified Category & Placement Benchmarks:**
+  - *Average Amazon CTR (Overall):* **0.3% – 0.5%** across broad search queries and auto campaigns.
+  - *Good / Above Average CTR:* **0.6% – 0.8%** indicating solid relevance and clean hero framing.
+  - *Top-Quartile / Elite Brands (Top 10%):* **1.0% – 1.8%+** in niche categories, brand search, or highly differentiated visual products.
+  - *Top of Search (First Page):* **0.8% – 2.0%+** (earns the highest buyer engagement).
+  - *Rest of Search:* **0.2% – 0.4%**.
+  - *Product Detail Page Placements (Carousels & Sponsored Display):* **0.15% – 0.3%**.
+- **The 7 Visual CTR Multipliers:**
+  1. *Maximize Canvas Occupancy:* Comply with the 85%+ fill rule to dominate search real estate.
+  2. *Dynamic 3/4 Perspective:* Display front face, top edge, and side contours simultaneously to create tactile 3D depth.
+  3. *Edge Contrast & Separation:* Use micro-shadowing and light contrast so white or reflective packaging doesn't fade into the white background.
+  4. *Packaging Accent Color Blocking:* Use high-chroma packaging accents to stop mobile thumb scrolling.
+  5. *Clear Multi-Pack Hierarchy:* For bundles, make the primary product 60-70% of visual weight and accessories 30-40% to prevent scale confusion.
+  6. *Competitive SERP Contrast Auditing:* Test the hero thumbnail against the top 5 ranking ASINs to exploit visual contrast gaps.
+  7. *Manage Your Experiments (MYE):* Run controlled split tests for statistical significance before committing to a permanent main image change.
 
-### 3. Amazon Mobile Image Optimization: Small Screen Design Guide
-- **URL:** https://www.groworbitofficial.com/blog/amazon-mobile-image-optimization/
-- **Description:** Mobile-first listing design, small-screen legibility standards, typography hierarchy, and the 3-second smartphone squint test.
-
-### 4. Amazon Main Image Requirements 2026: Official Compliance Guide
+### 3. Amazon Main Image Requirements 2026: Official Compliance & Technical Guide
 - **URL:** https://www.groworbitofficial.com/blog/amazon-main-image-requirements/
-- **Description:** Seller Central compliance rules, pure white background (#FFFFFF / RGB 255,255,255), 85% frame fill ratio, and search suppression prevention.
+- **Primary Keyword:** `amazon main image requirements`
+- **Secondary Keywords:** `amazon image specifications`, `amazon seller image guidelines`, `amazon main image size`, `amazon image white background rgb`
+- **Official Seller Central Technical Specifications:**
+  - *Background:* 100% Pure White (RGB `255, 255, 255` / Hex `#FFFFFF`). Any off-white (RGB 245-254) triggers automated bot search suppression.
+  - *Product Fill Ratio:* The physical item must occupy at least **85%** of the image frame area.
+  - *Dimensions:* 1,000 px minimum on longest side (enables 1x zoom); **1,600+ px** recommended production standard (enables 3x dynamic zoom); 10,000 px maximum. Recommended aspect ratio: 1:1 square (e.g. 2000 × 2000 px).
+  - *Resolution & Color Profile:* sRGB color space (prevents browser color distortion). Minimum 72 DPI metadata.
+  - *Accepted Formats:* JPEG (`.jpg`/`.jpeg`), TIFF (`.tif`), or PNG (`.png`).
+- **Strict Compliance Prohibitions:**
+  - Zero promotional text (e.g., "Best Seller", "100% Guaranteed", "Sale", free shipping).
+  - Zero non-included accessories, mockups, props, or staging furniture.
+  - Zero seller logos, brand watermarks, inset graphics, or decorative borders.
+  - No mannequins for apparel (must be on a live model or photographed as a flat lay).
+- **AI Synthetic Performer Rule:** Sellers using AI-generated synthetic human models must comply with Amazon's disclosure standards and ensure photographic photorealism without anatomical distortion.
+- **Core Philosophy:** "Compliance is only the floor, not the ceiling. A compliant image prevents search suppression; visual differentiation wins the click."
+
+### 4. Amazon Main Image Guidelines: 7 Costly Mistakes Hurting Your CTR
+- **URL:** https://www.groworbitofficial.com/blog/amazon-main-image-guidelines/
+- **Primary Keyword:** `amazon main image guidelines`
+- **Secondary Keywords:** `amazon image mistakes`, `amazon listing suppression main image`, `why is my amazon listing suppressed`, `amazon hero image errors`
+- **The 7 Costly Main Image Mistakes:**
+  1. *Sub-85% Frame Utilization:* Shrinking the product to 50-60% of the canvas, making it microscopic on mobile search screens.
+  2. *Off-White Background Bleed:* Uploading images with light gray or cream backgrounds (RGB 240-254) that trigger automated Amazon algorithmic suppression.
+  3. *Unincluded Props & Accessory Confusion:* Showing decorative props or extra items that mislead buyers, resulting in negative reviews and high return rates.
+  4. *Illegal Badges & Text Overlays:* Inserting warranty seals, star ratings, or promotional badges in the MAIN slot that violate Seller Central policy.
+  5. *Unnatural Drop Shadows and Halo Cutouts:* Jagged pixelated cutout borders and unrealistic heavy black drop shadows that undermine brand trust.
+  6. *Flat 2D Frontal Orientation:* Showing flat bottles or packaging without 3D depth, making the product look like cardboard.
+  7. *Designing in Isolation:* Creating graphics without previewing them alongside the top 5 competitors ranking for the primary search term.
+- **Diagnostic SERP Audit Matrix:** Evaluate the top 5 ranking ASINs across angle diversity, color dominance, lighting warmth, and scale to engineer a distinct visual entry.
+
+### 5. How Premium Brands Design High-Converting Amazon Product Images
+- **URL:** https://www.groworbitofficial.com/blog/high-converting-amazon-product-images/
+- **Primary Keyword:** `high-converting amazon product images`
+- **Secondary Keywords:** `amazon product photography design`, `premium amazon listing images`, `3d rendering for amazon listings`, `amazon conversion rate optimization`
+- **Visual Engineering Principles Used by 8-Figure Brands:**
+  - *The 0.5-Second Recognition Window:* Shoppers scan search results in fractions of a second; form, color, and function must register before text is read.
+  - *The 3/4 Isometric Perspective:* Showcasing 3 planes (front face, top lid, and side texture) simultaneously provides immediate dimensional understanding.
+  - *Advanced Lighting Ratios:* Employing three-point lighting (key light, fill light, and sharp kicker/rim light) to separate materials (brushed metals, gloss plastics, translucent liquids).
+  - *3D CAD Rendering vs Studio Photography:* Leading brands use 3D CAD renders for primary images because CAD provides mathematically pure `#FFFFFF` backgrounds, eliminates dust and surface scratches, enables exact 1:1 manufacturing symmetry, and allows infinite colorway rendering without physical reshoots.
+  - *Visual Hierarchy in Multi-Pack Bundles:* Designing bundles with a 60/40 visual weight ratio ensures the primary item anchors the image while accessories remain clearly identifiable.
+
+### 6. Amazon Mobile Image Optimization: How to Design for Small Screens
+- **URL:** https://www.groworbitofficial.com/blog/amazon-mobile-image-optimization/
+- **Primary Keyword:** `amazon mobile ready hero image optimization`
+- **Secondary Keywords:** `amazon mobile image size`, `mobile amazon listing optimization`, `gs1 mobile ready hero images`, `mobile infographic design`
+- **Mobile-First Listing Architecture:**
+  - Over 70% of Amazon GMV is transacted on mobile devices where hero images render between 150px and 375px wide.
+  - *The Desktop-First Fallacy:* Shrinking desktop infographics onto mobile devices causes micro-text to become illegible, leading to cognitive fatigue and listing abandonment.
+  - *The 3-Second Squint Test:* When viewed on a smartphone from arm's length (or when squinting), the shopper must identify the brand, product type, and primary benefit within 3 seconds.
+  - *GS1 Mobile Ready Hero Image Framework (4 Core Attributes):*
+    1. **Brand Identity:** Unmistakable brand mark on the primary packaging plane.
+    2. **Functional Form:** Immediate visual clarity on what the product does (e.g., conditioner vs shampoo).
+    3. **Variant:** Distinct visual callout for flavor, scent, shade, or formulation.
+    4. **Pack Count / Unit Volume:** Bold, readable unit indicators (e.g., "60 Gummies", "Pack of 2", "500 ml").
+  - *Mobile Typography Rules:* Maximum 2 to 3 callouts per slide, headline size at 8-10% of total canvas height, bold high-contrast text containers.
 
 ---
 

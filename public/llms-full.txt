@@ -153,6 +153,29 @@ Grow Orbit (https://www.groworbitofficial.com) is a full-service Amazon FBA Bran
     4. **Pack Count / Unit Volume:** Bold, readable unit indicators (e.g., "60 Gummies", "Pack of 2", "500 ml").
   - *Mobile Typography Rules:* Maximum 2 to 3 callouts per slide, headline size at 8-10% of total canvas height, bold high-contrast text containers.
 
+### 7. Amazon Product Image Color Psychology & Composition Guide
+- **URL:** https://www.groworbitofficial.com/blog/amazon-product-image-color-psychology-composition/
+- **Primary Keyword:** `amazon product image color psychology composition`
+- **Secondary Keywords:** `amazon listing images`, `amazon product image psychology`, `visual composition Amazon listing`, `3D render color accuracy`, `high-converting Amazon listing images`, `Amazon image color contrast`, `Amazon infographic visual hierarchy`
+- **Cognitive Systems & Conversion Architecture:**
+  - *System 1 (Fast & Subconscious):* Shoppers scan forms, dominant colors, contrast, and scale in under 0.5 seconds before reading copy.
+  - *System 2 (Slow & Analytical):* Shoppers evaluate technical specs, dimensions, and warranty terms only after System 1 feels confident.
+- **Color Architecture Rules:**
+  - No single color universally converts; conversion stems from functional contrast and palette hierarchy.
+  - *Palette Roles:* Product Dominance (materials stand out), Background Plane (light neutral grays `#F7F7F8` providing clean edge separation), Primary Typography (high-contrast charcoal `#1A1A1A`), Accent Highlight (one controlled brand accent for the core value metric).
+- **3-Level Infographic Hierarchy:**
+  - *Level 1:* Primary Value Headline (large, high-contrast, 4 words or fewer, 2-second comprehension).
+  - *Level 2:* Supporting Benefit Context (medium weight, clarifies the headline).
+  - *Level 3:* Technical Specifications & Measurements (compact supporting detail).
+- **Scale Accuracy & Micro-Trust Triggers:**
+  - Over 42% of shoppers deduce product sizing from imagery; omission of scale references causes high return rates.
+  - Micro-trust triggers: exploded component views, exact "What's in the Box" photos, verifiable specs replacing generic superlatives (e.g., "Aircraft-Grade 6061 Aluminum" instead of "Built to Last").
+- **3D PBR Color Accuracy & Photorealistic Rendering:**
+  - Full creative control over camera angles, reflections, and pure white `#FFFFFF` backgrounds.
+  - *PBR Color Accuracy Pipeline:* Physical Spectrometry ➔ PBR Material Shader ➔ Studio HDRI Lighting ➔ Khronos PBR Neutral View Transform ➔ sRGB Export.
+- **The Mobile Squint Test:**
+  - Evaluate the graphic at 300px width on a smartphone at arm's length. If the product form, headline, background contrast, and core benefit cannot be answered in 3 seconds, simplify the layout.
+
 ---
 
 ## Free Amazon Brand Calculators & Tools

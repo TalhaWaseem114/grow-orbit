@@ -42,8 +42,8 @@ export async function generateMetadata({ params }) {
       const coverImg = post.coverImage || "https://images.unsplash.com/photo-1460925895917-afdab827c52f";
 
       return {
-        title: `${post.title} | Grow Orbit`,
-        description: post.excerpt || `Read ${post.title} on Grow Orbit.`,
+        title: `${post.metaTitle || post.title} | Grow Orbit`,
+        description: post.metaDescription || post.excerpt || `Read ${post.title} on Grow Orbit.`,
         alternates: {
           canonical: canonicalUrl,
         },

@@ -529,7 +529,7 @@ export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
             &#9993;
           </td>
           <td valign="top" style="padding-bottom: 10px; color: #334155; vertical-align: top; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-            <strong style="color: #0f172a;">Reply Directly:</strong> Prefer not to use Calendly? Just reply to this email with 2 preferred times and your time zone, and we'll book it for you.
+            <strong style="color: #0f172a;">Reply Directly:</strong> Prefer not to use Calendly? Just reply to this email with what time works best for you, and we'll book it right away.
           </td>
         </tr>
         <tr>

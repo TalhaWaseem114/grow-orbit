@@ -482,12 +482,85 @@ export const sandboxReceiptBody = `<!-- HIDE_DEFAULT_CTA -->
   </tr>
 </table>`;
 
-export const sandboxId = "sandbox-contract-agreement";
-export const sandboxSubject = sandboxContractSubject;
-export const sandboxHeadline = sandboxContractHeadline;
-export const sandboxBody = sandboxContractBody;
+export const sandboxRescheduleSubject = "Rescheduling Your Amazon Brand Launch Strategy Session — Grow Orbit 🚀";
+export const sandboxRescheduleHeadline = "Amazon Brand Launch Session | Quick Reschedule";
+export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
+<p style="font-size: 14.5px; line-height: 22px; color: #475569; margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Hi Sadie,
+</p>
+
+<p style="font-size: 14.5px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  I want to sincerely apologize for missing our scheduled strategy session on Monday, September 15th. Due to an internal calendar sync delay across our strategist team, your booking notification was unfortunately delayed in reaching our live calendar.
+</p>
+
+<p style="font-size: 14.5px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 18px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  We reviewed your inquiry regarding your <strong>Full Amazon Brand Launch</strong> and are excited to discuss the roadmap with you. We'd love to reschedule at your earliest convenience:
+</p>
+
+<!-- CTA Button Section (Bulletproof Table-Button for GoDaddy / Outlook / Gmail) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 10px; margin-bottom: 8px;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto;">
+        <tr>
+          <td align="center" bgcolor="#f97316" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 13px 32px; border-radius: 50px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+            <a href="https://calendly.com/groworbitofficial-support/30min" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12.5px; font-weight: bold; letter-spacing: 0.8px; text-transform: uppercase; line-height: 1.2; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+              Pick a New Time Slot &rarr;
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- Direct Link Fallback (Crucial for GoDaddy Webmail link scanners) -->
+<p style="font-size: 11.5px; line-height: 16px; color: #64748b; margin-top: 0; margin-bottom: 20px; text-align: center; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Direct Calendar Link: <a href="https://calendly.com/groworbitofficial-support/30min" target="_blank" style="color: #f97316 !important; text-decoration: underline !important; font-weight: 600;">https://calendly.com/groworbitofficial-support/30min</a>
+</p>
+
+<!-- Alternative Options Card (Bulletproof Table for GoDaddy) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 20px;">
+  <tr>
+    <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 16px 20px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 20px; color: #475569; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+        <tr>
+          <td width="26" valign="top" style="padding-bottom: 10px; font-size: 15px; vertical-align: top;">
+            &#9993;
+          </td>
+          <td valign="top" style="padding-bottom: 10px; color: #334155; vertical-align: top; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+            <strong style="color: #0f172a;">Reply Directly:</strong> Prefer not to use Calendly? Just reply to this email with 2 preferred times and your time zone, and we'll book it for you.
+          </td>
+        </tr>
+        <tr>
+          <td width="26" valign="top" style="font-size: 15px; vertical-align: top;">
+            &#128241;
+          </td>
+          <td valign="top" style="color: #334155; vertical-align: top; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+            <strong style="color: #0f172a;">WhatsApp / Questions:</strong> Reach us directly on WhatsApp at <a href="https://wa.me/19128205916" target="_blank" style="color: #f97316 !important; font-weight: 700 !important; text-decoration: none !important;">+1 (912) 820-5916</a> anytime.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 10px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Looking forward to connecting with you and mapping out your launch strategy!
+</p>`;
+
+export const sandboxId = "sandbox-reschedule-sadie";
+export const sandboxSubject = sandboxRescheduleSubject;
+export const sandboxHeadline = sandboxRescheduleHeadline;
+export const sandboxBody = sandboxRescheduleBody;
 
 export const SANDBOX_DRAFTS = [
+  {
+    id: "sandbox-reschedule-sadie",
+    subject: sandboxRescheduleSubject,
+    headline: sandboxRescheduleHeadline,
+    body: sandboxRescheduleBody
+  },
   {
     id: "sandbox-contract-agreement",
     subject: sandboxContractSubject,

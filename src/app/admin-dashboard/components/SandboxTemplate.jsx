@@ -494,7 +494,7 @@ export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
 </p>
 
 <p style="font-size: 14.5px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 18px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-  We reviewed your inquiry regarding your <strong>Full Amazon Brand Launch</strong> and are excited to discuss the roadmap with you. We'd love to reschedule at your earliest convenience:
+  We reviewed your inquiry regarding your <strong> Full Amazon Brand Launch</strong> and are excited to discuss the roadmap with you. We'd love to reschedule at your earliest convenience:
 </p>
 
 <!-- CTA Button Section (Bulletproof Table-Button for GoDaddy / Outlook / Gmail) -->

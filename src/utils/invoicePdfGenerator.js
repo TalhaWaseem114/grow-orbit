@@ -576,9 +576,9 @@ export const InvoicePdfDocument = ({ invoice }) => {
           {/* 1. Billed To */}
           <View style={styles.metaCol1}>
             <Text style={styles.metaLabelRed}>BILLED TO</Text>
-            <Text style={styles.metaCompany}>{invoice.companyName || invoice.clientName || "Valued Client"}</Text>
-            <Text style={styles.metaText}>{invoice.clientLabel1 || "Valued Partner"}</Text>
-            <Text style={styles.metaText}>{invoice.clientLabel2 || "Business Client"}</Text>
+            <Text style={styles.metaCompany}>{invoice.clientName || (!invoice.companyName?.toLowerCase().includes("baig") ? invoice.companyName : "") || "Valued Client"}</Text>
+            {invoice.companyName && !invoice.companyName.toLowerCase().includes("baig") ? <Text style={styles.metaText}>{invoice.companyName}</Text> : null}
+            {invoice.clientAddress && invoice.clientAddress.trim().toLowerCase() !== "united states" ? <Text style={styles.metaText}>{invoice.clientAddress}</Text> : null}
             <Text style={styles.metaText}>{invoice.clientEmail || "support@groworbitofficial.com"}</Text>
           </View>
 
@@ -591,7 +591,7 @@ export const InvoicePdfDocument = ({ invoice }) => {
                 Trade Terms: {invoice.incoterms || "EXW (Ex Works Shenzhen)"}
               </Text>
               <Text style={[styles.metaText, { color: "#64748b", lineHeight: 1.3 }]}>
-                Lead Time: {invoice.productionLeadTime || "20 - 25 Working Days"} · AQL 1.5
+                Lead Time: {invoice.productionLeadTime || "30 - 40 Days"}
               </Text>
             </View>
           ) : (
@@ -609,7 +609,6 @@ export const InvoicePdfDocument = ({ invoice }) => {
             {[
               { label: "INVOICE DATE", val: formatDate(invoice.issueDate) },
               { label: "DUE DATE", val: formatDate(invoice.dueDate) },
-              { label: "PAYMENT TERMS", val: invoice.paymentTerms || "Net 14 Days" },
               { label: "AGREEMENT ID", val: invoice.agreementId || "GO-2026-XXXX" },
               { label: "START DATE", val: formatDate(invoice.startDate || invoice.issueDate) }
             ].map((row, i) => (
@@ -651,7 +650,6 @@ export const InvoicePdfDocument = ({ invoice }) => {
                       <View style={{ flex: 1 }}>
                         <Text style={styles.itemTitle}>{item.name || "Product Item"}</Text>
                         {item.description ? <Text style={styles.itemDesc}>{item.description}</Text> : null}
-                        {item.specifications ? <Text style={[styles.itemDesc, { color: "#ea580c" }]}>{item.specifications}</Text> : null}
                       </View>
                     </View>
                     <Text style={[styles.colDeliv, { width: "16%", fontSize: 7 }]}>{item.sku || "—"}</Text>

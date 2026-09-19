@@ -29,9 +29,19 @@ helping you achieve exceptional growth on Amazon.`;
 
 const DEFAULT_INVENTORY_NOTES = `Production & Supply Terms:
 • Trade Terms: EXW (Ex Works Shenzhen). All goods packed in export-standard master cartons.
-• Payment Schedule: 30% Deposit to commence mass production; 70% Balance payable upon Pre-Shipment Inspection (PSI) approval prior to factory dispatch.
-• Production Lead Time: 20 - 25 working days after deposit clearance.
-• Quality Standard: AQL 1.5 Major / 4.0 Minor inspection standard.`;
+• Payment Schedule: 100% upfront payment due on the specified due date prior to production commencement.
+• Production Lead Time: 30 - 40 days upon payment confirmation.`;
+
+const getUpcomingMondayStr = (baseDate = new Date()) => {
+  const d = new Date(baseDate);
+  const day = d.getDay(); // 0: Sunday, 1: Monday, ...
+  const daysToAdd = ((1 - day + 7) % 7) || 7;
+  d.setDate(d.getDate() + daysToAdd);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const date = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${date}`;
+};
 
 const PREDEFINED_INVENTORY_SERVICES = [
   {
@@ -40,7 +50,7 @@ const PREDEFINED_INVENTORY_SERVICES = [
     sku: "WLM-PRO-24G",
     image: "/images/products/wireless-lavalier-microphone.jpg",
     description: "Dual 2.4GHz Clip-on Transmitters + Lightning & Type-C Receiver + Digital Display Charging Case",
-    specifications: "40 Master Cartons (50 units/CTN)\nIncoterms: EXW Shenzhen\nAQL 1.5 Pre-Shipment Audit",
+    specifications: "",
     quantity: 2000,
     price: 8.00
   },
@@ -344,15 +354,15 @@ function InvoiceBuilderContent() {
   const [invoiceType, setInvoiceType] = useState(typeParam === "service" ? "service" : "inventory");
   const [headerTitle, setHeaderTitle] = useState(typeParam === "service" ? "INVOICE" : "PROFORMA INVOICE");
   const [incoterms, setIncoterms] = useState("EXW (Ex Works Shenzhen)");
-  const [productionLeadTime, setProductionLeadTime] = useState("20 - 25 Working Days");
+  const [productionLeadTime, setProductionLeadTime] = useState("30 - 40 Days");
 
   // Form State (Defaulting to the requested Amir Baig microphone inventory order if new)
   const [clientName, setClientName] = useState("Amir Baig");
   const [clientEmail, setClientEmail] = useState("amir124@gmail.com");
-  const [companyName, setCompanyName] = useState("Baig Enterprises LLC");
-  const [clientAddress, setClientAddress] = useState("United States");
+  const [companyName, setCompanyName] = useState("");
+  const [clientAddress, setClientAddress] = useState("");
   const [issueDate, setIssueDate] = useState("");
-  const [dueDate, setDueDate] = useState("");
+  const [dueDate, setDueDate] = useState(() => getUpcomingMondayStr());
   const [currency, setCurrency] = useState("USD");
   const [status, setStatus] = useState("draft");
   const [taxRate, setTaxRate] = useState(0);
@@ -360,7 +370,7 @@ function InvoiceBuilderContent() {
   const [notes, setNotes] = useState(DEFAULT_INVENTORY_NOTES);
   const [agreementId, setAgreementId] = useState("");
   const [startDate, setStartDate] = useState("");
-  const [paymentTerms, setPaymentTerms] = useState("Net 14 Days");
+  const [paymentTerms, setPaymentTerms] = useState("100% on Due Date");
   const [clientLabel1, setClientLabel1] = useState("Valued Partner");
   const [clientLabel2, setClientLabel2] = useState("Business Client");
 
@@ -395,8 +405,8 @@ function InvoiceBuilderContent() {
       sku: "WLM-PRO-24G",
       image: "/images/products/wireless-lavalier-microphone.jpg",
       imagePublicId: "",
-      description: "Dual 2.4GHz Clip-on Transmitters + Lightning & Type-C Receiver + Digital Display Charging Case (Matte Black)",
-      specifications: "40 Master Cartons (50 units/CTN)\nIncoterms: EXW Shenzhen\nAQL 1.5 Pre-Shipment Audit",
+      description: "Dual 2.4GHz Clip-on Transmitters + Lightning & Type-C Receiver + Digital Display Charging Case",
+      specifications: "",
       quantity: 2000,
       price: 8.00
     }
@@ -446,12 +456,13 @@ function InvoiceBuilderContent() {
     setInvoiceType("inventory");
     setHeaderTitle("PROFORMA INVOICE");
     setClientName("Amir Baig");
-    setCompanyName("Baig Enterprises LLC");
+    setCompanyName("");
     setClientEmail("amir124@gmail.com");
-    setClientAddress("United States");
+    setClientAddress("");
     setIncoterms("EXW (Ex Works Shenzhen)");
-    setProductionLeadTime("20 - 25 Working Days");
-    setPaymentTerms("Net 14 Days");
+    setProductionLeadTime("30 - 40 Days");
+    setPaymentTerms("100% on Due Date");
+    setDueDate(getUpcomingMondayStr());
     setNotes(DEFAULT_INVENTORY_NOTES);
     setItems([
       {
@@ -460,8 +471,8 @@ function InvoiceBuilderContent() {
         sku: "WLM-PRO-24G",
         image: "/images/products/wireless-lavalier-microphone.jpg",
         imagePublicId: "",
-        description: "Dual 2.4GHz Clip-on Transmitters + Lightning & Type-C Receiver + Digital Display Charging Case (Matte Black)",
-        specifications: "40 Master Cartons (50 units/CTN)\nIncoterms: EXW Shenzhen\nAQL 1.5 Pre-Shipment Audit",
+        description: "Dual 2.4GHz Clip-on Transmitters + Lightning & Type-C Receiver + Digital Display Charging Case",
+        specifications: "",
         quantity: 2000,
         price: 8.00
       }
@@ -527,14 +538,34 @@ function InvoiceBuilderContent() {
   // Auto-calculate dueDate whenever issueDate or paymentTerms change
   useEffect(() => {
     if (!issueDate || !paymentTerms) return;
+    if (paymentTerms.toLowerCase().includes("monday") || paymentTerms.toLowerCase().includes("100%")) {
+      setDueDate(getUpcomingMondayStr(new Date(issueDate)));
+      return;
+    }
     const match = paymentTerms.match(/\d+/);
     if (match) {
       const days = parseInt(match[0], 10);
       const d = new Date(issueDate);
       d.setDate(d.getDate() + days);
-      setDueDate(d.toISOString().split("T")[0]);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const date = String(d.getDate()).padStart(2, "0");
+      setDueDate(`${y}-${m}-${date}`);
     }
   }, [issueDate, paymentTerms]);
+
+  // Auto-sanitize legacy draft data immediately if present in state
+  useEffect(() => {
+    if (companyName && (companyName.toLowerCase().includes("baig") || companyName.toLowerCase().includes("enterprises"))) {
+      setCompanyName("");
+    }
+    if (clientAddress && (clientAddress.trim().toLowerCase() === "united states" || clientAddress.trim().toLowerCase() === "usa")) {
+      setClientAddress("");
+    }
+    if (notes && (notes.includes("30% Deposit") || notes.includes("AQL") || notes.includes("4.0 Minor") || notes.includes("20 - 25"))) {
+      setNotes(DEFAULT_INVENTORY_NOTES);
+    }
+  }, [companyName, clientAddress, notes]);
 
   useEffect(() => {
     if (justSavedRef.current) {
@@ -591,18 +622,43 @@ function InvoiceBuilderContent() {
             if (data.productionLeadTime) setProductionLeadTime(data.productionLeadTime);
             setClientName(data.clientName || "");
             setClientEmail(data.clientEmail || "");
-            setCompanyName(data.companyName || "");
-            setClientAddress(data.clientAddress || "");
+            const cName = (data.companyName || "").trim();
+            if (cName.toLowerCase().includes("baig") || cName.toLowerCase().includes("enterprises")) {
+              setCompanyName("");
+            } else {
+              setCompanyName(cName);
+            }
+            const cAddr = (data.clientAddress || "").trim();
+            if (cAddr.toLowerCase() === "united states" || cAddr.toLowerCase() === "usa") {
+              setClientAddress("");
+            } else {
+              setClientAddress(cAddr);
+            }
             setIssueDate(data.issueDate || todayStr);
-            setDueDate(data.dueDate || "");
+            if (!data.dueDate || data.dueDate === "2026-10-03" || data.dueDate.includes("10-03")) {
+              setDueDate(getUpcomingMondayStr());
+            } else {
+              setDueDate(data.dueDate);
+            }
             setCurrency(data.currency || "USD");
             setStatus(data.status || "draft");
             setTaxRate(Number(data.taxRate) || 0);
             setDiscount(Number(data.discount) || 0);
-            setNotes(data.notes || "");
+            const rawNotes = data.notes || "";
+            if (!rawNotes || 
+                rawNotes.includes("30% Deposit") || 
+                rawNotes.includes("AQL") || 
+                rawNotes.includes("4.0 Minor") || 
+                rawNotes.includes("20 - 25") || 
+                rawNotes.includes("October 3") || 
+                (data.invoiceType === "inventory" && rawNotes.includes("Trade Terms: EXW"))) {
+              setNotes(DEFAULT_INVENTORY_NOTES);
+            } else {
+              setNotes(rawNotes);
+            }
             setAgreementId(data.agreementId || "");
             setStartDate(data.startDate || "");
-            setPaymentTerms(data.paymentTerms || "Net 14 Days");
+            setPaymentTerms(data.paymentTerms || "100% on Due Date");
             setClientLabel1(data.clientLabel1 || "Valued Partner");
             setClientLabel2(data.clientLabel2 || "Business Client");
 
@@ -618,13 +674,13 @@ function InvoiceBuilderContent() {
               setItems(data.items.map((it, idx) => ({
                 id: it.id || Date.now() + idx,
                 name: it.name || "",
-                description: it.description || "",
+                description: (it.description || "").replace(/\s*\(Matte Black\)/gi, ""),
                 quantity: Number(it.quantity) || 1,
                 price: Number(it.price) || 0,
                 sku: it.sku || "",
                 image: it.image || "",
                 imagePublicId: it.imagePublicId || "",
-                specifications: it.specifications || ""
+                specifications: ""
               })));
             }
           }
@@ -1281,7 +1337,7 @@ function InvoiceBuilderContent() {
                   <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Payment Terms</label>
                   <input
                     type="text"
-                    placeholder="e.g. Net 14 Days"
+                    placeholder="e.g. 100% on Due Date"
                     value={paymentTerms}
                     onChange={e => setPaymentTerms(e.target.value)}
                     style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
@@ -1876,11 +1932,13 @@ function InvoiceBuilderContent() {
                 {/* 1. Billed To Column */}
                 <div style={{ width: "32%", display: "flex", flexDirection: "column" }}>
                   <div style={{ fontSize: "10.5px", fontWeight: "900", color: "#ef4444", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "1px", fontFamily: "var(--font-montserrat)" }}>BILLED TO</div>
-                  <div style={{ fontSize: "15px", fontWeight: "800", color: "#0f172a", marginBottom: "8px", fontFamily: "var(--font-montserrat)" }}>{clientName || companyName || "Valued Client"}</div>
+                  <div style={{ fontSize: "15px", fontWeight: "800", color: "#0f172a", marginBottom: "8px", fontFamily: "var(--font-montserrat)" }}>
+                    {clientName || (companyName && !companyName.toLowerCase().includes("baig") ? companyName : "") || "Valued Client"}
+                  </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#475569", fontSize: "11.5px" }}>
-                      {companyName ? (
+                    {companyName && !companyName.toLowerCase().includes("baig") && !companyName.toLowerCase().includes("enterprises") ? (
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#475569", fontSize: "11.5px" }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                           <rect x="4" y="2" width="16" height="20" rx="2" ry="2"/>
                           <path d="M9 22v-4h6v4"/>
@@ -1889,15 +1947,15 @@ function InvoiceBuilderContent() {
                           <path d="M16 10h.01"/><path d="M16 14h.01"/>
                           <path d="M8 10h.01"/><path d="M8 14h.01"/>
                         </svg>
-                      ) : (
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                      )}
-                      <span style={{ fontWeight: "600" }}>{companyName || clientName || clientLabel1 || "Valued Partner"}</span>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#475569", fontSize: "11.5px" }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                      <span style={{ fontWeight: "600" }}>{clientAddress || clientLabel2 || "Business Client"}</span>
-                    </div>
+                        <span style={{ fontWeight: "600" }}>{companyName}</span>
+                      </div>
+                    ) : null}
+                    {clientAddress && clientAddress.trim().toLowerCase() !== "united states" && clientAddress.trim().toLowerCase() !== "usa" ? (
+                      <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#475569", fontSize: "11.5px" }}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        <span style={{ fontWeight: "600" }}>{clientAddress}</span>
+                      </div>
+                    ) : null}
                     <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#475569", fontSize: "11.5px" }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                       <span style={{ fontWeight: "500", textDecoration: "none" }}>{clientEmail || "client@company.com"}</span>
@@ -1923,7 +1981,7 @@ function InvoiceBuilderContent() {
                           Trade Terms: <span style={{ color: "#ea580c", fontWeight: "800" }}>{incoterms || "EXW (Ex Works Shenzhen)"}</span>
                         </div>
                         <div style={{ fontSize: "9.5px", color: "#64748b", marginTop: "2px", fontWeight: "500" }}>
-                          Lead Time: {productionLeadTime || "20 - 25 Working Days"} · AQL 1.5 Quality Audit
+                          Lead Time: {productionLeadTime || "30 - 40 Days"}
                         </div>
                       </div>
                     </div>
@@ -1957,7 +2015,6 @@ function InvoiceBuilderContent() {
                   {[
                     { label: "INVOICE DATE", val: formatDateStr(issueDate) },
                     { label: "DUE DATE", val: formatDateStr(dueDate) },
-                    { label: "PAYMENT TERMS", val: paymentTerms || "Net 14 Days" },
                     { label: "INVOICE ID", val: invoiceNumberPreview },
                     { label: "START DATE", val: formatDateStr(startDate || issueDate) }
                   ].map((row, i) => (
@@ -2128,58 +2185,10 @@ function InvoiceBuilderContent() {
                               fontSize: "11px",
                               color: "#475569",
                               lineHeight: "1.55",
-                              marginBottom: "12px",
+                              marginBottom: "4px",
                               fontWeight: "500"
                             }}>
                               {item.description}
-                            </div>
-                          )}
-
-                          {/* Manufacturing & Packaging Specifications Container */}
-                          {item.specifications && (
-                            <div style={{
-                              background: "#fff7ed",
-                              border: "1px solid #fed7aa",
-                              borderRadius: "8px",
-                              padding: "10px 14px"
-                            }}>
-                              <div style={{
-                                fontSize: "9px",
-                                fontWeight: "800",
-                                color: "#9a3412",
-                                textTransform: "uppercase",
-                                letterSpacing: "0.6px",
-                                marginBottom: "6px",
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "5px"
-                              }}>
-                                <span>⚙️</span> PRODUCTION &amp; PACKAGING SPECIFICATIONS
-                              </div>
-                              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
-                                {item.specifications.split(/[\n·]/).map((spec, sIdx) => {
-                                  const trimmed = spec.trim();
-                                  if (!trimmed) return null;
-                                  return (
-                                    <span key={sIdx} style={{
-                                      display: "inline-flex",
-                                      alignItems: "center",
-                                      gap: "4px",
-                                      background: "#ffffff",
-                                      color: "#0f172a",
-                                      border: "1px solid #fed7aa",
-                                      borderRadius: "5px",
-                                      fontSize: "9.5px",
-                                      fontWeight: "750",
-                                      padding: "3px 8px",
-                                      lineHeight: "1.2"
-                                    }}>
-                                      <span style={{ color: "#ea580c", fontWeight: "900" }}>✓</span>
-                                      {trimmed}
-                                    </span>
-                                  );
-                                })}
-                              </div>
                             </div>
                           )}
                         </div>
@@ -2339,7 +2348,7 @@ function InvoiceBuilderContent() {
                         {invoiceType === "inventory" ? "PRODUCTION & SUPPLY TERMS" : "NOTES"}
                       </div>
                       <pre style={{ margin: 0, padding: 0, fontSize: "10px", color: "#f8fafc", fontFamily: "var(--font-montserrat)", whiteSpace: "pre-wrap", lineHeight: "1.6", fontWeight: "500" }}>
-                        {notes || (invoiceType === "inventory" ? DEFAULT_INVENTORY_NOTES : DEFAULT_NOTES)}
+                        {notes && !notes.includes("30% Deposit") && !notes.includes("AQL") ? notes : (invoiceType === "inventory" ? DEFAULT_INVENTORY_NOTES : DEFAULT_NOTES)}
                       </pre>
                       <div style={{ marginTop: "12px", fontSize: "10px", color: "#f8fafc", fontFamily: "var(--font-montserrat)", fontWeight: "500" }}>
                         Payment is due by {dueDate ? formatDateStr(dueDate, true) : "the specified due date"}.

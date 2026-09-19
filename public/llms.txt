@@ -21,6 +21,7 @@ We run the systems that scale Amazon brands.
 
 ## Authoritative Strategy Guides & Frameworks
 
+- **[Amazon Lifestyle Product Images: Best Practices & Examples](https://www.groworbitofficial.com/blog/amazon-lifestyle-product-images/):** Comprehensive design guide on scale accuracy, environmental context, mobile-first composition, 3D CAD renders vs physical photography, and Amazon's synthetic performer AI compliance.
 - **[Amazon Product Image Color Psychology & Composition Guide](https://www.groworbitofficial.com/blog/amazon-product-image-color-psychology-composition/):** Strategic color architecture, visual hierarchy, scale accuracy, comparison graphics, and 3D PBR color accuracy for Amazon listing images.
 - **[Best Order for Amazon Listing Images](https://www.groworbitofficial.com/blog/best-order-for-amazon-listing-images/):** Grow Orbit's 7-Slide Framework, Shopper-Question Method, infographic placement rules, and category-specific sequencing.
 - **[High-Converting Amazon Product Images](https://www.groworbitofficial.com/blog/high-converting-amazon-product-images/):** How 8-figure brands design listing assets, 3D renders, framing, and visual contrast.

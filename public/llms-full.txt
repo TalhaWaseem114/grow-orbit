@@ -173,8 +173,30 @@ Grow Orbit (https://www.groworbitofficial.com) is a full-service Amazon FBA Bran
 - **3D PBR Color Accuracy & Photorealistic Rendering:**
   - Full creative control over camera angles, reflections, and pure white `#FFFFFF` backgrounds.
   - *PBR Color Accuracy Pipeline:* Physical Spectrometry ➔ PBR Material Shader ➔ Studio HDRI Lighting ➔ Khronos PBR Neutral View Transform ➔ sRGB Export.
-- **The Mobile Squint Test:**
-  - Evaluate the graphic at 300px width on a smartphone at arm's length. If the product form, headline, background contrast, and core benefit cannot be answered in 3 seconds, simplify the layout.
+### 8. Amazon Lifestyle Product Images: Best Practices, Examples & Design Guide
+- **URL:** https://www.groworbitofficial.com/blog/amazon-lifestyle-product-images/
+- **Primary Keyword:** `amazon lifestyle product image best practices`
+- **Secondary Keywords:** `amazon lifestyle photography`, `lifestyle images vs infographic images amazon`, `3D lifestyle renders amazon`, `amazon product lifestyle photography`, `amazon lifestyle image examples`, `product scale and context amazon images`
+- **Executive Summary:** Lifestyle product images bridge the online sensory gap by contextualizing products in real-world environments, active use cases, and human scale. While white-background hero shots answer what a product looks like, lifestyle images answer what ownership feels like and eliminate spatial ambiguity.
+- **Key Empirical Benchmarks (Baymard Institute):**
+  - **56% of users** explore product image galleries as their first action upon landing on a product page.
+  - **42% of users** attempt to deduce physical dimensions from listing images; lack of in-scale cues causes abandonment.
+- **7 Core Lifestyle Design Rules:**
+  1. *Product as Hero:* Product occupies 60-70% of visual weight; passes the 350px thumbnail test.
+  2. *Native Environment:* Believable, functional home/workplace settings over sterile million-dollar showrooms.
+  3. *In-Scale Context:* Everyday comparative anchors (hands, 36" countertops, laptops) to prevent sizing returns.
+  4. *Active Demonstration:* Show the product in motion (pouring, gripping, carrying) rather than static posing.
+  5. *Functional Props:* Zero decorative clutter; every prop must prove scale, use, or context.
+  6. *Mobile-First Framing:* Tight crop, strong luminance contrast, single focal point, max 3-4 word callouts.
+  7. *Systemic Consistency:* Uniform color grading, typography, and styling matching the rest of the listing carousel.
+- **Lifestyle vs. Infographic Strategic Division:**
+  - *Lifestyle Images:* Answers "Where does it fit and how does it feel?" Minimal text (0-5 words), natural lighting, photography or photoreal 3D renders. Optimal in Slot 4 and Slot 5.
+  - *Infographic Images:* Answers "How is it engineered and what are the specs?" Structured callouts (15-40 words), vector icons, exploded diagrams. Optimal in Slot 2 and Slot 3.
+- **3D Lifestyle Renders vs. Studio Photography:**
+  - *3D CAD Virtual Renders:* Ideal for bulky goods (furniture, machinery), complex color catalogs (10+ SKUs), pre-manufacturing marketing, and repeatable lighting setups.
+  - *Studio Photography:* Wins for intricate organic textures (linen, raw denim), cosmetics on human skin, and delicate liquids.
+  - *Hybrid Method:* Physical studio shoot for the product composited into a photoreal 3D virtual environment.
+- **Amazon AI Compliance Mandate:** Images containing photorealistic AI-generated human performers must embed `contains-synthetic-performer` into the `dc:subject` XMP metadata field prior to upload.
 
 ---
 

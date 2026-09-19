@@ -428,7 +428,9 @@ export default async function Page({ params }) {
                 }
 
                 // 2. Sequential Decision List (e.g. 1. Question (Role) \n ↓ \n ...)
-                if (block.text.includes("↓") || (block.text.includes("1.") && block.text.includes("2."))) {
+                // Guard: Skip if the block contains box-drawing characters (ASCII art diagrams)
+                const isAsciiArt = /[┌┐└┘│─▼▲►◄╔╗╚╝║═┬┴├┤┼╠╣╦╩╬]/.test(block.text);
+                if (!isAsciiArt && (block.text.includes("↓") || (block.text.includes("1.") && block.text.includes("2.")))) {
                   const rawLines = block.text.split("\n").map((l) => l.trim()).filter((l) => l && l !== "↓");
                   const parsedSteps = rawLines.map((line) => {
                     const m = line.match(/^(\d+)\.\s*(.*?)(?:\s*\((.*?)\))?$/);

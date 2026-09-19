@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { X, Save, Download, Loader, ArrowLeft, Plus, Trash2, ChevronDown, ChevronRight, Mail, Copy, Check } from "lucide-react";
+import { X, Save, Download, Loader, ArrowLeft, Plus, Trash2, ChevronDown, ChevronRight, Mail, Copy, Check, Package, Briefcase, Upload, Image as ImageIcon, Sparkles, RefreshCw } from "lucide-react";
 import { db, auth } from "@/firebase/firebaseConfig";
 import { doc, getDoc, setDoc, addDoc, collection } from "firebase/firestore";
 
@@ -15,9 +15,66 @@ const STATUS_OPTIONS = [
   { value: "cancelled", label: "Cancelled" }
 ];
 
+const HEADER_TITLE_OPTIONS = [
+  "PROFORMA INVOICE",
+  "INVENTORY INVOICE",
+  "COMMERCIAL INVOICE",
+  "INVOICE",
+  "TAX INVOICE"
+];
+
 const DEFAULT_NOTES = `Thank you for choosing Grow Orbit.
 We appreciate your trust and look forward to
 helping you achieve exceptional growth on Amazon.`;
+
+const DEFAULT_INVENTORY_NOTES = `Production & Supply Terms:
+• Trade Terms: EXW (Ex Works Shenzhen). All goods packed in export-standard master cartons.
+• Payment Schedule: 30% Deposit to commence mass production; 70% Balance payable upon Pre-Shipment Inspection (PSI) approval prior to factory dispatch.
+• Production Lead Time: 20 - 25 working days after deposit clearance.
+• Quality Standard: AQL 1.5 Major / 4.0 Minor inspection standard.`;
+
+const PREDEFINED_INVENTORY_SERVICES = [
+  {
+    shortName: "Wireless Mic (Amir Baig)",
+    name: "Wireless Lavalier Microphone System",
+    sku: "WLM-PRO-24G",
+    image: "/images/products/wireless-lavalier-microphone.jpg",
+    description: "Dual 2.4GHz Clip-on Transmitters + Lightning & Type-C Receiver + Digital Display Charging Case",
+    specifications: "40 Master Cartons (50 units/CTN)\nIncoterms: EXW Shenzhen\nAQL 1.5 Pre-Shipment Audit",
+    quantity: 2000,
+    price: 8.00
+  },
+  {
+    shortName: "Custom Packaging",
+    name: "Custom Rigid Gift Box Packaging",
+    sku: "PKG-CUSTOM-01",
+    image: "",
+    description: "Full-color printed magnetic closure gift box with custom molded EVA foam insert.",
+    specifications: "4-color offset printing, matte lamination, spot UV logo",
+    quantity: 2000,
+    price: 0.65
+  },
+  {
+    shortName: "Silk-Screen Logo",
+    name: "Custom Laser / Silk-Screen Logo Imprint",
+    sku: "PRT-LOGO-01",
+    image: "",
+    description: "Precision 2-color brand logo silk-screen printed on charging case and mic bodies.",
+    specifications: "Scratch-resistant UV cured ink",
+    quantity: 2000,
+    price: 0.20
+  },
+  {
+    shortName: "Quality Inspection (PSI)",
+    name: "Pre-Shipment Quality Inspection (PSI)",
+    sku: "QC-INSP-AQL",
+    image: "",
+    description: "Comprehensive third-party on-site factory audit and functional testing report.",
+    specifications: "AQL 1.5 Major / 4.0 Minor standard · 125 sample units pulled",
+    quantity: 1,
+    price: 299.00
+  }
+];
 
 const fmtCurrency = (amount, currency = "USD") => {
   const symbols = { USD: "$", GBP: "£", EUR: "€", PKR: "Rs", AED: "AED ", CAD: "C$", AUD: "A$" };
@@ -282,18 +339,25 @@ function InvoiceBuilderContent() {
 
   const [invoice, setInvoice] = useState(null);
 
-  // Form State
-  const [clientName, setClientName] = useState("");
-  const [clientEmail, setClientEmail] = useState("");
-  const [companyName, setCompanyName] = useState("");
-  const [clientAddress, setClientAddress] = useState("");
+  // Template Mode ("service" | "inventory")
+  const typeParam = searchParams.get("type");
+  const [invoiceType, setInvoiceType] = useState(typeParam === "service" ? "service" : "inventory");
+  const [headerTitle, setHeaderTitle] = useState(typeParam === "service" ? "INVOICE" : "PROFORMA INVOICE");
+  const [incoterms, setIncoterms] = useState("EXW (Ex Works Shenzhen)");
+  const [productionLeadTime, setProductionLeadTime] = useState("20 - 25 Working Days");
+
+  // Form State (Defaulting to the requested Amir Baig microphone inventory order if new)
+  const [clientName, setClientName] = useState("Amir Baig");
+  const [clientEmail, setClientEmail] = useState("amir124@gmail.com");
+  const [companyName, setCompanyName] = useState("Baig Enterprises LLC");
+  const [clientAddress, setClientAddress] = useState("United States");
   const [issueDate, setIssueDate] = useState("");
   const [dueDate, setDueDate] = useState("");
   const [currency, setCurrency] = useState("USD");
   const [status, setStatus] = useState("draft");
   const [taxRate, setTaxRate] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [notes, setNotes] = useState(DEFAULT_NOTES);
+  const [notes, setNotes] = useState(DEFAULT_INVENTORY_NOTES);
   const [agreementId, setAgreementId] = useState("");
   const [startDate, setStartDate] = useState("");
   const [paymentTerms, setPaymentTerms] = useState("Net 14 Days");
@@ -325,8 +389,130 @@ function InvoiceBuilderContent() {
   };
 
   const [items, setItems] = useState([
-    { id: Date.now(), name: "Full Account Management", description: "Monthly retainer for store operations and optimizations.", quantity: 1, price: 1500 }
+    {
+      id: Date.now(),
+      name: "Wireless Lavalier Microphone System",
+      sku: "WLM-PRO-24G",
+      image: "/images/products/wireless-lavalier-microphone.jpg",
+      imagePublicId: "",
+      description: "Dual 2.4GHz Clip-on Transmitters + Lightning & Type-C Receiver + Digital Display Charging Case (Matte Black)",
+      specifications: "40 Master Cartons (50 units/CTN)\nIncoterms: EXW Shenzhen\nAQL 1.5 Pre-Shipment Audit",
+      quantity: 2000,
+      price: 8.00
+    }
   ]);
+
+  const [uploadingImageId, setUploadingImageId] = useState(null);
+
+  // Image Upload handler uploads file to Cloudinary via /api/invoices/upload-image
+  const handleImageUpload = async (id, file) => {
+    if (!file) return;
+
+    // Show instant local preview for responsive UX
+    const objectUrl = URL.createObjectURL(file);
+    handleItemChange(id, "image", objectUrl);
+    setUploadingImageId(id);
+
+    try {
+      const token = await auth.currentUser?.getIdToken() || "";
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/invoices/upload-image", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        },
+        body: formData
+      });
+
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to upload image to Cloudinary");
+      }
+
+      // Update item with Cloudinary URL and publicId
+      handleItemFieldsChange(id, { image: data.url, imagePublicId: data.publicId });
+    } catch (err) {
+      console.error("Cloudinary upload failed:", err);
+      alert("Image upload to Cloudinary failed: " + err.message);
+    } finally {
+      setUploadingImageId(null);
+    }
+  };
+
+  // Sample Loaders for 1-click template switching
+  const loadAmirBaigInventorySample = () => {
+    setInvoiceType("inventory");
+    setHeaderTitle("PROFORMA INVOICE");
+    setClientName("Amir Baig");
+    setCompanyName("Baig Enterprises LLC");
+    setClientEmail("amir124@gmail.com");
+    setClientAddress("United States");
+    setIncoterms("EXW (Ex Works Shenzhen)");
+    setProductionLeadTime("20 - 25 Working Days");
+    setPaymentTerms("Net 14 Days");
+    setNotes(DEFAULT_INVENTORY_NOTES);
+    setItems([
+      {
+        id: Date.now(),
+        name: "Wireless Lavalier Microphone System",
+        sku: "WLM-PRO-24G",
+        image: "/images/products/wireless-lavalier-microphone.jpg",
+        imagePublicId: "",
+        description: "Dual 2.4GHz Clip-on Transmitters + Lightning & Type-C Receiver + Digital Display Charging Case (Matte Black)",
+        specifications: "40 Master Cartons (50 units/CTN)\nIncoterms: EXW Shenzhen\nAQL 1.5 Pre-Shipment Audit",
+        quantity: 2000,
+        price: 8.00
+      }
+    ]);
+  };
+
+  const loadServiceFeeSample = () => {
+    setInvoiceType("service");
+    setHeaderTitle("INVOICE");
+    setClientName("Valued Client");
+    setCompanyName("Valued Partner Inc.");
+    setClientEmail("partner@brand.com");
+    setClientAddress("New York, USA");
+    setPaymentTerms("Net 14 Days");
+    setNotes(DEFAULT_NOTES);
+    setItems([
+      {
+        id: Date.now(),
+        name: "Full Account Management",
+        description: "Monthly retainer for store operations, catalog management, and organic optimizations.",
+        quantity: 1,
+        price: 1500,
+        sku: "",
+        image: "",
+        imagePublicId: "",
+        specifications: ""
+      }
+    ]);
+  };
+
+  const handleSwitchType = (newType) => {
+    if (newType === invoiceType) return;
+    setInvoiceType(newType);
+    if (newType === "inventory") {
+      setHeaderTitle("PROFORMA INVOICE");
+      if (notes === DEFAULT_NOTES || !notes) {
+        setNotes(DEFAULT_INVENTORY_NOTES);
+      }
+      if (items.some(it => it.name.includes("Management") || it.name.includes("Launch") || it.name.includes("Custom Service"))) {
+        loadAmirBaigInventorySample();
+      }
+    } else {
+      setHeaderTitle("INVOICE");
+      if (notes === DEFAULT_INVENTORY_NOTES || !notes) {
+        setNotes(DEFAULT_NOTES);
+      }
+      if (items.some(it => it.name.includes("Microphone") || it.sku)) {
+        loadServiceFeeSample();
+      }
+    }
+  };
 
   // Next auto-sequenced number preview
   const [invoiceNumberPreview, setInvoiceNumberPreview] = useState(() => {
@@ -399,6 +585,10 @@ function InvoiceBuilderContent() {
             const data = snap.id ? { id: snap.id, ...snap.data() } : snap.data();
             setInvoice(data);
             setInvoiceNumberPreview(data.invoiceNumber);
+            if (data.invoiceType) setInvoiceType(data.invoiceType);
+            if (data.headerTitle) setHeaderTitle(data.headerTitle);
+            if (data.incoterms) setIncoterms(data.incoterms);
+            if (data.productionLeadTime) setProductionLeadTime(data.productionLeadTime);
             setClientName(data.clientName || "");
             setClientEmail(data.clientEmail || "");
             setCompanyName(data.companyName || "");
@@ -425,7 +615,17 @@ function InvoiceBuilderContent() {
             if (data.paypalEmail !== undefined) setPaypalEmail(data.paypalEmail || "");
 
             if (data.items && data.items.length > 0) {
-              setItems(data.items.map((it, idx) => ({ ...it, id: it.id || Date.now() + idx })));
+              setItems(data.items.map((it, idx) => ({
+                id: it.id || Date.now() + idx,
+                name: it.name || "",
+                description: it.description || "",
+                quantity: Number(it.quantity) || 1,
+                price: Number(it.price) || 0,
+                sku: it.sku || "",
+                image: it.image || "",
+                imagePublicId: it.imagePublicId || "",
+                specifications: it.specifications || ""
+              })));
             }
           }
         } catch (e) {
@@ -461,21 +661,49 @@ function InvoiceBuilderContent() {
   const total = subtotal - discountAmount + taxAmount;
 
   const handleAddItem = () => {
-    setItems([
-      ...items,
-      { id: Date.now(), name: "Custom Service", description: "Provide details of the service...", quantity: 1, price: 100 }
-    ]);
+    if (invoiceType === "inventory") {
+      setItems([
+        ...items,
+        {
+          id: Date.now(),
+          name: "Additional Inventory Item",
+          sku: "",
+          image: "",
+          imagePublicId: "",
+          specifications: "Export Packaging · Inspection Included",
+          description: "Manufacturing specifications and material details...",
+          quantity: 1000,
+          price: 5.00
+        }
+      ]);
+    } else {
+      setItems([
+        ...items,
+        { id: Date.now(), name: "Custom Service", description: "Provide details of the service...", quantity: 1, price: 100 }
+      ]);
+    }
   };
 
   const handleRemoveItem = (id) => {
-    if (items.length === 1) return;
-    setItems(items.filter(it => it.id !== id));
+    setItems(prev => {
+      if (prev.length === 1) return prev;
+      return prev.filter(it => it.id !== id);
+    });
   };
 
   const handleItemChange = (id, field, value) => {
-    setItems(items.map(it => {
+    setItems(prev => prev.map(it => {
       if (it.id === id) {
         return { ...it, [field]: value };
+      }
+      return it;
+    }));
+  };
+
+  const handleItemFieldsChange = (id, fields) => {
+    setItems(prev => prev.map(it => {
+      if (it.id === id) {
+        return { ...it, ...fields };
       }
       return it;
     }));
@@ -516,6 +744,10 @@ function InvoiceBuilderContent() {
       const payload = {
         invoiceNumber: invoiceNumberPreview,
         leadId: leadId || invoice?.leadId || "manual_invoice",
+        invoiceType,
+        headerTitle,
+        incoterms,
+        productionLeadTime,
         clientName,
         clientEmail,
         companyName,
@@ -538,7 +770,16 @@ function InvoiceBuilderContent() {
         bankRoutingNumber,
         bankSwiftBic,
         paypalEmail,
-        items: items.map(({ name, description, quantity, price }) => ({ name, description, quantity: Number(quantity), price: Number(price) }))
+        items: items.map(({ name, description, quantity, price, sku, image, imagePublicId, specifications }) => ({
+          name: name || "",
+          description: description || "",
+          quantity: Number(quantity) || 1,
+          price: Number(price) || 0,
+          sku: sku || "",
+          image: image || "",
+          imagePublicId: imagePublicId || "",
+          specifications: specifications || ""
+        }))
       };
 
       let res;
@@ -686,6 +927,50 @@ function InvoiceBuilderContent() {
           </div>
         </div>
 
+        {/* Top Header Mode Toggle Buttons */}
+        <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 10, padding: 3 }}>
+          <button
+            type="button"
+            onClick={() => handleSwitchType("service")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "7px 14px",
+              borderRadius: 8,
+              border: invoiceType === "service" ? "1px solid #ea580c" : "none",
+              background: invoiceType === "service" ? "#ea580c" : "transparent",
+              color: invoiceType === "service" ? "#fff" : "#94a3b8",
+              fontSize: 11,
+              fontWeight: 800,
+              cursor: "pointer",
+              transition: "all 0.15s"
+            }}
+          >
+            <Briefcase size={13} /> Fee Invoice
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSwitchType("inventory")}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "7px 14px",
+              borderRadius: 8,
+              border: invoiceType === "inventory" ? "1px solid #ea580c" : "none",
+              background: invoiceType === "inventory" ? "#ea580c" : "transparent",
+              color: invoiceType === "inventory" ? "#fff" : "#94a3b8",
+              fontSize: 11,
+              fontWeight: 800,
+              cursor: "pointer",
+              transition: "all 0.15s"
+            }}
+          >
+            <Package size={13} /> Inventory Invoice
+          </button>
+        </div>
+
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           {/* Zoom controls */}
           <div style={{ display: "flex", alignItems: "center", gap: "8px", border: "1px solid rgba(255,255,255,0.08)", borderRadius: "8px", padding: "3px 8px", background: "rgba(255,255,255,0.02)" }}>
@@ -733,6 +1018,124 @@ function InvoiceBuilderContent() {
 
         {/* Left Form Editor Column */}
         <div className="custom-scrollbar" style={{ width: "480px", borderRight: "1px solid rgba(255,255,255,0.06)", background: "#0a0e17", display: "flex", flexDirection: "column", overflowY: "auto", padding: "24px" }}>
+
+          {/* Template Mode Switcher Card */}
+          <div style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 12,
+            background: "rgba(255,255,255,0.02)",
+            border: "1px solid rgba(234,88,12,0.25)",
+            borderRadius: 12,
+            padding: "16px",
+            marginBottom: 20
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <label style={{ fontSize: 10, color: "#ea580c", fontWeight: 900, textTransform: "uppercase", letterSpacing: "0.15em" }}>
+                Invoice Template Mode
+              </label>
+              <span style={{ fontSize: 9, color: "#94a3b8", fontWeight: 700, background: "rgba(255,255,255,0.05)", padding: "2px 6px", borderRadius: 4 }}>
+                {invoiceType === "inventory" ? "📦 Inventory Buying" : "🏢 Agency Retainer"}
+              </span>
+            </div>
+
+            {/* Two Main Switch Buttons */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <button
+                type="button"
+                onClick={() => handleSwitchType("service")}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 6,
+                  padding: "12px 10px",
+                  borderRadius: 10,
+                  border: invoiceType === "service" ? "2px solid #ea580c" : "1px solid rgba(255,255,255,0.08)",
+                  background: invoiceType === "service" ? "rgba(234,88,12,0.18)" : "rgba(255,255,255,0.02)",
+                  color: invoiceType === "service" ? "#fff" : "#94a3b8",
+                  cursor: "pointer",
+                  transition: "all 0.2s"
+                }}
+              >
+                <Briefcase size={18} color={invoiceType === "service" ? "#ea580c" : "#71717a"} />
+                <span style={{ fontSize: 11, fontWeight: 800 }}>Fee Invoice</span>
+                <span style={{ fontSize: 8.5, color: "#71717a" }}>Agency / Services</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleSwitchType("inventory")}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 6,
+                  padding: "12px 10px",
+                  borderRadius: 10,
+                  border: invoiceType === "inventory" ? "2px solid #ea580c" : "1px solid rgba(255,255,255,0.08)",
+                  background: invoiceType === "inventory" ? "rgba(234,88,12,0.18)" : "rgba(255,255,255,0.02)",
+                  color: invoiceType === "inventory" ? "#fff" : "#94a3b8",
+                  cursor: "pointer",
+                  transition: "all 0.2s"
+                }}
+              >
+                <Package size={18} color={invoiceType === "inventory" ? "#ea580c" : "#71717a"} />
+                <span style={{ fontSize: 11, fontWeight: 800 }}>Inventory Invoice</span>
+                <span style={{ fontSize: 8.5, color: "#71717a" }}>Products &amp; EXW Specs</span>
+              </button>
+            </div>
+
+            {/* 1-Click Preset Loaders */}
+            <div style={{ display: "flex", gap: 8, paddingTop: 6, borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+              <button
+                type="button"
+                onClick={loadAmirBaigInventorySample}
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 5,
+                  padding: "7px 8px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(234,88,12,0.3)",
+                  background: "rgba(234,88,12,0.08)",
+                  color: "#f97316",
+                  fontSize: 9.5,
+                  fontWeight: 750,
+                  cursor: "pointer",
+                  transition: "all 0.2s"
+                }}
+              >
+                <Sparkles size={11} /> Load Amir Baig Mic (2000 pcs)
+              </button>
+              <button
+                type="button"
+                onClick={loadServiceFeeSample}
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 5,
+                  padding: "7px 8px",
+                  borderRadius: 8,
+                  border: "1px solid rgba(255,255,255,0.08)",
+                  background: "rgba(255,255,255,0.02)",
+                  color: "#94a3b8",
+                  fontSize: 9.5,
+                  fontWeight: 750,
+                  cursor: "pointer",
+                  transition: "all 0.2s"
+                }}
+              >
+                Load Fee Retainer Sample
+              </button>
+            </div>
+          </div>
 
           {/* Client Metas Card */}
           <div style={{ display: "flex", flexDirection: "column", gap: expandedSections.clientInfo ? 14 : 0, background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 12, padding: "16px", marginBottom: 20 }}>
@@ -884,6 +1287,43 @@ function InvoiceBuilderContent() {
                     style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
                   />
                 </div>
+
+                {/* Header Title selection */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                  <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Invoice Header Title</label>
+                  <select
+                    value={headerTitle}
+                    onChange={e => setHeaderTitle(e.target.value)}
+                    style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
+                  >
+                    {HEADER_TITLE_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                  </select>
+                </div>
+
+                {invoiceType === "inventory" && (
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                      <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Incoterms / Trade Terms</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. EXW (Ex Works Shenzhen)"
+                        value={incoterms}
+                        onChange={e => setIncoterms(e.target.value)}
+                        style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 11, outline: "none" }}
+                      />
+                    </div>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                      <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Production Lead Time</label>
+                      <input
+                        type="text"
+                        placeholder="e.g. 20 - 25 Working Days"
+                        value={productionLeadTime}
+                        onChange={e => setProductionLeadTime(e.target.value)}
+                        style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 11, outline: "none" }}
+                      />
+                    </div>
+                  </div>
+                )}
               </>
             )}
           </div>
@@ -895,7 +1335,9 @@ function InvoiceBuilderContent() {
               style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", userSelect: "none" }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <h2 style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", color: "#ea580c", letterSpacing: "0.15em", margin: 0 }}>Add Services</h2>
+                <h2 style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", color: "#ea580c", letterSpacing: "0.15em", margin: 0 }}>
+                  {invoiceType === "inventory" ? "Add Inventory Products" : "Add Services"}
+                </h2>
                 {expandedSections.lineItems && (
                   <button
                     type="button"
@@ -915,22 +1357,26 @@ function InvoiceBuilderContent() {
             {expandedSections.lineItems && (
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
 
-                {/* Predefined services quick add */}
+                {/* Predefined items quick add */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 8, paddingBottom: 10, borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-                  <label style={{ fontSize: 9, color: "#71717a", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>Quick Add Services</label>
+                  <label style={{ fontSize: 9, color: "#71717a", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.05em" }}>
+                    {invoiceType === "inventory" ? "Quick Add Inventory Items" : "Quick Add Services"}
+                  </label>
                   <div style={{ display: "flex", flexWrap: "wrap", gap: 6, paddingBottom: 4 }}>
-                    {PREDEFINED_SERVICES.map(service => (
+                    {(invoiceType === "inventory" ? PREDEFINED_INVENTORY_SERVICES : PREDEFINED_SERVICES).map(service => (
                       <button
                         key={service.name}
                         type="button"
                         onClick={() => {
                           setItems(prev => {
-                            // If the only item is the default empty placeholder item, replace it
-                            if (prev.length === 1 && prev[0].name === "Full Account Management" && prev[0].price === 1500 && prev[0].quantity === 1) {
+                            if (prev.length === 1 && (prev[0].name === "Full Account Management" || prev[0].name === "Custom Service") && prev[0].price === 1500) {
                               return [{
                                 id: Date.now(),
                                 name: service.name,
                                 description: service.description,
+                                sku: service.sku || "",
+                                image: service.image || "",
+                                specifications: service.specifications || "",
                                 price: service.price,
                                 quantity: service.quantity
                               }];
@@ -941,6 +1387,9 @@ function InvoiceBuilderContent() {
                                 id: Date.now() + Math.random(),
                                 name: service.name,
                                 description: service.description,
+                                sku: service.sku || "",
+                                image: service.image || "",
+                                specifications: service.specifications || "",
                                 price: service.price,
                                 quantity: service.quantity
                               }
@@ -975,12 +1424,12 @@ function InvoiceBuilderContent() {
                 </div>
 
                 {items.map((item, idx) => (
-                  <div key={item.id} style={{ borderBottom: idx < items.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none", paddingBottom: idx < items.length - 1 ? 12 : 0, display: "flex", flexDirection: "column", gap: 8 }}>
+                  <div key={item.id} style={{ borderBottom: idx < items.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none", paddingBottom: idx < items.length - 1 ? 14 : 0, display: "flex", flexDirection: "column", gap: 8 }}>
                     <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                       <span style={{ fontSize: 11, fontWeight: 800, color: "#71717a", width: 14 }}>{idx + 1}</span>
                       <input
                         type="text"
-                        placeholder="Service Name"
+                        placeholder={invoiceType === "inventory" ? "Product Name / Model" : "Service Name"}
                         value={item.name}
                         onChange={e => handleItemChange(item.id, "name", e.target.value)}
                         style={{ flex: 1, background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
@@ -995,17 +1444,137 @@ function InvoiceBuilderContent() {
                       </button>
                     </div>
 
-                    <input
-                      type="text"
-                      placeholder="Short description (optional)..."
-                      value={item.description || ""}
-                      onChange={e => handleItemChange(item.id, "description", e.target.value)}
-                      style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none", marginLeft: 22 }}
-                    />
+                    {invoiceType === "inventory" ? (
+                      <>
+                        {/* SKU & Image Row */}
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, marginLeft: 22 }}>
+                          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                            <label style={{ fontSize: 9, color: "#71717a", fontWeight: 700 }}>SKU / Model #</label>
+                            <input
+                              type="text"
+                              placeholder="e.g. WLM-PRO-24G"
+                              value={item.sku || ""}
+                              onChange={e => handleItemChange(item.id, "sku", e.target.value)}
+                              style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none" }}
+                            />
+                          </div>
+
+                          <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
+                            <label style={{ fontSize: 9, color: "#71717a", fontWeight: 700 }}>Product Photo</label>
+                            <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                              {item.image ? (
+                                <div style={{ width: 28, height: 28, borderRadius: 6, overflow: "hidden", border: "1px solid #ea580c", flexShrink: 0 }}>
+                                  <img src={item.image} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                </div>
+                              ) : null}
+                              <label style={{
+                                display: "inline-flex",
+                                alignItems: "center",
+                                gap: 4,
+                                background: uploadingImageId === item.id ? "rgba(234,88,12,0.15)" : "rgba(255,255,255,0.04)",
+                                border: uploadingImageId === item.id ? "1px solid #ea580c" : "1px solid rgba(255,255,255,0.08)",
+                                borderRadius: 6,
+                                padding: "5px 8px",
+                                color: uploadingImageId === item.id ? "#fb923c" : "#94a3b8",
+                                fontSize: 10,
+                                cursor: uploadingImageId === item.id ? "not-allowed" : "pointer",
+                                whiteSpace: "nowrap"
+                              }}>
+                                {uploadingImageId === item.id ? (
+                                  <>
+                                    <RefreshCw size={11} className="animate-spin" /> Uploading to Cloudinary...
+                                  </>
+                                ) : (
+                                  <>
+                                    <Upload size={11} /> Upload to Cloudinary
+                                    <input
+                                      type="file"
+                                      accept="image/*"
+                                      disabled={uploadingImageId === item.id}
+                                      style={{ display: "none" }}
+                                      onChange={e => {
+                                        if (e.target.files?.[0]) {
+                                          handleImageUpload(item.id, e.target.files[0]);
+                                        }
+                                      }}
+                                    />
+                                  </>
+                                )}
+                              </label>
+
+                              {item.image ? (
+                                <>
+                                  {(item.imagePublicId || item.image.includes("cloudinary.com")) && (
+                                    <span style={{ fontSize: 8.5, color: "#10b981", background: "rgba(16,185,129,0.1)", border: "1px solid rgba(16,185,129,0.25)", padding: "2px 5px", borderRadius: 4, fontWeight: 700 }}>
+                                      ☁ Cloudinary
+                                    </span>
+                                  )}
+                                  <button
+                                    type="button"
+                                    onClick={() => handleItemFieldsChange(item.id, { image: "", imagePublicId: "" })}
+                                    style={{ background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 6, color: "#f87171", fontSize: 9.5, fontWeight: 700, padding: "4px 8px", cursor: "pointer" }}
+                                    title="Remove photo"
+                                  >
+                                    ✕ Remove Photo
+                                  </button>
+                                </>
+                              ) : (
+                                <div style={{ display: "flex", gap: 4 }}>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleItemFieldsChange(item.id, { image: "/images/products/wireless-lavalier-microphone.jpg", imagePublicId: "" })}
+                                    style={{ background: "rgba(234,88,12,0.1)", border: "1px solid rgba(234,88,12,0.2)", borderRadius: 6, color: "#ea580c", fontSize: 9, fontWeight: 700, padding: "4px 6px", cursor: "pointer" }}
+                                    title="Use Studio Mic Photo"
+                                  >
+                                    Studio Mic
+                                  </button>
+                                  <button
+                                    type="button"
+                                    onClick={() => handleItemFieldsChange(item.id, { image: "/images/products/wireless-mic-original-email.png", imagePublicId: "" })}
+                                    style={{ background: "rgba(59,130,246,0.1)", border: "1px solid rgba(59,130,246,0.2)", borderRadius: 6, color: "#60a5fa", fontSize: 9, fontWeight: 700, padding: "4px 6px", cursor: "pointer" }}
+                                    title="Use Email Attachment Mic Photo"
+                                  >
+                                    Email Mic
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Specifications */}
+                        <input
+                          type="text"
+                          placeholder="Specifications: e.g. 40 Master Cartons · Incoterms: EXW Shenzhen · AQL 1.5"
+                          value={item.specifications || ""}
+                          onChange={e => handleItemChange(item.id, "specifications", e.target.value)}
+                          style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none", marginLeft: 22 }}
+                        />
+
+                        {/* Description */}
+                        <input
+                          type="text"
+                          placeholder="Item description / packaging details..."
+                          value={item.description || ""}
+                          onChange={e => handleItemChange(item.id, "description", e.target.value)}
+                          style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none", marginLeft: 22 }}
+                        />
+                      </>
+                    ) : (
+                      <input
+                        type="text"
+                        placeholder="Short description (optional)..."
+                        value={item.description || ""}
+                        onChange={e => handleItemChange(item.id, "description", e.target.value)}
+                        style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none", marginLeft: 22 }}
+                      />
+                    )}
 
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginLeft: 22 }}>
                       <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                        <label style={{ fontSize: 9, color: "#525252", fontWeight: 700 }}>Qty</label>
+                        <label style={{ fontSize: 9, color: "#525252", fontWeight: 700 }}>
+                          {invoiceType === "inventory" ? "Quantity (PCS)" : "Qty"}
+                        </label>
                         <input
                           type="number"
                           min="1"
@@ -1015,10 +1584,13 @@ function InvoiceBuilderContent() {
                         />
                       </div>
                       <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                        <label style={{ fontSize: 9, color: "#525252", fontWeight: 700 }}>Rate ({currencySymbol})</label>
+                        <label style={{ fontSize: 9, color: "#525252", fontWeight: 700 }}>
+                          {invoiceType === "inventory" ? `Unit Price EXW (${currencySymbol})` : `Rate (${currencySymbol})`}
+                        </label>
                         <input
                           type="number"
                           min="0"
+                          step="0.01"
                           value={item.price}
                           onChange={e => handleItemChange(item.id, "price", Math.max(0, parseFloat(e.target.value) || 0))}
                           style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 11, outline: "none" }}
@@ -1208,15 +1780,43 @@ function InvoiceBuilderContent() {
                 overflow: "hidden"
               }}>
                 {/* Wave Banner SVG Graphic */}
-                <div style={{ position: "absolute", top: 0, right: 0, width: "580px", height: "160px", zIndex: 1, pointerEvents: "none" }}>
+                <div style={{ position: "absolute", top: 0, right: 0, width: "620px", height: "165px", zIndex: 1, pointerEvents: "none" }}>
                   <img src="/header-curve.png" alt="Header Graphic" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "right top" }} />
                 </div>
 
-                {/* Invoice Text Overlay */}
-                <div style={{ position: "absolute", top: 38, right: 55, textAlign: "right", zIndex: 2 }}>
-                  <div style={{ fontSize: "36px", fontWeight: "900", color: "#f97316", letterSpacing: "3px", textTransform: "uppercase", fontFamily: "var(--font-montserrat)" }}>INVOICE</div>
-                  <div style={{ fontSize: "14px", fontWeight: "800", color: "#ffffff", marginTop: 6, letterSpacing: "1px", fontFamily: "var(--font-montserrat)" }}>#{invoiceNumberPreview}</div>
-                </div>
+                {/* Invoice Text Overlay - precisely fitted inside dark navy curve */}
+                {(() => {
+                  const currentTitle = headerTitle || (invoiceType === "inventory" ? "PROFORMA INVOICE" : "INVOICE");
+                  const isLong = currentTitle.length > 9;
+                  return (
+                    <div style={{ position: "absolute", top: isLong ? 32 : 36, right: 48, textAlign: "right", zIndex: 2, maxWidth: "340px" }}>
+                      <div style={{
+                        fontSize: isLong ? "21px" : "28px",
+                        fontWeight: "900",
+                        color: "#f97316",
+                        letterSpacing: isLong ? "1.2px" : "2.5px",
+                        textTransform: "uppercase",
+                        fontFamily: "var(--font-montserrat)",
+                        whiteSpace: "nowrap",
+                        lineHeight: "1.15"
+                      }}>
+                        {currentTitle}
+                      </div>
+                      <div style={{
+                        fontSize: "12px",
+                        fontWeight: "800",
+                        color: "#ffffff",
+                        marginTop: 4,
+                        letterSpacing: "0.8px",
+                        fontFamily: "var(--font-montserrat)",
+                        whiteSpace: "nowrap",
+                        opacity: 0.95
+                      }}>
+                        #{invoiceNumberPreview}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 {/* Logo & Tagline */}
                 <div style={{ display: "flex", flexDirection: "column", gap: 6, position: "absolute", top: "65px", left: "55px", zIndex: 2 }}>
@@ -1305,21 +1905,45 @@ function InvoiceBuilderContent() {
                   </div>
                 </div>
 
-                {/* 2. Service Partnership Column */}
-                <div style={{ width: "36%", display: "flex", flexDirection: "column" }}>
-                  <div style={{ fontSize: "10.5px", fontWeight: "900", color: "#f97316", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "1px", fontFamily: "var(--font-montserrat)" }}>SERVICE</div>
-                  <div style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
-                    <div style={{ width: "48px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2, overflow: "hidden" }}>
-                      <img src="/amazon-logo.png" alt="Amazon Logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                {/* 2. Middle Column: Service or Supply/Incoterms */}
+                {invoiceType === "inventory" ? (
+                  <div style={{ width: "36%", display: "flex", flexDirection: "column" }}>
+                    <div style={{ fontSize: "10.5px", fontWeight: "900", color: "#f97316", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "1px", fontFamily: "var(--font-montserrat)" }}>
+                      SUPPLY &amp; TRADE TERMS
                     </div>
-                    <div style={{ display: "flex", flexDirection: "column" }}>
-                      <div style={{ fontSize: "13px", fontWeight: "800", color: "#0f172a", fontFamily: "var(--font-montserrat)" }}>Amazon Growth Partnership</div>
-                      <div style={{ fontSize: "10.5px", color: "#64748b", lineHeight: "1.4", marginTop: "4px", fontWeight: "500" }}>
-                        Comprehensive Amazon account management & growth services as per agreement.
+                    <div style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
+                      <div style={{ width: "48px", height: "48px", borderRadius: "10px", background: "#fff7ed", border: "1.5px solid #fed7aa", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2 }}>
+                        <Package size={24} color="#ea580c" />
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <div style={{ fontSize: "13px", fontWeight: "800", color: "#0f172a", fontFamily: "var(--font-montserrat)" }}>
+                          Inventory Procurement &amp; Supply
+                        </div>
+                        <div style={{ fontSize: "10.5px", color: "#475569", lineHeight: "1.4", marginTop: "4px", fontWeight: "600" }}>
+                          Trade Terms: <span style={{ color: "#ea580c", fontWeight: "800" }}>{incoterms || "EXW (Ex Works Shenzhen)"}</span>
+                        </div>
+                        <div style={{ fontSize: "9.5px", color: "#64748b", marginTop: "2px", fontWeight: "500" }}>
+                          Lead Time: {productionLeadTime || "20 - 25 Working Days"} · AQL 1.5 Quality Audit
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                ) : (
+                  <div style={{ width: "36%", display: "flex", flexDirection: "column" }}>
+                    <div style={{ fontSize: "10.5px", fontWeight: "900", color: "#f97316", textTransform: "uppercase", marginBottom: "12px", letterSpacing: "1px", fontFamily: "var(--font-montserrat)" }}>SERVICE</div>
+                    <div style={{ display: "flex", gap: "10px", alignItems: "flex-start" }}>
+                      <div style={{ width: "48px", height: "48px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 2, overflow: "hidden" }}>
+                        <img src="/amazon-logo.png" alt="Amazon Logo" style={{ width: "100%", height: "100%", objectFit: "contain" }} />
+                      </div>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <div style={{ fontSize: "13px", fontWeight: "800", color: "#0f172a", fontFamily: "var(--font-montserrat)" }}>Amazon Growth Partnership</div>
+                        <div style={{ fontSize: "10.5px", color: "#64748b", lineHeight: "1.4", marginTop: "4px", fontWeight: "500" }}>
+                          Comprehensive Amazon account management &amp; growth services as per agreement.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* 3. Dates & ID Column */}
                 <div style={{
@@ -1345,83 +1969,349 @@ function InvoiceBuilderContent() {
                 </div>
               </div>
 
-              {/* Items Table */}
-              <div style={{ display: "flex", flexDirection: "column", marginBottom: "22px" }}>
-                {/* Header row */}
-                <div style={{ display: "flex", background: "#0f172a", borderRadius: "6px", overflow: "hidden", alignItems: "center", height: "32px", fontFamily: "var(--font-montserrat)" }}>
-                  <div style={{ width: "6%", padding: "0 10px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px" }}>#</div>
-                  <div style={{ width: "34%", padding: "0 10px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px" }}>DESCRIPTION</div>
-                  <div style={{ width: "35%", padding: "0 10px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px" }}>DELIVERABLES</div>
-                  <div style={{ width: "7%", padding: "0 10px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px", textAlign: "center" }}>QTY</div>
-                  <div style={{ width: "13%", padding: "0 10px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px", textAlign: "right" }}>RATE ({currency})</div>
-                  <div style={{ width: "15%", padding: "0 14px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px", textAlign: "right", background: "#f97316", display: "flex", height: "100%", alignItems: "center", justifyContent: "flex-end" }}>AMOUNT ({currency})</div>
-                </div>
-
-                {/* Body Rows */}
-                {items.map((item, idx) => {
-                  const qty = Number(item.quantity) || 1;
-                  const rate = Number(item.price) || 0;
-                  const itemTotal = qty * rate;
-                  const deliverables = getDeliverables(item);
-
-                  return (
-                    <div key={item.id} style={{ display: "flex", borderBottom: "1px solid #f1f5f9", padding: "12px 0", alignItems: "stretch" }}>
-                      {/* 1. Index */}
-                      <div style={{ width: "6%", padding: "0 10px", fontWeight: "800", color: "#64748b", fontSize: "11px", display: "flex", alignItems: "center" }}>
-                        {String(idx + 1).padStart(2, "0")}
-                      </div>
-
-                      {/* 2. Description Card */}
-                      <div style={{ width: "34%", padding: "0 10px", display: "flex", gap: "10px", alignItems: "center" }}>
-                        <div style={{ width: "30px", height: "30px", borderRadius: "8px", background: "#fff7ed", border: "1px solid #ffedd5", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                          {getServiceIcon(item.name)}
-                        </div>
-                        <div style={{ display: "flex", flexDirection: "column" }}>
-                          <div style={{ fontWeight: "800", color: "#0f172a", fontSize: "11px" }}>{item.name || "Custom Service"}</div>
-                          {item.description && <div style={{ color: "#64748b", fontSize: "9px", marginTop: "2px", lineHeight: "1.3" }}>{item.description}</div>}
-                        </div>
-                      </div>
-
-                      {/* Divider */}
-                      <div style={{ width: "2px", backgroundColor: "#f1f5f9", margin: "10px 0" }}></div>
-
-                      {/* 3. Deliverables Column */}
-                      <div style={{ width: "35%", padding: "0 10px", display: "flex", flexDirection: "column", gap: "4px", justifyContent: "center" }}>
-                        {deliverables.map((del, i) => (
-                          <div key={i} style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "9px", color: "#475569", fontWeight: "600" }}>
-                            <span style={{ color: "#f97316", fontWeight: "800" }}>✓</span>
-                            <span>{del}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Divider */}
-                      <div style={{ width: "2px", backgroundColor: "#f1f5f9", margin: "10px 0" }}></div>
-
-                      {/* 4. Qty */}
-                      <div style={{ width: "7%", padding: "0 10px", textAlign: "center", fontWeight: "700", color: "#0f172a", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        {qty}
-                      </div>
-
-                      {/* Divider */}
-                      <div style={{ width: "2px", backgroundColor: "#f1f5f9", margin: "10px 0" }}></div>
-
-                      {/* 5. Rate */}
-                      <div style={{ width: "13%", padding: "0 10px", textAlign: "right", fontWeight: "700", color: "#0f172a", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-                        {fmtCurrency(rate, currency)}
-                      </div>
-
-                      {/* Divider */}
-                      <div style={{ width: "2px", backgroundColor: "#e2e8f0", margin: "10px 0" }}></div>
-
-                      {/* 6. Amount */}
-                      <div style={{ width: "15%", padding: "0 14px", textAlign: "right", fontWeight: "800", color: "#f97316", display: "flex", alignItems: "center", justifyContent: "flex-end", fontSize: "11px" }}>
-                        {fmtCurrency(itemTotal, currency)}
-                      </div>
+              {/* Items Section (Dual Mode: Inventory Product Showcase vs Service Deliverables Table) */}
+              {invoiceType === "inventory" ? (
+                <div style={{ display: "flex", flexDirection: "column", marginBottom: "26px", gap: "16px" }}>
+                  {/* Section Title Strip */}
+                  <div style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    background: "#0f172a",
+                    borderRadius: "6px",
+                    padding: "9px 16px",
+                    fontFamily: "var(--font-montserrat)"
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", color: "#ffffff", fontSize: "10.5px", fontWeight: "900", letterSpacing: "1px" }}>
+                      <span style={{ color: "#f97316" }}>■</span> ORDERED PRODUCT &amp; MANUFACTURING SPECIFICATIONS
                     </div>
-                  );
-                })}
-              </div>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                      <span style={{ color: "#94a3b8", fontSize: "9px", fontWeight: "700", letterSpacing: "0.5px" }}>
+                        BATCH: {items.reduce((sum, it) => sum + (Number(it.quantity) || 1), 0).toLocaleString()} UNITS
+                      </span>
+                      <span style={{ background: "#ea580c", color: "#ffffff", fontSize: "8.5px", fontWeight: "900", padding: "2px 8px", borderRadius: "4px", letterSpacing: "0.8px" }}>
+                        EXW SHENZHEN
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Product Cards */}
+                  {items.map((item, idx) => {
+                    const qty = Number(item.quantity) || 1;
+                    const rate = Number(item.price) || 0;
+                    const itemTotal = qty * rate;
+
+                    return (
+                      <div
+                        key={item.id}
+                        style={{
+                          display: "flex",
+                          gap: "24px",
+                          background: "#ffffff",
+                          border: "1.5px solid #e2e8f0",
+                          borderRadius: "10px",
+                          padding: "20px 22px",
+                          boxShadow: "0 4px 16px rgba(0,0,0,0.03)",
+                          alignItems: "center",
+                          position: "relative"
+                        }}
+                      >
+                        {/* 1. Large High-Definition Product Image Showcase */}
+                        {item.image ? (
+                          <div style={{
+                            width: "175px",
+                            height: "175px",
+                            borderRadius: "12px",
+                            background: "#f8fafc",
+                            border: "1.5px solid #e2e8f0",
+                            padding: "10px",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
+                            position: "relative"
+                          }}>
+                            <img
+                              src={item.image}
+                              alt={item.name || "Product"}
+                              style={{ width: "100%", height: "135px", objectFit: "contain", background: "#ffffff", borderRadius: "8px" }}
+                            />
+                            <div style={{
+                              fontSize: "8px",
+                              fontWeight: "800",
+                              color: "#64748b",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.5px",
+                              marginTop: "6px",
+                              background: "#ffffff",
+                              border: "1px solid #e2e8f0",
+                              padding: "2px 8px",
+                              borderRadius: "10px",
+                              whiteSpace: "nowrap"
+                            }}>
+                              PRODUCTION SAMPLE
+                            </div>
+                          </div>
+                        ) : null}
+
+                        {/* 2. Product Name, Model, Description & Packaging Specs */}
+                        <div style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0, justifyContent: "center" }}>
+                          {/* Item Index & Product Title */}
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                            <span style={{
+                              background: "#0f172a",
+                              color: "#ffffff",
+                              fontSize: "9.5px",
+                              fontWeight: "900",
+                              padding: "2px 7px",
+                              borderRadius: "4px",
+                              fontFamily: "var(--font-montserrat)"
+                            }}>
+                              ITEM {String(idx + 1).padStart(2, "0")}
+                            </span>
+                            <div style={{
+                              fontSize: "16px",
+                              fontWeight: "900",
+                              color: "#0f172a",
+                              fontFamily: "var(--font-montserrat)",
+                              letterSpacing: "0.2px",
+                              lineHeight: "1.25"
+                            }}>
+                              {item.name || "Product Item"}
+                            </div>
+                          </div>
+
+                          {/* SKU & Category Tags */}
+                          <div style={{ display: "flex", alignItems: "center", gap: "8px", margin: "8px 0 10px", flexWrap: "wrap" }}>
+                            <span style={{
+                              background: "#f1f5f9",
+                              border: "1px solid #cbd5e1",
+                              color: "#0f172a",
+                              padding: "3px 9px",
+                              borderRadius: "5px",
+                              fontFamily: "monospace",
+                              fontSize: "10.5px",
+                              fontWeight: "800",
+                              letterSpacing: "0.5px"
+                            }}>
+                              SKU: {item.sku || "—"}
+                            </span>
+                            <span style={{
+                              background: "rgba(234,88,12,0.1)",
+                              border: "1px solid rgba(234,88,12,0.25)",
+                              color: "#ea580c",
+                              padding: "3px 9px",
+                              borderRadius: "5px",
+                              fontSize: "9.5px",
+                              fontWeight: "800"
+                            }}>
+                              PRODUCTION BATCH: {qty.toLocaleString()} PCS
+                            </span>
+                            <span style={{
+                              background: "#f0fdf4",
+                              border: "1px solid #bbf7d0",
+                              color: "#15803d",
+                              padding: "3px 9px",
+                              borderRadius: "5px",
+                              fontSize: "9.5px",
+                              fontWeight: "800"
+                            }}>
+                              EXW SHENZHEN
+                            </span>
+                          </div>
+
+                          {/* Description */}
+                          {item.description && (
+                            <div style={{
+                              fontSize: "11px",
+                              color: "#475569",
+                              lineHeight: "1.55",
+                              marginBottom: "12px",
+                              fontWeight: "500"
+                            }}>
+                              {item.description}
+                            </div>
+                          )}
+
+                          {/* Manufacturing & Packaging Specifications Container */}
+                          {item.specifications && (
+                            <div style={{
+                              background: "#fff7ed",
+                              border: "1px solid #fed7aa",
+                              borderRadius: "8px",
+                              padding: "10px 14px"
+                            }}>
+                              <div style={{
+                                fontSize: "9px",
+                                fontWeight: "800",
+                                color: "#9a3412",
+                                textTransform: "uppercase",
+                                letterSpacing: "0.6px",
+                                marginBottom: "6px",
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "5px"
+                              }}>
+                                <span>⚙️</span> PRODUCTION &amp; PACKAGING SPECIFICATIONS
+                              </div>
+                              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                                {item.specifications.split(/[\n·]/).map((spec, sIdx) => {
+                                  const trimmed = spec.trim();
+                                  if (!trimmed) return null;
+                                  return (
+                                    <span key={sIdx} style={{
+                                      display: "inline-flex",
+                                      alignItems: "center",
+                                      gap: "4px",
+                                      background: "#ffffff",
+                                      color: "#0f172a",
+                                      border: "1px solid #fed7aa",
+                                      borderRadius: "5px",
+                                      fontSize: "9.5px",
+                                      fontWeight: "750",
+                                      padding: "3px 8px",
+                                      lineHeight: "1.2"
+                                    }}>
+                                      <span style={{ color: "#ea580c", fontWeight: "900" }}>✓</span>
+                                      {trimmed}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* 3. Right Column: Commercial Metrics Card */}
+                        <div style={{
+                          width: "215px",
+                          background: "linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%)",
+                          border: "1.5px solid #e2e8f0",
+                          borderRadius: "10px",
+                          padding: "16px 18px",
+                          display: "flex",
+                          flexDirection: "column",
+                          justifyContent: "space-between",
+                          flexShrink: 0,
+                          boxShadow: "inset 0 1px 2px rgba(255,255,255,0.8)"
+                        }}>
+                          {/* Metric 1: Qty */}
+                          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                            <div style={{ fontSize: "8.5px", fontWeight: "800", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                              ORDER QUANTITY
+                            </div>
+                            <div style={{ fontSize: "15px", fontWeight: "900", color: "#0f172a", fontFamily: "var(--font-montserrat)" }}>
+                              {qty.toLocaleString()} PCS
+                            </div>
+                          </div>
+
+                          {/* Metric 2: Unit Price */}
+                          <div style={{ display: "flex", flexDirection: "column", gap: "2px", marginTop: "10px" }}>
+                            <div style={{ fontSize: "8.5px", fontWeight: "800", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+                              UNIT PRICE (EXW)
+                            </div>
+                            <div style={{ fontSize: "15px", fontWeight: "900", color: "#0f172a", fontFamily: "var(--font-montserrat)" }}>
+                              {fmtCurrency(rate, currency)} <span style={{ fontSize: "9px", fontWeight: "700", color: "#64748b" }}>/ pc</span>
+                            </div>
+                          </div>
+
+                          {/* Divider */}
+                          <div style={{ borderTop: "1.5px dashed #cbd5e1", margin: "10px 0" }} />
+
+                          {/* Metric 3: Total */}
+                          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
+                            <div style={{ fontSize: "9px", fontWeight: "900", color: "#ea580c", textTransform: "uppercase", letterSpacing: "0.8px" }}>
+                              LINE ITEM TOTAL
+                            </div>
+                            <div style={{ fontSize: "20px", fontWeight: "900", color: "#ea580c", fontFamily: "var(--font-montserrat)", letterSpacing: "0.5px" }}>
+                              {fmtCurrency(itemTotal, currency)}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", marginBottom: "22px" }}>
+                  {/* Header row */}
+                  <div style={{ display: "flex", background: "#0f172a", borderRadius: "6px", overflow: "hidden", alignItems: "center", height: "32px", fontFamily: "var(--font-montserrat)" }}>
+                    <div style={{ width: "6%", padding: "0 10px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px" }}>#</div>
+                    <div style={{ width: "34%", padding: "0 10px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px" }}>DESCRIPTION</div>
+                    <div style={{ width: "35%", padding: "0 10px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px" }}>DELIVERABLES</div>
+                    <div style={{ width: "7%", padding: "0 10px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px", textAlign: "center" }}>QTY</div>
+                    <div style={{ width: "13%", padding: "0 10px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px", textAlign: "right" }}>RATE ({currency})</div>
+                    <div style={{ width: "15%", padding: "0 14px", color: "#fff", fontSize: "10px", fontWeight: "900", letterSpacing: "0.5px", textAlign: "right", background: "#f97316", display: "flex", height: "100%", alignItems: "center", justifyContent: "flex-end" }}>AMOUNT ({currency})</div>
+                  </div>
+
+                  {/* Body Rows */}
+                  {items.map((item, idx) => {
+                    const qty = Number(item.quantity) || 1;
+                    const rate = Number(item.price) || 0;
+                    const itemTotal = qty * rate;
+                    const deliverables = getDeliverables(item);
+
+                    return (
+                      <div key={item.id} style={{ display: "flex", borderBottom: "1px solid #f1f5f9", padding: "12px 0", alignItems: "stretch" }}>
+                        {/* 1. Index */}
+                        <div style={{ width: "6%", padding: "0 10px", fontWeight: "800", color: "#64748b", fontSize: "11px", display: "flex", alignItems: "center" }}>
+                          {String(idx + 1).padStart(2, "0")}
+                        </div>
+
+                        {/* 2. Description Card */}
+                        <div style={{ width: "34%", padding: "0 10px", display: "flex", gap: "10px", alignItems: "center" }}>
+                          <div style={{ width: "30px", height: "30px", borderRadius: "8px", background: "#fff7ed", border: "1px solid #ffedd5", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                            {getServiceIcon(item.name)}
+                          </div>
+                          <div style={{ display: "flex", flexDirection: "column" }}>
+                            <div style={{ fontWeight: "800", color: "#0f172a", fontSize: "11px" }}>{item.name || "Custom Service"}</div>
+                            {item.description && <div style={{ color: "#64748b", fontSize: "9px", marginTop: "2px", lineHeight: "1.3" }}>{item.description}</div>}
+                          </div>
+                        </div>
+
+                        {/* Divider */}
+                        <div style={{ width: "2px", backgroundColor: "#f1f5f9", margin: "10px 0" }}></div>
+
+                        {/* 3. Deliverables Column */}
+                        <div style={{ width: "35%", padding: "0 10px", display: "flex", flexDirection: "column", gap: "4px", justifyContent: "center" }}>
+                          {deliverables.map((del, i) => (
+                            <div key={i} style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "9px", color: "#475569", fontWeight: "600" }}>
+                              <span style={{ color: "#f97316", fontWeight: "800" }}>✓</span>
+                              <span>{del}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        {/* Divider */}
+                        <div style={{ width: "2px", backgroundColor: "#f1f5f9", margin: "10px 0" }}></div>
+
+                        {/* 4. Qty */}
+                        <div style={{ width: "7%", padding: "0 10px", textAlign: "center", fontWeight: "700", color: "#0f172a", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          {qty}
+                        </div>
+
+                        {/* Divider */}
+                        <div style={{ width: "2px", backgroundColor: "#f1f5f9", margin: "10px 0" }}></div>
+
+                        {/* 5. Rate */}
+                        <div style={{ width: "13%", padding: "0 10px", textAlign: "right", fontWeight: "700", color: "#0f172a", display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+                          {fmtCurrency(rate, currency)}
+                        </div>
+
+                        {/* Divider */}
+                        <div style={{ width: "2px", backgroundColor: "#e2e8f0", margin: "10px 0" }}></div>
+
+                        {/* 6. Amount */}
+                        <div style={{ width: "15%", padding: "0 14px", textAlign: "right", fontWeight: "800", color: "#f97316", display: "flex", alignItems: "center", justifyContent: "flex-end", fontSize: "11px" }}>
+                          {fmtCurrency(itemTotal, currency)}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* Notes & Totals Layout */}
               <div style={{ display: "flex", justifyContent: "space-between", gap: "20px", marginBottom: "26px" }}>
@@ -1445,11 +2335,11 @@ function InvoiceBuilderContent() {
                       </svg>
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", gap: "6px", zIndex: 1 }}>
-                      <div style={{ fontSize: "10.5px", fontWeight: "900", color: "#f97316", letterSpacing: "0.5px", fontFamily: "var(--font-montserrat)" }}>NOTES</div>
+                      <div style={{ fontSize: "10.5px", fontWeight: "900", color: "#f97316", letterSpacing: "0.5px", fontFamily: "var(--font-montserrat)" }}>
+                        {invoiceType === "inventory" ? "PRODUCTION & SUPPLY TERMS" : "NOTES"}
+                      </div>
                       <pre style={{ margin: 0, padding: 0, fontSize: "10px", color: "#f8fafc", fontFamily: "var(--font-montserrat)", whiteSpace: "pre-wrap", lineHeight: "1.6", fontWeight: "500" }}>
-                        {notes || `Thank you for choosing Grow Orbit.
-We appreciate your trust and look forward to
-helping you achieve exceptional growth on Amazon.`}
+                        {notes || (invoiceType === "inventory" ? DEFAULT_INVENTORY_NOTES : DEFAULT_NOTES)}
                       </pre>
                       <div style={{ marginTop: "12px", fontSize: "10px", color: "#f8fafc", fontFamily: "var(--font-montserrat)", fontWeight: "500" }}>
                         Payment is due by {dueDate ? formatDateStr(dueDate, true) : "the specified due date"}.

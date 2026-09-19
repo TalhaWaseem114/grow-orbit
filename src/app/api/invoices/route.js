@@ -80,6 +80,10 @@ export async function POST(request) {
     const invoiceData = {
       invoiceNumber,
       leadId,
+      invoiceType: body.invoiceType || "service",
+      headerTitle: body.headerTitle || (body.invoiceType === "inventory" ? "PROFORMA INVOICE" : "INVOICE"),
+      incoterms: body.incoterms || "",
+      productionLeadTime: body.productionLeadTime || "",
       clientName: clientName || "",
       companyName: companyName || "",
       clientEmail: clientEmail || "",
@@ -88,7 +92,16 @@ export async function POST(request) {
       dueDate: dueDate || now.toISOString().split("T")[0],
       status: status || "draft",
       currency: currency || "USD",
-      items: items || [],
+      items: (items || []).map(it => ({
+        name: it.name || "",
+        description: it.description || "",
+        quantity: Number(it.quantity) || 1,
+        price: Number(it.price) || 0,
+        sku: it.sku || "",
+        image: it.image || "",
+        imagePublicId: it.imagePublicId || "",
+        specifications: it.specifications || ""
+      })),
       taxRate: Number(taxRate) || 0,
       discount: Number(discount) || 0,
       notes: notes || "",

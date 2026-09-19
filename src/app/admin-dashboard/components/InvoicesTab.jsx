@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import {
-  Plus, Search, Download, Trash2, Edit3, Eye, X, Copy, Check, ExternalLink, FileText, AlertCircle, RefreshCw, Settings, Receipt
+  Plus, Search, Download, Trash2, Edit3, Eye, X, Copy, Check, ExternalLink, FileText, AlertCircle, RefreshCw, Settings, Receipt, Package, Briefcase
 } from "lucide-react";
-import { db } from "../../../firebase/firebaseConfig";
+import { db, auth } from "../../../firebase/firebaseConfig";
 import {
   collection, query, orderBy, onSnapshot, doc, deleteDoc, getDoc, setDoc
 } from "firebase/firestore";
@@ -210,11 +210,22 @@ export default function InvoicesTab() {
 
   // Delete handlers
   const handleDeleteInvoice = async (id, num) => {
-    if (!window.confirm(`Are you sure you want to permanently delete invoice ${num}?`)) return;
+    if (!window.confirm(`Are you sure you want to permanently delete invoice ${num}? All associated Cloudinary images will also be removed.`)) return;
     try {
-      await deleteDoc(doc(db, "invoices", id));
-      alert("Invoice deleted successfully!");
+      const token = await auth.currentUser?.getIdToken() || "";
+      const res = await fetch(`/api/invoices/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to delete invoice");
+      }
+      alert(`Invoice ${num} and its Cloudinary media were deleted successfully!`);
     } catch (e) {
+      console.error("Error deleting invoice:", e);
       alert("Failed to delete invoice: " + e.message);
     }
   };
@@ -313,9 +324,14 @@ export default function InvoicesTab() {
               >
                 <Settings size={14} /> Defaults
               </button>
-              <Link href="/admin-dashboard/invoice-builder" style={{ textDecoration: "none" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#ea580c", color: "#fff", border: "none", borderRadius: 12, padding: "10px 16px", fontSize: 11, fontWeight: 800, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em" }}>
-                  <Plus size={14} /> New Invoice
+              <Link href="/admin-dashboard/invoice-builder?type=service" style={{ textDecoration: "none" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(59,130,246,0.12)", color: "#60a5fa", border: "1px solid rgba(59,130,246,0.25)", borderRadius: 12, padding: "9px 15px", fontSize: 11, fontWeight: 800, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em" }}>
+                  <Briefcase size={13} /> Fee Invoice
+                </div>
+              </Link>
+              <Link href="/admin-dashboard/invoice-builder?type=inventory" style={{ textDecoration: "none" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, background: "#ea580c", color: "#fff", border: "none", borderRadius: 12, padding: "10px 16px", fontSize: 11, fontWeight: 800, cursor: "pointer", textTransform: "uppercase", letterSpacing: "0.08em", boxShadow: "0 2px 10px rgba(234,88,12,0.3)" }}>
+                  <Package size={14} /> Inventory Invoice
                 </div>
               </Link>
             </div>
@@ -421,7 +437,27 @@ export default function InvoicesTab() {
 
                     return (
                       <tr key={inv.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.03)", transition: "background 0.2s" }} className="table-row-hover">
-                        <td style={{ padding: "16px", fontSize: 11, fontWeight: 800, color: "#ea580c" }}>{inv.invoiceNumber}</td>
+                        <td style={{ padding: "16px" }}>
+                          <div style={{ fontSize: 11, fontWeight: 850, color: "#ea580c", letterSpacing: "0.02em" }}>{inv.invoiceNumber}</div>
+                          <div style={{ marginTop: 4 }}>
+                            <span style={{
+                              fontSize: 8.5,
+                              fontWeight: 800,
+                              padding: "2px 6px",
+                              borderRadius: 4,
+                              background: inv.invoiceType === "inventory" ? "rgba(234,88,12,0.15)" : "rgba(59,130,246,0.15)",
+                              color: inv.invoiceType === "inventory" ? "#fb923c" : "#60a5fa",
+                              border: inv.invoiceType === "inventory" ? "1px solid rgba(234,88,12,0.3)" : "1px solid rgba(59,130,246,0.3)",
+                              textTransform: "uppercase",
+                              letterSpacing: "0.06em",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              gap: 3
+                            }}>
+                              {inv.invoiceType === "inventory" ? "📦 Inventory" : "💼 Service"}
+                            </span>
+                          </div>
+                        </td>
                         <td style={{ padding: "16px" }}>
                           <div style={{ fontSize: 12, fontWeight: 700, color: "#fff" }}>{inv.clientName || "—"}</div>
                           <div style={{ fontSize: 10, color: "#525252", marginTop: 2 }}>{inv.companyName || inv.clientEmail}</div>

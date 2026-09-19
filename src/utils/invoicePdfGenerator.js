@@ -548,7 +548,12 @@ export const InvoicePdfDocument = ({ invoice }) => {
             
             {/* Invoice Text Overlay */}
             <View style={styles.bannerTextContainer}>
-              <Text style={styles.invoiceMetaTitle}>INVOICE</Text>
+              <Text style={[
+                styles.invoiceMetaTitle,
+                (invoice.headerTitle || (invoice.invoiceType === "inventory" ? "PROFORMA INVOICE" : "INVOICE")).length > 9 ? { fontSize: 17, letterSpacing: 1 } : null
+              ]}>
+                {invoice.headerTitle || (invoice.invoiceType === "inventory" ? "PROFORMA INVOICE" : "INVOICE")}
+              </Text>
               <Text style={styles.invoiceNumber}>#{invoice.invoiceNumber}</Text>
             </View>
           </View>
@@ -577,14 +582,27 @@ export const InvoicePdfDocument = ({ invoice }) => {
             <Text style={styles.metaText}>{invoice.clientEmail || "support@groworbitofficial.com"}</Text>
           </View>
 
-          {/* 2. Service */}
-          <View style={styles.metaCol2}>
-            <Text style={styles.metaLabelOrange}>SERVICE</Text>
-            <Text style={styles.metaCompany}>Amazon Growth Partnership</Text>
-            <Text style={[styles.metaText, { color: "#64748b", lineHeight: 1.3 }]}>
-              Comprehensive Amazon account management & growth services as per agreement.
-            </Text>
-          </View>
+          {/* 2. Service or Supply Terms */}
+          {invoice.invoiceType === "inventory" ? (
+            <View style={styles.metaCol2}>
+              <Text style={styles.metaLabelOrange}>SUPPLY &amp; TRADE TERMS</Text>
+              <Text style={styles.metaCompany}>Inventory Procurement &amp; Supply</Text>
+              <Text style={[styles.metaText, { color: "#64748b", lineHeight: 1.3 }]}>
+                Trade Terms: {invoice.incoterms || "EXW (Ex Works Shenzhen)"}
+              </Text>
+              <Text style={[styles.metaText, { color: "#64748b", lineHeight: 1.3 }]}>
+                Lead Time: {invoice.productionLeadTime || "20 - 25 Working Days"} · AQL 1.5
+              </Text>
+            </View>
+          ) : (
+            <View style={styles.metaCol2}>
+              <Text style={styles.metaLabelOrange}>SERVICE</Text>
+              <Text style={styles.metaCompany}>Amazon Growth Partnership</Text>
+              <Text style={[styles.metaText, { color: "#64748b", lineHeight: 1.3 }]}>
+                Comprehensive Amazon account management &amp; growth services as per agreement.
+              </Text>
+            </View>
+          )}
 
           {/* 3. Dates & ID */}
           <View style={styles.metaCol3}>
@@ -605,41 +623,84 @@ export const InvoicePdfDocument = ({ invoice }) => {
 
         {/* Items Table */}
         <View style={styles.table}>
-          {/* Table Header */}
-          <View style={styles.tableHeader}>
-            <Text style={[styles.colIndex, { color: "#ffffff" }]}>#</Text>
-            <Text style={[styles.colDesc, { color: "#ffffff" }]}>DESCRIPTION</Text>
-            <Text style={[styles.colDeliv, { color: "#ffffff" }]}>DELIVERABLES</Text>
-            <Text style={[styles.colQty, { color: "#ffffff", textAlign: "center" }]}>QTY</Text>
-            <Text style={[styles.colRate, { color: "#ffffff", textAlign: "right" }]}>RATE</Text>
-            <Text style={[styles.colAmountHeader]}>AMOUNT</Text>
-          </View>
-
-          {/* Table Rows */}
-          {items.map((item, idx) => {
-            const qty = Number(item.quantity) || 1;
-            const rate = Number(item.price) || 0;
-            const amount = qty * rate;
-            const deliverables = getDeliverables(item);
-
-            return (
-              <View key={idx} style={styles.tableRow}>
-                <Text style={styles.colIndex}>{String(idx + 1).padStart(2, "0")}</Text>
-                <View style={styles.colDesc}>
-                  <Text style={styles.itemTitle}>{item.name || "Custom Service"}</Text>
-                  {item.description ? <Text style={styles.itemDesc}>{item.description}</Text> : null}
-                </View>
-                <View style={styles.colDeliv}>
-                  {deliverables.map((del, i) => (
-                    <Text key={i} style={styles.delivItem}>✓ {del}</Text>
-                  ))}
-                </View>
-                <Text style={styles.colQty}>{qty}</Text>
-                <Text style={styles.colRate}>{fmtCurrency(rate, invoice.currency)}</Text>
-                <Text style={styles.colAmountRow}>{fmtCurrency(amount, invoice.currency)}</Text>
+          {invoice.invoiceType === "inventory" ? (
+            <>
+              {/* Table Header */}
+              <View style={styles.tableHeader}>
+                <Text style={[styles.colIndex, { color: "#ffffff" }]}>#</Text>
+                <Text style={[styles.colDesc, { color: "#ffffff", width: "42%" }]}>PRODUCT &amp; SPECIFICATIONS</Text>
+                <Text style={[styles.colDeliv, { color: "#ffffff", width: "16%" }]}>SKU / MODEL</Text>
+                <Text style={[styles.colQty, { color: "#ffffff", textAlign: "center", width: "12%" }]}>QTY (PCS)</Text>
+                <Text style={[styles.colRate, { color: "#ffffff", textAlign: "right", width: "12%" }]}>UNIT PRICE</Text>
+                <Text style={[styles.colAmountHeader, { width: "13%" }]}>TOTAL</Text>
               </View>
-            );
-          })}
+
+              {/* Table Rows */}
+              {items.map((item, idx) => {
+                const qty = Number(item.quantity) || 1;
+                const rate = Number(item.price) || 0;
+                const amount = qty * rate;
+
+                return (
+                  <View key={idx} style={styles.tableRow}>
+                    <Text style={styles.colIndex}>{String(idx + 1).padStart(2, "0")}</Text>
+                    <View style={[styles.colDesc, { width: "42%", display: "flex", flexDirection: "row", gap: 6 }]}>
+                      {item.image && (item.image.startsWith("http://") || item.image.startsWith("https://")) ? (
+                        <Image src={item.image} style={{ width: 32, height: 32, borderRadius: 4, objectFit: "cover" }} />
+                      ) : null}
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.itemTitle}>{item.name || "Product Item"}</Text>
+                        {item.description ? <Text style={styles.itemDesc}>{item.description}</Text> : null}
+                        {item.specifications ? <Text style={[styles.itemDesc, { color: "#ea580c" }]}>{item.specifications}</Text> : null}
+                      </View>
+                    </View>
+                    <Text style={[styles.colDeliv, { width: "16%", fontSize: 7 }]}>{item.sku || "—"}</Text>
+                    <Text style={[styles.colQty, { width: "12%" }]}>{qty.toLocaleString()} pcs</Text>
+                    <Text style={[styles.colRate, { width: "12%" }]}>{fmtCurrency(rate, invoice.currency)}</Text>
+                    <Text style={[styles.colAmountRow, { width: "13%" }]}>{fmtCurrency(amount, invoice.currency)}</Text>
+                  </View>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              {/* Table Header */}
+              <View style={styles.tableHeader}>
+                <Text style={[styles.colIndex, { color: "#ffffff" }]}>#</Text>
+                <Text style={[styles.colDesc, { color: "#ffffff" }]}>DESCRIPTION</Text>
+                <Text style={[styles.colDeliv, { color: "#ffffff" }]}>DELIVERABLES</Text>
+                <Text style={[styles.colQty, { color: "#ffffff", textAlign: "center" }]}>QTY</Text>
+                <Text style={[styles.colRate, { color: "#ffffff", textAlign: "right" }]}>RATE</Text>
+                <Text style={[styles.colAmountHeader]}>AMOUNT</Text>
+              </View>
+
+              {/* Table Rows */}
+              {items.map((item, idx) => {
+                const qty = Number(item.quantity) || 1;
+                const rate = Number(item.price) || 0;
+                const amount = qty * rate;
+                const deliverables = getDeliverables(item);
+
+                return (
+                  <View key={idx} style={styles.tableRow}>
+                    <Text style={styles.colIndex}>{String(idx + 1).padStart(2, "0")}</Text>
+                    <View style={styles.colDesc}>
+                      <Text style={styles.itemTitle}>{item.name || "Custom Service"}</Text>
+                      {item.description ? <Text style={styles.itemDesc}>{item.description}</Text> : null}
+                    </View>
+                    <View style={styles.colDeliv}>
+                      {deliverables.map((del, i) => (
+                        <Text key={i} style={styles.delivItem}>✓ {del}</Text>
+                      ))}
+                    </View>
+                    <Text style={styles.colQty}>{qty}</Text>
+                    <Text style={styles.colRate}>{fmtCurrency(rate, invoice.currency)}</Text>
+                    <Text style={styles.colAmountRow}>{fmtCurrency(amount, invoice.currency)}</Text>
+                  </View>
+                );
+              })}
+            </>
+          )}
         </View>
 
         {/* Notes & Totals Grid */}

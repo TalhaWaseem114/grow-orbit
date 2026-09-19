@@ -355,6 +355,7 @@ function InvoiceBuilderContent() {
   const [headerTitle, setHeaderTitle] = useState(typeParam === "service" ? "INVOICE" : "PROFORMA INVOICE");
   const [incoterms, setIncoterms] = useState("EXW (Ex Works Shenzhen)");
   const [productionLeadTime, setProductionLeadTime] = useState("30 - 40 Days");
+  const [supplyTitle, setSupplyTitle] = useState("Inventory Procurement & Supply");
 
   // Form State (Defaulting to the requested Amir Baig microphone inventory order if new)
   const [clientName, setClientName] = useState("Amir Baig");
@@ -375,16 +376,17 @@ function InvoiceBuilderContent() {
   const [clientLabel2, setClientLabel2] = useState("Business Client");
 
   // Payment Details states
-  const [bankName, setBankName] = useState("Wise (TransferWise)");
-  const [bankAccountName, setBankAccountName] = useState("Grow Orbit LLC");
-  const [bankAccountNumber, setBankAccountNumber] = useState("831245678");
+  const [bankName, setBankName] = useState("Community Federal Savings Bank");
+  const [bankAccountName, setBankAccountName] = useState("CAM & SONS VALUE VENTURES INC.");
+  const [bankAccountNumber, setBankAccountNumber] = useState("8480892731");
   const [bankRoutingNumber, setBankRoutingNumber] = useState("026073150");
-  const [bankSwiftBic, setBankSwiftBic] = useState("TRWIBEB1XXX");
+  const [bankSwiftBic, setBankSwiftBic] = useState("CMFGUS33");
   const [paypalEmail, setPaypalEmail] = useState("");
 
   // Collapsible accordion states for sidebar cards
   const [expandedSections, setExpandedSections] = useState({
     clientInfo: true,
+    supplyTerms: true,
     invoiceParams: true,
     lineItems: true,
     taxesNotes: true,
@@ -458,7 +460,8 @@ function InvoiceBuilderContent() {
     setClientName("Amir Baig");
     setCompanyName("");
     setClientEmail("amir124@gmail.com");
-    setClientAddress("");
+    setClientAddress("USA");
+    setSupplyTitle("Inventory Procurement & Supply");
     setIncoterms("EXW (Ex Works Shenzhen)");
     setProductionLeadTime("30 - 40 Days");
     setPaymentTerms("100% on Due Date");
@@ -559,13 +562,10 @@ function InvoiceBuilderContent() {
     if (companyName && (companyName.toLowerCase().includes("baig") || companyName.toLowerCase().includes("enterprises"))) {
       setCompanyName("");
     }
-    if (clientAddress && (clientAddress.trim().toLowerCase() === "united states" || clientAddress.trim().toLowerCase() === "usa")) {
-      setClientAddress("");
-    }
     if (notes && (notes.includes("30% Deposit") || notes.includes("AQL") || notes.includes("4.0 Minor") || notes.includes("20 - 25"))) {
       setNotes(DEFAULT_INVENTORY_NOTES);
     }
-  }, [companyName, clientAddress, notes]);
+  }, [companyName, notes]);
 
   useEffect(() => {
     if (justSavedRef.current) {
@@ -582,18 +582,24 @@ function InvoiceBuilderContent() {
 
       // Load global defaults from settings collection
       let globalDefaults = {
-        bankName: "Wise (TransferWise)",
-        bankAccountName: "Grow Orbit LLC",
-        bankAccountNumber: "831245678",
+        bankName: "Community Federal Savings Bank",
+        bankAccountName: "CAM & SONS VALUE VENTURES INC.",
+        bankAccountNumber: "8480892731",
         bankRoutingNumber: "026073150",
-        bankSwiftBic: "TRWIBEB1XXX",
+        bankSwiftBic: "CMFGUS33",
         paypalEmail: ""
       };
 
       try {
         const defaultsSnap = await getDoc(doc(db, "settings", "invoiceDefaults"));
         if (defaultsSnap.exists()) {
-          globalDefaults = { ...globalDefaults, ...defaultsSnap.data() };
+          const dData = defaultsSnap.data();
+          if (dData.bankName && dData.bankName !== "Wise (TransferWise)") globalDefaults.bankName = dData.bankName;
+          if (dData.bankAccountName && dData.bankAccountName !== "Grow Orbit LLC") globalDefaults.bankAccountName = dData.bankAccountName;
+          if (dData.bankAccountNumber && dData.bankAccountNumber !== "831245678") globalDefaults.bankAccountNumber = dData.bankAccountNumber;
+          if (dData.bankRoutingNumber) globalDefaults.bankRoutingNumber = dData.bankRoutingNumber;
+          if (dData.bankSwiftBic && dData.bankSwiftBic !== "TRWIBEB1XXX") globalDefaults.bankSwiftBic = dData.bankSwiftBic;
+          if (dData.paypalEmail !== undefined) globalDefaults.paypalEmail = dData.paypalEmail;
         }
       } catch (err) {
         console.warn("Failed to load invoice payment defaults:", err);
@@ -620,6 +626,7 @@ function InvoiceBuilderContent() {
             if (data.headerTitle) setHeaderTitle(data.headerTitle);
             if (data.incoterms) setIncoterms(data.incoterms);
             if (data.productionLeadTime) setProductionLeadTime(data.productionLeadTime);
+            if (data.supplyTitle) setSupplyTitle(data.supplyTitle);
             setClientName(data.clientName || "");
             setClientEmail(data.clientEmail || "");
             const cName = (data.companyName || "").trim();
@@ -629,8 +636,8 @@ function InvoiceBuilderContent() {
               setCompanyName(cName);
             }
             const cAddr = (data.clientAddress || "").trim();
-            if (cAddr.toLowerCase() === "united states" || cAddr.toLowerCase() === "usa") {
-              setClientAddress("");
+            if (cAddr.toLowerCase() === "united states") {
+              setClientAddress("USA");
             } else {
               setClientAddress(cAddr);
             }
@@ -662,12 +669,37 @@ function InvoiceBuilderContent() {
             setClientLabel1(data.clientLabel1 || "Valued Partner");
             setClientLabel2(data.clientLabel2 || "Business Client");
 
-            // Override with invoice-specific payment info if stored
-            if (data.bankName) setBankName(data.bankName);
-            if (data.bankAccountName) setBankAccountName(data.bankAccountName);
-            if (data.bankAccountNumber) setBankAccountNumber(data.bankAccountNumber);
-            if (data.bankRoutingNumber) setBankRoutingNumber(data.bankRoutingNumber);
-            if (data.bankSwiftBic) setBankSwiftBic(data.bankSwiftBic);
+            // Override with invoice-specific payment info, upgrading any legacy Wise placeholders
+            if (data.bankName && data.bankName !== "Wise (TransferWise)") {
+              setBankName(data.bankName);
+            } else {
+              setBankName("Community Federal Savings Bank");
+            }
+
+            if (data.bankAccountName && data.bankAccountName !== "Grow Orbit LLC") {
+              setBankAccountName(data.bankAccountName);
+            } else {
+              setBankAccountName("CAM & SONS VALUE VENTURES INC.");
+            }
+
+            if (data.bankAccountNumber && data.bankAccountNumber !== "831245678") {
+              setBankAccountNumber(data.bankAccountNumber);
+            } else {
+              setBankAccountNumber("8480892731");
+            }
+
+            if (data.bankRoutingNumber) {
+              setBankRoutingNumber(data.bankRoutingNumber);
+            } else {
+              setBankRoutingNumber("026073150");
+            }
+
+            if (data.bankSwiftBic && data.bankSwiftBic !== "TRWIBEB1XXX") {
+              setBankSwiftBic(data.bankSwiftBic);
+            } else {
+              setBankSwiftBic("CMFGUS33");
+            }
+
             if (data.paypalEmail !== undefined) setPaypalEmail(data.paypalEmail || "");
 
             if (data.items && data.items.length > 0) {
@@ -804,6 +836,7 @@ function InvoiceBuilderContent() {
         headerTitle,
         incoterms,
         productionLeadTime,
+        supplyTitle,
         clientName,
         clientEmail,
         companyName,
@@ -1253,6 +1286,134 @@ function InvoiceBuilderContent() {
             )}
           </div>
 
+          {/* Supply & Trade Terms Card (Inventory Mode) */}
+          {invoiceType === "inventory" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: expandedSections.supplyTerms ? 14 : 0, background: "rgba(255,255,255,0.01)", border: "1px solid rgba(234,88,12,0.25)", borderRadius: 12, padding: "16px", marginBottom: 20 }}>
+              <div
+                onClick={() => toggleSection("supplyTerms")}
+                style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", userSelect: "none" }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Package size={14} color="#ea580c" />
+                  <h2 style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", color: "#ea580c", letterSpacing: "0.15em", margin: 0 }}>Supply &amp; Trade Terms</h2>
+                </div>
+                {expandedSections.supplyTerms ? <ChevronDown size={14} color="#71717a" /> : <ChevronRight size={14} color="#71717a" />}
+              </div>
+
+              {expandedSections.supplyTerms && (
+                <>
+                  {/* 1. Production Lead Time / Lead Days */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Production Lead Time (Lead Days)</label>
+                      <span style={{ fontSize: 9.5, color: "#ea580c", fontWeight: 700 }}>{productionLeadTime}</span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="e.g. 30 - 40 Days"
+                      value={productionLeadTime}
+                      onChange={e => setProductionLeadTime(e.target.value)}
+                      style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
+                    />
+                    {/* Quick preset chips */}
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 4 }}>
+                      {["30 - 40 Days", "20 - 25 Days", "15 - 20 Days", "10 - 15 Days", "45 - 60 Days"].map(p => (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => setProductionLeadTime(p)}
+                          style={{
+                            padding: "3px 8px",
+                            borderRadius: 5,
+                            border: productionLeadTime === p ? "1px solid #ea580c" : "1px solid rgba(255,255,255,0.06)",
+                            background: productionLeadTime === p ? "rgba(234,88,12,0.15)" : "rgba(255,255,255,0.02)",
+                            color: productionLeadTime === p ? "#ea580c" : "#94a3b8",
+                            fontSize: 9.5,
+                            fontWeight: 700,
+                            cursor: "pointer"
+                          }}
+                        >
+                          {p}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 2. Incoterms / Trade Terms */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                      <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Incoterms / Trade Terms</label>
+                      <span style={{ fontSize: 9.5, color: "#ea580c", fontWeight: 700 }}>{incoterms}</span>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="e.g. EXW (Ex Works Shenzhen)"
+                      value={incoterms}
+                      onChange={e => setIncoterms(e.target.value)}
+                      style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
+                    />
+                    {/* Quick preset chips */}
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 4 }}>
+                      {["EXW (Ex Works Shenzhen)", "FOB Shenzhen", "DDP (Duty Paid) USA", "CIF (Cost, Insurance & Freight)"].map(t => (
+                        <button
+                          key={t}
+                          type="button"
+                          onClick={() => setIncoterms(t)}
+                          style={{
+                            padding: "3px 8px",
+                            borderRadius: 5,
+                            border: incoterms === t ? "1px solid #ea580c" : "1px solid rgba(255,255,255,0.06)",
+                            background: incoterms === t ? "rgba(234,88,12,0.15)" : "rgba(255,255,255,0.02)",
+                            color: incoterms === t ? "#ea580c" : "#94a3b8",
+                            fontSize: 9.5,
+                            fontWeight: 700,
+                            cursor: "pointer"
+                          }}
+                        >
+                          {t}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 3. Supply Program Title */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                    <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Supply Program Title</label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Inventory Procurement & Supply"
+                      value={supplyTitle}
+                      onChange={e => setSupplyTitle(e.target.value)}
+                      style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
+                    />
+                    {/* Quick title presets */}
+                    <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 4 }}>
+                      {["Inventory Procurement & Supply", "OEM Batch Manufacturing", "Wholesale Supply Agreement"].map(title => (
+                        <button
+                          key={title}
+                          type="button"
+                          onClick={() => setSupplyTitle(title)}
+                          style={{
+                            padding: "3px 8px",
+                            borderRadius: 5,
+                            border: supplyTitle === title ? "1px solid #ea580c" : "1px solid rgba(255,255,255,0.06)",
+                            background: supplyTitle === title ? "rgba(234,88,12,0.15)" : "rgba(255,255,255,0.02)",
+                            color: supplyTitle === title ? "#ea580c" : "#94a3b8",
+                            fontSize: 9.5,
+                            fontWeight: 700,
+                            cursor: "pointer"
+                          }}
+                        >
+                          {title}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          )}
+
           {/* Invoice Metas Card */}
           <div style={{ display: "flex", flexDirection: "column", gap: expandedSections.invoiceParams ? 14 : 0, background: "rgba(255,255,255,0.01)", border: "1px solid rgba(255,255,255,0.03)", borderRadius: 12, padding: "16px", marginBottom: 20 }}>
             <div
@@ -1355,31 +1516,6 @@ function InvoiceBuilderContent() {
                     {HEADER_TITLE_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                   </select>
                 </div>
-
-                {invoiceType === "inventory" && (
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                      <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Incoterms / Trade Terms</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. EXW (Ex Works Shenzhen)"
-                        value={incoterms}
-                        onChange={e => setIncoterms(e.target.value)}
-                        style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 11, outline: "none" }}
-                      />
-                    </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                      <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Production Lead Time</label>
-                      <input
-                        type="text"
-                        placeholder="e.g. 20 - 25 Working Days"
-                        value={productionLeadTime}
-                        onChange={e => setProductionLeadTime(e.target.value)}
-                        style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 11, outline: "none" }}
-                      />
-                    </div>
-                  </div>
-                )}
               </>
             )}
           </div>
@@ -1715,7 +1851,7 @@ function InvoiceBuilderContent() {
               onClick={() => toggleSection("paymentDetails")}
               style={{ display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", userSelect: "none" }}
             >
-              <h2 style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", color: "#ea580c", letterSpacing: "0.15em", margin: 0 }}>Payment Information (Wise & PayPal)</h2>
+              <h2 style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", color: "#ea580c", letterSpacing: "0.15em", margin: 0 }}>Payment Information (Bank Transfer &amp; PayPal)</h2>
               {expandedSections.paymentDetails ? <ChevronDown size={14} color="#71717a" /> : <ChevronRight size={14} color="#71717a" />}
             </div>
 
@@ -1725,7 +1861,7 @@ function InvoiceBuilderContent() {
                   <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Bank Name</label>
                   <input
                     type="text"
-                    placeholder="e.g. Wise (TransferWise)"
+                    placeholder="e.g. Community Federal Savings Bank"
                     value={bankName}
                     onChange={e => setBankName(e.target.value)}
                     style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
@@ -1736,7 +1872,7 @@ function InvoiceBuilderContent() {
                   <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Account Name</label>
                   <input
                     type="text"
-                    placeholder="e.g. Grow Orbit LLC"
+                    placeholder="e.g. CAM & SONS VALUE VENTURES INC."
                     value={bankAccountName}
                     onChange={e => setBankAccountName(e.target.value)}
                     style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
@@ -1748,7 +1884,7 @@ function InvoiceBuilderContent() {
                     <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>Account Number</label>
                     <input
                       type="text"
-                      placeholder="e.g. 831245678"
+                      placeholder="e.g. 8480892731"
                       value={bankAccountNumber}
                       onChange={e => setBankAccountNumber(e.target.value)}
                       style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
@@ -1770,7 +1906,7 @@ function InvoiceBuilderContent() {
                   <label style={{ fontSize: 10, color: "#71717a", fontWeight: 700, textTransform: "uppercase" }}>SWIFT / BIC</label>
                   <input
                     type="text"
-                    placeholder="e.g. TRWIBEB1XXX"
+                    placeholder="e.g. CMFGUS33"
                     value={bankSwiftBic}
                     onChange={e => setBankSwiftBic(e.target.value)}
                     style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "8px 12px", color: "#fff", fontSize: 12, outline: "none" }}
@@ -1950,7 +2086,7 @@ function InvoiceBuilderContent() {
                         <span style={{ fontWeight: "600" }}>{companyName}</span>
                       </div>
                     ) : null}
-                    {clientAddress && clientAddress.trim().toLowerCase() !== "united states" && clientAddress.trim().toLowerCase() !== "usa" ? (
+                    {clientAddress ? (
                       <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "#475569", fontSize: "11.5px" }}>
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         <span style={{ fontWeight: "600" }}>{clientAddress}</span>
@@ -1975,7 +2111,7 @@ function InvoiceBuilderContent() {
                       </div>
                       <div style={{ display: "flex", flexDirection: "column" }}>
                         <div style={{ fontSize: "13px", fontWeight: "800", color: "#0f172a", fontFamily: "var(--font-montserrat)" }}>
-                          Inventory Procurement &amp; Supply
+                          {supplyTitle || "Inventory Procurement & Supply"}
                         </div>
                         <div style={{ fontSize: "10.5px", color: "#475569", lineHeight: "1.4", marginTop: "4px", fontWeight: "600" }}>
                           Trade Terms: <span style={{ color: "#ea580c", fontWeight: "800" }}>{incoterms || "EXW (Ex Works Shenzhen)"}</span>
@@ -2413,11 +2549,11 @@ function InvoiceBuilderContent() {
                     </div>
                     <div style={{ display: "flex", flexDirection: "column", fontSize: "10px", lineHeight: "1.6", gap: "3px" }}>
                       <div style={{ fontWeight: "800", color: "#0f172a", fontSize: "11px", fontFamily: "var(--font-montserrat)" }}>BANK TRANSFER</div>
-                      <div style={{ color: "#64748b" }}>Bank Name: <span style={{ fontWeight: "700", color: "#475569" }}>{bankName || "Wise (TransferWise)"}</span></div>
-                      <div style={{ color: "#64748b" }}>Account Name: <span style={{ fontWeight: "700", color: "#475569" }}>{bankAccountName || "Grow Orbit LLC"}</span></div>
-                      <div style={{ color: "#64748b" }}>Account Number: <span style={{ fontWeight: "700", color: "#475569" }}>{bankAccountNumber || "831245678"}</span></div>
+                      <div style={{ color: "#64748b" }}>Bank Name: <span style={{ fontWeight: "700", color: "#475569" }}>{bankName || "Community Federal Savings Bank"}</span></div>
+                      <div style={{ color: "#64748b" }}>Account Name: <span style={{ fontWeight: "700", color: "#475569" }}>{bankAccountName || "CAM & SONS VALUE VENTURES INC."}</span></div>
+                      <div style={{ color: "#64748b" }}>Account Number: <span style={{ fontWeight: "700", color: "#475569" }}>{bankAccountNumber || "8480892731"}</span></div>
                       <div style={{ color: "#64748b" }}>Routing Number: <span style={{ fontWeight: "700", color: "#475569" }}>{bankRoutingNumber || "026073150"}</span></div>
-                      <div style={{ color: "#64748b" }}>SWIFT / BIC: <span style={{ fontWeight: "700", color: "#475569" }}>{bankSwiftBic || "TRWIBEB1XXX"}</span></div>
+                      <div style={{ color: "#64748b" }}>SWIFT / BIC: <span style={{ fontWeight: "700", color: "#475569" }}>{bankSwiftBic || "CMFGUS33"}</span></div>
                     </div>
                   </div>
 

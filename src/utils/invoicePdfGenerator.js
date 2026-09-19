@@ -578,7 +578,7 @@ export const InvoicePdfDocument = ({ invoice }) => {
             <Text style={styles.metaLabelRed}>BILLED TO</Text>
             <Text style={styles.metaCompany}>{invoice.clientName || (!invoice.companyName?.toLowerCase().includes("baig") ? invoice.companyName : "") || "Valued Client"}</Text>
             {invoice.companyName && !invoice.companyName.toLowerCase().includes("baig") ? <Text style={styles.metaText}>{invoice.companyName}</Text> : null}
-            {invoice.clientAddress && invoice.clientAddress.trim().toLowerCase() !== "united states" ? <Text style={styles.metaText}>{invoice.clientAddress}</Text> : null}
+            {invoice.clientAddress ? <Text style={styles.metaText}>{invoice.clientAddress}</Text> : null}
             <Text style={styles.metaText}>{invoice.clientEmail || "support@groworbitofficial.com"}</Text>
           </View>
 
@@ -586,7 +586,7 @@ export const InvoicePdfDocument = ({ invoice }) => {
           {invoice.invoiceType === "inventory" ? (
             <View style={styles.metaCol2}>
               <Text style={styles.metaLabelOrange}>SUPPLY &amp; TRADE TERMS</Text>
-              <Text style={styles.metaCompany}>Inventory Procurement &amp; Supply</Text>
+              <Text style={styles.metaCompany}>{invoice.supplyTitle || "Inventory Procurement & Supply"}</Text>
               <Text style={[styles.metaText, { color: "#64748b", lineHeight: 1.3 }]}>
                 Trade Terms: {invoice.incoterms || "EXW (Ex Works Shenzhen)"}
               </Text>
@@ -743,11 +743,11 @@ export const InvoicePdfDocument = ({ invoice }) => {
             {/* Left: Bank Transfer */}
             <View style={[styles.pmCol1, { width: invoice.paypalEmail ? "42%" : "68%" }]}>
               <Text style={styles.pmSubTitle}>BANK TRANSFER</Text>
-              <Text style={styles.pmText}>Bank Name: {invoice.bankName || "Wise (TransferWise)"}</Text>
-              <Text style={styles.pmText}>Account Name: {invoice.bankAccountName || "Grow Orbit LLC"}</Text>
-              <Text style={styles.pmText}>Account Number: {invoice.bankAccountNumber || "831245678"}</Text>
+              <Text style={styles.pmText}>Bank Name: {(!invoice.bankName || invoice.bankName === "Wise (TransferWise)") ? "Community Federal Savings Bank" : invoice.bankName}</Text>
+              <Text style={styles.pmText}>Account Name: {(!invoice.bankAccountName || invoice.bankAccountName === "Grow Orbit LLC") ? "CAM & SONS VALUE VENTURES INC." : invoice.bankAccountName}</Text>
+              <Text style={styles.pmText}>Account Number: {(!invoice.bankAccountNumber || invoice.bankAccountNumber === "831245678") ? "8480892731" : invoice.bankAccountNumber}</Text>
               <Text style={styles.pmText}>Routing Number: {invoice.bankRoutingNumber || "026073150"}</Text>
-              <Text style={styles.pmText}>SWIFT / BIC: {invoice.bankSwiftBic || "TRWIBEB1XXX"}</Text>
+              <Text style={styles.pmText}>SWIFT / BIC: {(!invoice.bankSwiftBic || invoice.bankSwiftBic === "TRWIBEB1XXX") ? "CMFGUS33" : invoice.bankSwiftBic}</Text>
             </View>
 
             {/* Center: PayPal (Optional) */}

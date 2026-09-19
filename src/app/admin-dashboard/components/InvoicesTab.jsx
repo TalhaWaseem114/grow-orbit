@@ -68,11 +68,11 @@ export default function InvoicesTab() {
   // Default Payment Settings states
   const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [savingSettings, setSavingSettings] = useState(false);
-  const [defaultBankName, setDefaultBankName] = useState("Wise (TransferWise)");
-  const [defaultBankAccountName, setDefaultBankAccountName] = useState("Grow Orbit LLC");
-  const [defaultBankAccountNumber, setDefaultBankAccountNumber] = useState("831245678");
+  const [defaultBankName, setDefaultBankName] = useState("Community Federal Savings Bank");
+  const [defaultBankAccountName, setDefaultBankAccountName] = useState("CAM & SONS VALUE VENTURES INC.");
+  const [defaultBankAccountNumber, setDefaultBankAccountNumber] = useState("8480892731");
   const [defaultBankRoutingNumber, setDefaultBankRoutingNumber] = useState("026073150");
-  const [defaultBankSwiftBic, setDefaultBankSwiftBic] = useState("TRWIBEB1XXX");
+  const [defaultBankSwiftBic, setDefaultBankSwiftBic] = useState("CMFGUS33");
   const [defaultPaypalEmail, setDefaultPaypalEmail] = useState("");
 
   useEffect(() => {
@@ -81,11 +81,11 @@ export default function InvoicesTab() {
         const docSnap = await getDoc(doc(db, "settings", "invoiceDefaults"));
         if (docSnap.exists()) {
           const data = docSnap.data();
-          if (data.bankName) setDefaultBankName(data.bankName);
-          if (data.bankAccountName) setDefaultBankAccountName(data.bankAccountName);
-          if (data.bankAccountNumber) setDefaultBankAccountNumber(data.bankAccountNumber);
+          if (data.bankName && data.bankName !== "Wise (TransferWise)") setDefaultBankName(data.bankName);
+          if (data.bankAccountName && data.bankAccountName !== "Grow Orbit LLC") setDefaultBankAccountName(data.bankAccountName);
+          if (data.bankAccountNumber && data.bankAccountNumber !== "831245678") setDefaultBankAccountNumber(data.bankAccountNumber);
           if (data.bankRoutingNumber) setDefaultBankRoutingNumber(data.bankRoutingNumber);
-          if (data.bankSwiftBic) setDefaultBankSwiftBic(data.bankSwiftBic);
+          if (data.bankSwiftBic && data.bankSwiftBic !== "TRWIBEB1XXX") setDefaultBankSwiftBic(data.bankSwiftBic);
           if (data.paypalEmail !== undefined) setDefaultPaypalEmail(data.paypalEmail);
         }
       } catch (err) {

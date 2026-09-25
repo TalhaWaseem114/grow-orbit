@@ -657,8 +657,7 @@ function InvoiceBuilderContent() {
                 rawNotes.includes("AQL") || 
                 rawNotes.includes("4.0 Minor") || 
                 rawNotes.includes("20 - 25") || 
-                rawNotes.includes("October 3") || 
-                (data.invoiceType === "inventory" && rawNotes.includes("Trade Terms: EXW"))) {
+                rawNotes.includes("October 3")) {
               setNotes(DEFAULT_INVENTORY_NOTES);
             } else {
               setNotes(rawNotes);

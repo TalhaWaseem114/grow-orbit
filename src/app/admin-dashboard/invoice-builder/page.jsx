@@ -1746,12 +1746,12 @@ function InvoiceBuilderContent() {
                         />
 
                         {/* Description */}
-                        <input
-                          type="text"
+                        <textarea
+                          rows={2}
                           placeholder="Item description / packaging details..."
                           value={item.description || ""}
                           onChange={e => handleItemChange(item.id, "description", e.target.value)}
-                          style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none", marginLeft: 22 }}
+                          style={{ background: "#0d111a", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 8, padding: "6px 10px", color: "#fff", fontSize: 10, outline: "none", marginLeft: 22, resize: "vertical", fontFamily: "inherit" }}
                         />
                       </>
                     ) : (
@@ -2324,7 +2324,8 @@ function InvoiceBuilderContent() {
                               color: "#475569",
                               lineHeight: "1.55",
                               marginBottom: "4px",
-                              fontWeight: "500"
+                              fontWeight: "500",
+                              whiteSpace: "pre-line"
                             }}>
                               {item.description}
                             </div>

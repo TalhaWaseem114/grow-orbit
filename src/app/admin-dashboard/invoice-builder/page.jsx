@@ -712,7 +712,7 @@ function InvoiceBuilderContent() {
                 sku: it.sku || "",
                 image: it.image || "",
                 imagePublicId: it.imagePublicId || "",
-                specifications: ""
+                specifications: it.specifications || ""
               })));
             }
           }

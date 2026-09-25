@@ -652,12 +652,13 @@ function InvoiceBuilderContent() {
             setTaxRate(Number(data.taxRate) || 0);
             setDiscount(Number(data.discount) || 0);
             const rawNotes = data.notes || "";
-            if (!rawNotes || 
-                rawNotes.includes("30% Deposit") || 
-                rawNotes.includes("AQL") || 
-                rawNotes.includes("4.0 Minor") || 
-                rawNotes.includes("20 - 25") || 
-                rawNotes.includes("October 3")) {
+            if (!rawNotes ||
+                rawNotes.includes("30% Deposit") ||
+                rawNotes.includes("AQL") ||
+                rawNotes.includes("4.0 Minor") ||
+                rawNotes.includes("20 - 25") ||
+                rawNotes.includes("October 3") ||
+                (data.invoiceType === "inventory" && rawNotes.includes("Trade Terms: EXW"))) {
               setNotes(DEFAULT_INVENTORY_NOTES);
             } else {
               setNotes(rawNotes);
@@ -814,7 +815,7 @@ function InvoiceBuilderContent() {
     setExporting(true);
     const originalTitle = document.title;
     document.title = `Grow Orbit pdf invoice (${invoiceNumberPreview})`;
-    
+
     // Use the native browser print/PDF engine for pixel-perfect preservation of the HTML preview
     setTimeout(() => {
       window.print();
@@ -924,7 +925,7 @@ function InvoiceBuilderContent() {
   const handleCopyEmailTemplate = () => {
     if (!gDriveLink) return;
     const bodyText = `Hi ${clientName || "Partner"},\n\nWe have prepared your invoice ${invoiceNumberPreview} for recent services. You can view the document and keep track of payment details by clicking the link below:\n\nView Invoice: ${gDriveLink}\n\nInvoice Details:\n- Invoice Number: ${invoiceNumberPreview}\n- Due Date: ${dueDate}\n- Amount Due: ${fmtCurrency(total, currency)}\n\n${emailCustomMessage || "Please feel free to reply directly to this email if you have any questions."}\n\nBest regards,\nGrow Orbit Team`;
-    
+
     navigator.clipboard.writeText(bodyText);
     setCopiedTemplate(true);
     setTimeout(() => setCopiedTemplate(false), 2000);
@@ -2696,7 +2697,7 @@ function InvoiceBuilderContent() {
                       <span style={{ whiteSpace: "nowrap" }}>support@groworbitofficial.com</span>
                     </div>
                   </div>
-                  
+
                   <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: "12px", fontSize: "10px", color: "#0f172a", fontWeight: "600", paddingLeft: "20px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>

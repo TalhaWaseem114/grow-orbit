@@ -712,7 +712,8 @@ function InvoiceBuilderContent() {
                 sku: it.sku || "",
                 image: it.image || "",
                 imagePublicId: it.imagePublicId || "",
-                specifications: it.specifications || ""
+                specifications: it.specifications || "",
+                priceBreakdown: it.priceBreakdown || null
               })));
             }
           }
@@ -859,7 +860,7 @@ function InvoiceBuilderContent() {
         bankRoutingNumber,
         bankSwiftBic,
         paypalEmail,
-        items: items.map(({ name, description, quantity, price, sku, image, imagePublicId, specifications }) => ({
+        items: items.map(({ name, description, quantity, price, sku, image, imagePublicId, specifications, priceBreakdown }) => ({
           name: name || "",
           description: description || "",
           quantity: Number(quantity) || 1,
@@ -867,7 +868,8 @@ function InvoiceBuilderContent() {
           sku: sku || "",
           image: image || "",
           imagePublicId: imagePublicId || "",
-          specifications: specifications || ""
+          specifications: specifications || "",
+          ...(priceBreakdown ? { priceBreakdown } : {})
         }))
       };
 
@@ -2352,14 +2354,68 @@ function InvoiceBuilderContent() {
                             </div>
                           </div>
 
-                          {/* Metric 2: Unit Price */}
+                          {/* Metric 2: Unit Price with Calculation Breakdown */}
                           <div style={{ display: "flex", flexDirection: "column", gap: "2px", marginTop: "10px" }}>
                             <div style={{ fontSize: "8.5px", fontWeight: "800", color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>
                               UNIT PRICE (EXW)
                             </div>
-                            <div style={{ fontSize: "15px", fontWeight: "900", color: "#0f172a", fontFamily: "var(--font-montserrat)" }}>
-                              {fmtCurrency(rate, currency)} <span style={{ fontSize: "9px", fontWeight: "700", color: "#64748b" }}>/ pc</span>
-                            </div>
+                            {item.priceBreakdown && Array.isArray(item.priceBreakdown) && item.priceBreakdown.length > 1 ? (
+                              <div style={{
+                                background: "#ffffff",
+                                border: "1.5px solid #cbd5e1",
+                                borderRadius: "7px",
+                                padding: "6px 8px",
+                                marginTop: "3px",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "3px",
+                                boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                              }}>
+                                {item.priceBreakdown.map((b, bIdx) => (
+                                  <div key={bIdx} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "9px", color: bIdx === 0 ? "#475569" : "#ea580c", fontWeight: "600" }}>
+                                    <span>{bIdx === 0 ? b.label : `+ ${b.label}`}:</span>
+                                    <span style={{ fontWeight: "700" }}>{bIdx === 0 ? fmtCurrency(b.amount, currency) : `+${fmtCurrency(b.amount, currency)}`}</span>
+                                  </div>
+                                ))}
+                                <div style={{ borderTop: "1px dashed #cbd5e1", paddingTop: "4px", marginTop: "2px", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                                  <span style={{ fontSize: "8px", fontWeight: "800", color: "#64748b", textTransform: "uppercase" }}>Effective:</span>
+                                  <span style={{ fontSize: "13.5px", fontWeight: "900", color: "#0f172a", fontFamily: "var(--font-montserrat)" }}>
+                                    {fmtCurrency(rate, currency)} <span style={{ fontSize: "8.5px", fontWeight: "700", color: "#64748b" }}>/ pc</span>
+                                  </span>
+                                </div>
+                              </div>
+                            ) : (item.description && item.description.toLowerCase().includes("metallic coating") && rate >= 8.3) ? (
+                              <div style={{
+                                background: "#ffffff",
+                                border: "1.5px solid #cbd5e1",
+                                borderRadius: "7px",
+                                padding: "6px 8px",
+                                marginTop: "3px",
+                                display: "flex",
+                                flexDirection: "column",
+                                gap: "3px",
+                                boxShadow: "0 1px 3px rgba(0,0,0,0.03)"
+                              }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "9px", color: "#475569", fontWeight: "600" }}>
+                                  <span>Base Unit:</span>
+                                  <span style={{ fontWeight: "700", color: "#0f172a" }}>{fmtCurrency(8.0, currency)}</span>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: "9px", color: "#ea580c", fontWeight: "600" }}>
+                                  <span>+ Metallic Coating:</span>
+                                  <span style={{ fontWeight: "700", color: "#ea580c" }}>+{fmtCurrency(0.3, currency)}</span>
+                                </div>
+                                <div style={{ borderTop: "1px dashed #cbd5e1", paddingTop: "4px", marginTop: "2px", display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                                  <span style={{ fontSize: "8px", fontWeight: "800", color: "#64748b", textTransform: "uppercase" }}>Effective:</span>
+                                  <span style={{ fontSize: "13.5px", fontWeight: "900", color: "#0f172a", fontFamily: "var(--font-montserrat)" }}>
+                                    {fmtCurrency(rate, currency)} <span style={{ fontSize: "8.5px", fontWeight: "700", color: "#64748b" }}>/ pc</span>
+                                  </span>
+                                </div>
+                              </div>
+                            ) : (
+                              <div style={{ fontSize: "15px", fontWeight: "900", color: "#0f172a", fontFamily: "var(--font-montserrat)" }}>
+                                {fmtCurrency(rate, currency)} <span style={{ fontSize: "9px", fontWeight: "700", color: "#64748b" }}>/ pc</span>
+                              </div>
+                            )}
                           </div>
 
                           {/* Divider */}

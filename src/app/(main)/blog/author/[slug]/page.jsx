@@ -4,6 +4,7 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "@/firebase/firebaseConfig";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Clock, Award, Linkedin, Twitter, Globe, BookOpen } from "lucide-react";
 
 export const revalidate = 60; // ISR revalidation every 60 seconds
@@ -14,20 +15,21 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const resolvedParams = await params;
-  const { slug } = resolvedParams;
-  const author = getAuthorBySlug(slug);
+  let { slug } = resolvedParams || {};
+  const decodedSlug = decodeURIComponent(slug || "").trim().toLowerCase().replace(/\s+/g, "-");
+  const author = getAuthorBySlug(decodedSlug) || AUTHORS["talha-waseem"];
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
 
   return {
     title: `${author.name} | E-Commerce Expert & Author | Grow Orbit`,
     description: author.bio.substring(0, 160) + "...",
     alternates: {
-      canonical: `${siteUrl}/blog/author/${slug}`,
+      canonical: `${siteUrl}/blog/author/talha-waseem/`,
     },
     openGraph: {
       title: `${author.name} | E-Commerce Expert | Grow Orbit`,
       description: author.bio.substring(0, 160) + "...",
-      url: `${siteUrl}/blog/author/${slug}`,
+      url: `${siteUrl}/blog/author/talha-waseem/`,
       images: [
         {
           url: author.avatar || "https://images.unsplash.com/photo-1460925895917-afdab827c52f",
@@ -43,8 +45,15 @@ export async function generateMetadata({ params }) {
 
 export default async function AuthorPage({ params }) {
   const resolvedParams = await params;
-  const { slug } = resolvedParams;
-  const author = getAuthorBySlug(slug);
+  let { slug } = resolvedParams || {};
+  const decodedSlug = decodeURIComponent(slug || "").trim().toLowerCase().replace(/\s+/g, "-");
+
+  // Redirect non-canonical slugs (e.g. "talha waseem", "talha%20waseem") to the canonical slug
+  if (slug && (slug.includes(" ") || slug.includes("%20") || slug !== "talha-waseem")) {
+    redirect("/blog/author/talha-waseem/");
+  }
+
+  const author = getAuthorBySlug(decodedSlug) || AUTHORS["talha-waseem"];
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com";
 
   // Fetch blogs written by this author

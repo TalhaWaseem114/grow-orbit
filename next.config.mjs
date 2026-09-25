@@ -42,6 +42,16 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: "/blog/author",
+        destination: "/blog/author/talha-waseem/",
+        permanent: true,
+      },
+      {
+        source: "/blog/author/",
+        destination: "/blog/author/talha-waseem/",
+        permanent: true,
+      },
+      {
         source: "/blog/main-image-ctr-amazon-2025/",
         destination: "/blog/amazon-main-image-requirements/",
         permanent: true,

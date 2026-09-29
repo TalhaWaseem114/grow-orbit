@@ -172,6 +172,8 @@ const articleData = {
     "Amazon listing optimization",
   ],
   coverImage: "/images/article image/11/amazon-a-content-design.avif",
+  metaTitle: "Amazon A+ Content Design: Complete Guide & Best Practices (2026)",
+  metaDescription: "Master Amazon A+ Content design with our 2026 guide. Learn module structuring, Basic vs Premium A+, 3D rendering, mobile layout, and compliance rules.",
   date: "2026-09-29",
   readTime: "16 min read",
   author: {

@@ -44,6 +44,17 @@ export async function generateMetadata({ params }) {
       return {
         title: `${post.metaTitle || post.title} | Grow Orbit`,
         description: post.metaDescription || post.excerpt || `Read ${post.title} on Grow Orbit.`,
+        robots: {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+          },
+        },
         alternates: {
           canonical: canonicalUrl,
         },
@@ -159,6 +170,14 @@ export default async function Page({ params }) {
     }
   }
 
+  // Calculate total word count for structured data schema
+  const totalWords = Array.isArray(post?.content)
+    ? post.content.reduce((sum, block) => {
+        const text = block.text || "";
+        return sum + (text.trim() ? text.trim().split(/\s+/).length : 0);
+      }, 0)
+    : (typeof post?.content === "string" ? post.content.trim().split(/\s+/).length : 0);
+
   return (
     <main className="bg-[#fafafa] text-zinc-900 min-h-screen">
       {/* Server-Side JSON-LD Structured Data Schema */}
@@ -176,6 +195,7 @@ export default async function Page({ params }) {
             "image": [post.coverImage],
             "datePublished": post.date,
             "dateModified": post.lastModified || post.date,
+            "wordCount": totalWords > 0 ? totalWords : undefined,
             "author": {
               "@type": "Person",
               "name": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).name,
@@ -217,8 +237,8 @@ export default async function Page({ params }) {
         />
       )}
 
-      {/* ── HERO / COVER ── */}
-      <section className="relative pt-[60px] sm:pt-[70px]">
+      {/* ── HERO / COVER (SEMANTIC ARTICLE HEADER) ── */}
+      <header className="relative pt-[60px] sm:pt-[70px]">
         <div className="relative w-full min-h-[420px] sm:min-h-[480px] md:aspect-[21/8] overflow-hidden bg-zinc-900">
           <Image
             src={post.coverImage || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200"}
@@ -293,7 +313,7 @@ export default async function Page({ params }) {
             </div>
           </div>
         </div>
-      </section>
+      </header>
 
       {/* ── ARTICLE BODY (SERVER RENDERED) ── */}
       <section className="px-6 py-16 sm:py-20">

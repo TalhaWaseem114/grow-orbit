@@ -102,6 +102,17 @@ function parseMarkdownToBlocks(mdContent) {
       continue;
     }
 
+    const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
+    if (imgMatch) {
+      flushBlock();
+      blocks.push({
+        type: "image",
+        text: `${imgMatch[2].trim()}|${imgMatch[1].trim()}`
+      });
+      i++;
+      continue;
+    }
+
     if (trimmed.startsWith("## ")) {
       flushBlock();
       blocks.push({ type: "heading", text: trimmed.replace(/^##\s+/, "") });

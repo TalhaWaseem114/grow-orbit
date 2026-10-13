@@ -54,7 +54,7 @@ test('C. Robotic Syntax', 'Direct opening paragraph', !/in today's|in the fast-p
 test('C. Robotic Syntax', 'Strategic conclusion (not generic)', lines.some(l => l.startsWith('## Final Takeaway')), 'Executive Final Takeaway');
 
 // ===== D. BURSTINESS & CADENCE (4 tests) =====
-const prose = lines.filter(l => { const t = l.trim(); return t && !t.startsWith('#') && !t.startsWith('|') && !t.startsWith('*') && !t.startsWith('By ') && !t.startsWith('Last') && !t.startsWith('Note:') && !t.startsWith('---'); });
+const prose = lines.filter(l => { const t = l.trim(); return t && !t.startsWith('#') && !t.startsWith('|') && !t.startsWith('*') && !t.startsWith('By ') && !t.startsWith('Last') && !t.startsWith('Note:') && !t.startsWith('---') && !t.startsWith('!['); });
 const fullProse = prose.join(' ');
 const sents = fullProse.split(/(?<=[.!?])\s+(?=[A-Z0-9])/).filter(s => s.trim().length > 3);
 const lens = sents.map(s => s.trim().split(/\s+/).length);

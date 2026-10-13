@@ -694,6 +694,18 @@ export default async function Page({ params }) {
                 );
               }
               // paragraph — support basic **bold** and [link](url) markdown
+              const isImageCaption = (block.text?.startsWith("*Note:") || block.text?.startsWith("Note:")) && (i > 0 && post.content[i - 1]?.type === "image");
+              if (isImageCaption) {
+                return (
+                  <p
+                    key={i}
+                    className="text-center text-xs sm:text-sm text-zinc-500 italic -mt-6 mb-8 px-4"
+                    dangerouslySetInnerHTML={{
+                      __html: parseMarkdownText(block.text),
+                    }}
+                  />
+                );
+              }
               return (
                 <p
                   key={i}

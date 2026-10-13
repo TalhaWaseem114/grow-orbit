@@ -33,7 +33,7 @@ export default function EditorialGuidelines({ updatedDate, authorName }) {
           <div>
             <p className="text-xs font-bold text-zinc-900 mb-1">Last Updated</p>
             <p className="text-xs text-zinc-600 leading-relaxed">
-              This article was last reviewed and updated on <span className="font-semibold text-zinc-800">{formattedDate || "Recently updated"}</span> to ensure accuracy and relevance with current Amazon A10 algorithm changes.
+              This article was last reviewed and updated on <span className="font-semibold text-zinc-800">{formattedDate || "Recently updated"}</span> to ensure accuracy against current Amazon dietary supplement policies, FTC health guidance, and A+ Content module specifications.
             </p>
           </div>
         </div>

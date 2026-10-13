@@ -248,8 +248,8 @@ export default async function Page({ params }) {
             className="object-cover"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/10" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent max-w-[85%]" />
 
           {/* Back to blog */}
           <div className="absolute top-6 left-6 z-10">
@@ -320,19 +320,6 @@ export default async function Page({ params }) {
         <div className="max-w-[780px] mx-auto relative">
           {/* Social Share Bar */}
           <BlogShareBar title={post.title} slug={post.slug || post.id} />
-
-          {/* Tags */}
-          <div className="flex flex-wrap items-center gap-2 mb-12 pb-8 border-b border-zinc-200">
-            <Tag size={12} className="text-zinc-400" />
-            {post.tags?.map((tag) => (
-              <span
-                key={tag}
-                className="text-[9px] font-bold uppercase tracking-widest text-zinc-700 bg-zinc-100 border border-zinc-200 px-3 py-1.5 rounded-full"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
 
           {/* Content blocks parsed on the Server */}
           <article className="space-y-8">
@@ -718,6 +705,23 @@ export default async function Page({ params }) {
               );
             })}
           </article>
+
+          {/* Topic Tags Taxonomy */}
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap items-center gap-2 pt-8 pb-4 border-t border-zinc-200 mt-12">
+              <span className="text-[10px] font-black uppercase tracking-widest text-zinc-400 mr-2 flex items-center gap-1.5">
+                <Tag size={12} className="text-orange-500" /> Topic Tags:
+              </span>
+              {post.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="text-[10px] font-bold uppercase tracking-wider text-zinc-700 bg-zinc-100 hover:bg-orange-50 hover:text-orange-600 border border-zinc-200 px-3 py-1.5 rounded-full transition-colors"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
 
           <EditorialGuidelines updatedDate={post.lastModified || post.date} authorName={post.author?.name} />
 

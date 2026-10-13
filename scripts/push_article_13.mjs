@@ -185,10 +185,10 @@ const articleData = {
     "Amazon listing optimization",
   ],
   coverImage: "/images/article image/13/supplement-a-plus-content-examples.avif",
-  metaTitle: "Supplement A+ Content Examples: 5 High-Converting Layouts",
+  metaTitle: "Supplement A+ Content Examples: 5 Wellness Layouts",
   metaDescription: "Explore 5 practical supplement A+ layout examples for wellness brands. Learn 3D bottle rendering, ingredient transparency grids, and Amazon compliance rules.",
   date: "2026-10-14",
-  readTime: "14 min read",
+  readTime: "7 min read",
   author: {
     name: "Talha Waseem",
     role: "Technical Strategist",

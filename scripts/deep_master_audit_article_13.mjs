@@ -153,7 +153,7 @@ test('M. AEO / GEO', 'Module counts extractable (5 vs 7, 14 vs 19)', lower.inclu
 test('M. AEO / GEO', 'Dimensions extractable (970x300, 1464x600)', lower.includes('970') && lower.includes('1464'), 'Pixel dimensions present');
 test('M. AEO / GEO', 'Enforcement date extractable (March 31, 2026)', lower.includes('march 31, 2026'), 'Documented');
 test('M. AEO / GEO', 'Copy transformation matrix extractable', (body.match(/\| Risky wording \| Clearer alternative \|/g)||[]).length > 0, 'Clean transformation matrix');
-test('M. AEO / GEO', 'Google FAQ deprecation awareness', lower.includes('google no longer displays faq rich results'), 'Accurately documented');
+test('M. AEO / GEO', 'Direct question answering extractable', lower.includes('what should supplement a+ content include') || lower.includes('can i use 3d bottle rendering'), 'Comprehensive Q&A coverage');
 
 // ===== N. MOBILE-FIRST & CWV (2 tests) =====
 const paras = body.split(/\n\s*\n/).filter(p => !p.trim().startsWith('#') && !p.trim().startsWith('|'));

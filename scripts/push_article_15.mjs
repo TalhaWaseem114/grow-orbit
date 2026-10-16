@@ -105,9 +105,12 @@ function parseMarkdownToBlocks(mdContent) {
     const imgMatch = trimmed.match(/^!\[(.*?)\]\((.*?)\)$/);
     if (imgMatch) {
       flushBlock();
+      const imgUrl = imgMatch[2].trim();
+      const imgAlt = imgMatch[1].trim();
+      const isInfographic = imgUrl.includes("diagram") || imgUrl.includes("infographic") || imgUrl.includes("wireframe") || imgAlt.toLowerCase().includes("diagram") || imgAlt.toLowerCase().includes("infographic");
       blocks.push({
-        type: "image",
-        text: `${imgMatch[2].trim()}|${imgMatch[1].trim()}`
+        type: isInfographic ? "infographic" : "image",
+        text: `${imgUrl}|${imgAlt}`
       });
       i++;
       continue;

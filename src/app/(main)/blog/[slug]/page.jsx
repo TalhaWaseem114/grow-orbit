@@ -613,6 +613,36 @@ export default async function Page({ params }) {
                   </blockquote>
                 );
               }
+              if (block.type === "infographic" || block.type === "diagram" || (block.type === "image" && (
+                block.text?.includes("diagram") ||
+                block.text?.includes("infographic") ||
+                block.text?.includes("wireframe")
+              ))) {
+                const parts = block.text.split("|");
+                return (
+                  <figure key={i} className="my-12 max-w-[820px] mx-auto w-full">
+                    <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-zinc-200/90 bg-gradient-to-b from-zinc-50 to-white flex flex-col items-center p-3 sm:p-6 transition-all duration-300 hover:shadow-orange-500/5">
+                      <div className="w-full flex items-center justify-between pb-3 px-2 border-b border-zinc-100 mb-4">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-500/10 text-orange-600 border border-orange-500/20">
+                          📐 Framework Blueprint
+                        </span>
+                        <span className="text-[11px] text-zinc-400 font-medium">Full Schematic Walkthrough</span>
+                      </div>
+                      <div className="w-full flex justify-center">
+                        <Image
+                          src={parts[0]}
+                          alt={parts[1] || "Infographic Diagram"}
+                          width={1200}
+                          height={1600}
+                          className="w-full h-auto object-contain rounded-2xl shadow-sm"
+                          sizes="(max-width: 820px) 100vw, 820px"
+                          priority={false}
+                        />
+                      </div>
+                    </div>
+                  </figure>
+                );
+              }
               if (block.type === "image") {
                 const parts = block.text.split("|");
                 return (
@@ -694,7 +724,8 @@ export default async function Page({ params }) {
                 );
               }
               // paragraph — support basic **bold** and [link](url) markdown
-              const isImageCaption = (block.text?.startsWith("*Note:") || block.text?.startsWith("Note:")) && (i > 0 && post.content[i - 1]?.type === "image");
+              const prevType = i > 0 ? post.content[i - 1]?.type : null;
+              const isImageCaption = (block.text?.startsWith("*Note:") || block.text?.startsWith("Note:")) && (prevType === "image" || prevType === "infographic" || prevType === "diagram");
               if (isImageCaption) {
                 return (
                   <p

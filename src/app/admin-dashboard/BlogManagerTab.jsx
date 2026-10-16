@@ -1425,6 +1425,28 @@ export default function BlogManagerTab({ isMobile, triggerConfirm, logActivity }
                       </blockquote>
                     );
                   }
+                  if (block.type === "infographic" || block.type === "diagram" || (block.type === "image" && (
+                    block.text?.includes("diagram") ||
+                    block.text?.includes("infographic") ||
+                    block.text?.includes("wireframe")
+                  ))) {
+                    const parts = block.text.split("|");
+                    return (
+                      <figure key={idx} className="my-12 max-w-[820px] mx-auto w-full">
+                        <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-zinc-200/90 bg-gradient-to-b from-zinc-50 to-white flex flex-col items-center p-3 sm:p-6">
+                          <div className="w-full flex items-center justify-between pb-3 px-2 border-b border-zinc-100 mb-4">
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-500/10 text-orange-600 border border-orange-500/20">
+                              📐 Framework Blueprint
+                            </span>
+                            <span className="text-[11px] text-zinc-400 font-medium">Full Schematic Walkthrough</span>
+                          </div>
+                          <div className="w-full flex justify-center">
+                            <img src={parts[0] || "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1200"} alt={parts[1] || "Infographic Diagram"} className="w-full h-auto object-contain rounded-2xl shadow-sm" loading="lazy" />
+                          </div>
+                        </div>
+                      </figure>
+                    );
+                  }
                   if (block.type === "image") {
                     const parts = block.text.split("|");
                     return (

@@ -163,7 +163,7 @@ export default function ChatBot() {
 
       {/* ── FLOATING BUTTON ── */}
       <div className={`fixed bottom-24 md:bottom-7 right-5 z-[9999] transition-all duration-500 ${
-        visible ? "translate-x-0 opacity-100" : "translate-x-20 opacity-0 pointer-events-none"
+        visible ? "translate-y-0 opacity-100 scale-100" : "translate-y-12 opacity-0 pointer-events-none scale-90"
       }`}>
 
         {/* Pulse ring when there's something new */}

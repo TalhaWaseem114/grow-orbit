@@ -316,13 +316,13 @@ export default async function Page({ params }) {
       </header>
 
       {/* ── ARTICLE BODY (SERVER RENDERED) ── */}
-      <section className="px-6 py-16 sm:py-20">
-        <div className="max-w-[780px] mx-auto relative">
+      <section className="w-full max-w-full px-4 sm:px-6 py-12 sm:py-20 overflow-x-clip">
+        <div className="w-full max-w-[780px] mx-auto relative min-w-0">
           {/* Social Share Bar */}
           <BlogShareBar title={post.title} slug={post.slug || post.id} />
 
           {/* Content blocks parsed on the Server */}
-          <article className="space-y-8">
+          <article className="w-full max-w-full min-w-0 space-y-8 overflow-x-hidden break-words">
             {post.content?.map((block, i) => {
               if (block.type === "divider") {
                 return <hr key={i} className="border-t border-zinc-200 my-16" />;
@@ -498,7 +498,7 @@ export default async function Page({ params }) {
                 return (
                   <pre
                     key={i}
-                    className="my-8 p-5 sm:p-6 rounded-2xl bg-zinc-950 text-zinc-200 font-mono text-xs sm:text-sm overflow-x-auto border border-zinc-800 shadow-xl whitespace-pre leading-relaxed scrollbar-thin"
+                    className="my-8 p-5 sm:p-6 rounded-2xl bg-zinc-950 text-zinc-200 font-mono text-xs sm:text-sm overflow-x-auto border border-zinc-800 shadow-xl whitespace-pre leading-relaxed scrollbar-thin w-full max-w-full block"
                   >
                     <code>{block.text}</code>
                   </pre>
@@ -506,8 +506,8 @@ export default async function Page({ params }) {
               }
               if (block.type === "highlight") {
                 return (
-                  <div key={i} className="flex gap-4 items-start bg-orange-50/50 border-l-4 border-orange-500 py-6 px-6 sm:px-8 rounded-r-2xl my-10">
-                    <span className="text-2xl mt-1 leading-none">💡</span>
+                  <div key={i} className="flex gap-4 items-start bg-orange-50/50 border-l-4 border-orange-500 py-6 px-4 sm:px-8 rounded-r-2xl my-10 w-full max-w-full overflow-hidden break-words">
+                    <span className="text-2xl mt-1 leading-none shrink-0">💡</span>
                     <div
                       className="text-zinc-800 font-medium leading-relaxed"
                       dangerouslySetInnerHTML={{ __html: parseMarkdownText(block.text) }}
@@ -603,7 +603,7 @@ export default async function Page({ params }) {
                 return (
                   <blockquote
                     key={i}
-                    className="relative pl-8 py-6 my-10 border-l-4 border-orange-500 bg-orange-50/50 rounded-r-2xl pr-8"
+                    className="relative pl-6 sm:pl-8 py-6 my-10 border-l-4 border-orange-500 bg-orange-50/50 rounded-r-2xl pr-6 sm:pr-8 w-full max-w-full overflow-hidden break-words"
                   >
                     <p
                       className="text-lg sm:text-xl font-medium text-zinc-700 leading-relaxed italic"
@@ -620,7 +620,7 @@ export default async function Page({ params }) {
               ))) {
                 const parts = block.text.split("|");
                 return (
-                  <figure key={i} className="my-12 max-w-[820px] mx-auto w-full">
+                  <figure key={i} className="my-12 max-w-[820px] mx-auto w-full max-w-full overflow-hidden">
                     <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-zinc-200/90 bg-gradient-to-b from-zinc-50 to-white flex flex-col items-center p-3 sm:p-6 transition-all duration-300 hover:shadow-orange-500/5">
                       <div className="w-full flex items-center justify-between pb-3 px-2 border-b border-zinc-100 mb-4">
                         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-500/10 text-orange-600 border border-orange-500/20">
@@ -701,7 +701,7 @@ export default async function Page({ params }) {
                 const rows = lines.slice(2).map(line => line.split("|").map(c => c.trim()).filter(Boolean));
 
                 return (
-                  <div key={i} className="my-8 overflow-x-auto rounded-2xl border border-zinc-200 shadow-sm bg-white scrollbar-thin">
+                  <div key={i} className="my-8 w-full max-w-full block overflow-x-auto rounded-2xl border border-zinc-200 shadow-sm bg-white scrollbar-thin">
                     <table className="w-full min-w-[540px] sm:min-w-full text-left border-collapse text-xs sm:text-sm">
                       <thead>
                         <tr className="bg-zinc-50 border-b border-zinc-200">
@@ -740,7 +740,7 @@ export default async function Page({ params }) {
               return (
                 <p
                   key={i}
-                  className="text-[15px] sm:text-base text-zinc-600 leading-[1.9] font-light whitespace-pre-line"
+                  className="text-[15px] sm:text-base text-zinc-600 leading-[1.9] font-light whitespace-pre-line break-words max-w-full"
                   dangerouslySetInnerHTML={{
                     __html: parseMarkdownText(block.text),
                   }}

@@ -11,9 +11,11 @@
   --font-playfair: "Playfair Display", serif;
 }
 
+html,
 body {
-  font-family: var(--font-montserrat);
+  max-width: 100%;
   overflow-x: hidden;
+  font-family: var(--font-montserrat);
   background-color: var(--background, #ffffff);
   color: var(--foreground, #171717);
 }

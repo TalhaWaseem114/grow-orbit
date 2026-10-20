@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { getAuthorBySlug, AUTHORS } from "@/data/authorData";
 import { BLOG_POSTS } from "@/data/blogData";
 import { collection, getDocs, query, where } from "firebase/firestore";
@@ -6,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Clock, Award, Linkedin, Twitter, Globe, BookOpen } from "lucide-react";
+import AuthorArticlesClient from "./AuthorArticlesClient";
 
 export const revalidate = 60; // ISR revalidation every 60 seconds
 
@@ -202,76 +204,25 @@ export default async function AuthorPage({ params }) {
           </div>
         </section>
 
-        {/* --- ARTICLES SECTION --- */}
-        <section>
-          <div className="flex items-center gap-3 mb-10 pb-4 border-b border-zinc-250">
-            <BookOpen size={18} className="text-orange-500" />
-            <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tight font-montserrat">
-              Insights & Articles By {author.name} ({mergedPosts.length})
-            </h2>
-          </div>
-
-          {mergedPosts.length === 0 ? (
-            <div className="bg-white border border-zinc-100 rounded-[28px] p-12 text-center shadow-sm">
-              <p className="text-zinc-500 font-light">
-                No articles published by this author yet. Check back soon.
-              </p>
+        {/* --- ARTICLES SECTION WITH CLIENT-SIDE PAGINATION --- */}
+        <Suspense
+          fallback={
+            <div className="bg-white rounded-[28px] p-12 text-center border border-zinc-100 shadow-sm animate-pulse min-h-[400px]">
+              <div className="w-48 h-6 bg-zinc-100 rounded-full mb-8" />
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="aspect-[16/10] bg-zinc-100 rounded-[28px]" />
+                ))}
+              </div>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {mergedPosts.map((post) => (
-                <Link
-                  key={post.slug || post.id}
-                  href={`/blog/${post.slug || post.id}`}
-                  className="group block no-underline"
-                >
-                  <article className="bg-white rounded-[28px] overflow-hidden border border-zinc-100 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.04)] transition-all duration-500 hover:shadow-xl hover:-translate-y-1 h-full flex flex-col">
-                    <div className="relative aspect-[16/10] overflow-hidden bg-zinc-100">
-                      {post.coverImage && (
-                        <Image
-                          src={post.coverImage}
-                          alt={post.title}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                      <div className="absolute top-4 left-4">
-                        <span className="bg-white/90 backdrop-blur-sm text-[9px] font-black uppercase tracking-widest px-3 py-1.5 rounded-full text-zinc-700 border border-zinc-100">
-                          {post.category}
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="p-7 flex flex-col flex-1">
-                      <h3 className="text-[15px] font-black leading-snug tracking-tight mb-3 text-zinc-900 group-hover:text-orange-600 transition-colors line-clamp-2">
-                        {post.title}
-                      </h3>
-                      <p className="text-[13px] text-zinc-650 font-light leading-relaxed mb-6 line-clamp-3 flex-1">
-                        {post.excerpt}
-                      </p>
-
-                      <div className="flex items-center justify-between pt-5 border-t border-zinc-100">
-                        <span className="text-[9px] font-bold text-zinc-600 uppercase tracking-widest">
-                          {new Date(post.date).toLocaleDateString("en-US", {
-                            month: "short",
-                            day: "numeric",
-                            year: "numeric",
-                            timeZone: "UTC"
-                          })}
-                        </span>
-                        <span className="flex items-center gap-1 text-[9px] font-bold text-zinc-600">
-                          <Clock size={10} /> {getReadTime(post)}
-                        </span>
-                      </div>
-                    </div>
-                  </article>
-                </Link>
-              ))}
-            </div>
-          )}
-        </section>
+          }
+        >
+          <AuthorArticlesClient
+            posts={mergedPosts}
+            authorName={author.name}
+            authorSlug={author.slug}
+          />
+        </Suspense>
 
       </div>
     </main>

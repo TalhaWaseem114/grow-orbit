@@ -766,7 +766,12 @@ export default async function Page({ params }) {
             </div>
           )}
 
-          <EditorialGuidelines updatedDate={post.lastModified || post.date} authorName={post.author?.name} />
+          <EditorialGuidelines
+            updatedDate={post.lastModified || post.date}
+            authorName={post.author?.name}
+            category={post.category}
+            slug={post.slug || post.id}
+          />
 
           {/* Client-Side Interactive Components (Upvotes, Comments) */}
           <BlogPostClient post={{ id: post.id, slug: post.slug, upvotes: post.upvotes, author: post.author }} />

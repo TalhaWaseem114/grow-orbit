@@ -2,7 +2,7 @@ import React from 'react';
 import { ShieldCheck, CalendarCheck, CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 
-export default function EditorialGuidelines({ updatedDate, authorName }) {
+export default function EditorialGuidelines({ updatedDate, authorName, category, slug }) {
   // Format the date
   let formattedDate = "";
   if (updatedDate) {
@@ -20,6 +20,8 @@ export default function EditorialGuidelines({ updatedDate, authorName }) {
     }
   }
 
+  const isSupplement = slug === "supplement-a-plus-content-examples" || (category && category.toLowerCase().includes("supplement"));
+
   return (
     <div className="mt-12 mb-8 bg-[#F6F6F6] rounded-2xl p-6 md:p-8 border border-zinc-200 shadow-sm">
       <h3 className="text-sm font-black uppercase tracking-widest text-zinc-900 mb-6 flex items-center gap-2">
@@ -33,7 +35,11 @@ export default function EditorialGuidelines({ updatedDate, authorName }) {
           <div>
             <p className="text-xs font-bold text-zinc-900 mb-1">Last Updated</p>
             <p className="text-xs text-zinc-600 leading-relaxed">
-              This article was last reviewed and updated on <span className="font-semibold text-zinc-800">{formattedDate || "Recently updated"}</span> to ensure accuracy against current Amazon dietary supplement policies, FTC health guidance, and A+ Content module specifications.
+              This article was last reviewed and updated on <span className="font-semibold text-zinc-800">{formattedDate || "Recently updated"}</span> to ensure accuracy against current {
+                isSupplement
+                  ? "Amazon dietary supplement policies, FTC health guidance, and A+ Content module specifications."
+                  : "Amazon Product Image Requirements, category style guides, and A+ Content module specifications."
+              }
             </p>
           </div>
         </div>

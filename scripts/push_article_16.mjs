@@ -187,7 +187,7 @@ const articleData = {
     "3d rendering for amazon",
     "Amazon listing optimization",
   ],
-  coverImage: "/images/article image/16/product-rendering-vs-product-photography.avif",
+  coverImage: "/images/article image/16/product-rendering-vs-product-photography-hero.avif",
   metaTitle: "3D Rendering vs Product Photography for Amazon (2026 Guide)",
   metaDescription: "Compare 3D rendering vs product photography for Amazon listings. Learn the cost, lead time, variation consistency, and compliance trade-offs for 2026.",
   date: "2026-10-20",

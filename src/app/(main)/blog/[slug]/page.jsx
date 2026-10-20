@@ -248,8 +248,8 @@ export default async function Page({ params }) {
             className="object-cover"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/20" />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent max-w-[85%]" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/70 to-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/95 via-black/70 to-transparent max-w-[90%]" />
 
           {/* Back to blog */}
           <div className="absolute top-6 left-6 z-10">

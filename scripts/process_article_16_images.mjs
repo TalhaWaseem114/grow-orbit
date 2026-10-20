@@ -2,7 +2,7 @@ import sharp from 'sharp';
 import fs from 'fs';
 import path from 'path';
 
-const heroSrc = 'C:\\Users\\Shahr\\.gemini\\antigravity-ide\\brain\\322c3c45-eeb0-4995-b47f-a3b6ae75e769\\hero_3d_render_vs_photography_1792517340658.jpg';
+const heroSrc = 'C:\\Users\\Shahr\\.gemini\\antigravity-ide\\brain\\322c3c45-eeb0-4995-b47f-a3b6ae75e769\\hero_3d_render_vs_photo_clean_1792518502886.jpg';
 const compSrc = 'C:\\Users\\Shahr\\.gemini\\antigravity-ide\\brain\\322c3c45-eeb0-4995-b47f-a3b6ae75e769\\comparison_photo_vs_3d_render_1792517374068.jpg';
 
 const targetDir = path.join(process.cwd(), 'public', 'images', 'article image', '16');

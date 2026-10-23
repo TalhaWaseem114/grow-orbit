@@ -179,65 +179,66 @@ export default async function Page({ params }) {
     : (typeof post?.content === "string" ? post.content.trim().split(/\s+/).length : 0);
 
   return (
-    <main className="bg-[#fafafa] text-zinc-900 min-h-screen">
-      {/* Server-Side JSON-LD Structured Data Schema */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            "mainEntityOfPage": {
-              "@type": "WebPage",
-              "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/blog/${post.slug || post.id}/`
-            },
-            "headline": post.title,
-            "image": [post.coverImage],
-            "datePublished": post.date,
-            "dateModified": post.lastModified || post.date,
-            "wordCount": totalWords > 0 ? totalWords : undefined,
-            "author": {
-              "@type": "Person",
-              "name": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).name,
-              "jobTitle": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).role,
-              "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/blog/author/${getAuthorSlugByName(post.author?.name)}`,
-              "sameAs": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).socialLinks ? Object.values(getAuthorBySlug(getAuthorSlugByName(post.author?.name)).socialLinks).filter(Boolean) : []
-            },
-            "publisher": {
-              "@type": "Organization",
-              "name": "Grow Orbit",
-              "logo": {
-                "@type": "ImageObject",
-                "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/logo.png`
-              }
-            },
-            "description": post.excerpt
-          })
-        }}
-      />
-
-      {/* FAQPage JSON-LD Structured Data Schema for Google Rich Snippets */}
-      {faqItems.length > 0 && (
+    <>
+      <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "FAQPage",
-              "mainEntity": faqItems.map(item => ({
-                "@type": "Question",
-                "name": item.question,
-                "acceptedAnswer": {
-                  "@type": "Answer",
-                  "text": item.answer
+              "@type": "BlogPosting",
+              "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/blog/${post.slug || post.id}/`
+              },
+              "headline": post.title,
+              "image": [post.coverImage],
+              "datePublished": post.date,
+              "dateModified": post.lastModified || post.date,
+              "wordCount": totalWords > 0 ? totalWords : undefined,
+              "author": {
+                "@type": "Person",
+                "name": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).name,
+                "jobTitle": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).role,
+                "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/blog/author/${getAuthorSlugByName(post.author?.name)}`,
+                "sameAs": getAuthorBySlug(getAuthorSlugByName(post.author?.name)).socialLinks ? Object.values(getAuthorBySlug(getAuthorSlugByName(post.author?.name)).socialLinks).filter(Boolean) : []
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "Grow Orbit",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.groworbitofficial.com"}/logo.png`
                 }
-              }))
+              },
+              "description": post.metaDescription || post.excerpt
             })
           }}
         />
-      )}
 
-      {/* ── HERO / COVER (SEMANTIC ARTICLE HEADER) ── */}
+        {faqItems.length > 0 && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "FAQPage",
+                "mainEntity": faqItems.map(item => ({
+                  "@type": "Question",
+                  "name": item.question,
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": item.answer
+                  }
+                }))
+              })
+            }}
+          />
+        )}
+      </head>
+
+      <main className="bg-[#fafafa] text-zinc-900 min-h-screen">
+        {/* ── HERO / COVER (SEMANTIC ARTICLE HEADER) ── */}
       <header className="relative pt-[60px] sm:pt-[70px]">
         <div className="relative w-full min-h-[420px] sm:min-h-[480px] md:aspect-[21/8] overflow-hidden bg-zinc-900">
           <Image
@@ -838,5 +839,6 @@ export default async function Page({ params }) {
 
 
     </main>
+    </>
   );
 }

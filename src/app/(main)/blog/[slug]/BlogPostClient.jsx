@@ -32,6 +32,27 @@ export default function BlogPostClient({ post }) {
   const authorSlug = getAuthorSlugByName(post.author?.name);
   const authorDetails = getAuthorBySlug(authorSlug);
 
+  // Ensure JSON-LD schemas (BlogPosting & FAQPage) are mirrored into document.head for strict head-inspecting tools
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      const pageScripts = Array.from(document.querySelectorAll("script[type='application/ld+json']"));
+      pageScripts.forEach((script) => {
+        const text = script.textContent || "";
+        let headId = null;
+        if (text.includes('"FAQPage"')) headId = "faq-schema-head";
+        else if (text.includes('"BlogPosting"')) headId = "blogposting-schema-head";
+
+        if (headId && !document.head.querySelector(`#${headId}`)) {
+          const headScript = document.createElement("script");
+          headScript.type = "application/ld+json";
+          headScript.id = headId;
+          headScript.textContent = text;
+          document.head.appendChild(headScript);
+        }
+      });
+    }
+  }, [post]);
+
   // Auth listener
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, async (user) => {

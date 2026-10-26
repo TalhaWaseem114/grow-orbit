@@ -601,6 +601,11 @@ async function handleLeadIntake(body, webhookUrl, clientIp = "unknown", userAgen
   return NextResponse.json({ success: true, id: docRef.id });
 }
 
+export async function GET(request) {
+  const { GET: fetchLeadsAgentHandler } = await import("@/app/api/v1/agent/leads/route");
+  return fetchLeadsAgentHandler(request);
+}
+
 export async function POST(request) {
   try {
     let body;

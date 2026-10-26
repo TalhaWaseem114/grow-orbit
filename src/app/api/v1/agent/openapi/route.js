@@ -174,6 +174,81 @@ export async function GET() {
           },
         },
       },
+      "/api/v1/agent/email/template": {
+        get: {
+          summary: "Get Grow Orbit Email Design System Guidelines",
+          description: "Returns the official Grow Orbit email design tokens, colors, component hierarchy, and guidelines so Muse AI can understand the design structure.",
+          operationId: "getEmailDesignGuidelines",
+          security: [{ BearerAuth: [] }, { ApiKeyAuth: [] }, { QueryKeyAuth: [] }],
+          responses: {
+            "200": {
+              description: "Official design guidelines and example JSON payloads",
+            },
+          },
+        },
+        post: {
+          summary: "Compile Email into Official Grow Orbit Branded HTML Template",
+          description: "Takes structured email content (headline, intro, key insight, highlights table, CTA button, contact card) and compiles it into the exact pixel-perfect, bulletproof Grow Orbit HTML email template.",
+          operationId: "compileGrowOrbitEmail",
+          security: [{ BearerAuth: [] }, { ApiKeyAuth: [] }, { QueryKeyAuth: [] }],
+          requestBody: {
+            required: true,
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    subject: { type: "string", example: "Amazon 3D Product Rendering: Why Brands are Switching in 2026" },
+                    previewText: { type: "string", example: "Cut photography costs by 60% with CAD assets" },
+                    recipientName: { type: "string", example: "Amir Baig" },
+                    badge: { type: "string", example: "VISUAL ASSET STRATEGY" },
+                    headline: { type: "string", example: "Transform Your Amazon Listing Visuals" },
+                    intro: { type: "string", example: "I wanted to share a quick strategic breakdown of why consumer brands are moving away from traditional studio shoots toward unified 3D rendering pipelines." },
+                    keyInsight: { type: "string", example: "Across top-performing listings, 3D CAD modeling reduces future label and colorway variation costs from $250+ down to $35–$75 per render." },
+                    highlightCards: {
+                      type: "array",
+                      items: {
+                        type: "object",
+                        properties: {
+                          icon: { type: "string", example: "🚀" },
+                          title: { type: "string", example: "Pure White Hero Renders" },
+                          desc: { type: "string", example: "100% Amazon TOS compliant (RGB 255), zero glare, 85%+ frame fill" },
+                        },
+                      },
+                    },
+                    ctaText: { type: "string", example: "Book Free 3D Strategy Session" },
+                    ctaUrl: { type: "string", example: "https://www.groworbitofficial.com/get-started/" },
+                    includeMeetingCard: { type: "boolean", default: true },
+                    signOffName: { type: "string", example: "Talha Waseem" },
+                    signOffRole: { type: "string", example: "Technical Strategist | Grow Orbit" },
+                  },
+                },
+              },
+            },
+          },
+          responses: {
+            "200": {
+              description: "Compiled Grow Orbit bulletproof HTML email ready to send",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      success: { type: "boolean" },
+                      agent: { type: "string" },
+                      format: { type: "string" },
+                      subject: { type: "string" },
+                      previewText: { type: "string" },
+                      compiledHtml: { type: "string" },
+                      htmlLength: { type: "integer" },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
     components: {
       securitySchemes: {

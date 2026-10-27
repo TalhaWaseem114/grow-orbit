@@ -452,7 +452,7 @@ Keep the MAIN image on a pure white background and avoid effects that introduce 
 
 ### Can I use a 3D render as my Amazon main image?
 
-Amazon's general MAIN image guidance describes the primary image as a professional photograph of the actual product. Amazon does not provide a blanket statement that all 3D renders are approved for the MAIN slot. For the lowest compliance risk, use an actual product photograph for the MAIN image when possible. 3D renders remain useful for secondary listing images, A+ Content, technical visuals, and other approved creative applications.
+Amazon's general MAIN image guidance describes the primary image as a professional photograph of the actual product. Amazon does not provide a blanket statement that all 3D renders are approved for the MAIN slot. For the lowest compliance risk, use an actual product photograph for the MAIN image when possible. 3D renders remain useful for secondary listing images, A+ Content, technical visuals, and other approved creative applications. For a complete guide on photorealistic modeling, PBR textures, and exploded views, read our deep dive on [3D rendering for Amazon](/blog/3d-rendering-for-amazon/).
 
 ### Are AI-generated product images banned on Amazon?
 

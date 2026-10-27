@@ -624,9 +624,9 @@ export default async function Page({ params }) {
                     <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-zinc-200/90 bg-gradient-to-b from-zinc-50 to-white flex flex-col items-center p-3 sm:p-6 transition-all duration-300 hover:shadow-orange-500/5">
                       <div className="w-full flex items-center justify-between pb-3 px-2 border-b border-zinc-100 mb-4">
                         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-orange-500/10 text-orange-600 border border-orange-500/20">
-                          📐 Framework Blueprint
+                          {parts[2] ? parts[2].trim() : "📐 Framework Blueprint"}
                         </span>
-                        <span className="text-[11px] text-zinc-400 font-medium">Full Schematic Walkthrough</span>
+                        <span className="text-[11px] text-zinc-400 font-medium">{parts[3] !== undefined ? parts[3].trim() : "Full Schematic Walkthrough"}</span>
                       </div>
                       <div className="w-full flex justify-center">
                         <Image

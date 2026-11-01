@@ -15,8 +15,7 @@ import {
   Calendar,
   Zap,
   ShieldCheck,
-  Clock,
-  Users,
+  Lock,
 } from "lucide-react";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -348,25 +347,24 @@ export default function LeadForm({ theme = "white", compact = false }) {
       </button>
 
       {/* Micro Trust Indicators Strip */}
-      <div className="flex items-center justify-center gap-3 sm:gap-4 pt-2 text-[10px] sm:text-[11px] font-bold text-zinc-700 select-none">
-        <span className="flex items-center gap-1.5">
-          <Zap size={13} className="text-orange-500 fill-orange-500" />
-          {"<14 min"}
+      <div
+        className={`flex flex-wrap items-center justify-center gap-x-2 sm:gap-x-2.5 gap-y-1 pt-2.5 text-[9.5px] sm:text-[10px] font-bold select-none tracking-tight ${
+          isDark ? "text-zinc-400" : "text-zinc-600"
+        }`}
+      >
+        <span className="flex items-center gap-1 shrink-0">
+          <Zap size={11} className="text-orange-500 fill-orange-500 shrink-0" />
+          <span>Fast 15-Min Call</span>
         </span>
-        <span className="text-zinc-300">|</span>
-        <span className="flex items-center gap-1.5">
-          <ShieldCheck size={13} className="text-orange-500" />
-          100%
+        <span className={isDark ? "text-zinc-700" : "text-zinc-300"}>&middot;</span>
+        <span className="flex items-center gap-1 shrink-0">
+          <ShieldCheck size={11} className="text-orange-500 shrink-0" />
+          <span>100% Free Audit</span>
         </span>
-        <span className="text-zinc-300">|</span>
-        <span className="flex items-center gap-1.5">
-          <Clock size={13} className="text-orange-500" />
-          24/7
-        </span>
-        <span className="text-zinc-300">|</span>
-        <span className="flex items-center gap-1.5">
-          <Users size={13} className="text-orange-500" />
-          40+
+        <span className={isDark ? "text-zinc-700" : "text-zinc-300"}>&middot;</span>
+        <span className="flex items-center gap-1 shrink-0">
+          <Lock size={11} className="text-orange-500 shrink-0" />
+          <span>Zero Pitch Pressure</span>
         </span>
       </div>
     </form>

@@ -25,7 +25,7 @@ export default function OrbitTestimonialsSection() {
   };
 
   return (
-    <section className="py-32 bg-white border-t border-zinc-100 relative overflow-hidden">
+    <section id="testimonials" className="py-32 bg-white border-t border-zinc-100 relative overflow-hidden">
       {/* Background Graphic */}
       <div
         className="absolute top-0 right-0 w-[320px] h-[320px] sm:w-[600px] sm:h-[600px] pointer-events-none translate-x-[20%] translate-y-[0%] sm:-translate-y-[10%] opacity-[0.32] sm:opacity-[0.38] blur-[0.5px]"

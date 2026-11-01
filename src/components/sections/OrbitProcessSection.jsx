@@ -13,6 +13,7 @@ const steps = [
 export default function OrbitProcessSection({ scrollToForm }) {
   return (
     <section
+      id="process"
       className="py-20 sm:py-28 bg-[#fafafa] border-t border-zinc-100 relative overflow-hidden"
       style={{ fontFamily: "'Montserrat', sans-serif" }}
     >

@@ -1,10 +1,7 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown, ArrowRight, Star, TrendingUp, Rocket, Shield, Heart } from "lucide-react";
-import HeroMegaMenu from "./HeroMegaMenu";
+import { ArrowRight, Star, TrendingUp, Rocket, Shield, Heart } from "lucide-react";
 import LeadForm from "./LeadForm";
 
 const CLIENT_AVATARS = [
@@ -15,19 +12,6 @@ const CLIENT_AVATARS = [
 ];
 
 export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const servicesRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (servicesRef.current && !servicesRef.current.contains(event.target)) {
-        setServicesOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
     <>
       <style>{`
@@ -54,32 +38,61 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           aria-hidden="true"
         />
 
-        {/* ── Desktop Navbar ── */}
+        {/* ── Desktop Navbar (Internal On-Page Anchors — No Exit Leaks) ── */}
         <header className="hidden lg:flex absolute top-6 left-8 md:left-16 lg:left-20 right-8 md:right-16 lg:right-20 items-center justify-between z-50">
-          {/* Left: Logo */}
-          <Link href="/" className="flex items-center gap-2 group no-underline shrink-0">
+          {/* Left: Logo (Scrolls to top) */}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="flex items-center gap-2 group no-underline shrink-0 bg-transparent border-none cursor-pointer p-0"
+          >
             <Image src="/logo.png" alt="Grow Orbit Logo" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
             <span className="text-lg font-black tracking-tight uppercase flex gap-1.5 transition-colors">
               <span className="text-white">GROW</span>
               <span className="text-[#F1A52B]">ORBIT</span>
             </span>
-          </Link>
+          </button>
 
-          {/* Middle: Menu Items */}
-          <nav className="flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
-            <Link href="/" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors no-underline">Home</Link>
-            <div className="relative" ref={servicesRef}>
-              <button onMouseEnter={() => setServicesOpen(true)} className="flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer">
-                Services
-                <ChevronDown size={12} className={`transition-transform duration-300 ${servicesOpen ? 'rotate-180 text-orange-500' : ''}`} />
-              </button>
-              {servicesOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 z-[100]" onMouseLeave={() => setServicesOpen(false)}>
-                  <HeroMegaMenu onClose={() => setServicesOpen(false)} />
-                </div>
-              )}
-            </div>
-            <Link href="/case-study" className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors no-underline">Case Study</Link>
+          {/* Middle: On-Page Anchors */}
+          <nav className="flex items-center gap-8 xl:gap-10 absolute left-1/2 -translate-x-1/2">
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
+            >
+              Services
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
+            >
+              Case Studies
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('process')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
+            >
+              Process
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
+            >
+              FAQ
+            </button>
           </nav>
 
           {/* Right: Portfolio Button */}

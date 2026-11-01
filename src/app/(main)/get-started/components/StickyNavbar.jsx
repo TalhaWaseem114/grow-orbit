@@ -1,31 +1,20 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { ChevronDown } from "lucide-react";
-import HeroMegaMenu from "./HeroMegaMenu";
 
 export default function StickyNavbar({ scrolled, scrollToForm }) {
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const servicesRef = useRef(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (servicesRef.current && !servicesRef.current.contains(event.target)) {
-        setServicesOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
   return (
     <div className={`hidden lg:block fixed top-0 left-0 right-0 z-100 transition-all duration-500 transform ${scrolled ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="bg-black/80 backdrop-blur-2xl border border-white/10 rounded-full px-8 py-3 flex items-center justify-between shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group no-underline">
+          {/* Logo - Scroll to top */}
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
+            className="flex items-center gap-2 group no-underline bg-transparent border-none cursor-pointer p-0"
+          >
             <Image
               src="/logo.png"
               alt="Grow Orbit Logo"
@@ -37,30 +26,37 @@ export default function StickyNavbar({ scrolled, scrollToForm }) {
               <span className="text-white">GROW</span>
               <span className="text-[#F1A52B]">ORBIT</span>
             </span>
-          </Link>
+          </button>
 
-          {/* Nav */}
+          {/* Nav - All on-page anchors */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link href="/" className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white no-underline transition-colors text-center">Home</Link>
-            <div className="relative" ref={servicesRef}>
-              <button
-                onMouseEnter={() => setServicesOpen(true)}
-                className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors"
-              >
-                Services
-                <ChevronDown size={10} className={`transition-transform duration-300 ${servicesOpen ? 'rotate-180 text-orange-500' : ''}`} />
-              </button>
-
-              {servicesOpen && (
-                <div
-                  className="absolute top-full left-1/2 -translate-x-1/2 mt-5"
-                  onMouseLeave={() => setServicesOpen(false)}
-                >
-                  <HeroMegaMenu onClose={() => setServicesOpen(false)} />
-                </div>
-              )}
-            </div>
-
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors cursor-pointer outline-none bg-transparent border-none p-0"
+            >
+              Services
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors cursor-pointer outline-none bg-transparent border-none p-0"
+            >
+              Case Studies
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('process')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors cursor-pointer outline-none bg-transparent border-none p-0"
+            >
+              Process
+            </button>
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -70,8 +66,15 @@ export default function StickyNavbar({ scrolled, scrollToForm }) {
             >
               Portfolio
             </button>
-            <Link href="/case-study" className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white no-underline transition-colors">Case Study</Link>
-            <Link href="/about" className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white no-underline transition-colors">About Us</Link>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors cursor-pointer outline-none bg-transparent border-none p-0"
+            >
+              FAQ
+            </button>
           </nav>
 
           {/* CTA */}

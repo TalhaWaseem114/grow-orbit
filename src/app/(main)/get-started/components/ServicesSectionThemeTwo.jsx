@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from "react";
 import { Search, Package, Rocket, Paintbrush, BarChart3, Activity, ArrowUpRight } from "lucide-react";
-import Link from "next/link";
 
 const services = [
   {
@@ -120,7 +119,7 @@ export default function ServicesSectionThemeTwo() {
   }, [activeIndex]);
 
   return (
-    <section className="relative bg-white py-20 sm:py-28 overflow-hidden">
+    <section id="services" className="relative bg-white py-20 sm:py-28 overflow-hidden">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
 
@@ -186,13 +185,13 @@ export default function ServicesSectionThemeTwo() {
 
           {/* Right side — CTA */}
           <div className="flex items-center gap-8 mt-8 lg:mt-0">
-            <Link
-              href="/service"
-              className="group inline-flex items-center gap-2 text-zinc-900 hover:text-orange-500 font-bold text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 no-underline whitespace-nowrap"
+            <button
+              onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
+              className="group inline-flex items-center gap-2 text-zinc-900 hover:text-orange-500 font-bold text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 no-underline whitespace-nowrap bg-transparent border-none cursor-pointer p-0"
             >
-              See All 18 Services
+              Get Custom Service Plan
               <ArrowUpRight size={14} className="text-orange-500 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-            </Link>
+            </button>
           </div>
         </div>
 

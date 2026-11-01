@@ -66,7 +66,7 @@ export default function ThemeTwo({ scrolled, activeSections = {} }) {
       {activeSections.Hero !== false && <HeroSectionThemeTwo scrollToForm={scrollToForm} formRef={formRef} />}
       {activeSections.Diagnoses !== false && <CeoSourcingSection />}
       <SellerCentralShowcase />
-      {activeSections.Marquee !== false && <ServicesMarquee />}
+      {activeSections.Marquee !== false && <ServicesMarquee isLandingPage={true} />}
 
       <OrbitBridgeCTA scrollToForm={scrollToForm} />
 

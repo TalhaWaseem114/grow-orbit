@@ -41,6 +41,7 @@ export default function FAQSection({ scrollToForm }) {
 
   return (
     <section
+      id="faq"
       className="py-24 bg-white border-t border-zinc-100"
       style={{ fontFamily: "'Montserrat', sans-serif" }}
     >

@@ -26,7 +26,7 @@ const SERVICES = [
   { name: "TRADEMARK REGISTRATION", href: "/service/trademark-registration" }
 ];
 
-const ServicesMarquee = () => {
+const ServicesMarquee = ({ isLandingPage = false }) => {
   // Helper to render the list items
   const renderServiceItems = (isClone = false) => (
     <ul
@@ -42,15 +42,26 @@ const ServicesMarquee = () => {
             baseColor={PLANET_COLORS[index % PLANET_COLORS.length]}
             className="mr-1.5 sm:mr-2.5"
           />
-          <Link
-            href={service.href}
-            prefetch={false}
-            tabIndex={isClone ? -1 : undefined}
-            aria-hidden={isClone ? "true" : undefined}
-            className="text-gray-400 no-underline font-bold tracking-[0.2em] text-[9px] sm:text-[10px] uppercase transition-colors hover:text-orange-500 cursor-pointer"
-          >
-            {service.name}
-          </Link>
+          {isLandingPage ? (
+            <button
+              onClick={() => document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+              tabIndex={isClone ? -1 : undefined}
+              aria-hidden={isClone ? "true" : undefined}
+              className="text-gray-400 no-underline font-bold tracking-[0.2em] text-[9px] sm:text-[10px] uppercase transition-colors hover:text-orange-500 cursor-pointer bg-transparent border-none p-0 outline-none"
+            >
+              {service.name}
+            </button>
+          ) : (
+            <Link
+              href={service.href}
+              prefetch={false}
+              tabIndex={isClone ? -1 : undefined}
+              aria-hidden={isClone ? "true" : undefined}
+              className="text-gray-400 no-underline font-bold tracking-[0.2em] text-[9px] sm:text-[10px] uppercase transition-colors hover:text-orange-500 cursor-pointer"
+            >
+              {service.name}
+            </Link>
+          )}
         </li>
       ))}
     </ul>

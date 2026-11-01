@@ -97,7 +97,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
         </header>
 
         {/* ── Left — Text Content ── */}
-        <div className="relative flex-1 flex flex-col justify-start px-5 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-24 sm:pt-24 pb-16 lg:pt-24 lg:pb-20 z-10">
+        <div className="relative flex-1 flex flex-col justify-start px-5 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-20 sm:pt-20 pb-10 lg:pt-20 lg:pb-12 z-10">
           {/* Subtle low-density texture */}
           <div
             className="absolute inset-0 opacity-[0.16] pointer-events-none"
@@ -111,7 +111,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(249,115,22,0.12),transparent_60%)] pointer-events-none" />
 
           <div className="relative z-10 max-w-2xl fade-up lg:mt-2">
-            <div className="relative mb-6 sm:mb-12 -ml-[15px] sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[5px] sm:translate-y-[20px]">
+            <div className="relative mb-5 sm:mb-7 -ml-[15px] sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[3px] sm:translate-y-[10px]">
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.6)]" />
                 <div className="w-8 sm:w-12 h-px bg-orange-500/30" />
@@ -122,12 +122,12 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
                 </div>
               </div>
               {/* Vertical Drop Line with Glow — Optimized for Mobile */}
-              <div className="absolute left-[4px] sm:left-[5px] top-6 sm:top-7 w-px h-32 sm:h-48 bg-gradient-to-b from-orange-500 via-orange-500/50 to-transparent opacity-40" />
+              <div className="absolute left-[4px] sm:left-[5px] top-6 sm:top-7 w-px h-16 sm:h-20 bg-gradient-to-b from-orange-500 via-orange-500/50 to-transparent opacity-40" />
             </div>
 
 
             {/* Scarcity Pill */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6 sm:mb-8 whitespace-nowrap">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-5 sm:mb-7 whitespace-nowrap">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
               <span className="text-[9px] sm:text-[10px] font-bold text-orange-400 uppercase tracking-[0.2em] whitespace-nowrap">
                 Currently Accepting 3-4 Brands &middot; 2 Spots Left
@@ -136,7 +136,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
 
             {/* Main Heading */}
             <h1
-              className="text-white mb-6 sm:mb-8 uppercase text-[42px] sm:text-[62px] md:text-[70px] lg:text-[74px] font-black tracking-tighter leading-[0.95] sm:leading-[0.9]"
+              className="text-white mb-5 sm:mb-7 uppercase text-[42px] sm:text-[62px] md:text-[70px] lg:text-[74px] font-black tracking-tighter leading-[0.95] sm:leading-[0.9]"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               Turn Amazon<br />
@@ -145,7 +145,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
             </h1>
 
             {/* Subtitle */}
-            <div className="flex gap-6 mb-8 sm:mb-10 fade-up delay-1">
+            <div className="flex gap-6 mb-7 sm:mb-8 fade-up delay-1">
               <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden md:block opacity-50 shrink-0" />
               <p className="text-zinc-400 text-[14px] sm:text-[17px] font-light leading-relaxed max-w-xl">
                 We build, launch, and scale Amazon brands from $0
@@ -173,7 +173,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
             </div>
 
             {/* Stats Row */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5 sm:gap-6 mb-10 fade-up delay-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5 mb-7 sm:mb-9 fade-up delay-3">
               {[
                 { icon: TrendingUp, val: "$12M+", label: "Revenue Generated" },
                 { icon: Rocket,     val: "80+",   label: "Brands Launched"   },
@@ -225,25 +225,25 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
         </div>
 
         {/* ── Right — White Form Card Container ── */}
-        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex items-start justify-center px-5 pb-10 pt-8 sm:px-8 sm:pb-12 sm:pt-14 lg:px-8 lg:pb-12 lg:pt-[85px] xl:px-12 xl:pb-12 xl:pt-[85px] z-20 overflow-visible bg-transparent">
+        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex items-start justify-center px-5 pb-8 pt-6 sm:px-8 sm:pb-10 sm:pt-10 lg:px-8 lg:pb-10 lg:pt-[70px] xl:px-12 xl:pb-10 xl:pt-[72px] z-20 overflow-visible bg-transparent">
           {/* Subtle warm ambient glow behind the card */}
           <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)" }} />
           <div className="absolute bottom-[20%] left-[10%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,122,0,0.04) 0%, transparent 70%)" }} />
 
           {/* Hand-drawn style orange swooping arrow pointing to the form */}
-          <div className="hidden lg:block absolute -left-12 xl:-left-20 top-20 sm:top-24 w-28 sm:w-36 h-28 sm:h-36 pointer-events-none z-30 text-orange-500 opacity-90">
-            <svg viewBox="0 0 140 140" fill="none" className="w-full h-full overflow-visible">
+          <div className="hidden lg:block absolute -left-10 xl:-left-16 top-10 sm:top-12 w-24 sm:w-28 h-24 sm:h-28 pointer-events-none z-30 text-orange-500 opacity-90">
+            <svg viewBox="0 0 120 120" fill="none" className="w-full h-full overflow-visible">
               <path
-                d="M15 130 C 45 110, 95 75, 122 18"
+                d="M10 95 C 30 85, 65 60, 95 32"
                 stroke="#FF7A00"
-                strokeWidth="2.75"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 fill="none"
               />
               <path
-                d="M104 22 L 124 16 L 127 35"
+                d="M78 32 L 96 30 L 95 48"
                 stroke="#FF7A00"
-                strokeWidth="2.75"
+                strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 fill="none"
@@ -255,10 +255,10 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           <div
             ref={formRef}
             id="lead-form"
-            className="relative z-10 w-full max-w-[460px] bg-white rounded-[28px] sm:rounded-[32px] px-6 py-6 sm:px-8 sm:py-7 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form"
+            className="relative z-10 w-full max-w-[460px] bg-white rounded-[28px] sm:rounded-[32px] px-5 py-5 sm:px-7 sm:py-5.5 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form"
           >
             {/* Header */}
-            <div className="mb-4 sm:mb-5">
+            <div className="mb-3 sm:mb-3.5">
               <div className="inline-flex items-center bg-[#ffedd5] text-[#ea580c] px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider mb-2.5">
                 FREE STRATEGY MEETING
               </div>

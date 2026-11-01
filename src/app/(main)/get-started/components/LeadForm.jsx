@@ -171,7 +171,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className={compact ? "space-y-3" : "space-y-3.5"} noValidate>
+    <form onSubmit={handleSubmit} className={compact ? "space-y-2.5 sm:space-y-3" : "space-y-3.5"} noValidate>
       {/* Honeypot field for spam prevention */}
       <input
         type="text"
@@ -208,7 +208,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.name}
             onChange={handleChange}
             placeholder="Your name"
-            className={`w-full border text-[13px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 ${
+            className={`w-full border text-[13px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2 sm:py-2.5 ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
                 : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
@@ -234,7 +234,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.email}
             onChange={handleChange}
             placeholder="you@brand.com"
-            className={`w-full border text-[13px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 ${
+            className={`w-full border text-[13px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2 sm:py-2.5 ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
                 : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
@@ -258,7 +258,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             required
             value={form.service}
             onChange={handleChange}
-            className={`w-full border text-[13px] font-medium transition-all appearance-none cursor-pointer focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-10 py-2.5 sm:py-3 ${
+            className={`w-full border text-[13px] font-medium transition-all appearance-none cursor-pointer focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-10 py-2 sm:py-2.5 ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white focus:bg-zinc-950"
                 : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
@@ -294,7 +294,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.whatsapp}
             onChange={handleChange}
             placeholder="e.g. +1 (555) 000-0000"
-            className={`w-full border text-[13px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 ${
+            className={`w-full border text-[13px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2 sm:py-2.5 ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
                 : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
@@ -319,7 +319,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.pain}
             onChange={handleChange}
             placeholder="Tell us about your product, current stage, or what you need help with..."
-            className={`w-full border text-[13px] font-medium transition-all resize-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 leading-snug ${
+            className={`w-full border text-[13px] font-medium transition-all resize-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2 sm:py-2.5 leading-snug ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
                 : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
@@ -332,20 +332,23 @@ export default function LeadForm({ theme = "white", compact = false }) {
       <button
         type="submit"
         disabled={loading || submitted}
-        className="w-full font-black text-[12px] sm:text-[13px] uppercase tracking-wider text-white bg-gradient-to-r from-[#ff5c00] via-[#ff6b00] to-[#ea580c] hover:brightness-105 active:scale-[0.99] transition-all duration-300 shadow-[0_10px_25px_-5px_rgba(249,115,22,0.45)] py-3.5 sm:py-4 rounded-xl flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-50 mt-1"
+        className="w-full relative overflow-hidden font-black text-[12px] sm:text-[13px] uppercase tracking-wider text-white bg-gradient-to-r from-[#FF4500] via-[#FF7A00] to-[#FFA726] hover:brightness-110 active:scale-[0.99] transition-all duration-300 shadow-[0_10px_25px_-5px_rgba(255,92,0,0.5),0_4px_12px_rgba(255,122,0,0.3)] py-3 sm:py-3.5 rounded-xl flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-50 mt-1 border border-orange-400/30"
       >
+        {/* Subtle glossy top highlight */}
+        <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
+
         {loading ? (
-          <span>Sending...</span>
+          <span className="relative z-10">Sending...</span>
         ) : (
-          <>
+          <span className="relative z-10 flex items-center justify-center gap-2">
             <Calendar size={16} className="text-white shrink-0" />
             <span>BOOK MY FREE MEETING →</span>
-          </>
+          </span>
         )}
       </button>
 
       {/* Micro Trust Indicators Strip */}
-      <div className="flex items-center justify-center gap-3 sm:gap-4 pt-2.5 text-[10px] sm:text-[11px] font-bold text-zinc-700 select-none">
+      <div className="flex items-center justify-center gap-3 sm:gap-4 pt-2 text-[10px] sm:text-[11px] font-bold text-zinc-700 select-none">
         <span className="flex items-center gap-1.5">
           <Zap size={13} className="text-orange-500 fill-orange-500" />
           {"<14 min"}

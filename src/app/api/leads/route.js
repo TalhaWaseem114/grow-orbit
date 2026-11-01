@@ -381,6 +381,7 @@ async function handleBookingConfirmation(body, webhookUrl, clientIp = "unknown",
           console.error("[API/Leads] Webhook notification dispatch failed for booking:", error);
         });
 
+        const bookingEventId = cleanString(body.eventId) || `sub_${match.leadId || Date.now()}`;
         sendTikTokServerEvent({
           eventName: "Subscribe",
           email: email || leadData.email,
@@ -389,7 +390,8 @@ async function handleBookingConfirmation(body, webhookUrl, clientIp = "unknown",
           pageUrl: "https://www.groworbitofficial.com/get-started/book-meeting",
           clientIp,
           userAgent,
-          eventId: `sub_${match.leadId || Date.now()}`,
+          eventId: bookingEventId,
+          ttclid: leadData.ttclid,
         }).catch((err) => {
           console.error("[API/Leads] TikTok Server Event dispatch failed for booking:", err);
         });
@@ -518,6 +520,8 @@ async function handleLeadIntake(body, webhookUrl, clientIp = "unknown", userAgen
     utm_term: cleanString(body.utm_term),
     gclid: cleanString(body.gclid),
     fbclid: cleanString(body.fbclid),
+    ttclid: cleanString(body.ttclid),
+    eventId: cleanString(body.eventId),
     landingUrl: cleanString(body.landingUrl),
     currentUrl: cleanString(body.currentUrl),
     referrer: cleanString(body.referrer),
@@ -579,22 +583,10 @@ async function handleLeadIntake(body, webhookUrl, clientIp = "unknown", userAgen
       pageUrl: leadDoc.currentUrl || leadDoc.landingUrl || "https://www.groworbitofficial.com/get-started",
       clientIp,
       userAgent,
-      eventId: `lead_${docRef?.id || Date.now()}`,
+      eventId: leadDoc.eventId || `lead_${docRef?.id || Date.now()}`,
+      ttclid: leadDoc.ttclid,
     }).catch((err) => {
       console.error("[API/Leads] TikTok Server Event SubmitForm failed:", err);
-    });
-
-    sendTikTokServerEvent({
-      eventName: "CompleteRegistration",
-      email: leadDoc.email,
-      phone: leadDoc.whatsapp,
-      contentName: leadDoc.requestedService || "Grow Orbit Lead",
-      pageUrl: leadDoc.currentUrl || leadDoc.landingUrl || "https://www.groworbitofficial.com/get-started",
-      clientIp,
-      userAgent,
-      eventId: `reg_${docRef?.id || Date.now()}`,
-    }).catch((err) => {
-      console.error("[API/Leads] TikTok Server Event CompleteRegistration failed:", err);
     });
   });
 

@@ -30,6 +30,8 @@ export async function sendTikTokServerEvent({
   clientIp,
   userAgent,
   eventId,
+  ttclid,
+  ttp,
 }) {
   try {
     const hashedEmail = hashSha256(email);
@@ -40,6 +42,8 @@ export async function sendTikTokServerEvent({
     if (hashedPhone) userObj.phone_number = hashedPhone;
     if (clientIp && clientIp !== "unknown") userObj.ip = clientIp;
     if (userAgent) userObj.user_agent = userAgent;
+    if (ttclid && ttclid !== "unknown") userObj.ttclid = ttclid;
+    if (ttp) userObj.ttp = ttp;
 
     const payload = {
       event_source: "web",

@@ -7,7 +7,8 @@ const UTM_KEYS = [
   "utm_content",
   "utm_term",
   "gclid",
-  "fbclid"
+  "fbclid",
+  "ttclid"
 ];
 
 const ATTRIBUTION_META_KEYS = [

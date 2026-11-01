@@ -37,10 +37,14 @@ function BookMeetingContent() {
         const calendlyPayload = e.data.payload || {};
         setUpdatingDb(true);
 
+        const bookingEventId = `sub_${leadId || Date.now()}`;
+
         // Track Meta Pixel Schedule event
         if (typeof window !== "undefined" && window.fbq) {
           window.fbq("track", "Schedule", {
             content_name: "Strategy Session Confirmation"
+          }, {
+            eventID: bookingEventId
           });
         }
 
@@ -62,6 +66,7 @@ function BookMeetingContent() {
                   leadId: leadId,
                   email: initialEmail,
                   meetingBooked: true,
+                  eventId: bookingEventId,
                   calendlyEventUri: calendlyPayload.event?.uri || "",
                   calendlyInviteeUri: calendlyPayload.invitee?.uri || "",
                 }),
@@ -71,8 +76,7 @@ function BookMeetingContent() {
               }
               console.log("Booking confirmation document created successfully!");
               if (typeof window !== "undefined" && window.ttq) {
-                window.ttq.track("Subscribe");
-                window.ttq.track("CompleteRegistration");
+                window.ttq.track("Subscribe", {}, { event_id: bookingEventId });
               }
               success = true;
               break;

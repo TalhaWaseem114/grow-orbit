@@ -72,6 +72,8 @@ export default function LeadForm({ theme = "light", compact = false }) {
     setError("");
     setLoading(true);
 
+    const eventId = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
+
     try {
       const response = await fetch("/api/leads", {
         method: "POST",
@@ -87,6 +89,7 @@ export default function LeadForm({ theme = "light", compact = false }) {
           source: "Landing Page Form",
           brandName: null,
           website_confirm: honeypot,
+          eventId,
           ...utmData,
         }),
       });
@@ -96,20 +99,23 @@ export default function LeadForm({ theme = "light", compact = false }) {
         throw new Error(resData.error || "Failed to submit lead details");
       }
 
-      // Track Meta Pixel Lead event
+      // Track Meta Pixel Lead event with deduplication eventID
       if (typeof window !== "undefined" && window.fbq) {
         window.fbq("track", "Lead", {
           content_name: form.service || "General Grow Orbit Form",
           status: "new"
+        }, {
+          eventID: eventId
         });
       }
 
-      // Track TikTok Pixel Lead event
+      // Track TikTok Pixel Lead event with deduplication event_id (single standard conversion)
       if (typeof window !== "undefined" && window.ttq) {
         window.ttq.track("SubmitForm", {
           contents: [{ content_id: form.service || "General Lead", content_name: form.service || "Lead Form" }]
+        }, {
+          event_id: eventId
         });
-        window.ttq.track("CompleteRegistration");
       }
 
       // Mark as submitted to prevent double-submit

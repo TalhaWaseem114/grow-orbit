@@ -95,6 +95,7 @@ export default function Footer() {
       return;
     }
     setLoading(true);
+    const eventId = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
     try {
       const response = await fetch("/api/leads", {
         method: "POST",
@@ -109,6 +110,7 @@ export default function Footer() {
           notes: form.message || "No message provided",
           source: "Footer Form",
           website_confirm: honeypot,
+          eventId,
           ...utmData,
         }),
       });
@@ -124,6 +126,8 @@ export default function Footer() {
         window.fbq("track", "Lead", {
           content_name: form.service || "Footer Form",
           status: "new"
+        }, {
+          eventID: eventId
         });
       }
 
@@ -131,8 +135,10 @@ export default function Footer() {
       if (typeof window !== "undefined" && window.ttq) {
         window.ttq.track("SubmitForm", {
           contents: [{ content_id: form.service || "Footer Lead", content_name: "Footer Lead Form" }]
+        }, {
+          event_id: eventId
         });
-        window.ttq.track("CompleteRegistration");
+
       }
 
       const nameParam = encodeURIComponent(form.name);

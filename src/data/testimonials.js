@@ -22,7 +22,7 @@ export const caseStudyTestimonials = [
     ],
     name: "Marcus Thorne",
     role: "Founder, Graffixx",
-    image: "/assets/marcus-vance.avif",
+    image: "/assets/marcus-thorne.avif",
     caseStudyLink: "/case-study/li-01",
     sellerCentralImage: "/images/saler centeral screens/1.jpg"
   },
@@ -39,7 +39,7 @@ export const caseStudyTestimonials = [
     ],
     name: "Julian Vane",
     role: "Founder, Kazvoo",
-    image: "/assets/david-rutherford.avif",
+    image: "/assets/julian-vane.avif",
     caseStudyLink: "/case-study/li-02",
     sellerCentralImage: "/images/saler centeral screens/2.jpg"
   },

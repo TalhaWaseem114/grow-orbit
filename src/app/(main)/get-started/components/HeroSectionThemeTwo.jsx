@@ -7,6 +7,13 @@ import { ChevronDown, ArrowRight, Star, TrendingUp, Rocket, Shield, Heart } from
 import HeroMegaMenu from "./HeroMegaMenu";
 import LeadForm from "./LeadForm";
 
+const CLIENT_AVATARS = [
+  { src: "/assets/marcus-thorne.avif", alt: "Marcus Thorne - Founder, Graffixx" },
+  { src: "/assets/elena-martinez.avif", alt: "Elena Martinez - Brand Director, PureForm" },
+  { src: "/assets/julian-vane.avif", alt: "Julian Vane - Founder, Kazvoo" },
+  { src: "/assets/sarah-jenkins.avif", alt: "Sarah Jenkins - Founder, Dunova" },
+];
+
 export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
   const [servicesOpen, setServicesOpen] = useState(false);
   const servicesRef = useRef(null);
@@ -187,16 +194,19 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
 
             {/* Social Proof Strip */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-4 fade-up delay-4">
-              <div className="flex flex-row flex-nowrap -space-x-2.5 shrink-0">
-                {[
-                  "bg-gradient-to-br from-orange-400 to-orange-600",
-                  "bg-gradient-to-br from-blue-400 to-blue-600",
-                  "bg-gradient-to-br from-emerald-400 to-emerald-600",
-                  "bg-gradient-to-br from-purple-400 to-purple-600",
-                  "bg-gradient-to-br from-rose-400 to-rose-600",
-                ].map((bg, i) => (
-                  <div key={i} className={`w-7 h-7 rounded-full ${bg} border-2 border-zinc-950 flex items-center justify-center text-[8px] font-black text-white shrink-0`}>
-                    {["S", "A", "M", "R", "K"][i]}
+              <div className="flex flex-row flex-nowrap -space-x-2 sm:-space-x-2.5 shrink-0 items-center">
+                {CLIENT_AVATARS.map((avatar, i) => (
+                  <div
+                    key={i}
+                    className="relative w-7 h-7 sm:w-8 sm:h-8 rounded-full overflow-hidden border-2 border-zinc-950 shrink-0 bg-zinc-800 shadow-sm"
+                  >
+                    <Image
+                      src={avatar.src}
+                      alt={avatar.alt}
+                      fill
+                      sizes="32px"
+                      className="object-cover"
+                    />
                   </div>
                 ))}
               </div>

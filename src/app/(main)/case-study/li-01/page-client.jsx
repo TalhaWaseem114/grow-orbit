@@ -488,7 +488,7 @@ export default function CaseStudyGraffixx() {
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md grayscale hover:grayscale-0 transition-all duration-500 flex-shrink-0">
                       <img 
-                        src="/assets/marcus-vance.avif" 
+                        src="/assets/marcus-thorne.avif" 
                         alt="Marcus Thorne" 
                         className="w-full h-full object-cover" 
                       />

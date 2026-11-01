@@ -56,7 +56,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           </button>
 
           {/* Middle: On-Page Anchors */}
-          <nav className="flex items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
+          <nav className="flex items-center gap-8 xl:gap-10 absolute left-1/2 -translate-x-1/2">
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -74,24 +74,6 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
               className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
             >
               Case Studies
-            </button>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('process')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
-            >
-              Process
-            </button>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
-            >
-              Portfolio
             </button>
             <button
               onClick={(e) => {
@@ -250,38 +232,25 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)" }} />
           <div className="absolute bottom-[20%] left-[10%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,122,0,0.04) 0%, transparent 70%)" }} />
 
-          {/* Hand-drawn style orange swooping arrow pointing to the form with micro-note */}
-          <div className="hidden lg:flex flex-col items-center absolute -left-12 xl:-left-16 top-6 sm:top-7 pointer-events-none z-30">
-            {/* Tilted Micro-Note Badge */}
-            <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/25 -rotate-[8deg] shadow-[0_2px_10px_rgba(255,122,0,0.15)] whitespace-nowrap">
-              <span
-                className="text-[10px] xl:text-[11px] font-bold text-orange-400 italic tracking-wide"
-                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-              >
-                Takes 30 sec &middot; No obligations ⚡
-              </span>
-            </div>
-
-            {/* Swooping Arrow SVG */}
-            <div className="w-20 xl:w-24 h-20 xl:h-24 text-orange-500 opacity-90 -mt-1 ml-6">
-              <svg viewBox="0 0 120 120" fill="none" className="w-full h-full overflow-visible">
-                <path
-                  d="M10 95 C 30 85, 65 60, 95 32"
-                  stroke="#FF7A00"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  fill="none"
-                />
-                <path
-                  d="M78 32 L 96 30 L 95 48"
-                  stroke="#FF7A00"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                />
-              </svg>
-            </div>
+          {/* Hand-drawn style orange swooping arrow pointing to the form */}
+          <div className="hidden lg:block absolute -left-10 xl:-left-16 top-10 sm:top-12 w-24 sm:w-28 h-24 sm:h-28 pointer-events-none z-30 text-orange-500 opacity-90">
+            <svg viewBox="0 0 120 120" fill="none" className="w-full h-full overflow-visible">
+              <path
+                d="M10 95 C 30 85, 65 60, 95 32"
+                stroke="#FF7A00"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                fill="none"
+              />
+              <path
+                d="M78 32 L 96 30 L 95 48"
+                stroke="#FF7A00"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+            </svg>
           </div>
 
           {/* White Form Card */}

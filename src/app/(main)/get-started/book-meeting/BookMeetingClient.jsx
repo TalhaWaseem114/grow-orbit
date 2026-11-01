@@ -19,6 +19,16 @@ function BookMeetingContent() {
   const [updatingDb, setUpdatingDb] = useState(false);
   const [error, setError] = useState("");
   const [iframeLoading, setIframeLoading] = useState(true);
+  const [showFallbackLink, setShowFallbackLink] = useState(false);
+
+  useEffect(() => {
+    if (iframeLoading) {
+      const timer = setTimeout(() => {
+        setShowFallbackLink(true);
+      }, 4500);
+      return () => clearTimeout(timer);
+    }
+  }, [iframeLoading]);
 
   // Construct prefilled Calendly URL — use env variable or fallback domain, NOT window.location.host on SSR
   const embedDomain = process.env.NEXT_PUBLIC_SITE_URL?.replace(/^https?:\/\//, '') || "groworbitofficial.com";
@@ -251,9 +261,34 @@ function BookMeetingContent() {
                 </div>
               )}
               {iframeLoading && (
-                <div className="absolute inset-0 bg-[#0d0d0d] z-40 flex flex-col items-center justify-center gap-4 rounded-3xl">
-                  <RefreshCw className="text-orange-500 animate-spin" size={28} />
-                  <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Loading Calendar...</p>
+                <div className="absolute inset-0 bg-[#0d0d0d] z-40 flex flex-col items-center justify-center p-6 text-center rounded-3xl">
+                  <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4 shadow-[0_0_20px_rgba(249,115,22,0.15)]">
+                    <Calendar size={24} className="text-orange-500 animate-pulse" />
+                  </div>
+                  
+                  <h3 className="text-base sm:text-lg font-black tracking-tight text-white mb-2 max-w-md">
+                    Hold tight &mdash; loading available time slots with Ali Haider...
+                  </h3>
+                  
+                  <p className="text-[12px] text-zinc-400 font-light max-w-sm mb-5 leading-relaxed">
+                    Syncing live schedule for your 1-on-1 brand growth strategy session. Usually takes 1–2 seconds.
+                  </p>
+
+                  <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-orange-400 bg-orange-500/10 px-3.5 py-1.5 rounded-full border border-orange-500/20 mb-4">
+                    <RefreshCw size={11} className="animate-spin text-orange-500" />
+                    Connecting to Calendar
+                  </div>
+
+                  {showFallbackLink && (
+                    <a
+                      href={calendlySrc}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-[11px] font-bold text-orange-400 hover:text-orange-300 underline underline-offset-4 transition-colors animate-fade-in"
+                    >
+                      Calendar taking too long? Tap here to open directly &rarr;
+                    </a>
+                  )}
                 </div>
               )}
               <iframe
@@ -332,9 +367,16 @@ function BookMeetingContent() {
 export default function BookMeetingClient() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-[#060606] text-white flex flex-col items-center justify-center">
-        <RefreshCw className="text-orange-500 animate-spin mb-4" size={24} />
-        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-zinc-600">Loading Strategy Booking...</p>
+      <div className="min-h-screen bg-[#060606] text-white flex flex-col items-center justify-center p-6 text-center">
+        <div className="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-4 text-orange-500 shadow-[0_0_20px_rgba(249,115,22,0.15)]">
+          <RefreshCw className="animate-spin text-orange-500" size={24} />
+        </div>
+        <h3 className="text-base font-black tracking-tight text-white mb-1.5">
+          Hold tight &mdash; loading available time slots with Ali Haider...
+        </h3>
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500">
+          Initializing Strategy Session
+        </p>
       </div>
     }>
       <BookMeetingContent />

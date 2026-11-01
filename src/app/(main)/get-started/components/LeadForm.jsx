@@ -158,7 +158,9 @@ export default function LeadForm({ theme = "white", compact = false }) {
         </div>
         <div>
           <p className={`text-lg font-black tracking-tight ${isDark ? "text-white" : "text-zinc-950"}`}>Details Received!</p>
-          <p className={`text-sm font-normal mt-1 ${isDark ? "text-zinc-400" : "text-zinc-600"}`}>Taking you to schedule your meeting...</p>
+          <p className={`text-xs sm:text-sm font-semibold mt-1.5 max-w-xs mx-auto leading-relaxed ${isDark ? "text-orange-400" : "text-[#ea580c]"}`}>
+            Hold tight &mdash; loading available time slots with Ali Haider...
+          </p>
         </div>
         <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mt-2" />
         <style>{`

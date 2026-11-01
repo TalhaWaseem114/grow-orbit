@@ -56,7 +56,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           </button>
 
           {/* Middle: On-Page Anchors */}
-          <nav className="flex items-center gap-8 xl:gap-10 absolute left-1/2 -translate-x-1/2">
+          <nav className="flex items-center gap-6 xl:gap-8 absolute left-1/2 -translate-x-1/2">
             <button
               onClick={(e) => {
                 e.preventDefault();
@@ -87,6 +87,15 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
             <button
               onClick={(e) => {
                 e.preventDefault();
+                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }}
+              className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
+            >
+              Portfolio
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
                 document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }}
               className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
@@ -95,22 +104,20 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
             </button>
           </nav>
 
-          {/* Right: Portfolio Button */}
+          {/* Right: Primary Call-to-Action */}
           <div className="flex items-center shrink-0">
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-orange-400/40 bg-gradient-to-r from-[#FF5C00] via-[#FF7A00] to-[#FFA726] px-6 py-2.5 text-white font-bold text-[10px] uppercase tracking-[0.2em] transition-all duration-300 hover:scale-[1.03] hover:brightness-110 hover:shadow-[0_15px_50px_rgba(255,92,0,0.45)] active:scale-95 cursor-pointer outline-none"
+              onClick={scrollToForm}
+              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full border border-orange-400/40 bg-gradient-to-r from-[#FF5C00] via-[#FF7A00] to-[#FFA726] px-5 py-2.5 text-white font-black text-[10px] uppercase tracking-[0.16em] transition-all duration-300 hover:scale-[1.03] hover:brightness-110 hover:shadow-[0_15px_50px_rgba(255,92,0,0.45)] active:scale-95 cursor-pointer outline-none"
             >
-              Portfolio
+              <span>Book Free Meeting</span>
+              <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-300" />
             </button>
           </div>
         </header>
 
         {/* ── Left — Text Content ── */}
-        <div className="relative flex-1 flex flex-col justify-start px-5 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-20 sm:pt-20 pb-10 lg:pt-20 lg:pb-12 z-10">
+        <div className="relative flex-1 flex flex-col justify-start 2xl:justify-center px-5 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-20 sm:pt-20 pb-10 lg:pt-20 lg:pb-12 2xl:pt-16 2xl:pb-16 z-10">
           {/* Subtle low-density texture */}
           <div
             className="absolute inset-0 opacity-[0.16] pointer-events-none"
@@ -238,30 +245,43 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
         </div>
 
         {/* ── Right — White Form Card Container ── */}
-        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex items-start justify-center px-5 pb-8 pt-6 sm:px-8 sm:pb-10 sm:pt-10 lg:px-8 lg:pb-10 lg:pt-[70px] xl:px-12 xl:pb-10 xl:pt-[72px] z-20 overflow-visible bg-transparent">
+        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex items-start 2xl:items-center justify-center px-5 pb-8 pt-6 sm:px-8 sm:pb-10 sm:pt-10 lg:px-8 lg:pb-10 lg:pt-[70px] xl:px-12 xl:pb-10 xl:pt-[72px] 2xl:pt-16 z-20 overflow-visible bg-transparent">
           {/* Subtle warm ambient glow behind the card */}
           <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)" }} />
           <div className="absolute bottom-[20%] left-[10%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,122,0,0.04) 0%, transparent 70%)" }} />
 
-          {/* Hand-drawn style orange swooping arrow pointing to the form */}
-          <div className="hidden lg:block absolute -left-10 xl:-left-16 top-10 sm:top-12 w-24 sm:w-28 h-24 sm:h-28 pointer-events-none z-30 text-orange-500 opacity-90">
-            <svg viewBox="0 0 120 120" fill="none" className="w-full h-full overflow-visible">
-              <path
-                d="M10 95 C 30 85, 65 60, 95 32"
-                stroke="#FF7A00"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                fill="none"
-              />
-              <path
-                d="M78 32 L 96 30 L 95 48"
-                stroke="#FF7A00"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-              />
-            </svg>
+          {/* Hand-drawn style orange swooping arrow pointing to the form with micro-note */}
+          <div className="hidden lg:flex flex-col items-center absolute -left-12 xl:-left-16 top-6 sm:top-7 pointer-events-none z-30">
+            {/* Tilted Micro-Note Badge */}
+            <div className="flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-orange-500/10 border border-orange-500/25 -rotate-[8deg] shadow-[0_2px_10px_rgba(255,122,0,0.15)] whitespace-nowrap">
+              <span
+                className="text-[10px] xl:text-[11px] font-bold text-orange-400 italic tracking-wide"
+                style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
+              >
+                Takes 30 sec &middot; No obligations ⚡
+              </span>
+            </div>
+
+            {/* Swooping Arrow SVG */}
+            <div className="w-20 xl:w-24 h-20 xl:h-24 text-orange-500 opacity-90 -mt-1 ml-6">
+              <svg viewBox="0 0 120 120" fill="none" className="w-full h-full overflow-visible">
+                <path
+                  d="M10 95 C 30 85, 65 60, 95 32"
+                  stroke="#FF7A00"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  fill="none"
+                />
+                <path
+                  d="M78 32 L 96 30 L 95 48"
+                  stroke="#FF7A00"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
+            </div>
           </div>
 
           {/* White Form Card */}

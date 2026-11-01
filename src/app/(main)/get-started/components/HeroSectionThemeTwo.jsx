@@ -238,20 +238,23 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
             id="lead-form"
             className="relative z-10 w-full max-w-[460px] bg-white rounded-[28px] sm:rounded-[32px] px-5 py-5 sm:px-7 sm:py-5.5 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form"
           >
-            {/* Hand-drawn style orange swooping arrow pointing to the form at input level */}
-            <div className="hidden lg:block absolute -left-16 xl:-left-22 top-[150px] xl:top-[160px] w-24 sm:w-28 h-24 sm:h-28 pointer-events-none z-30 text-orange-500 opacity-90 select-none">
-              <svg viewBox="0 0 120 120" fill="none" className="w-full h-full overflow-visible">
+            {/* Jolly, playful hand-drawn orange arrow with expressive swoop */}
+            <div className="hidden lg:block absolute -left-16 xl:-left-22 top-[195px] xl:top-[205px] w-24 sm:w-28 h-24 sm:h-28 pointer-events-none z-30 text-orange-500 opacity-95 select-none filter drop-shadow-[0_2px_8px_rgba(255,122,0,0.3)]">
+              <svg viewBox="0 0 130 130" fill="none" className="w-full h-full overflow-visible">
+                {/* Jolly curved loop-de-loop stroke */}
                 <path
-                  d="M10 95 C 30 85, 65 60, 95 32"
+                  d="M 12 105 C 28 112, 44 88, 38 72 C 32 56, 16 68, 28 84 C 42 102, 75 75, 108 36"
                   stroke="#FF7A00"
-                  strokeWidth="2.5"
+                  strokeWidth="3.2"
                   strokeLinecap="round"
+                  strokeLinejoin="round"
                   fill="none"
                 />
+                {/* Expressive arrowhead with slight hand-drawn flourish */}
                 <path
-                  d="M78 32 L 96 30 L 95 48"
+                  d="M 88 34 L 110 33 L 105 55"
                   stroke="#FF7A00"
-                  strokeWidth="2.5"
+                  strokeWidth="3.2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   fill="none"

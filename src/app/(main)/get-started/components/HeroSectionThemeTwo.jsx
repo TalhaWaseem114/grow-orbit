@@ -227,7 +227,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
         </div>
 
         {/* ── Right — White Form Card Container ── */}
-        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex items-start 2xl:items-center justify-center px-5 pb-8 pt-6 sm:px-8 sm:pb-10 sm:pt-10 lg:px-8 lg:pb-10 lg:pt-[70px] xl:px-12 xl:pb-10 xl:pt-[72px] 2xl:pt-16 z-20 overflow-visible bg-transparent">
+        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex items-start 2xl:items-center justify-center px-5 pb-8 pt-6 sm:px-8 sm:pb-10 sm:pt-10 lg:px-8 lg:pb-10 lg:pt-[90px] xl:px-12 xl:pb-10 xl:pt-[92px] 2xl:pt-[84px] z-20 overflow-visible bg-transparent">
           {/* Subtle warm ambient glow behind the card */}
           <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)" }} />
           <div className="absolute bottom-[20%] left-[10%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,122,0,0.04) 0%, transparent 70%)" }} />
@@ -238,26 +238,24 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
             id="lead-form"
             className="relative z-10 w-full max-w-[460px] bg-white rounded-[28px] sm:rounded-[32px] px-5 py-5 sm:px-7 sm:py-5.5 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form"
           >
-            {/* Jolly, playful hand-drawn orange arrow with expressive swoop */}
-            <div className="hidden lg:block absolute -left-16 xl:-left-22 top-[195px] xl:top-[205px] w-24 sm:w-28 h-24 sm:h-28 pointer-events-none z-30 text-orange-500 opacity-95 select-none filter drop-shadow-[0_2px_8px_rgba(255,122,0,0.3)]">
-              <svg viewBox="0 0 130 130" fill="none" className="w-full h-full overflow-visible">
-                {/* Jolly curved loop-de-loop stroke */}
+            {/* Amazon-smile style curved arrow pointing towards the form */}
+            <div className="hidden lg:block absolute -left-16 xl:-left-22 top-[170px] xl:top-[175px] w-28 xl:w-32 h-20 xl:h-22 pointer-events-none z-30 text-[#FF7A00] opacity-95 select-none filter drop-shadow-[0_3px_10px_rgba(255,122,0,0.35)]">
+              <svg viewBox="0 0 140 80" fill="none" className="w-full h-full overflow-visible">
+                {/* Iconic Amazon smile arc curving upward to the right */}
                 <path
-                  d="M 12 105 C 28 112, 44 88, 38 72 C 32 56, 16 68, 28 84 C 42 102, 75 75, 108 36"
+                  d="M 10 30 C 35 68, 90 74, 122 36"
                   stroke="#FF7A00"
-                  strokeWidth="3.2"
+                  strokeWidth="3.6"
                   strokeLinecap="round"
-                  strokeLinejoin="round"
                   fill="none"
                 />
-                {/* Expressive arrowhead with slight hand-drawn flourish */}
+                {/* Sharp tapered Amazon-style arrowhead dimple pointing into form */}
                 <path
-                  d="M 88 34 L 110 33 L 105 55"
+                  d="M 105 45 L 126 33 L 129 55 Z"
+                  fill="#FF7A00"
                   stroke="#FF7A00"
-                  strokeWidth="3.2"
-                  strokeLinecap="round"
+                  strokeWidth="1.5"
                   strokeLinejoin="round"
-                  fill="none"
                 />
               </svg>
             </div>

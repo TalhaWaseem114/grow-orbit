@@ -232,33 +232,32 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)" }} />
           <div className="absolute bottom-[20%] left-[10%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,122,0,0.04) 0%, transparent 70%)" }} />
 
-          {/* Hand-drawn style orange swooping arrow pointing to the form */}
-          <div className="hidden lg:block absolute -left-10 xl:-left-16 top-10 sm:top-12 w-24 sm:w-28 h-24 sm:h-28 pointer-events-none z-30 text-orange-500 opacity-90">
-            <svg viewBox="0 0 120 120" fill="none" className="w-full h-full overflow-visible">
-              <path
-                d="M10 95 C 30 85, 65 60, 95 32"
-                stroke="#FF7A00"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                fill="none"
-              />
-              <path
-                d="M78 32 L 96 30 L 95 48"
-                stroke="#FF7A00"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-              />
-            </svg>
-          </div>
-
           {/* White Form Card */}
           <div
             ref={formRef}
             id="lead-form"
             className="relative z-10 w-full max-w-[460px] bg-white rounded-[28px] sm:rounded-[32px] px-5 py-5 sm:px-7 sm:py-5.5 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form"
           >
+            {/* Hand-drawn style orange swooping arrow pointing to the form at input level */}
+            <div className="hidden lg:block absolute -left-16 xl:-left-22 top-[150px] xl:top-[160px] w-24 sm:w-28 h-24 sm:h-28 pointer-events-none z-30 text-orange-500 opacity-90 select-none">
+              <svg viewBox="0 0 120 120" fill="none" className="w-full h-full overflow-visible">
+                <path
+                  d="M10 95 C 30 85, 65 60, 95 32"
+                  stroke="#FF7A00"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  fill="none"
+                />
+                <path
+                  d="M78 32 L 96 30 L 95 48"
+                  stroke="#FF7A00"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="none"
+                />
+              </svg>
+            </div>
             {/* Header */}
             <div className="mb-3 sm:mb-3.5">
               <div className="inline-flex items-center bg-[#ffedd5] text-[#ea580c] px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider mb-2.5">

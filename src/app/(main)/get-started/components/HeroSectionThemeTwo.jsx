@@ -130,7 +130,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-6 sm:mb-8 whitespace-nowrap">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
               <span className="text-[9px] sm:text-[10px] font-bold text-orange-400 uppercase tracking-[0.2em] whitespace-nowrap">
-                Currently Accepting 3-4 Brands &middot; Apply Now
+                Currently Accepting 3-4 Brands &middot; 2 Spots Left
               </span>
             </div>
 
@@ -224,50 +224,54 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
           </div>
         </div>
 
-        {/* ── Right — Image + Form Card ── */}
-        <div className="relative flex-none w-full lg:w-[42%] xl:w-[38%] 2xl:w-[35%] flex items-start justify-center px-6 pb-6 pt-12 sm:px-8 sm:pb-8 sm:pt-16 lg:px-10 lg:pb-10 lg:pt-[85px] xl:px-12 xl:pb-12 xl:pt-[85px] z-20 overflow-hidden bg-zinc-950">
-          {/* Background image with overlay */}
-          <div className="absolute inset-0">
-            <Image
-              src="/newUpload/strategy-meeting.jpg"
-              alt="Amazon growth strategy session"
-              fill
-              sizes="(max-width: 1024px) 100vw, 42vw"
-              className="object-cover object-center opacity-[0.55]"
-              priority
-              fetchPriority="high"
-            />
-            {/* Dark overlays for high contrast */}
-            <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-zinc-950" />
-            <div className="absolute inset-0 bg-gradient-to-r from-zinc-950 via-zinc-950/30 to-transparent hidden lg:block" />
-            {/* Cool bluish tint overlay on the background */}
-            <div className="absolute inset-0 bg-blue-950/4 mix-blend-color pointer-events-none" />
-            {/* Extremely subtle ambient bluish/indigo glows that move behind the glass card */}
-            <div className="absolute top-[25%] left-[20%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(59,130,246,0.04) 0%, transparent 70%)" }} />
-            <div className="absolute bottom-[20%] right-[15%] w-64 h-64 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(99,102,241,0.03) 0%, transparent 70%)" }} />
+        {/* ── Right — White Form Card Container ── */}
+        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex items-start justify-center px-5 pb-10 pt-8 sm:px-8 sm:pb-12 sm:pt-14 lg:px-8 lg:pb-12 lg:pt-[85px] xl:px-12 xl:pb-12 xl:pt-[85px] z-20 overflow-visible bg-transparent">
+          {/* Subtle warm ambient glow behind the card */}
+          <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)" }} />
+          <div className="absolute bottom-[20%] left-[10%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,122,0,0.04) 0%, transparent 70%)" }} />
+
+          {/* Hand-drawn style orange swooping arrow pointing to the form */}
+          <div className="hidden lg:block absolute -left-12 xl:-left-20 top-20 sm:top-24 w-28 sm:w-36 h-28 sm:h-36 pointer-events-none z-30 text-orange-500 opacity-90">
+            <svg viewBox="0 0 140 140" fill="none" className="w-full h-full overflow-visible">
+              <path
+                d="M15 130 C 45 110, 95 75, 122 18"
+                stroke="#FF7A00"
+                strokeWidth="2.75"
+                strokeLinecap="round"
+                fill="none"
+              />
+              <path
+                d="M104 22 L 124 16 L 127 35"
+                stroke="#FF7A00"
+                strokeWidth="2.75"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                fill="none"
+              />
+            </svg>
           </div>
 
+          {/* White Form Card */}
           <div
             ref={formRef}
             id="lead-form"
-            className="relative z-10 w-full max-w-[440px] border border-white/10 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.1)] px-5 py-6 sm:p-8 rounded-3xl animate-subtle-form overflow-hidden backdrop-blur-md"
-            style={{
-              background: `linear-gradient(to bottom, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.01)), url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.015'/%3E%3C/svg%3E"), rgba(9, 9, 11, 0.4)`
-            }}
+            className="relative z-10 w-full max-w-[460px] bg-white rounded-[28px] sm:rounded-[32px] px-6 py-6 sm:px-8 sm:py-7 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form"
           >
-            <div className="mb-5">
-              <p className="text-orange-500 font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.2em] mb-1.5">
-                Free Strategy Meeting
-              </p>
+            {/* Header */}
+            <div className="mb-4 sm:mb-5">
+              <div className="inline-flex items-center bg-[#ffedd5] text-[#ea580c] px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-wider mb-2.5">
+                FREE STRATEGY MEETING
+              </div>
               <h2
-                className="text-lg sm:text-xl font-black tracking-tight text-white uppercase leading-snug"
+                className="text-[19px] sm:text-[22px] font-black tracking-tight leading-[1.18] uppercase"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                Tell us about your brand. <span className="text-orange-500">We'll show you exactly how to scale it.</span>
+                <span className="text-zinc-950 block">TELL US ABOUT YOUR BRAND.</span>
+                <span className="text-[#ff5c00] block mt-0.5">WE'LL SHOW YOU EXACTLY HOW TO SCALE IT.</span>
               </h2>
             </div>
 
-            <LeadForm theme="dark" compact={true} />
+            <LeadForm theme="white" compact={true} />
           </div>
         </div>
 

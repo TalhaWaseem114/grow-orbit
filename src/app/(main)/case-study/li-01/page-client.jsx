@@ -476,7 +476,7 @@ export default function CaseStudyGraffixx() {
           <div className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-12">
             <div className="max-w-3xl">
               <SectionLabel>Client Voice</SectionLabel>
-              
+
               <div className="space-y-12">
                 {/* Primary Testimonial */}
                 <div>
@@ -484,13 +484,13 @@ export default function CaseStudyGraffixx() {
                   <p className="text-zinc-700 text-2xl md:text-[32px] font-light italic leading-tight mb-8" style={{ fontFamily: "'Playfair Display', serif" }}>
                     "We launched with zero Amazon history and zero reviews. Grow Orbit built the entire visual system and we hit Page 1 in 58 days with an 8.2x ROAS. They built a brand that looked like it owned the category from day one."
                   </p>
-                  
+
                   <div className="flex items-center gap-4">
                     <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white shadow-md grayscale hover:grayscale-0 transition-all duration-500 flex-shrink-0">
-                      <img 
-                        src="/assets/marcus-thorne.avif" 
-                        alt="Marcus Thorne" 
-                        className="w-full h-full object-cover" 
+                      <img
+                        src="/assets/marcus-thorne.avif"
+                        alt="Marcus Thorne"
+                        className="w-full h-full object-cover"
                       />
                     </div>
                     <div>

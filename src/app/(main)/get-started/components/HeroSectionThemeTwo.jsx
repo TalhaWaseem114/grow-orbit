@@ -157,7 +157,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
               onClick={scrollToForm}
               className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full border border-orange-400/40 bg-gradient-to-r from-[#FF5C00] via-[#FF7A00] to-[#FFA726] px-5 py-2.5 text-white font-black text-[10px] uppercase tracking-[0.16em] transition-all duration-300 hover:scale-[1.03] hover:brightness-110 hover:shadow-[0_15px_50px_rgba(255,92,0,0.45)] active:scale-95 cursor-pointer outline-none"
             >
-              <span>Book Free Meeting</span>
+              <span>Book Strategy Call</span>
               <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-300" />
             </button>
           </div>
@@ -214,8 +214,8 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
             <div className="flex gap-4 sm:gap-6 mb-3 sm:mb-5 lg:mb-8 fade-up delay-1">
               <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden md:block opacity-50 shrink-0" />
               <p className="text-zinc-400 text-xs sm:text-base lg:text-[17px] font-light leading-relaxed max-w-xl">
-                We build, launch, and scale Amazon brands from $0
-                to <span className="text-white font-semibold">$50K-$200K+/month</span> with a proven, profit-first system.
+                We build, launch, and scale Amazon brands to{" "}
+                <span className="text-white font-semibold">$25K&ndash;$100K+/month</span> in sustainable revenue with a proven, profit-first system.
               </p>
             </div>
 
@@ -262,7 +262,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
             <div className="mb-2.5 sm:mb-3.5">
               <div className="inline-flex items-center gap-1.5 bg-[#ffedd5] text-[#ea580c] px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider mb-1.5 sm:mb-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#ea580c] animate-pulse" />
-                <span>FREE STRATEGY MEETING &middot; 2 SPOTS LEFT</span>
+                <span>FREE STRATEGY CALL &middot; 2 SPOTS LEFT</span>
               </div>
               <h2
                 className="text-[17px] sm:text-[22px] font-black tracking-tight leading-[1.18] uppercase"

@@ -251,7 +251,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
           FULL NAME *
         </label>
         <div className="relative flex items-center">
-          <User size={16} className={`absolute left-3.5 pointer-events-none stroke-[2] ${isDark ? "text-zinc-500" : "text-zinc-400"}`} />
+          <User size={16} className={`absolute left-3.5 pointer-events-none stroke-[2.25] ${isDark ? "text-zinc-400" : "text-zinc-600"}`} />
           <input
             id="lead-name"
             type="text"
@@ -261,10 +261,10 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.name}
             onChange={handleChange}
             placeholder="Your name"
-            className={`w-full border text-[13px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2 sm:py-2.5 ${
+            className={`w-full border text-[13.5px] sm:text-[14px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 min-h-[44px] ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
-                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
+                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
             }`}
           />
         </div>
@@ -278,7 +278,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
           EMAIL ADDRESS *
         </label>
         <div className="relative flex items-center">
-          <Mail size={16} className={`absolute left-3.5 pointer-events-none stroke-[2] ${isDark ? "text-zinc-500" : "text-zinc-400"}`} />
+          <Mail size={16} className={`absolute left-3.5 pointer-events-none stroke-[2.25] ${isDark ? "text-zinc-400" : "text-zinc-600"}`} />
           <input
             id="lead-email"
             type="email"
@@ -288,10 +288,10 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.email}
             onChange={handleChange}
             placeholder="you@brand.com"
-            className={`w-full border text-[13px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2 sm:py-2.5 ${
+            className={`w-full border text-[13.5px] sm:text-[14px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 min-h-[44px] ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
-                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
+                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
             }`}
           />
         </div>
@@ -305,14 +305,14 @@ export default function LeadForm({ theme = "white", compact = false }) {
           SERVICE YOU'RE INTERESTED IN *
         </label>
         <div className="relative flex items-center">
-          <LayoutGrid size={16} className={`absolute left-3.5 pointer-events-none stroke-[2] ${isDark ? "text-zinc-500" : "text-zinc-400"}`} />
+          <LayoutGrid size={16} className={`absolute left-3.5 pointer-events-none stroke-[2.25] ${isDark ? "text-zinc-400" : "text-zinc-600"}`} />
           <select
             id="lead-service"
             name="service"
             required
             value={form.service}
             onChange={handleChange}
-            className={`w-full border text-[13px] font-medium transition-all appearance-none cursor-pointer focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-10 py-2 sm:py-2.5 ${
+            className={`w-full border text-[13.5px] sm:text-[14px] font-medium transition-all appearance-none cursor-pointer focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-10 py-2.5 sm:py-3 min-h-[44px] ${
               highlightService ? "!ring-2 !ring-orange-500 !border-orange-500 shadow-[0_0_15px_rgba(255,122,0,0.3)] animate-pulse " : ""
             } ${
               isDark
@@ -330,7 +330,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             <option value="Full Account Management" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>Full Account Management</option>
             <option value="I'm Not Sure Yet" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>I'm Not Sure Yet (Help Me Decide)</option>
           </select>
-          <ChevronDown size={15} className={`absolute right-3.5 pointer-events-none stroke-[2] ${isDark ? "text-zinc-500" : "text-zinc-400"}`} />
+          <ChevronDown size={15} className={`absolute right-3.5 pointer-events-none stroke-[2.25] ${isDark ? "text-zinc-400" : "text-zinc-600"}`} />
         </div>
       </div>
 
@@ -342,7 +342,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
           MOBILE NUMBER (OPTIONAL)
         </label>
         <div className="relative flex items-center">
-          <Phone size={16} className={`absolute left-3.5 pointer-events-none stroke-[2] ${isDark ? "text-zinc-500" : "text-zinc-400"}`} />
+          <Phone size={16} className={`absolute left-3.5 pointer-events-none stroke-[2.25] ${isDark ? "text-zinc-400" : "text-zinc-600"}`} />
           <input
             id="lead-whatsapp"
             type="tel"
@@ -352,10 +352,10 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.whatsapp}
             onChange={handleChange}
             placeholder="e.g. (213) 373-4253"
-            className={`w-full border text-[13px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2 sm:py-2.5 ${
+            className={`w-full border text-[13.5px] sm:text-[14px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 min-h-[44px] ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
-                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
+                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
             }`}
           />
         </div>
@@ -369,7 +369,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
           ANYTHING ELSE? (OPTIONAL)
         </label>
         <div className="relative flex items-start">
-          <MessageSquare size={16} className={`absolute left-3.5 top-3 pointer-events-none stroke-[2] ${isDark ? "text-zinc-500" : "text-zinc-400"}`} />
+          <MessageSquare size={16} className={`absolute left-3.5 top-3.5 pointer-events-none stroke-[2.25] ${isDark ? "text-zinc-400" : "text-zinc-600"}`} />
           <textarea
             id="lead-pain"
             rows={compact ? 2 : 3}
@@ -377,10 +377,10 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.pain}
             onChange={handleChange}
             placeholder="Tell us about your product, current stage, or what you need help with..."
-            className={`w-full border text-[13px] font-medium transition-all resize-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2 sm:py-2.5 leading-snug ${
+            className={`w-full border text-[13.5px] sm:text-[14px] font-medium transition-all resize-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 leading-snug ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
-                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-400 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
+                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
             }`}
           />
         </div>
@@ -396,11 +396,11 @@ export default function LeadForm({ theme = "white", compact = false }) {
         <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
 
         {loading ? (
-          <span className="relative z-10">Sending...</span>
+          <span className="relative z-10">Securing Your Spot...</span>
         ) : (
           <span className="relative z-10 flex items-center justify-center gap-2">
-            <Calendar size={16} className="text-white shrink-0" />
-            <span>BOOK MY FREE MEETING →</span>
+            <Calendar size={16} className="text-white shrink-0 stroke-[2.5]" />
+            <span>BOOK YOUR FREE STRATEGY CALL →</span>
           </span>
         )}
       </button>

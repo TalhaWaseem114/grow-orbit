@@ -254,7 +254,7 @@ export default function Footer() {
           <div className="lg:w-1/2 pt-2 md:pt-6">
 
             {/* Main headline */}
-            <h3
+            <div
               className="font-black leading-[0.88] tracking-tighter mb-6 md:mb-8 uppercase"
               style={{
                 fontSize: "clamp(2.6rem, 8.5vw, 6.8rem)",
@@ -268,7 +268,7 @@ export default function Footer() {
               >
                 the orbit.
               </span>
-            </h3>
+            </div>
 
             <p className="text-zinc-400 text-base md:text-xl font-light max-w-lg leading-relaxed mb-10 md:mb-16">
               Ready to stop guessing and start growing? Tell us what you're working on and{" "}
@@ -299,7 +299,7 @@ export default function Footer() {
                     {item.icon}
                   </div>
                   <div>
-                    <h3 className="font-black text-white text-[13px] uppercase tracking-tight mb-1">{item.title}</h3>
+                    <p className="font-black text-white text-[13px] uppercase tracking-tight mb-1">{item.title}</p>
                     <p className="text-zinc-400 text-[12px] font-light leading-snug">{item.desc}</p>
                   </div>
                 </div>
@@ -349,7 +349,7 @@ export default function Footer() {
           {/* Right — white form card */}
           <div className="lg:w-[460px] w-full shrink-0">
             <div className="bg-white text-zinc-900 p-5 sm:p-7 md:p-11 rounded-[32px] md:rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.5)] lg:sticky lg:top-10">
-              <h3
+              <p
                 className="text-2xl font-black tracking-tight mb-1 uppercase"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
@@ -360,7 +360,7 @@ export default function Footer() {
                 >
                   in mind?
                 </span>
-              </h3>
+              </p>
               <p className="text-zinc-600 text-[12px] font-light mb-8">
                 Fill in the form and we'll be in touch within 24 hours.
               </p>

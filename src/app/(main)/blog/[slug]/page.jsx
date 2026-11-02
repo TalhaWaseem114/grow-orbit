@@ -322,7 +322,7 @@ export default async function Page({ params }) {
           <BlogShareBar title={post.title} slug={post.slug || post.id} />
 
           {/* Content blocks parsed on the Server */}
-          <article className="w-full max-w-full min-w-0 space-y-8 overflow-x-hidden break-words">
+          <article className="w-full max-w-full min-w-0 space-y-8 overflow-x-hidden break-words px-5 sm:px-6 md:px-0">
             {post.content?.map((block, i) => {
               if (block.type === "divider") {
                 return <hr key={i} className="border-t border-zinc-200 my-16" />;
@@ -336,9 +336,9 @@ export default async function Page({ params }) {
                       <div className="flex items-center justify-between gap-4 mb-5 sm:mb-6 pb-3 sm:pb-4 border-b border-zinc-100">
                         <div className="flex items-center gap-2.5">
                           <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
-                          <h4 className="text-xs font-black uppercase tracking-widest text-zinc-600" style={montserrat}>
+                          <p className="text-xs font-black uppercase tracking-widest text-zinc-600" style={montserrat}>
                             Listing Conversion Funnel Pipeline
-                          </h4>
+                          </p>
                         </div>
                         <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-2.5 sm:px-3 py-1 rounded-full border border-orange-200/60 shrink-0">
                           End-to-End Flow
@@ -452,9 +452,9 @@ export default async function Page({ params }) {
                       <div className="flex items-center justify-between gap-4 mb-5 sm:mb-6 pb-3 sm:pb-4 border-b border-zinc-100">
                         <div className="flex items-center gap-2.5">
                           <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span>
-                          <h4 className="text-xs font-black uppercase tracking-widest text-zinc-600" style={montserrat}>
+                          <p className="text-xs font-black uppercase tracking-widest text-zinc-600" style={montserrat}>
                             The 7-Question Shopper Decision Flow
-                          </h4>
+                          </p>
                         </div>
                         <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-orange-600 bg-orange-50 px-2.5 sm:px-3 py-1 rounded-full border border-orange-200/60 shrink-0">
                           Sequential Journey

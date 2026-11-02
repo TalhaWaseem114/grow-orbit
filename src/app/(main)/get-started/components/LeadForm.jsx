@@ -21,6 +21,7 @@ import {
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 import { getSavedUtmData } from "@/utils/utmTracker";
+import { normalizeE164Phone } from "@/lib/phoneFormatter";
 
 export default function LeadForm({ theme = "white", compact = false }) {
   const isDark = theme === "dark";
@@ -166,10 +167,14 @@ export default function LeadForm({ theme = "white", compact = false }) {
       // Track TikTok Pixel Lead event with deduplication event_id and Advanced Matching
       if (typeof window !== "undefined" && window.ttq) {
         if (typeof window.ttq.identify === "function") {
-          window.ttq.identify({
+          const validPhone = normalizeE164Phone(form.whatsapp);
+          const identifyPayload = {
             email: form.email.trim().toLowerCase(),
-            phone_number: form.whatsapp ? form.whatsapp.trim() : undefined,
-          });
+          };
+          if (validPhone) {
+            identifyPayload.phone_number = validPhone;
+          }
+          window.ttq.identify(identifyPayload);
         }
         window.ttq.track("SubmitForm", {
           contents: [{ content_id: form.service || "General Lead", content_name: form.service || "Lead Form" }]
@@ -346,7 +351,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             autoComplete="tel"
             value={form.whatsapp}
             onChange={handleChange}
-            placeholder="e.g. +1 (555) 000-0000"
+            placeholder="e.g. (213) 373-4253"
             className={`w-full border text-[13px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2 sm:py-2.5 ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"

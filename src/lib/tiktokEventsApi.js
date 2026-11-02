@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { normalizeE164Phone } from "./phoneFormatter";
 
 const TIKTOK_PIXEL_ID = process.env.TIKTOK_PIXEL_ID || "D9R19QJC77U5M57USF2G";
 const TIKTOK_ACCESS_TOKEN = process.env.TIKTOK_ACCESS_TOKEN || "b5caf248f0a077f8ec5b680195e639d5d3b8b204";
@@ -11,14 +12,10 @@ function hashSha256(val) {
   return crypto.createHash("sha256").update(cleaned).digest("hex");
 }
 
-function normalizePhone(phone) {
-  if (!phone || typeof phone !== "string") return undefined;
-  let digits = phone.replace(/[^\d+]/g, "");
-  if (!digits || digits === "n/a") return undefined;
-  if (!digits.startsWith("+")) {
-    digits = "+" + digits;
-  }
-  return crypto.createHash("sha256").update(digits).digest("hex");
+function hashPhoneE164(phone) {
+  const normalized = normalizeE164Phone(phone);
+  if (!normalized) return undefined;
+  return crypto.createHash("sha256").update(normalized).digest("hex");
 }
 
 export async function sendTikTokServerEvent({
@@ -35,7 +32,7 @@ export async function sendTikTokServerEvent({
 }) {
   try {
     const hashedEmail = hashSha256(email);
-    const hashedPhone = normalizePhone(phone);
+    const hashedPhone = hashPhoneE164(phone);
 
     const userObj = {};
     if (hashedEmail) userObj.email = hashedEmail;

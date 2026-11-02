@@ -370,6 +370,7 @@ function PortfolioPageInner() {
         onCategorySelect={handleCategorySelect}
         onMaterialSelect={handleMaterialSelect}
         onNicheSelect={handleNicheSelect}
+        totalCount={filteredItems.length}
         isSticky={true}
       />
 

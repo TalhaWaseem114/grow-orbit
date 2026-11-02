@@ -33,6 +33,39 @@ export default function LeadForm({ theme = "white", compact = false }) {
   const lastSubmitRef = useRef(0);
   const [utmData, setUtmData] = useState({});
   const [honeypot, setHoneypot] = useState("");
+  const [highlightService, setHighlightService] = useState(false);
+
+  // Listen for service selection from external section cards (100% aligned with all services)
+  useEffect(() => {
+    const handleSelectService = (e) => {
+      const selectedService = e.detail?.service;
+      if (!selectedService) return;
+
+      const serviceMap = {
+        "Product Hunting": "Product Hunting & Research",
+        "Product Hunting & Research": "Product Hunting & Research",
+        "Sourcing & Setup": "Product Sourcing & Setup",
+        "Product Sourcing & Setup": "Product Sourcing & Setup",
+        "Brand Launch": "Brand Launch (Full)",
+        "Brand Launch (Full)": "Brand Launch (Full)",
+        "Creative & A+": "A+ Content & Creative",
+        "A+ Content & Creative": "A+ Content & Creative",
+        "PPC & Ranking": "PPC / Ads Management",
+        "PPC / Ads Management": "PPC / Ads Management",
+        "Full Account Mgmt": "Full Account Management",
+        "Full Account Management": "Full Account Management",
+        "Listing Optimization": "Listing Optimization",
+      };
+
+      const finalValue = serviceMap[selectedService] || selectedService;
+      setForm((prev) => ({ ...prev, service: finalValue }));
+      setHighlightService(true);
+      setTimeout(() => setHighlightService(false), 2500);
+    };
+
+    window.addEventListener("groworbit:select-service", handleSelectService);
+    return () => window.removeEventListener("groworbit:select-service", handleSelectService);
+  }, []);
 
   // Capture UTM parameters on mount
   useEffect(() => {
@@ -260,6 +293,8 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.service}
             onChange={handleChange}
             className={`w-full border text-[13px] font-medium transition-all appearance-none cursor-pointer focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-10 py-2 sm:py-2.5 ${
+              highlightService ? "!ring-2 !ring-orange-500 !border-orange-500 shadow-[0_0_15px_rgba(255,122,0,0.3)] animate-pulse " : ""
+            } ${
               isDark
                 ? "bg-white/[0.03] border-white/10 text-white focus:bg-zinc-950"
                 : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
@@ -268,10 +303,10 @@ export default function LeadForm({ theme = "white", compact = false }) {
             <option value="" disabled className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-500"}>Select a service...</option>
             <option value="Product Hunting & Research" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>Product Hunting & Research</option>
             <option value="Product Sourcing & Setup" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>Product Sourcing & Setup</option>
-            <option value="Brand Launch (Full)" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>Brand Launch (Full)</option>
-            <option value="Listing Optimization" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>Listing Optimization</option>
-            <option value="PPC / Ads Management" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>PPC / Ads Management</option>
-            <option value="A+ Content & Creative" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>A+ Content & Creative</option>
+            <option value="Brand Launch (Full)" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>Brand Launch (Full A-Z)</option>
+            <option value="Listing Optimization" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>Listing Optimization & SEO</option>
+            <option value="PPC / Ads Management" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>PPC & Ranking Management</option>
+            <option value="A+ Content & Creative" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>Creative & A+ Content</option>
             <option value="Full Account Management" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>Full Account Management</option>
             <option value="I'm Not Sure Yet" className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-900"}>I'm Not Sure Yet (Help Me Decide)</option>
           </select>

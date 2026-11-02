@@ -119,82 +119,99 @@ export default function OrbitTestimonialsSection() {
               key={i}
               href={t.caseStudyLink}
               prefetch={false}
-              className="group relative bg-white rounded-[32px] p-8 md:p-10 border border-zinc-100 hover:border-orange-500/25 transition-all duration-500 flex flex-col w-[320px] sm:w-[360px] md:w-auto snap-center shrink-0 overflow-hidden no-underline"
-              style={{
-                boxShadow: "0 25px 50px -12px rgba(0,0,0,0.08), 0 8px 24px -8px rgba(0,0,0,0.04)",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.boxShadow = "0 40px 70px -10px rgba(0,0,0,0.12), 0 16px 36px -12px rgba(249,115,22,0.08)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.boxShadow = "0 25px 50px -12px rgba(0,0,0,0.08), 0 8px 24px -8px rgba(0,0,0,0.04)";
-              }}
+              className="group relative bg-white rounded-[28px] sm:rounded-[32px] p-7 sm:p-8 border border-zinc-200/80 hover:border-orange-500/40 transition-all duration-500 flex flex-col w-[320px] sm:w-[360px] md:w-auto snap-center shrink-0 overflow-hidden no-underline shadow-[0_10px_30px_rgba(0,0,0,0.04)] hover:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.12),0_0_25px_rgba(249,115,22,0.08)] hover:-translate-y-1.5 active:scale-[0.99]"
             >
               {/* Upper Content Group */}
               <div>
-                {/* Stars + Category Badge */}
-                <div className="flex items-center justify-between gap-4 mb-8">
-                  <div className="flex items-center gap-1.5">
+                {/* Stars + Verified Seal + Growth Phase Badge */}
+                <div className="flex items-center justify-between gap-3 mb-6">
+                  {/* Left: 5 Stars + Verified Badge */}
+                  <div className="flex items-center gap-2">
                     <div className="flex gap-0.5">
                       {[...Array(5)].map((_, s) => (
-                        <Star key={s} size={13} className="text-orange-500 fill-orange-500" />
+                        <Star key={s} size={12} className="text-amber-400 fill-amber-400" />
                       ))}
                     </div>
-                    <span className="text-[12px] font-bold text-zinc-900 ml-1">5.0</span>
+                    <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200/80 text-emerald-700 text-[8px] font-bold uppercase tracking-wider">
+                      <ShieldCheck size={10} className="text-emerald-600" />
+                      <span>Verified Data</span>
+                    </div>
                   </div>
-                  <span className="text-[9px] font-bold uppercase tracking-wider text-orange-800 bg-orange-50 border border-orange-200 px-3.5 py-1.5 rounded-full">
-                    {t.category}
-                  </span>
+
+                  {/* Right: Growth Phase Tag */}
+                  {t.status && (
+                    <span className="text-[8px] sm:text-[8.5px] font-mono font-bold uppercase tracking-wider text-orange-600 bg-orange-50 border border-orange-200/80 px-2.5 py-1 rounded-full shrink-0">
+                      {t.status}
+                    </span>
+                  )}
                 </div>
 
-                {/* Punchy Review Headline */}
-                <h3 className="text-[15px] sm:text-[16px] font-black uppercase tracking-tight text-zinc-900 mb-3 leading-tight" style={{ fontFamily: "'Montserrat', sans-serif" }}>
-                  {t.headline[0]} <span className="text-zinc-950 font-black">- {t.headline[1]}</span>
-                </h3>
+                {/* Category tag & Headline */}
+                <div className="mb-3">
+                  <span className="text-[8px] font-mono font-bold text-zinc-400 uppercase tracking-[0.2em] block mb-1">
+                    {t.category}
+                  </span>
+                  <h3 className="text-[15px] sm:text-[16px] font-black uppercase tracking-tight text-zinc-900 leading-snug group-hover:text-orange-600 transition-colors" style={{ fontFamily: "'Montserrat', sans-serif" }}>
+                    {t.headline[0]} <span className="text-zinc-500 font-bold">- {t.headline[1]}</span>
+                  </h3>
+                </div>
 
                 {/* Spacious Quote */}
-                <p className="text-zinc-600 text-[13.5px] sm:text-[14px] font-normal leading-relaxed italic mb-6 relative">
+                <p className="text-zinc-600 text-[13px] sm:text-[13.5px] font-normal leading-relaxed italic mb-6 relative">
                   <span className="text-zinc-200 text-3xl absolute -top-3.5 -left-1.5 font-serif select-none pointer-events-none">“</span>
                   <span className="pl-4.5 block">{t.paragraph}</span>
                 </p>
 
-                {/* Spacious, Clean Metrics Grid */}
-                <div className="grid grid-cols-3 gap-2 py-4 border-y border-zinc-100/80 mb-6">
-                  {t.stats.map((stat, si) => (
-                    <div key={si} className={`flex flex-col ${si !== 2 ? "border-r border-zinc-100" : ""}`}>
-                      <span className="text-[13px] font-black text-zinc-900 leading-none">{stat.val}</span>
-                      <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-wider mt-1">{stat.label}</span>
-                    </div>
-                  ))}
+                {/* Highlighted Growth Metrics Grid */}
+                <div className="grid grid-cols-3 gap-2 py-3.5 border-y border-zinc-100 mb-6 bg-zinc-50/70 rounded-xl px-3">
+                  {t.stats.map((stat, si) => {
+                    const isGrowth = stat.type === "growth" || stat.val.includes("%") || stat.val.includes("+");
+                    return (
+                      <div key={si} className={`flex flex-col ${si !== 2 ? "border-r border-zinc-200/60 pr-2" : ""}`}>
+                        <span className={`text-[13.5px] sm:text-[14px] font-black leading-none ${isGrowth ? "text-orange-600" : "text-zinc-900"}`}>
+                          {stat.val}
+                        </span>
+                        <span className="text-[8px] font-bold text-zinc-500 uppercase tracking-wider mt-1">{stat.label}</span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
-              {/* Footer Row: Author + Explicit Case Study Link */}
-              <div className="border-t border-zinc-100 pt-6 flex items-center justify-between gap-4 mt-auto">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full overflow-hidden border border-zinc-100 relative shrink-0">
-                    <Image
-                      src={t.image}
-                      alt={t.name}
-                      fill
-                      sizes="40px"
-                      className="object-cover"
-                    />
+              {/* Footer Row: Author + Sleek Case Study Action Button */}
+              <div className="border-t border-zinc-100 pt-5 flex items-center justify-between gap-3 mt-auto">
+                <div className="flex items-center gap-3 min-w-0">
+                  <div className="relative shrink-0">
+                    <div className="w-10 h-10 rounded-full overflow-hidden border border-zinc-200/80 relative">
+                      <Image
+                        src={t.image}
+                        alt={t.name}
+                        fill
+                        sizes="40px"
+                        className="object-cover"
+                      />
+                    </div>
+                    {/* Verified founder check badge */}
+                    <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white flex items-center justify-center text-white" title="Verified Brand Owner">
+                      <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </div>
                   </div>
-                  <div>
-                    <span className="font-extrabold text-[11px] uppercase tracking-wider text-zinc-900 block leading-tight mb-0.5">
+                  <div className="min-w-0">
+                    <span className="font-extrabold text-[11px] sm:text-xs uppercase tracking-tight text-zinc-900 block leading-tight truncate">
                       {t.name}
                     </span>
-                    <span className="text-[9px] font-medium text-zinc-500 block leading-none">
+                    <span className="text-[9px] sm:text-[9.5px] font-medium text-zinc-500 block leading-none mt-0.5 truncate">
                       {t.role}
                     </span>
                   </div>
                 </div>
 
-                {/* Explicit Text Link */}
-                <span className="flex items-center gap-1.5 text-zinc-900 font-extrabold text-[11px] uppercase tracking-widest transition-colors duration-300 group-hover:text-orange-500 shrink-0">
-                  Read Case Study
-                  <ArrowRight size={12} className="translate-x-0 transition-transform duration-300 group-hover:translate-x-1" />
+                {/* Sleek Action Micro-Button */}
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-zinc-100 group-hover:bg-orange-500 text-zinc-700 group-hover:text-white border border-zinc-200/80 group-hover:border-orange-500 font-bold text-[9.5px] sm:text-[10px] uppercase tracking-wider transition-all duration-300 shrink-0 shadow-2xs group-hover:shadow-[0_4px_12px_rgba(249,115,22,0.3)]">
+                  <span>Case Study</span>
+                  <ArrowRight size={11} className="transition-transform duration-300 group-hover:translate-x-0.5" />
                 </span>
               </div>
             </Link>

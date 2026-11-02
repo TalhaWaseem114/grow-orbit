@@ -1,15 +1,35 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
-import { Quote, Mail, Globe, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { Quote, Mail, Globe, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, MapPin, ShieldCheck, Plane } from "lucide-react";
 
-export default function CeoSourcingSection() {
+export default function CeoSourcingSection({ scrollToForm }) {
   const [activeImage, setActiveImage] = useState(null);
+  const [mounted, setMounted] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const carouselRef = useRef(null);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (activeImage) {
+      document.body.style.overflow = "hidden";
+      const handleKeyDown = (e) => {
+        if (e.key === "Escape") setActiveImage(null);
+      };
+      document.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.body.style.overflow = "unset";
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  }, [activeImage]);
 
   const handleScroll = () => {
     if (typeof window === "undefined") return;
@@ -92,30 +112,49 @@ export default function CeoSourcingSection() {
         {/* CEO MESSAGE GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center mb-16">
 
-          {/* Left Side: CEO Image Container */}
+          {/* Left Side: CEO Image Container with seamless bottom gradient & warm ambient glow */}
           <div className="lg:col-span-5 flex justify-center">
-            <div
-              className="relative group w-full max-w-[400px] aspect-[4/5] rounded-[36px] overflow-hidden bg-zinc-900 transition-all duration-300 hover:scale-[1.01]"
-              style={{
-                border: "3px solid rgba(255, 255, 255, 0.07)",
-                boxShadow: "0 20px 40px rgba(0, 0, 0, 0.6)"
-              }}
-            >
+            <div className="relative w-full max-w-[400px] flex items-center justify-center">
+              {/* Balanced Warm Ambient Glow behind the card */}
+              <div
+                className="absolute -inset-6 sm:-inset-10 rounded-full blur-[75px] opacity-70 pointer-events-none"
+                style={{
+                  background: "radial-gradient(circle at center, rgba(249, 115, 22, 0.32) 0%, rgba(234, 88, 12, 0.16) 45%, transparent 72%)",
+                }}
+              />
+              <div className="absolute -top-6 -left-6 w-56 h-56 bg-orange-500/20 rounded-full blur-[60px] pointer-events-none" />
+
+              {/* CEO Image Card */}
+              <div
+                className="relative z-10 group w-full aspect-[4/5] rounded-[32px] overflow-hidden bg-zinc-900 transition-all duration-500 hover:scale-[1.01]"
+                style={{
+                  border: "4px solid rgba(255, 255, 255, 0.15)",
+                  boxShadow: "0 20px 50px rgba(0, 0, 0, 0.7), 0 0 35px rgba(249, 115, 22, 0.15)",
+                }}
+              >
               <Image
-                src={optimizeCloudinaryUrl("https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif", 500)}
+                src={optimizeCloudinaryUrl("https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif", 600)}
                 alt="Coach Ali Haider - CEO & Founder"
                 fill
                 sizes="(max-width: 640px) 90vw, 400px"
-                className="object-cover transition-all duration-750 group-hover:scale-105"
+                className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent" />
 
-              <div className="absolute bottom-6 left-6 right-6 bg-zinc-950/60 backdrop-blur-md border border-white/10 p-4 rounded-2xl">
-                <p className="text-white font-black text-sm uppercase tracking-wider">Coach Ali Haider</p>
-                <p className="text-orange-500 text-xs font-bold uppercase tracking-widest mt-1">CEO, Grow Orbit</p>
+              {/* Seamless Dark Gradient Rising from the Bottom */}
+              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 via-35% to-transparent pointer-events-none" />
+
+              {/* Clean text right on the gradient (no clunky box) */}
+              <div className="absolute bottom-6 left-7 right-7 z-10">
+                <p className="text-white font-montserrat font-black text-xl sm:text-2xl uppercase tracking-tight leading-none drop-shadow-md">
+                  Coach Ali Haider
+                </p>
+                <p className="text-orange-500 text-xs sm:text-sm font-bold uppercase tracking-widest mt-1.5 drop-shadow">
+                  CEO, Grow Orbit
+                </p>
               </div>
+            </div>
             </div>
           </div>
 
@@ -139,17 +178,44 @@ export default function CeoSourcingSection() {
               </p>
             </div>
 
-            {/* CEO Sign-off */}
-            <div className="mt-10 pt-8 border-t border-zinc-800 flex items-center justify-between">
+            {/* "Verified On-The-Ground" Trust Badges (Borderless) */}
+            <div className="mt-8 flex flex-wrap items-center gap-2.5">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900 text-zinc-200 hover:text-white hover:bg-zinc-800/80 text-xs font-semibold tracking-tight transition-colors">
+                <MapPin size={13} className="text-orange-400 shrink-0" />
+                <span>Direct Factory Audits</span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900 text-zinc-200 hover:text-white hover:bg-zinc-800/80 text-xs font-semibold tracking-tight transition-colors">
+                <ShieldCheck size={13} className="text-orange-400 shrink-0" />
+                <span>Zero Middleman Markups</span>
+              </div>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-zinc-900 text-zinc-200 hover:text-white hover:bg-zinc-800/80 text-xs font-semibold tracking-tight transition-colors">
+                <Plane size={13} className="text-orange-400 shrink-0" />
+                <span>Annual Sourcing Trips</span>
+              </div>
+            </div>
+
+            {/* CEO Sign-off & Direct Call CTA */}
+            <div className="mt-8 pt-7 border-t border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
               <div>
                 <p className="font-montserrat font-black text-white uppercase tracking-tight text-lg">Coach Ali Haider</p>
-                <p className="text-orange-500 text-sm font-semibold tracking-widest uppercase mt-1">CEO</p>
+                <p className="text-orange-500 text-xs font-bold tracking-widest uppercase mt-0.5">CEO & Founder, Grow Orbit</p>
               </div>
-              <div className="flex gap-3">
+              <div className="flex items-center gap-3">
+                {scrollToForm && (
+                  <button
+                    type="button"
+                    onClick={scrollToForm}
+                    className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_20px_rgba(249,115,22,0.3)] hover:shadow-[0_6px_25px_rgba(249,115,22,0.45)] hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                  >
+                    <span>Talk To Ali (Free 15-Min Call)</span>
+                    <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
+                  </button>
+                )}
                 <a
                   href="mailto:support@groworbitofficial.com"
                   aria-label="Email support"
                   className="w-10 h-10 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 flex items-center justify-center text-zinc-300 hover:text-white transition-all duration-300"
+                  title="Email Coach Ali"
                 >
                   <Mail size={16} />
                 </a>
@@ -214,6 +280,7 @@ export default function CeoSourcingSection() {
                     decoding="async"
                     className="object-cover transition-transform duration-750 ease-out group-hover:scale-105"
                   />
+
                   {/* Gradient overlay to show text in bottom */}
                   <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/90 via-zinc-950/20 to-transparent" />
 
@@ -285,16 +352,16 @@ export default function CeoSourcingSection() {
           </p>
         </div>
 
-        {/* Lightbox Modal */}
-        {activeImage && (
+        {/* Lightbox Modal rendered via Portal to escape all stacking contexts */}
+        {mounted && activeImage && createPortal(
           <div
-            className="fixed inset-0 bg-black/95 z-[100] flex flex-col items-center justify-center p-4 sm:p-6 backdrop-blur-sm transition-all duration-300"
+            className="fixed inset-0 bg-black/95 z-[999999] flex flex-col items-center justify-center p-4 sm:p-6 backdrop-blur-md transition-all duration-300"
             onClick={() => setActiveImage(null)}
           >
             <div className="relative max-w-2xl w-full flex flex-col items-center" onClick={(e) => e.stopPropagation()}>
-              <div className="relative w-full max-h-[70vh] flex items-center justify-center bg-zinc-950 rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+              <div className="relative w-full max-h-[75vh] flex items-center justify-center bg-zinc-950 rounded-2xl overflow-hidden border border-white/20 shadow-2xl">
                 <button
-                  className="absolute top-4 right-4 text-white hover:scale-105 bg-black/60 hover:bg-zinc-900 border border-white/15 w-8 h-8 rounded-full flex items-center justify-center text-lg font-light focus:outline-none transition-all z-40"
+                  className="absolute top-4 right-4 text-white hover:text-orange-400 bg-black/70 hover:bg-zinc-900 border border-white/20 w-9 h-9 rounded-full flex items-center justify-center text-xl font-light focus:outline-none transition-all z-40 cursor-pointer"
                   onClick={() => setActiveImage(null)}
                   aria-label="Close modal"
                 >
@@ -303,7 +370,7 @@ export default function CeoSourcingSection() {
                 <img
                   src={activeImage.img}
                   alt={activeImage.title}
-                  className="max-h-[70vh] max-w-full object-contain"
+                  className="max-h-[75vh] max-w-full object-contain"
                 />
               </div>
               <div className="text-center mt-4 max-w-xl px-2">
@@ -315,7 +382,8 @@ export default function CeoSourcingSection() {
                 </p>
               </div>
             </div>
-          </div>
+          </div>,
+          document.body
         )}
 
       </div>

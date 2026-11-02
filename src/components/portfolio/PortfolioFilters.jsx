@@ -25,11 +25,13 @@ function NicheDropdown({ activeNiche, onSelect }) {
   return (
     <div className="relative z-50">
       <button
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.12em] sm:tracking-[0.18em] transition-all duration-300 bg-white/50 backdrop-blur-sm text-zinc-900 border border-zinc-200 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] hover:border-orange-500 hover:text-orange-500 whitespace-nowrap"
+        className="w-full sm:w-auto flex items-center justify-between sm:justify-start gap-2 px-4 sm:px-4.5 py-2 sm:py-2.5 rounded-full font-bold text-[9px] sm:text-[10px] uppercase tracking-[0.12em] sm:tracking-[0.16em] transition-all duration-300 bg-white text-zinc-800 border border-zinc-200/90 shadow-[0_2px_8px_-2px_rgba(0,0,0,0.04)] hover:border-orange-500/80 hover:text-orange-600 whitespace-nowrap cursor-pointer"
       >
-        {activeNiche}
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}>
+        <span className="text-zinc-400 font-medium lowercase italic text-[11px]" style={{ fontFamily: "'Playfair Display', serif" }}>category:</span>
+        <span className="font-extrabold text-zinc-900">{activeNiche}</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 text-zinc-400 ${isOpen ? "rotate-180 text-orange-500" : ""}`}>
           <polyline points="6 9 12 15 18 9"></polyline>
         </svg>
       </button>
@@ -37,14 +39,15 @@ function NicheDropdown({ activeNiche, onSelect }) {
       {isOpen && (
         <>
           <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-          <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-[0_40px_100px_rgba(0,0,0,0.05)] border border-zinc-100 overflow-hidden py-2 z-50 max-h-80 overflow-y-auto">
+          <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.12)] border border-zinc-100 overflow-hidden py-2 z-50 max-h-80 overflow-y-auto">
             {NICHES.map((niche) => {
               const isActive = activeNiche === niche;
               return (
                 <button
+                  type="button"
                   key={niche}
                   onClick={() => { onSelect(niche); setIsOpen(false); }}
-                  className={`w-full text-left px-5 py-3 text-[10px] font-bold uppercase tracking-widest transition-colors ${isActive ? "text-orange-500 bg-orange-50/50" : "text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50"}`}
+                  className={`w-full text-left px-5 py-2.5 text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer ${isActive ? "text-orange-500 bg-orange-50/60 font-black" : "text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50"}`}
                 >
                   {niche}
                 </button>
@@ -88,22 +91,23 @@ function FilterBar({ activeKey, onSelect }) {
 
 function MaterialFilterBar({ activeMaterial, onSelect }) {
   return (
-    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2 sm:pb-0 px-1 sm:px-0 mt-1.5 sm:mt-3 sm:flex-wrap">
+    <div className="flex items-center gap-1.5 flex-wrap">
       {MATERIALS.map((mat) => {
         const isActive = activeMaterial === mat;
         return (
-             <button
-               key={mat}
-               onClick={() => onSelect(mat)}
-               className={`shrink-0 whitespace-nowrap px-4 py-1.5 rounded-full text-[8.5px] sm:text-[9px] font-bold uppercase tracking-widest transition-all duration-300 border
-                 ${isActive
-                   ? "bg-white text-orange-600 border-orange-100 shadow-[0_4px_10px_rgba(249,115,22,0.1)]"
-                   : "bg-transparent text-zinc-600 border-transparent hover:border-zinc-200 hover:text-zinc-900 hover:bg-black/5"
-                 }`}
-             >
-               {mat}
-             </button>
-        )
+          <button
+            type="button"
+            key={mat}
+            onClick={() => onSelect(mat)}
+            className={`shrink-0 whitespace-nowrap px-3.5 py-1.5 rounded-full text-[9px] sm:text-[9.5px] font-bold uppercase tracking-wider transition-all duration-200 border cursor-pointer ${
+              isActive
+                ? "bg-zinc-900 text-white border-zinc-900 shadow-sm"
+                : "bg-white text-zinc-600 border-zinc-200/90 hover:text-zinc-900 hover:border-zinc-300 hover:bg-zinc-50"
+            }`}
+          >
+            {mat}
+          </button>
+        );
       })}
     </div>
   );
@@ -112,6 +116,7 @@ function MaterialFilterBar({ activeMaterial, onSelect }) {
 export default function PortfolioFilters({
   activeKey, activeMaterial, activeNiche,
   onCategorySelect, onMaterialSelect, onNicheSelect,
+  totalCount,
   isSticky = true
 }) {
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
@@ -199,22 +204,46 @@ export default function PortfolioFilters({
             </div>
           </div>
 
-          {/* ── DESKTOP: Original filter rows ── */}
-          <div className="hidden sm:block">
+          {/* ── DESKTOP: Refined Multi-Tier Filter Bar ── */}
+          {/* Row 1: Primary Deliverable Tabs + Category Dropdown & Quick Reset */}
+          <div className="hidden sm:flex items-center justify-between gap-4">
             <FilterBar activeKey={activeKey} onSelect={onCategorySelect} />
+
+            <div className="flex items-center gap-2 shrink-0">
+              <NicheDropdown activeNiche={activeNiche} onSelect={onNicheSelect} />
+
+              {(activeKey !== "all" || activeMaterial !== "All Materials" || activeNiche !== "All Categories") && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    onCategorySelect("all");
+                    onMaterialSelect("All Materials");
+                    onNicheSelect("All Categories");
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:py-2.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-zinc-500 hover:text-orange-600 bg-white hover:bg-orange-50/50 border border-zinc-200/90 hover:border-orange-200 transition-all cursor-pointer shadow-xs active:scale-95"
+                  title="Reset all filters"
+                >
+                  <RotateCcw size={11} className="text-zinc-400" />
+                  <span>Reset</span>
+                </button>
+              )}
+            </div>
           </div>
 
-          <div className="w-full h-px bg-zinc-100/50 hidden sm:block"/>
+          {/* Row 2: Secondary Material Filters & Project Counter */}
+          <div className="hidden sm:flex items-center justify-between gap-4 pt-2.5 border-t border-zinc-200/60">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-[0.2em] text-zinc-400 shrink-0 flex items-center gap-1.5">
+                <Layers size={11} className="text-orange-500" /> Material:
+              </span>
+              <MaterialFilterBar activeMaterial={activeMaterial} onSelect={onMaterialSelect} />
+            </div>
 
-          {/* Row 2: Secondary Metadata Filters (desktop only) */}
-          <div className="hidden sm:flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3 min-w-0">
-               <div className="h-3 w-px bg-zinc-200" />
-               <MaterialFilterBar activeMaterial={activeMaterial} onSelect={onMaterialSelect} />
-            </div>
-            <div className="shrink-0">
-              <NicheDropdown activeNiche={activeNiche} onSelect={onNicheSelect} />
-            </div>
+            {totalCount !== undefined && (
+              <div className="text-[11px] font-mono font-medium text-zinc-400 shrink-0">
+                Showing <strong className="text-zinc-800 font-bold">{totalCount}</strong> projects
+              </div>
+            )}
           </div>
         </div>
       </div>

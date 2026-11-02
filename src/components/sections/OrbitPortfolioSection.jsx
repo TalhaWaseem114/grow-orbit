@@ -89,6 +89,7 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
             onCategorySelect={setActiveCategory}
             onMaterialSelect={setActiveMaterial}
             onNicheSelect={setActiveNiche}
+            totalCount={filteredPortfolio.length}
             isSticky={false}
           />
         </div>

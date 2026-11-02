@@ -90,8 +90,8 @@ export default function PortfolioCard({ item, priority = false }) {
             style={{ fontFamily: "'Montserrat', sans-serif" }}
           >
             <span>{item.outcome}</span>
-            <span className="w-5.5 h-5.5 rounded-full bg-white/15 border border-white/10 flex items-center justify-center group-hover:bg-orange-50 group-hover:border-orange-50 group-hover:rotate-45 transition-all duration-500 shrink-0 shadow-sm">
-              <ArrowUpRight size={11} className="text-white" />
+            <span className="w-6 h-6 rounded-full bg-white/15 border border-white/20 flex items-center justify-center group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:scale-110 group-hover:rotate-45 transition-all duration-300 shrink-0 shadow-sm group-hover:shadow-[0_0_14px_rgba(249,115,22,0.5)]">
+              <ArrowUpRight size={12} className="text-white" />
             </span>
           </h2>
         </div>

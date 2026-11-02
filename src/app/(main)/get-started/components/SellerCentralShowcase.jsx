@@ -1,6 +1,9 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Image from "next/image";
+import { X } from "lucide-react";
 
 export default function SellerCentralShowcase({
   unitsSold12mo = "1.15M+",
@@ -8,6 +11,27 @@ export default function SellerCentralShowcase({
   buyBoxRate = "99%",
   highlightIndex = 1,
 }) {
+  const [activeScreen, setActiveScreen] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (activeScreen) {
+      document.body.style.overflow = "hidden";
+      const handleKeyDown = (e) => {
+        if (e.key === "Escape") setActiveScreen(null);
+      };
+      document.addEventListener("keydown", handleKeyDown);
+      return () => {
+        document.body.style.overflow = "unset";
+        document.removeEventListener("keydown", handleKeyDown);
+      };
+    }
+  }, [activeScreen]);
+
   const screens = [
     {
       src: "/images/saler centeral screens/1.jpg",
@@ -82,11 +106,13 @@ export default function SellerCentralShowcase({
                 }
               >
                 <div
+                  onClick={() => setActiveScreen(screen)}
                   className={
                     isHighlighted
-                      ? "rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-orange-500/30 shadow-[0_30px_80px_rgba(249,115,22,0.15),0_20px_60px_rgba(0,0,0,0.5)] hover:border-orange-500/50 transition-all duration-500 hover:-translate-y-2 relative"
-                      : "rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:border-orange-500/30 transition-all duration-500 hover:-translate-y-1"
+                      ? "group rounded-2xl sm:rounded-3xl overflow-hidden border-2 border-orange-500/30 shadow-[0_30px_80px_rgba(249,115,22,0.15),0_20px_60px_rgba(0,0,0,0.5)] hover:border-orange-500/60 transition-all duration-500 hover:-translate-y-2 relative cursor-pointer"
+                      : "group rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,0.4)] hover:border-orange-500/40 transition-all duration-500 hover:-translate-y-1 relative cursor-pointer"
                   }
+                  title="Click to view full dashboard"
                 >
                   {isHighlighted && (
                     <div className="absolute -inset-px bg-gradient-to-b from-orange-500/20 via-transparent to-orange-500/10 rounded-3xl pointer-events-none" />
@@ -96,13 +122,13 @@ export default function SellerCentralShowcase({
                     alt={screen.alt}
                     width={390}
                     height={844}
-                    className={`w-full h-auto ${isHighlighted ? "relative z-10" : ""}`}
-                    quality={75}
+                    className={`w-full h-auto transition-transform duration-700 ease-out group-hover:scale-102 ${isHighlighted ? "relative z-10" : ""}`}
+                    quality={90}
                     loading="lazy"
                     sizes={
                       isHighlighted
-                        ? "(max-width: 640px) 40vw, 240px"
-                        : "(max-width: 640px) 26vw, 180px"
+                        ? "(max-width: 640px) 40vw, 280px"
+                        : "(max-width: 640px) 26vw, 220px"
                     }
                   />
                 </div>
@@ -127,6 +153,48 @@ export default function SellerCentralShowcase({
           ))}
         </div>
       </div>
+
+      {/* Lightbox Modal rendered via Portal to escape all stacking contexts */}
+      {mounted && activeScreen && createPortal(
+        <div
+          className="fixed inset-0 bg-black/95 z-[999999] flex flex-col items-center justify-center p-4 sm:p-6 backdrop-blur-md transition-all duration-300"
+          onClick={() => setActiveScreen(null)}
+        >
+          <div
+            className="relative max-w-sm sm:max-w-md w-full flex flex-col items-center"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close Button */}
+            <button
+              className="absolute -top-12 right-0 text-white hover:text-orange-400 bg-white/10 hover:bg-white/20 border border-white/15 w-9 h-9 rounded-full flex items-center justify-center transition-all z-40 cursor-pointer"
+              onClick={() => setActiveScreen(null)}
+              aria-label="Close dashboard modal"
+            >
+              <X size={18} />
+            </button>
+
+            {/* High-Resolution Screenshot Container */}
+            <div className="relative w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-white/20 shadow-[0_25px_70px_rgba(0,0,0,0.9),0_0_40px_rgba(249,115,22,0.2)] bg-zinc-950">
+              <img
+                src={activeScreen.src}
+                alt={activeScreen.alt}
+                className="w-full h-auto max-h-[75vh] object-contain"
+              />
+            </div>
+
+            {/* Verification Pill & Title */}
+            <div className="text-center mt-4">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[11px] font-bold uppercase tracking-wider mb-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" /> Verified Seller Central Data
+              </div>
+              <p className="text-zinc-300 text-xs sm:text-sm font-medium">
+                {activeScreen.alt}
+              </p>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </section>
   );
 }

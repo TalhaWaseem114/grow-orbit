@@ -54,11 +54,13 @@ const services = [
   },
 ];
 
-/* ── Shared Card Component ── */
-function ServiceCard({ service, className = "" }) {
+/* ── Original Shared Card Component with Click-to-Select ── */
+function ServiceCard({ service, onSelect, className = "" }) {
   return (
     <div
-      className={`group relative bg-white border border-zinc-100 rounded-2xl p-4 sm:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-xl hover:shadow-orange-500/5 hover:border-orange-500/20 transition-all duration-500 cursor-default active:scale-[0.98] ${className}`}
+      onClick={() => onSelect && onSelect(service.title)}
+      className={`group relative bg-white border border-zinc-100 rounded-2xl p-4 sm:p-5 shadow-[0_8px_30px_rgba(0,0,0,0.04)] hover:shadow-xl hover:shadow-orange-500/10 hover:border-orange-500/30 transition-all duration-500 cursor-pointer active:scale-[0.98] ${className}`}
+      title={`Select ${service.title} & customize your growth plan`}
     >
       {/* Icon + Number row */}
       <div className="flex items-start justify-between mb-5">
@@ -70,7 +72,7 @@ function ServiceCard({ service, className = "" }) {
 
       {/* Title */}
       <h3
-        className="text-zinc-900 text-[11px] sm:text-[13px] font-extrabold uppercase tracking-tight mb-2 leading-tight h-[2.4em] flex items-center"
+        className="text-zinc-900 text-[11px] sm:text-[13px] font-extrabold uppercase tracking-tight mb-2 leading-tight h-[2.4em] flex items-center group-hover:text-orange-600 transition-colors"
         style={{ fontFamily: "'Montserrat', sans-serif" }}
       >
         {service.title}
@@ -81,7 +83,7 @@ function ServiceCard({ service, className = "" }) {
         {service.description}
       </p>
 
-      {/* Stat (WCAG Large Text >=18.66px bold: 20px font-black passes 3.0:1 threshold with orange-600) */}
+      {/* Stat */}
       <div className="mt-auto pt-3 border-t border-zinc-100">
         <p
           className="text-orange-600 text-[20px] sm:text-2xl font-black tracking-tight leading-none mb-0.5"
@@ -101,10 +103,24 @@ export default function ServicesSectionThemeTwo() {
   const scrollRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
+  const handleSelectService = (serviceTitle) => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(
+        new CustomEvent("groworbit:select-service", {
+          detail: { service: serviceTitle },
+        })
+      );
+    }
+    const formElement = document.getElementById("lead-form");
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  };
+
   const handleScroll = () => {
     if (!scrollRef.current) return;
     const container = scrollRef.current;
-    const cardWidth = container.children[0]?.offsetWidth + 12 || 280; // 12px gap
+    const cardWidth = container.children[0]?.offsetWidth + 12 || 280;
     const newIndex = Math.round(container.scrollLeft / cardWidth);
     if (newIndex !== activeIndex && newIndex >= 0 && newIndex < services.length) {
       setActiveIndex(newIndex);
@@ -124,7 +140,7 @@ export default function ServicesSectionThemeTwo() {
       <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: "radial-gradient(circle, #000 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
 
       <div className="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10 relative z-10">
-        {/* Large Background Watermark (SVG vector - exempt from text contrast) */}
+        {/* Large Background Watermark */}
         <div
           aria-hidden="true"
           className="absolute top-[30px] right-0 rotate-90 origin-center translate-x-[40%] sm:top-[-120px] sm:left-[30px] sm:translate-x-0 sm:rotate-0 sm:origin-center sm:translate-y-0 pointer-events-none select-none z-0 overflow-visible"
@@ -153,6 +169,7 @@ export default function ServicesSectionThemeTwo() {
             </text>
           </svg>
         </div>
+
         {/* ── Header Area ── */}
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between mb-12 sm:mb-20">
           <div className="max-w-xl">
@@ -186,7 +203,7 @@ export default function ServicesSectionThemeTwo() {
           {/* Right side — CTA */}
           <div className="flex items-center gap-8 mt-8 lg:mt-0">
             <button
-              onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth' })}
+              onClick={() => document.getElementById('lead-form')?.scrollIntoView({ behavior: 'smooth', block: 'center' })}
               className="group inline-flex items-center gap-2 text-zinc-900 hover:text-orange-500 font-bold text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 no-underline whitespace-nowrap bg-transparent border-none cursor-pointer p-0"
             >
               Get Custom Service Plan
@@ -208,7 +225,7 @@ export default function ServicesSectionThemeTwo() {
                 className="snap-start shrink-0"
                 style={{ width: "min(75vw, 280px)" }}
               >
-                <ServiceCard service={service} className="h-full" />
+                <ServiceCard service={service} onSelect={handleSelectService} className="h-full" />
               </div>
             ))}
             {/* Trailing spacer so last card can snap fully */}
@@ -231,7 +248,7 @@ export default function ServicesSectionThemeTwo() {
         {/* ── DESKTOP: 6-Column Grid (lg+) ── */}
         <div className="hidden lg:grid lg:grid-cols-3 xl:grid-cols-6 gap-3">
           {services.map((service, i) => (
-            <ServiceCard key={i} service={service} />
+            <ServiceCard key={i} service={service} onSelect={handleSelectService} />
           ))}
         </div>
       </div>

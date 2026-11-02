@@ -238,24 +238,23 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef }) {
             id="lead-form"
             className="relative z-10 w-full max-w-[460px] bg-white rounded-[28px] sm:rounded-[32px] px-5 py-5 sm:px-7 sm:py-5.5 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form"
           >
-            {/* Amazon-smile style curved arrow pointing towards the form */}
-            <div className="hidden lg:block absolute -left-16 xl:-left-22 top-[170px] xl:top-[175px] w-28 xl:w-32 h-20 xl:h-22 pointer-events-none z-30 text-[#FF7A00] opacity-95 select-none filter drop-shadow-[0_3px_10px_rgba(255,122,0,0.35)]">
-              <svg viewBox="0 0 140 80" fill="none" className="w-full h-full overflow-visible">
-                {/* Iconic Amazon smile arc curving upward to the right */}
+            {/* Official Amazon Smile Logo Arrow pointing towards the form */}
+            <div className="hidden lg:block absolute -left-28 xl:-left-34 top-[165px] xl:top-[172px] w-32 xl:w-36 h-auto pointer-events-none z-30 select-none filter drop-shadow-[0_2px_10px_rgba(255,153,0,0.4)]">
+              <svg
+                viewBox="80 105 325 80"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                className="w-full h-auto overflow-visible"
+              >
+                {/* Official Amazon Smile Arc */}
                 <path
-                  d="M 10 30 C 35 68, 90 74, 122 36"
-                  stroke="#FF7A00"
-                  strokeWidth="3.6"
-                  strokeLinecap="round"
-                  fill="none"
+                  d="m 374.00642,142.18404 c -34.99948,25.79739 -85.72909,39.56123 -129.40634,39.56123 -61.24255,0 -116.37656,-22.65135 -158.08757,-60.32496 -3.2771,-2.96252 -0.34083,-6.9999 3.59171,-4.69283 45.01431,26.19064 100.67269,41.94697 158.16623,41.94697 38.774689,0 81.4295,-8.02237 120.6499,-24.67006 5.92501,-2.51683 10.87999,3.88009 5.08607,8.17965"
+                  fill="#FF9900"
                 />
-                {/* Sharp tapered Amazon-style arrowhead dimple pointing into form */}
+                {/* Official Amazon Smile Dimple Arrowhead */}
                 <path
-                  d="M 105 45 L 126 33 L 129 55 Z"
-                  fill="#FF7A00"
-                  stroke="#FF7A00"
-                  strokeWidth="1.5"
-                  strokeLinejoin="round"
+                  d="m 388.55678,125.53635 c -4.45688,-5.71527 -29.57261,-2.70033 -40.84585,-1.36327 -3.43442,0.41947 -3.95874,-2.56925 -0.86517,-4.71905 20.00346,-14.07844 52.82696,-10.01483 56.65462,-5.2958 3.82764,4.74526 -0.99624,37.64741 -19.79373,53.35128 -2.88385,2.41195 -5.63662,1.12734 -4.35198,-2.07113 4.2209,-10.53917 13.68519,-34.16054 9.20211,-39.90203"
+                  fill="#FF9900"
                 />
               </svg>
             </div>

@@ -63,7 +63,7 @@ export default function ThemeTwo({ scrolled, activeSections = {} }) {
   return (
     <>
       {activeSections.Navbar !== false && <StickyNavbar scrolled={scrolled} scrollToForm={scrollToForm} />}
-      {activeSections.Hero !== false && <HeroSectionThemeTwo scrollToForm={scrollToForm} formRef={formRef} />}
+      {activeSections.Hero !== false && <HeroSectionThemeTwo scrollToForm={scrollToForm} formRef={formRef} scrolled={scrolled} />}
       {activeSections.Diagnoses !== false && <CeoSourcingSection scrollToForm={scrollToForm} />}
       <SellerCentralShowcase />
       {activeSections.Marquee !== false && <ServicesMarquee isLandingPage={true} />}

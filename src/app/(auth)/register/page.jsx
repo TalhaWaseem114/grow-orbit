@@ -209,7 +209,10 @@ export default function Register() {
                   <User size={16} style={{ position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", color:"#f97316" }} />
                   <input
                     id="register-name"
-                    name="name" type="text" placeholder="John Doe"
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    placeholder="John Doe"
                     className="auth-input"
                     onChange={e => setForm({...form, name: e.target.value})}
                     required
@@ -224,7 +227,10 @@ export default function Register() {
                   <Mail size={16} style={{ position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", color:"#f97316" }} />
                   <input
                     id="register-email"
-                    name="email" type="email" placeholder="you@brand.com"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@brand.com"
                     className="auth-input"
                     onChange={e => setForm({...form, email: e.target.value})}
                     required
@@ -239,7 +245,10 @@ export default function Register() {
                   <Lock size={16} style={{ position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", color:"#f97316" }} />
                   <input
                     id="register-password"
-                    name="password" type={showPassword ? "text" : "password"} placeholder="••••••••••"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="new-password"
+                    placeholder="••••••••••"
                     className="auth-input"
                     onChange={e => setForm({...form, password: e.target.value})}
                     required

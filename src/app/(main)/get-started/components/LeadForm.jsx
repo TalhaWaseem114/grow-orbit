@@ -121,6 +121,12 @@ export default function LeadForm({ theme = "white", compact = false }) {
 
     const eventId = `lead_${Date.now()}_${Math.random().toString(36).slice(2, 9)}`;
 
+    let ttpCookie = "";
+    if (typeof document !== "undefined") {
+      const match = document.cookie.match(/(?:^|;\s*)_ttp=([^;]+)/);
+      if (match) ttpCookie = decodeURIComponent(match[1]);
+    }
+
     try {
       const response = await fetch("/api/leads", {
         method: "POST",
@@ -137,6 +143,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
           brandName: null,
           website_confirm: honeypot,
           eventId,
+          ttp: ttpCookie || undefined,
           ...utmData,
         }),
       });
@@ -156,8 +163,14 @@ export default function LeadForm({ theme = "white", compact = false }) {
         });
       }
 
-      // Track TikTok Pixel Lead event with deduplication event_id
+      // Track TikTok Pixel Lead event with deduplication event_id and Advanced Matching
       if (typeof window !== "undefined" && window.ttq) {
+        if (typeof window.ttq.identify === "function") {
+          window.ttq.identify({
+            email: form.email.trim().toLowerCase(),
+            phone_number: form.whatsapp ? form.whatsapp.trim() : undefined,
+          });
+        }
         window.ttq.track("SubmitForm", {
           contents: [{ content_id: form.service || "General Lead", content_name: form.service || "Lead Form" }]
         }, {
@@ -238,6 +251,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             id="lead-name"
             type="text"
             name="name"
+            autoComplete="name"
             required
             value={form.name}
             onChange={handleChange}
@@ -264,6 +278,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             id="lead-email"
             type="email"
             name="email"
+            autoComplete="email"
             required
             value={form.email}
             onChange={handleChange}
@@ -327,6 +342,8 @@ export default function LeadForm({ theme = "white", compact = false }) {
             id="lead-whatsapp"
             type="tel"
             name="whatsapp"
+            inputMode="tel"
+            autoComplete="tel"
             value={form.whatsapp}
             onChange={handleChange}
             placeholder="e.g. +1 (555) 000-0000"

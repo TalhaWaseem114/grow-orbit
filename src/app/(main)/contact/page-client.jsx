@@ -144,12 +144,17 @@ export default function ContactUs() {
 
       // Track TikTok Pixel Lead event
       if (typeof window !== "undefined" && window.ttq) {
+        if (typeof window.ttq.identify === "function") {
+          window.ttq.identify({
+            email: form.email.trim().toLowerCase(),
+            phone_number: form.whatsapp ? form.whatsapp.trim() : undefined,
+          });
+        }
         window.ttq.track("SubmitForm", {
           contents: [{ content_id: form.service || "Contact Lead", content_name: "Contact Page Form" }]
         }, {
           event_id: eventId
         });
-
       }
 
       const nameParam = encodeURIComponent(form.name);
@@ -347,7 +352,10 @@ export default function ContactUs() {
                     </label>
                     <input
                       id="contact-name"
-                      type="text" name="name" value={form.name}
+                      type="text"
+                      name="name"
+                      autoComplete="name"
+                      value={form.name}
                       onChange={handleChange} placeholder="John Doe"
                       className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light focus-visible:ring-2 focus-visible:ring-orange-500"
                     />
@@ -358,7 +366,10 @@ export default function ContactUs() {
                     </label>
                     <input
                       id="contact-email"
-                      type="email" name="email" value={form.email}
+                      type="email"
+                      name="email"
+                      autoComplete="email"
+                      value={form.email}
                       onChange={handleChange} placeholder="name@brand.com"
                       className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light focus-visible:ring-2 focus-visible:ring-orange-500"
                     />
@@ -372,7 +383,11 @@ export default function ContactUs() {
                   </label>
                   <input
                     id="contact-whatsapp"
-                    type="tel" name="whatsapp" value={form.whatsapp}
+                    type="tel"
+                    name="whatsapp"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    value={form.whatsapp}
                     onChange={handleChange} placeholder="+1 (555) 000-0000"
                     className="w-full px-5 py-3.5 rounded-2xl bg-zinc-50 border border-zinc-200 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 focus:outline-none focus:border-orange-500 focus:bg-white transition-all font-light focus-visible:ring-2 focus-visible:ring-orange-500"
                   />

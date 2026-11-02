@@ -133,12 +133,16 @@ export default function Footer() {
 
       // Track TikTok Pixel Lead event
       if (typeof window !== "undefined" && window.ttq) {
+        if (typeof window.ttq.identify === "function") {
+          window.ttq.identify({
+            email: form.email.trim().toLowerCase(),
+          });
+        }
         window.ttq.track("SubmitForm", {
           contents: [{ content_id: form.service || "Footer Lead", content_name: "Footer Lead Form" }]
         }, {
           event_id: eventId
         });
-
       }
 
       const nameParam = encodeURIComponent(form.name);
@@ -381,6 +385,7 @@ export default function Footer() {
                     id="footer-name"
                     type="text"
                     name="name"
+                    autoComplete="name"
                     value={form.name}
                     onChange={handleChange}
                     placeholder="e.g. John Smith"
@@ -397,6 +402,7 @@ export default function Footer() {
                     id="footer-email"
                     type="email"
                     name="email"
+                    autoComplete="email"
                     value={form.email}
                     onChange={handleChange}
                     placeholder="you@brand.com"

@@ -320,7 +320,7 @@ async function notifyWebhook(webhookUrl, discordPayload, slackText) {
   }
 }
 
-async function handleBookingConfirmation(body, webhookUrl, clientIp = "unknown", userAgent = "") {
+async function handleBookingConfirmation(body, webhookUrl, clientIp = "unknown", userAgent = "", ttpCookie = "") {
   const email = normalizeEmail(body.email);
   if (!body.leadId && !email) {
     return NextResponse.json({ error: "Missing lead reference for booking confirmation" }, { status: 400 });
@@ -392,6 +392,7 @@ async function handleBookingConfirmation(body, webhookUrl, clientIp = "unknown",
           userAgent,
           eventId: bookingEventId,
           ttclid: leadData.ttclid,
+          ttp: cleanString(body.ttp) || ttpCookie || undefined,
         }).catch((err) => {
           console.error("[API/Leads] TikTok Server Event dispatch failed for booking:", err);
         });
@@ -479,7 +480,7 @@ async function updateBookingWithClientSdk(leadId, body, alreadyBooked) {
   await updateDoc(doc(clientDb, "leads", leadId), clientBookingUpdate);
 }
 
-async function handleLeadIntake(body, webhookUrl, clientIp = "unknown", userAgent = "") {
+async function handleLeadIntake(body, webhookUrl, clientIp = "unknown", userAgent = "", ttpCookie = "") {
   const normalizedFullName = cleanString(body.fullName);
   const normalizedEmail = normalizeEmail(body.email);
   const normalizedSource = cleanString(body.source, "API Request") || "API Request";
@@ -585,6 +586,7 @@ async function handleLeadIntake(body, webhookUrl, clientIp = "unknown", userAgen
       userAgent,
       eventId: leadDoc.eventId || `lead_${docRef?.id || Date.now()}`,
       ttclid: leadDoc.ttclid,
+      ttp: cleanString(body.ttp) || ttpCookie || undefined,
     }).catch((err) => {
       console.error("[API/Leads] TikTok Server Event SubmitForm failed:", err);
     });
@@ -614,6 +616,7 @@ export async function POST(request) {
 
     const clientIp = getClientIp(request);
     const userAgent = request.headers.get("user-agent") || "";
+    const ttpCookie = request.cookies.get("_ttp")?.value || "";
     if (isRateLimited(clientIp)) {
       console.warn("[API/Leads] Rate limit exceeded:", clientIp);
       return NextResponse.json({ error: "Too many requests. Please try again shortly." }, { status: 429 });
@@ -622,10 +625,10 @@ export async function POST(request) {
     const webhookUrl = await resolveWebhookUrl();
 
     if (body.type === "booking_confirmation") {
-      return handleBookingConfirmation(body, webhookUrl, clientIp, userAgent);
+      return handleBookingConfirmation(body, webhookUrl, clientIp, userAgent, ttpCookie);
     }
 
-    return handleLeadIntake(body, webhookUrl, clientIp, userAgent);
+    return handleLeadIntake(body, webhookUrl, clientIp, userAgent, ttpCookie);
   } catch (error) {
     console.error("[API/Leads] Handler crash:", error);
     return NextResponse.json({ error: "Failed to process lead submission" }, { status: 500 });

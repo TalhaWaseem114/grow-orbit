@@ -77,7 +77,7 @@ export default function FAQSection({ scrollToForm }) {
   return (
     <section
       id="faq"
-      className="py-24 bg-white border-t border-zinc-100 relative overflow-hidden"
+      className="pt-28 sm:pt-36 md:pt-40 pb-24 bg-white border-t border-zinc-100 relative overflow-hidden"
       style={{ fontFamily: "'Montserrat', sans-serif" }}
     >
       <div className="max-w-[1100px] mx-auto px-6 lg:px-12 relative z-10">
@@ -87,17 +87,17 @@ export default function FAQSection({ scrollToForm }) {
           {/* Large Background Watermark (SVG outline vector) */}
           <div
             aria-hidden="true"
-            className="absolute -top-10 sm:-top-16 md:-top-20 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 overflow-visible"
+            className="absolute -top-14 sm:-top-20 md:-top-[118px] left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 overflow-visible"
           >
             <svg
-              className="h-[70px] sm:h-[110px] md:h-[150px] w-auto overflow-visible opacity-[0.08]"
-              viewBox="0 0 680 140"
+              className="h-[65px] sm:h-[95px] md:h-[130px] w-auto overflow-visible opacity-[0.08]"
+              viewBox="0 0 680 130"
               fill="none"
               aria-hidden="true"
             >
               <text
                 x="50%"
-                y="110"
+                y="105"
                 textAnchor="middle"
                 fill="none"
                 stroke="#000"

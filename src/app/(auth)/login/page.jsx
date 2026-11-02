@@ -149,7 +149,10 @@ export default function Login() {
                   <Mail size={16} style={{ position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", color:"#f97316" }} />
                   <input
                     id="login-email"
-                    name="email" type="email" placeholder="you@brand.com"
+                    name="email"
+                    type="email"
+                    autoComplete="email"
+                    placeholder="you@brand.com"
                     className="auth-input"
                     onChange={e => setForm({...form, email: e.target.value})}
                     required
@@ -164,7 +167,10 @@ export default function Login() {
                   <Lock size={16} style={{ position:"absolute", left:14, top:"50%", transform:"translateY(-50%)", color:"#f97316" }} />
                   <input
                     id="login-password"
-                    name="password" type={showPassword ? "text" : "password"} placeholder="••••••••••"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    placeholder="••••••••••"
                     className="auth-input"
                     onChange={e => setForm({...form, password: e.target.value})}
                     required

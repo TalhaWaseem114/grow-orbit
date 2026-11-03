@@ -163,7 +163,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
         </div>
 
         {/* ── Right — White Form Card Container (Positioned ABOVE THE FOLD on Mobile) ── */}
-        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex flex-col items-center justify-start 2xl:justify-center px-3.5 pb-4 pt-0 sm:px-8 sm:pb-10 sm:pt-6 lg:px-8 lg:pb-10 lg:pt-[90px] xl:px-12 xl:pb-10 xl:pt-[92px] 2xl:pt-[84px] z-20 overflow-visible bg-transparent">
+        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex flex-col items-center justify-start 2xl:justify-center px-4 pb-6 pt-1 sm:px-8 sm:pb-10 sm:pt-6 lg:px-8 lg:pb-10 lg:pt-[90px] xl:px-12 xl:pb-10 xl:pt-[92px] 2xl:pt-[84px] z-20 overflow-visible bg-transparent">
           {/* Subtle warm ambient glow behind the card */}
           <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)" }} />
           <div className="absolute bottom-[20%] left-[10%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,122,0,0.04) 0%, transparent 70%)" }} />
@@ -172,7 +172,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
           <div
             ref={formRef}
             id="lead-form"
-            className="relative z-10 w-full max-w-[460px] bg-white rounded-[22px] sm:rounded-[32px] px-3.5 py-3 sm:px-7 sm:py-5.5 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form scroll-mt-20 sm:scroll-mt-24"
+            className="relative z-10 w-full max-w-[460px] bg-white rounded-[24px] sm:rounded-[32px] px-4.5 py-4 sm:px-7 sm:py-5.5 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form scroll-mt-20 sm:scroll-mt-24"
           >
             {/* Official Amazon Smile Logo Arrow pointing towards the form */}
             <div className="hidden lg:block absolute -left-28 xl:-left-34 top-[165px] xl:top-[172px] w-32 xl:w-36 h-auto pointer-events-none z-30 select-none filter drop-shadow-[0_2px_10px_rgba(255,153,0,0.4)]">
@@ -194,13 +194,13 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
             </div>
 
             {/* Header */}
-            <div className="mb-2 sm:mb-3.5">
-              <div className="inline-flex items-center gap-1.5 bg-[#ffedd5] text-[#ea580c] px-2.5 py-0.5 sm:py-1 rounded-full text-[8.5px] sm:text-[10px] font-black uppercase tracking-wider mb-1 sm:mb-2.5">
+            <div className="mb-2.5 sm:mb-3.5">
+              <div className="inline-flex items-center gap-1.5 bg-[#ffedd5] text-[#ea580c] px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider mb-1.5 sm:mb-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#ea580c] animate-pulse" />
                 <span>FREE STRATEGY CALL &middot; 2 SPOTS LEFT</span>
               </div>
               <h2
-                className="text-[16px] sm:text-[22px] font-black tracking-tight leading-[1.15] uppercase"
+                className="text-[17px] sm:text-[22px] font-black tracking-tight leading-[1.18] uppercase"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
                 <span className="text-zinc-950 block">TELL US ABOUT YOUR BRAND.</span>

@@ -13,7 +13,7 @@ export default function MainRouteChrome() {
 
   return (
     <>
-      <Navbar />
+      {!isGetStarted && <Navbar />}
       {!isGetStarted && (
         <>
           <ChatBot />

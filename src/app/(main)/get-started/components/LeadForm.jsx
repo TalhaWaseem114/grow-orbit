@@ -104,16 +104,24 @@ export default function LeadForm({ theme = "white", compact = false }) {
     lastSubmitRef.current = now;
 
     // Validation
-    if (!form.name.trim() || !form.email.trim()) {
-      setError("Please fill in your name and email address.");
+    if (!form.name.trim()) {
+      setError("Please fill in your name.");
+      document.getElementById("lead-name")?.focus();
+      return;
+    }
+    if (!form.email.trim()) {
+      setError("Please fill in your email address.");
+      document.getElementById("lead-email")?.focus();
       return;
     }
     if (!EMAIL_REGEX.test(form.email)) {
       setError("Please enter a valid email address.");
+      document.getElementById("lead-email")?.focus();
       return;
     }
     if (!form.service) {
       setError("Please select the service you are interested in.");
+      document.getElementById("lead-service")?.focus();
       return;
     }
 
@@ -261,10 +269,10 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.name}
             onChange={handleChange}
             placeholder="Your name"
-            className={`w-full border text-[13.5px] sm:text-[14px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 min-h-[44px] ${
+            className={`w-full border text-base sm:text-[14px] font-medium transition-all outline-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 min-h-[44px] ${
               isDark
-                ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
-                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
+                ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08] focus:ring-2 focus:ring-orange-500/20"
+                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/20"
             }`}
           />
         </div>
@@ -288,10 +296,10 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.email}
             onChange={handleChange}
             placeholder="you@brand.com"
-            className={`w-full border text-[13.5px] sm:text-[14px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 min-h-[44px] ${
+            className={`w-full border text-base sm:text-[14px] font-medium transition-all outline-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 min-h-[44px] ${
               isDark
-                ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
-                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
+                ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08] focus:ring-2 focus:ring-orange-500/20"
+                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/20"
             }`}
           />
         </div>
@@ -312,12 +320,12 @@ export default function LeadForm({ theme = "white", compact = false }) {
             required
             value={form.service}
             onChange={handleChange}
-            className={`w-full border text-[13.5px] sm:text-[14px] font-medium transition-all appearance-none cursor-pointer focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-10 py-2.5 sm:py-3 min-h-[44px] ${
+            className={`w-full border text-base sm:text-[14px] font-medium transition-all appearance-none cursor-pointer outline-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-10 py-2.5 sm:py-3 min-h-[44px] ${
               highlightService ? "!ring-2 !ring-orange-500 !border-orange-500 shadow-[0_0_15px_rgba(255,122,0,0.3)] animate-pulse " : ""
             } ${
               isDark
-                ? "bg-white/[0.03] border-white/10 text-white focus:bg-zinc-950"
-                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
+                ? "bg-white/[0.03] border-white/10 text-white focus:bg-zinc-950 focus:ring-2 focus:ring-orange-500/20"
+                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 focus:bg-white focus:ring-2 focus:ring-orange-500/20"
             }`}
           >
             <option value="" disabled className={isDark ? "bg-zinc-950 text-white" : "bg-white text-zinc-500"}>Select a service...</option>
@@ -352,10 +360,10 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.whatsapp}
             onChange={handleChange}
             placeholder="e.g. (213) 373-4253"
-            className={`w-full border text-[13.5px] sm:text-[14px] font-medium transition-all focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 min-h-[44px] ${
+            className={`w-full border text-base sm:text-[14px] font-medium transition-all outline-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 min-h-[44px] ${
               isDark
-                ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
-                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
+                ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08] focus:ring-2 focus:ring-orange-500/20"
+                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/20"
             }`}
           />
         </div>
@@ -377,10 +385,10 @@ export default function LeadForm({ theme = "white", compact = false }) {
             value={form.pain}
             onChange={handleChange}
             placeholder="Tell us about your product, current stage, or what you need help with..."
-            className={`w-full border text-[13.5px] sm:text-[14px] font-medium transition-all resize-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 leading-snug ${
+            className={`w-full border text-base sm:text-[14px] font-medium transition-all resize-none outline-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-4 py-2.5 sm:py-3 leading-snug ${
               isDark
-                ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08]"
-                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/10"
+                ? "bg-white/[0.03] border-white/10 text-white placeholder-zinc-500 focus:bg-white/[0.08] focus:ring-2 focus:ring-orange-500/20"
+                : "bg-[#f3f4f6] hover:bg-[#eceef1] border-zinc-200/90 text-zinc-900 placeholder:text-zinc-500 focus:bg-white focus:ring-2 focus:ring-orange-500/20"
             }`}
           />
         </div>

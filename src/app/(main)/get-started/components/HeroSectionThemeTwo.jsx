@@ -98,73 +98,8 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
           aria-hidden="true"
         />
 
-        {/* ── Desktop Navbar (Internal On-Page Anchors) ── */}
-        <header className="hidden lg:flex absolute top-6 left-8 md:left-16 lg:left-20 right-8 md:right-16 lg:right-20 items-center justify-between z-50">
-          {/* Left: Logo */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              window.scrollTo({ top: 0, behavior: "smooth" });
-            }}
-            className="flex items-center gap-2 group no-underline shrink-0 bg-transparent border-none cursor-pointer p-0"
-          >
-            <Image src="/logo.png" alt="Grow Orbit Logo" width={32} height={32} className="object-contain group-hover:scale-110 transition-transform duration-300" />
-            <span className="text-lg font-black tracking-tight uppercase flex gap-1.5 transition-colors">
-              <span className="text-white">GROW</span>
-              <span className="text-[#F1A52B]">ORBIT</span>
-            </span>
-          </button>
-
-          {/* Middle: On-Page Anchors */}
-          <nav className="flex items-center gap-8 xl:gap-10 absolute left-1/2 -translate-x-1/2">
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('services')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
-            >
-              Services
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('testimonials')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
-            >
-              Case Studies
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              }}
-              className="text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors outline-none bg-transparent border-none cursor-pointer p-0"
-            >
-              FAQ
-            </button>
-          </nav>
-
-          {/* Right: Primary Call-to-Action */}
-          <div className="flex items-center shrink-0">
-            <button
-              type="button"
-              onClick={scrollToForm}
-              className="group relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full border border-orange-400/40 bg-gradient-to-r from-[#FF5C00] via-[#FF7A00] to-[#FFA726] px-5 py-2.5 text-white font-black text-[10px] uppercase tracking-[0.16em] transition-all duration-300 hover:scale-[1.03] hover:brightness-110 hover:shadow-[0_15px_50px_rgba(255,92,0,0.45)] active:scale-95 cursor-pointer outline-none"
-            >
-              <span>Book Strategy Call</span>
-              <ArrowRight size={13} className="group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
-          </div>
-        </header>
-
         {/* ── Left — Text Content ── */}
-        <div className="relative flex-1 flex flex-col justify-start 2xl:justify-center px-4 sm:px-8 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-[72px] sm:pt-20 pb-3 lg:pt-20 lg:pb-12 2xl:pt-16 2xl:pb-16 z-10">
+        <div className="relative flex-1 flex flex-col justify-start 2xl:justify-center px-4 sm:px-8 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-[66px] sm:pt-20 pb-2 lg:pt-28 lg:pb-12 2xl:pt-32 2xl:pb-16 z-10">
           {/* Subtle low-density texture */}
           <div
             className="absolute inset-0 opacity-[0.16] pointer-events-none"
@@ -202,7 +137,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
 
             {/* Main Heading — Optimized for Instant Mobile Readability */}
             <h1
-              className="text-white mb-2 sm:mb-3 lg:mb-7 uppercase text-[27px] sm:text-[42px] md:text-[56px] lg:text-[74px] font-black tracking-tighter leading-[1.0] lg:leading-[0.9]"
+              className="text-white mb-1.5 sm:mb-3 lg:mb-7 uppercase text-[26px] sm:text-[42px] md:text-[56px] lg:text-[74px] font-black tracking-tighter leading-[1.0] lg:leading-[0.9]"
               style={{ fontFamily: "'Montserrat', sans-serif" }}
             >
               Turn Amazon<br className="hidden sm:inline" />{" "}
@@ -211,7 +146,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
             </h1>
 
             {/* Subtitle */}
-            <div className="flex gap-4 sm:gap-6 mb-3 sm:mb-5 lg:mb-8 fade-up delay-1">
+            <div className="flex gap-4 sm:gap-6 mb-2.5 sm:mb-5 lg:mb-8 fade-up delay-1">
               <div className="w-[2px] bg-gradient-to-b from-orange-500 to-transparent hidden md:block opacity-50 shrink-0" />
               <p className="text-zinc-400 text-xs sm:text-base lg:text-[17px] font-light leading-relaxed max-w-xl">
                 We build, launch, and scale Amazon brands to{" "}
@@ -228,7 +163,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
         </div>
 
         {/* ── Right — White Form Card Container (Positioned ABOVE THE FOLD on Mobile) ── */}
-        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex flex-col items-center justify-start 2xl:justify-center px-4 pb-8 pt-1 sm:px-8 sm:pb-10 sm:pt-6 lg:px-8 lg:pb-10 lg:pt-[90px] xl:px-12 xl:pb-10 xl:pt-[92px] 2xl:pt-[84px] z-20 overflow-visible bg-transparent">
+        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex flex-col items-center justify-start 2xl:justify-center px-3.5 pb-4 pt-0 sm:px-8 sm:pb-10 sm:pt-6 lg:px-8 lg:pb-10 lg:pt-[90px] xl:px-12 xl:pb-10 xl:pt-[92px] 2xl:pt-[84px] z-20 overflow-visible bg-transparent">
           {/* Subtle warm ambient glow behind the card */}
           <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)" }} />
           <div className="absolute bottom-[20%] left-[10%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,122,0,0.04) 0%, transparent 70%)" }} />
@@ -237,7 +172,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
           <div
             ref={formRef}
             id="lead-form"
-            className="relative z-10 w-full max-w-[460px] bg-white rounded-[24px] sm:rounded-[32px] px-4.5 py-4 sm:px-7 sm:py-5.5 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form scroll-mt-20 sm:scroll-mt-24"
+            className="relative z-10 w-full max-w-[460px] bg-white rounded-[22px] sm:rounded-[32px] px-3.5 py-3 sm:px-7 sm:py-5.5 shadow-[0_25px_70px_-15px_rgba(0,0,0,0.7),0_0_50px_rgba(255,255,255,0.05)] border border-white/40 animate-subtle-form scroll-mt-20 sm:scroll-mt-24"
           >
             {/* Official Amazon Smile Logo Arrow pointing towards the form */}
             <div className="hidden lg:block absolute -left-28 xl:-left-34 top-[165px] xl:top-[172px] w-32 xl:w-36 h-auto pointer-events-none z-30 select-none filter drop-shadow-[0_2px_10px_rgba(255,153,0,0.4)]">
@@ -259,13 +194,13 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
             </div>
 
             {/* Header */}
-            <div className="mb-2.5 sm:mb-3.5">
-              <div className="inline-flex items-center gap-1.5 bg-[#ffedd5] text-[#ea580c] px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider mb-1.5 sm:mb-2.5">
+            <div className="mb-2 sm:mb-3.5">
+              <div className="inline-flex items-center gap-1.5 bg-[#ffedd5] text-[#ea580c] px-2.5 py-0.5 sm:py-1 rounded-full text-[8.5px] sm:text-[10px] font-black uppercase tracking-wider mb-1 sm:mb-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#ea580c] animate-pulse" />
                 <span>FREE STRATEGY CALL &middot; 2 SPOTS LEFT</span>
               </div>
               <h2
-                className="text-[17px] sm:text-[22px] font-black tracking-tight leading-[1.18] uppercase"
+                className="text-[16px] sm:text-[22px] font-black tracking-tight leading-[1.15] uppercase"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
                 <span className="text-zinc-950 block">TELL US ABOUT YOUR BRAND.</span>

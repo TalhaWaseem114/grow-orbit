@@ -1,12 +1,20 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function GrowOrbitCursor() {
   const canvasRef = useRef(null);
+  const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    if (window.matchMedia("(pointer: coarse)").matches) return;
+    const media = window.matchMedia("(pointer: fine) and (min-width: 768px)");
+    if (media.matches) {
+      setEnabled(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -362,12 +370,14 @@ export default function GrowOrbitCursor() {
       clearTimeout(moveTimer);
       cancelAnimationFrame(raf);
     };
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed top-0 left-0 w-full h-full pointer-events-none z-[9999]"
+      className="hidden md:block fixed top-0 left-0 w-full h-full pointer-events-none z-[9999]"
     />
   );
 }

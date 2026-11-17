@@ -25,6 +25,10 @@ export default function Page() {
 
   return (
     <>
+      <link rel="preconnect" href="https://calendly.com" />
+      <link rel="preconnect" href="https://assets.calendly.com" />
+      <link rel="dns-prefetch" href="https://calendly.com" />
+      <link rel="dns-prefetch" href="https://assets.calendly.com" />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}

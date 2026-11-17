@@ -193,11 +193,19 @@ export default function LeadForm({ theme = "white", compact = false }) {
 
       setSubmitted(true);
       setShowSuccess(true);
-      await new Promise((resolve) => setTimeout(resolve, 100));
 
-      const nameParam = encodeURIComponent(form.name);
-      const emailParam = encodeURIComponent(form.email);
-      router.push(`/get-started/book-meeting?leadId=${resData.id}&name=${nameParam}&email=${emailParam}`);
+      const calendlyBaseUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/groworbitofficial-support/30min";
+      const nameParam = encodeURIComponent(form.name.trim());
+      const emailParam = encodeURIComponent(form.email.trim().toLowerCase());
+      const phoneParam = encodeURIComponent(form.whatsapp?.trim() || "");
+      const calendlyUrl = `${calendlyBaseUrl}?name=${nameParam}&email=${emailParam}${phoneParam ? `&a1=${phoneParam}` : ""}&hide_gdpr_banner=1&primary_color=f97316`;
+
+      // Allow 250ms for Meta Pixel & TikTok tracking beacons to fully dispatch before top-level redirect
+      await new Promise((resolve) => setTimeout(resolve, 250));
+
+      if (typeof window !== "undefined") {
+        window.location.href = calendlyUrl;
+      }
     } catch (err) {
       console.error("Lead submission error:", err);
       setError(err.message || "Submission failed. Please check your connection and try again.");
@@ -206,22 +214,36 @@ export default function LeadForm({ theme = "white", compact = false }) {
   };
 
   if (showSuccess) {
+    const calendlyBaseUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/groworbitofficial-support/30min";
+    const nameParam = encodeURIComponent(form.name.trim());
+    const emailParam = encodeURIComponent(form.email.trim().toLowerCase());
+    const phoneParam = encodeURIComponent(form.whatsapp?.trim() || "");
+    const calendlyUrl = `${calendlyBaseUrl}?name=${nameParam}&email=${emailParam}${phoneParam ? `&a1=${phoneParam}` : ""}&hide_gdpr_banner=1&primary_color=f97316`;
+
     return (
-      <div className="flex flex-col items-center justify-center py-12 gap-4 animate-fade-in text-center">
-        <div className={`w-16 h-16 rounded-full border flex items-center justify-center ${
+      <div className="flex flex-col items-center justify-center py-10 gap-3 animate-fade-in text-center">
+        <div className={`w-14 h-14 rounded-full border flex items-center justify-center ${
           isDark
             ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
             : "bg-emerald-50 border-emerald-200 text-emerald-600"
         }`}>
-          <CheckCircle2 size={32} className="stroke-[2]" />
+          <CheckCircle2 size={28} className="stroke-[2.5]" />
         </div>
         <div>
-          <p className={`text-lg font-black tracking-tight ${isDark ? "text-white" : "text-zinc-950"}`}>Details Received!</p>
-          <p className={`text-xs sm:text-sm font-semibold mt-1.5 max-w-xs mx-auto leading-relaxed ${isDark ? "text-orange-400" : "text-[#ea580c]"}`}>
-            Hold tight &mdash; loading available time slots with Ali Haider...
+          <p className={`text-base sm:text-lg font-black tracking-tight ${isDark ? "text-white" : "text-zinc-950"}`}>
+            Details Received!
+          </p>
+          <p className={`text-xs sm:text-sm font-semibold mt-1 max-w-xs mx-auto leading-relaxed ${isDark ? "text-orange-400" : "text-[#ea580c]"}`}>
+            Redirecting to Ali Haider&apos;s live calendar to lock in your strategy call...
           </p>
         </div>
-        <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mt-2" />
+        <div className="w-7 h-7 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mt-1" />
+        <a
+          href={calendlyUrl}
+          className="text-[11px] font-bold text-orange-500 hover:text-orange-400 underline underline-offset-4 mt-2 transition-colors"
+        >
+          Tap here if not redirected automatically &rarr;
+        </a>
         <style>{`
           @keyframes fade-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
           .animate-fade-in { animation: fade-in 0.4s ease both; }

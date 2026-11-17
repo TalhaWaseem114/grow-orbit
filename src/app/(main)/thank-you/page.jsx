@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import ClientPage from "./page-client";
 import { getPageMetadata } from "@/config/seo";
 
@@ -8,19 +9,19 @@ export default function Page(props) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     "itemListElement": [
-  {
-    "@type": "ListItem",
-    "position": 1,
-    "name": "Home",
-    "item": "https://www.groworbitofficial.com"
-  },
-  {
-    "@type": "ListItem",
-    "position": 2,
-    "name": "Thank You",
-    "item": "https://www.groworbitofficial.com/thank-you"
-  }
-]
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.groworbitofficial.com"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": "Thank You",
+        "item": "https://www.groworbitofficial.com/thank-you"
+      }
+    ]
   };
 
   return (
@@ -29,7 +30,9 @@ export default function Page(props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <ClientPage {...props} />
+      <Suspense fallback={<div className="min-h-screen bg-[#0A0A0B]" />}>
+        <ClientPage {...props} />
+      </Suspense>
     </>
   );
 }

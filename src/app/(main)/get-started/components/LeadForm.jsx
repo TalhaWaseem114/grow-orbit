@@ -16,6 +16,10 @@ import {
   Zap,
   ShieldCheck,
   Lock,
+  MessageCircle,
+  RefreshCw,
+  Sparkles,
+  ExternalLink,
 } from "lucide-react";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,18 +27,99 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 import { getSavedUtmData } from "@/utils/utmTracker";
 import { normalizeE164Phone } from "@/lib/phoneFormatter";
 
-export default function LeadForm({ theme = "white", compact = false }) {
+export default function LeadForm({ theme = "white", compact = false, step: parentStep, onStepChange }) {
   const isDark = theme === "dark";
   const router = useRouter();
   const [form, setForm] = useState({ name: "", email: "", whatsapp: "", service: "", pain: "" });
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
+  const [internalStep, setInternalStep] = useState("form"); // "form" | "schedule" | "confirmed"
+  const currentStep = parentStep || internalStep;
+  const [submittedLead, setSubmittedLead] = useState(null);
+  const [shouldPreloadCalendly, setShouldPreloadCalendly] = useState(false);
   const [error, setError] = useState("");
   const lastSubmitRef = useRef(0);
   const [utmData, setUtmData] = useState({});
   const [honeypot, setHoneypot] = useState("");
   const [highlightService, setHighlightService] = useState(false);
+
+  const changeStep = (newStep) => {
+    setInternalStep(newStep);
+    if (onStepChange) onStepChange(newStep);
+    if (typeof window !== "undefined") {
+      setTimeout(() => {
+        const el = document.getElementById("lead-form");
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 50);
+    }
+  };
+
+  // Passive preloading trigger on user interaction (typing in any input)
+  const handleInteraction = () => {
+    if (!shouldPreloadCalendly) {
+      setShouldPreloadCalendly(true);
+    }
+  };
+
+  // Passive idle fallback: preload Calendly only after 4.5s of page idle so it never impacts FCP/LCP
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const timer = setTimeout(() => {
+      setShouldPreloadCalendly(true);
+    }, 4500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Listen for Calendly completion to update Firestore CRM automatically
+  useEffect(() => {
+    const handleCalendlyMessage = async (e) => {
+      if (e.origin !== "https://calendly.com") return;
+      if (e.data && e.data.event === "calendly.event_scheduled") {
+        console.log("Calendly scheduled event detected:", e.data);
+        const calendlyPayload = e.data.payload || {};
+        const bookingEventId = `sub_${submittedLead?.id || Date.now()}`;
+
+        // Fire Meta Pixel Schedule
+        if (typeof window !== "undefined" && window.fbq) {
+          window.fbq("track", "Schedule", { content_name: "Strategy Session Confirmation" }, { eventID: bookingEventId });
+        }
+
+        // Fire TikTok Pixel Subscribe
+        if (typeof window !== "undefined" && window.ttq) {
+          window.ttq.track("Subscribe", {}, { event_id: bookingEventId });
+        }
+
+        // Update Firestore CRM via /api/leads
+        if (submittedLead?.id) {
+          try {
+            await fetch("/api/leads", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                type: "booking_confirmation",
+                leadId: submittedLead.id,
+                email: submittedLead.email,
+                meetingBooked: true,
+                eventId: bookingEventId,
+                calendlyEventUri: calendlyPayload.event?.uri || "",
+                calendlyInviteeUri: calendlyPayload.invitee?.uri || "",
+              }),
+            });
+            console.log("CRM updated with booking confirmation!");
+          } catch (err) {
+            console.error("Booking confirmation error:", err);
+          }
+        }
+
+        changeStep("confirmed");
+      }
+    };
+
+    window.addEventListener("message", handleCalendlyMessage);
+    return () => window.removeEventListener("message", handleCalendlyMessage);
+  }, [submittedLead]);
 
   // Listen for service selection from external section cards (100% aligned with all services)
   useEffect(() => {
@@ -192,20 +277,16 @@ export default function LeadForm({ theme = "white", compact = false }) {
       }
 
       setSubmitted(true);
-      setShowSuccess(true);
-
-      const calendlyBaseUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/groworbitofficial-support/30min";
-      const nameParam = encodeURIComponent(form.name.trim());
-      const emailParam = encodeURIComponent(form.email.trim().toLowerCase());
-      const phoneParam = encodeURIComponent(form.whatsapp?.trim() || "");
-      const calendlyUrl = `${calendlyBaseUrl}?name=${nameParam}&email=${emailParam}${phoneParam ? `&a1=${phoneParam}` : ""}&hide_gdpr_banner=1&primary_color=f97316`;
-
-      // Allow 250ms for Meta Pixel & TikTok tracking beacons to fully dispatch before top-level redirect
-      await new Promise((resolve) => setTimeout(resolve, 250));
-
-      if (typeof window !== "undefined") {
-        window.location.href = calendlyUrl;
-      }
+      const leadPayload = {
+        id: resData.id,
+        name: form.name.trim(),
+        email: form.email.trim().toLowerCase(),
+        whatsapp: form.whatsapp?.trim() || "",
+        service: form.service,
+      };
+      setSubmittedLead(leadPayload);
+      setLoading(false);
+      changeStep("schedule");
     } catch (err) {
       console.error("Lead submission error:", err);
       setError(err.message || "Submission failed. Please check your connection and try again.");
@@ -213,41 +294,103 @@ export default function LeadForm({ theme = "white", compact = false }) {
     }
   };
 
-  if (showSuccess) {
-    const calendlyBaseUrl = process.env.NEXT_PUBLIC_CALENDLY_URL || "https://calendly.com/groworbitofficial-support/30min";
+  if (currentStep === "confirmed") {
+    return (
+      <div className="flex flex-col items-center justify-center py-8 gap-4 text-center animate-fade-in">
+        <div className="w-16 h-16 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-500 flex items-center justify-center shadow-lg shadow-emerald-500/10">
+          <CheckCircle2 size={32} className="stroke-[2.5]" />
+        </div>
+        <div>
+          <h3 className="text-xl font-black text-zinc-950 uppercase tracking-tight">Strategy Call Reserved!</h3>
+          <p className="text-xs sm:text-sm text-zinc-500 mt-1 max-w-xs mx-auto leading-relaxed">
+            Hi <strong className="text-zinc-900">{form.name || "there"}</strong>, your 1-on-1 growth audit with Ali Haider is confirmed. A calendar invite with direct Zoom links was sent to <strong className="text-zinc-900">{form.email}</strong>.
+          </p>
+        </div>
+
+        <div className="w-full p-4 rounded-2xl bg-zinc-50 border border-zinc-200 text-left space-y-2.5 mt-2">
+          <div className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Call Prep Roadmap:</div>
+          <div className="flex items-start gap-2.5">
+            <span className="w-5 h-5 rounded-md bg-orange-500/10 text-orange-500 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+            <p className="text-[11.5px] text-zinc-600 font-light leading-tight">Our directors will inspect your ASINs &amp; ad history before the call.</p>
+          </div>
+          <div className="flex items-start gap-2.5">
+            <span className="w-5 h-5 rounded-md bg-orange-500/10 text-orange-500 text-[10px] font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+            <p className="text-[11.5px] text-zinc-600 font-light leading-tight">We will review actionable profit levers live on the Zoom screen.</p>
+          </div>
+        </div>
+
+        <a
+          href={`https://wa.me/19128205916?text=${encodeURIComponent(`Hi Ali, my meeting is booked for ${form.name} (${form.service}). Looking forward to speaking!`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 text-xs font-bold text-emerald-600 hover:text-emerald-700 transition-colors mt-2"
+        >
+          <MessageCircle size={14} /> Need to modify or message earlier? Chat on WhatsApp &rarr;
+        </a>
+      </div>
+    );
+  }
+
+  if (currentStep === "schedule") {
+    const embedDomain = typeof window !== "undefined" ? window.location.host : "groworbitofficial.com";
     const nameParam = encodeURIComponent(form.name.trim());
     const emailParam = encodeURIComponent(form.email.trim().toLowerCase());
     const phoneParam = encodeURIComponent(form.whatsapp?.trim() || "");
-    const calendlyUrl = `${calendlyBaseUrl}?name=${nameParam}&email=${emailParam}${phoneParam ? `&a1=${phoneParam}` : ""}&hide_gdpr_banner=1&primary_color=f97316`;
+    const activeCalendlySrc = `https://calendly.com/groworbitofficial-support/30min?embed_domain=${embedDomain}&embed_type=Inline&name=${nameParam}&email=${emailParam}${phoneParam ? `&a1=${phoneParam}` : ""}&hide_gdpr_banner=1&background_color=ffffff&text_color=000000&primary_color=f97316`;
 
     return (
-      <div className="flex flex-col items-center justify-center py-10 gap-3 animate-fade-in text-center">
-        <div className={`w-14 h-14 rounded-full border flex items-center justify-center ${
-          isDark
-            ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
-            : "bg-emerald-50 border-emerald-200 text-emerald-600"
-        }`}>
-          <CheckCircle2 size={28} className="stroke-[2.5]" />
+      <div className="w-full flex flex-col items-center animate-fade-in">
+        {/* Fast Step Badge */}
+        <div className="w-full flex items-center justify-between py-2 px-3 rounded-xl bg-orange-500/5 border border-orange-500/15 mb-3">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span className="text-[10px] font-bold text-zinc-700">Intake Saved</span>
+          </div>
+          <span className="text-[10px] font-extrabold uppercase tracking-widest text-orange-600">
+            Step 2: Choose Time
+          </span>
         </div>
-        <div>
-          <p className={`text-base sm:text-lg font-black tracking-tight ${isDark ? "text-white" : "text-zinc-950"}`}>
-            Details Received!
-          </p>
-          <p className={`text-xs sm:text-sm font-semibold mt-1 max-w-xs mx-auto leading-relaxed ${isDark ? "text-orange-400" : "text-[#ea580c]"}`}>
-            Redirecting to Ali Haider&apos;s live calendar to lock in your strategy call...
-          </p>
+
+        {/* 1-Tap WhatsApp Fast Track Option */}
+        <div className="w-full mb-3">
+          <a
+            href={`https://wa.me/19128205916?text=${encodeURIComponent(`Hi Ali! I just submitted my audit request on Grow Orbit (Name: ${form.name}, Service: ${form.service}). Can we lock in our 15-min call on WhatsApp?`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => {
+              if (typeof window !== "undefined" && window.fbq) {
+                window.fbq("track", "Contact", { content_name: "WhatsApp Bypass from Booking Step" });
+              }
+            }}
+            className="w-full flex items-center justify-center gap-2 py-2.5 px-3.5 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-bold text-[11px] shadow-sm hover:shadow-md transition-all text-center no-underline active:scale-98"
+          >
+            <MessageCircle size={15} className="fill-white/20 shrink-0" />
+            <span>Prefer WhatsApp? Tap here to confirm directly on chat &rarr;</span>
+          </a>
         </div>
-        <div className="w-7 h-7 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mt-1" />
-        <a
-          href={calendlyUrl}
-          className="text-[11px] font-bold text-orange-500 hover:text-orange-400 underline underline-offset-4 mt-2 transition-colors"
-        >
-          Tap here if not redirected automatically &rarr;
-        </a>
-        <style>{`
-          @keyframes fade-in { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-          .animate-fade-in { animation: fade-in 0.4s ease both; }
-        `}</style>
+
+        {/* Active Pre-warmed Inline Calendly Embed */}
+        <div className="w-full relative min-h-[640px] sm:min-h-[680px] rounded-2xl overflow-hidden border border-zinc-200/80 bg-zinc-50/50 shadow-inner">
+          <iframe
+            src={activeCalendlySrc}
+            width="100%"
+            height="660"
+            frameBorder="0"
+            className="w-full h-[640px] sm:h-[680px] bg-transparent"
+            title="Schedule Strategy Session"
+          />
+        </div>
+
+        <div className="mt-2.5 text-center">
+          <a
+            href={`https://calendly.com/groworbitofficial-support/30min?name=${nameParam}&email=${emailParam}${phoneParam ? `&a1=${phoneParam}` : ""}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[10.5px] text-zinc-400 hover:text-orange-500 underline underline-offset-2 font-medium transition-colors"
+          >
+            Calendar slow on your device? Open full-screen &rarr;
+          </a>
+        </div>
       </div>
     );
   }
@@ -290,6 +433,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             required
             value={form.name}
             onChange={handleChange}
+            onFocus={handleInteraction}
             placeholder="Your name"
             className={`w-full border text-[15px] sm:text-[13px] font-medium transition-all outline-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-3.5 py-2.5 sm:py-3 min-h-[44px] ${
               isDark
@@ -317,6 +461,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             required
             value={form.email}
             onChange={handleChange}
+            onFocus={handleInteraction}
             placeholder="you@brand.com"
             className={`w-full border text-[15px] sm:text-[13px] font-medium transition-all outline-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-3.5 py-2.5 sm:py-3 min-h-[44px] ${
               isDark
@@ -342,6 +487,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             required
             value={form.service}
             onChange={handleChange}
+            onFocus={handleInteraction}
             className={`w-full border text-[15px] sm:text-[13px] font-medium transition-all appearance-none cursor-pointer outline-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-9 py-2.5 sm:py-3 min-h-[44px] ${
               highlightService ? "!ring-2 !ring-orange-500 !border-orange-500 shadow-[0_0_15px_rgba(255,122,0,0.3)] animate-pulse " : ""
             } ${
@@ -381,6 +527,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             autoComplete="tel"
             value={form.whatsapp}
             onChange={handleChange}
+            onFocus={handleInteraction}
             placeholder="e.g. (213) 373-4253"
             className={`w-full border text-[15px] sm:text-[13px] font-medium transition-all outline-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-3.5 py-2.5 sm:py-3 min-h-[44px] ${
               isDark
@@ -406,6 +553,7 @@ export default function LeadForm({ theme = "white", compact = false }) {
             name="pain"
             value={form.pain}
             onChange={handleChange}
+            onFocus={handleInteraction}
             placeholder="Tell us about your product, current stage, or what you need help with..."
             className={`w-full border text-[15px] sm:text-[13px] font-medium transition-all resize-none outline-none focus:outline-none focus:border-orange-500 rounded-xl pl-10 pr-3.5 py-2.5 sm:py-3 min-h-[56px] sm:min-h-[64px] leading-snug ${
               isDark
@@ -456,6 +604,17 @@ export default function LeadForm({ theme = "white", compact = false }) {
           <span>Zero Pitch Pressure</span>
         </span>
       </div>
+
+      {/* Invisible background prewarmer: downloads Calendly assets into memory cache while user types */}
+      {shouldPreloadCalendly && currentStep === "form" && (
+        <iframe
+          src="https://calendly.com/groworbitofficial-support/30min?embed_domain=groworbitofficial.com&embed_type=Inline&hide_gdpr_banner=1&background_color=ffffff&text_color=000000&primary_color=f97316"
+          style={{ position: "absolute", width: "1px", height: "1px", opacity: 0, pointerEvents: "none", zIndex: -10 }}
+          title="Calendly Background Prewarmer"
+          tabIndex={-1}
+          aria-hidden="true"
+        />
+      )}
     </form>
   );
 }

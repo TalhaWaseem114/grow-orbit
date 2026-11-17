@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { ArrowRight, Star, TrendingUp, Rocket, Shield, Heart } from "lucide-react";
 import LeadForm from "./LeadForm";
@@ -73,7 +72,6 @@ function SocialProof() {
 }
 
 export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = false }) {
-  const [formStep, setFormStep] = useState("form");
   return (
     <>
       <style>{`
@@ -199,43 +197,18 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
             <div className="mb-2.5 sm:mb-3.5">
               <div className="inline-flex items-center gap-1.5 bg-[#ffedd5] text-[#ea580c] px-3 py-0.5 sm:py-1 rounded-full text-[9px] sm:text-[10px] font-black uppercase tracking-wider mb-1.5 sm:mb-2.5">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#ea580c] animate-pulse" />
-                <span>
-                  {formStep === "schedule"
-                    ? "STEP 2 OF 2 · LOCK IN YOUR TIME"
-                    : formStep === "confirmed"
-                    ? "SESSION CONFIRMED · YOU'RE ALL SET"
-                    : "FREE STRATEGY CALL · 2 SPOTS LEFT"}
-                </span>
+                <span>FREE STRATEGY CALL &middot; 2 SPOTS LEFT</span>
               </div>
               <h2
                 className="text-[17px] sm:text-[22px] font-black tracking-tight leading-[1.18] uppercase"
                 style={{ fontFamily: "'Montserrat', sans-serif" }}
               >
-                {formStep === "schedule" ? (
-                  <>
-                    <span className="text-zinc-950 block">CHOOSE YOUR AUDIT TIME.</span>
-                    <span className="text-[#ff5c00] block mt-0.5">LOCK IN 1-ON-1 WITH ALI HAIDER.</span>
-                  </>
-                ) : formStep === "confirmed" ? (
-                  <>
-                    <span className="text-zinc-950 block">YOU'RE ON THE CALENDAR!</span>
-                    <span className="text-[#ff5c00] block mt-0.5">CHECK YOUR EMAIL FOR ACCESS DETAILS.</span>
-                  </>
-                ) : (
-                  <>
-                    <span className="text-zinc-950 block">TELL US ABOUT YOUR BRAND.</span>
-                    <span className="text-[#ff5c00] block mt-0.5">WE'LL SHOW YOU EXACTLY HOW TO SCALE IT.</span>
-                  </>
-                )}
+                <span className="text-zinc-950 block">TELL US ABOUT YOUR BRAND.</span>
+                <span className="text-[#ff5c00] block mt-0.5">WE'LL SHOW YOU EXACTLY HOW TO SCALE IT.</span>
               </h2>
             </div>
 
-            <LeadForm
-              theme="white"
-              compact={true}
-              step={formStep}
-              onStepChange={setFormStep}
-            />
+            <LeadForm theme="white" compact={true} />
           </div>
 
           {/* ── Mobile-Only Proof Section (Positioned Directly Below Form) ── */}

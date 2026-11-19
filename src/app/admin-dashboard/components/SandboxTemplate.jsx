@@ -26,7 +26,7 @@ export const sandboxContractBody = `<!-- HIDE_DEFAULT_CTA -->
             &#128196;
           </td>
           <td style="padding-bottom: 12px; vertical-align: top; color: #334155; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-            <strong style="color: #0f172a;">Agreement Scope:</strong> Full Amazon Account Management &amp; Brand Launch
+            <strong style="color: #0f172a;">Agreement Scope: </strong> Full Amazon Account Management &amp; Brand Launch
           </td>
         </tr>
         <tr>
@@ -482,19 +482,19 @@ export const sandboxReceiptBody = `<!-- HIDE_DEFAULT_CTA -->
   </tr>
 </table>`;
 
-export const sandboxRescheduleSubject = "Rescheduling Your Amazon Brand Launch Strategy Session — Grow Orbit 🚀";
-export const sandboxRescheduleHeadline = "Amazon Brand Launch Session | Quick Reschedule";
+export const sandboxRescheduleSubject = "Following Up: Your Amazon Account Management Demo & Pricing | Grow Orbit";
+export const sandboxRescheduleHeadline = "Amazon Full Account Management | Strategy & Demo Follow-Up";
 export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
-<p style="font-size: 14.5px; line-height: 22px; color: #475569; margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-  Hi Sadie,
+<p style="font-size: 14.5px; line-height: 22px; color: #475569; margin-top: 0; margin-bottom: 14px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Hi Olivia,
+</p>
+
+<p style="font-size: 14.5px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 14px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  I am following up on your inquiry regarding our <strong> Full Amazon Account Management</strong> services. My apologies for the slight delay; our intake CRM had a brief sync issue that delayed your notification reaching our team.
 </p>
 
 <p style="font-size: 14.5px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-  I want to sincerely apologize for missing our scheduled strategy session on Monday, September 15th. Due to an internal calendar sync delay across our strategist team, your booking notification was unfortunately delayed in reaching our live calendar.
-</p>
-
-<p style="font-size: 14.5px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 18px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-  We reviewed your inquiry regarding your <strong> Full Amazon Brand Launch</strong> and are excited to discuss the roadmap with you. We'd love to reschedule at your earliest convenience:
+  I saw you are evaluating growth partners over the next 2-4 weeks. If you are still looking, we would love to connect for a quick 15-minute call to walk you through our system, case studies, and pricing:
 </p>
 
 <!-- CTA Button Section (Bulletproof Table-Button for GoDaddy / Outlook / Gmail) -->
@@ -504,8 +504,8 @@ export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
       <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto;">
         <tr>
           <td align="center" bgcolor="#f97316" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 13px 32px; border-radius: 50px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-            <a href="https://calendly.com/groworbitofficial-support/30min" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12.5px; font-weight: bold; letter-spacing: 0.8px; text-transform: uppercase; line-height: 1.2; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-              Pick a New Time Slot &rarr;
+            <a href="https://calendly.com/groworbitofficial-support/30min?name=Olivia%20Brown&email=olivia.brown.submit.test%40gmail.com" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12.5px; font-weight: bold; letter-spacing: 0.8px; text-transform: uppercase; line-height: 1.2; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+              Book Your Strategy &amp; Demo Call &rarr;
             </a>
           </td>
         </tr>
@@ -514,13 +514,13 @@ export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
   </tr>
 </table>
 
-<!-- Direct Link Fallback (Crucial for GoDaddy Webmail link scanners) -->
-<p style="font-size: 11.5px; line-height: 16px; color: #64748b; margin-top: 0; margin-bottom: 20px; text-align: center; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-  Direct Calendar Link: <a href="https://calendly.com/groworbitofficial-support/30min" target="_blank" style="color: #f97316 !important; text-decoration: underline !important; font-weight: 600;">https://calendly.com/groworbitofficial-support/30min</a>
+<!-- Direct Link Fallback -->
+<p style="font-size: 11.5px; line-height: 16px; color: #64748b; margin-top: 0; margin-bottom: 18px; text-align: center; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Direct Calendar Link: <a href="https://calendly.com/groworbitofficial-support/30min?name=Olivia%20Brown&email=olivia.brown.submit.test%40gmail.com" target="_blank" style="color: #f97316 !important; text-decoration: underline !important; font-weight: 600;">https://calendly.com/groworbitofficial-support/30min</a>
 </p>
 
-<!-- Alternative Options Card (Bulletproof Table for GoDaddy) -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 20px;">
+<!-- Alternative Options Card (Bulletproof Table) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 18px;">
   <tr>
     <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 16px 20px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 20px; color: #475569; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
@@ -529,7 +529,7 @@ export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
             &#9993;
           </td>
           <td valign="top" style="padding-bottom: 10px; color: #334155; vertical-align: top; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-            <strong style="color: #0f172a;">Reply Directly:</strong> Prefer not to use Calendly? Just reply to this email with what time works best for you, and we'll book it right away.
+            <strong style="color: #0f172a;">Reply Directly:</strong> Prefer email? Simply reply with a couple of days and times that work for you, and we will lock it in.
           </td>
         </tr>
         <tr>
@@ -537,7 +537,7 @@ export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
             &#128241;
           </td>
           <td valign="top" style="color: #334155; vertical-align: top; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-            <strong style="color: #0f172a;">WhatsApp / Questions:</strong> Reach us directly on WhatsApp at <a href="https://wa.me/19128205916" target="_blank" style="color: #f97316 !important; font-weight: 700 !important; text-decoration: none !important;">+1 (912) 820-5916</a> anytime.
+            <strong style="color: #0f172a;">WhatsApp:</strong> Prefer to chat? Message Ali Haider directly on WhatsApp at <a href="https://wa.me/19128205916?text=Hi%20Ali!%20Following%20up%20on%20my%20inquiry%20for%20Olivia%20Brown%20regarding%20Full%20Amazon%20Account%20Management." target="_blank" style="color: #f97316 !important; font-weight: 700 !important; text-decoration: none !important;">+1 (912) 820-5916</a> anytime.
           </td>
         </tr>
       </table>
@@ -545,27 +545,98 @@ export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
   </tr>
 </table>
 
-<p style="font-size: 14px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 10px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-  Looking forward to connecting with you and mapping out your launch strategy!
+<p style="font-size: 14px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 6px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Looking forward to speaking with you!
 </p>`;
 
-export const sandboxId = "sandbox-reschedule-sadie";
+export const sandboxFollowupMingSubject = "Following Up: Your Amazon Growth Inquiry | Grow Orbit";
+export const sandboxFollowupMingHeadline = "Amazon Growth Consultation | Strategy & Roadmapping";
+export const sandboxFollowupMingBody = `<!-- HIDE_DEFAULT_CTA -->
+<p style="font-size: 14.5px; line-height: 22px; color: #475569; margin-top: 0; margin-bottom: 12px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Hi John,
+</p>
+
+<p style="font-size: 14.5px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 12px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Thank you for reaching out to Grow Orbit! Apologies for the slight delay; our intake system had a brief sync glitch on our end.
+</p>
+
+<p style="font-size: 14.5px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Whether you are planning a new product launch or looking to scale an existing brand, Grow Orbit helps Amazon sellers at every step, from launch roadmaps and listing optimization to PPC advertising and full account management.
+</p>
+
+<p style="font-size: 14.5px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 16px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Let's hop on a quick 15-minute call to discuss your goals and map out the right strategy:
+</p>
+
+<!-- CTA Button Section (Bulletproof Table-Button for GoDaddy / Outlook / Gmail) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 10px; margin-bottom: 8px;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto;">
+        <tr>
+          <td align="center" bgcolor="#f97316" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 13px 32px; border-radius: 50px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+            <a href="https://calendly.com/groworbitofficial-support/30min?name=John&email=mingzhang%40qq.com" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12.5px; font-weight: bold; letter-spacing: 0.8px; text-transform: uppercase; line-height: 1.2; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+              Book Your Free 15-Min Strategy Call &rarr;
+            </a>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<!-- Direct Link Fallback -->
+<p style="font-size: 11.5px; line-height: 16px; color: #64748b; margin-top: 0; margin-bottom: 18px; text-align: center; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Direct Calendar Link: <a href="https://calendly.com/groworbitofficial-support/30min?name=John&email=mingzhang%40qq.com" target="_blank" style="color: #f97316 !important; text-decoration: underline !important; font-weight: 600;">https://calendly.com/groworbitofficial-support/30min</a>
+</p>
+
+<!-- Alternative Options Card (Bulletproof Table) -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 18px;">
+  <tr>
+    <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 16px 20px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 20px; color: #475569; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+        <tr>
+          <td width="26" valign="top" style="padding-bottom: 10px; font-size: 15px; vertical-align: top;">
+            &#9993;
+          </td>
+          <td valign="top" style="padding-bottom: 10px; color: #334155; vertical-align: top; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+            <strong style="color: #0f172a;">Reply Directly:</strong> Prefer email? Simply reply with a couple of times that work for you, and we will confirm right away.
+          </td>
+        </tr>
+        <tr>
+          <td width="26" valign="top" style="font-size: 15px; vertical-align: top;">
+            &#128241;
+          </td>
+          <td valign="top" style="color: #334155; vertical-align: top; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+            <strong style="color: #0f172a;">WhatsApp:</strong> Prefer to chat? Message Ali Haider directly on WhatsApp at <a href="https://wa.me/19128205916?text=Hi%20Ali!%20Following%20up%20on%20my%20inquiry%20regarding%20Amazon%20growth%20support." target="_blank" style="color: #f97316 !important; font-weight: 700 !important; text-decoration: none !important;">+1 (912) 820-5916</a> anytime.
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>
+
+<p style="font-size: 14px; line-height: 22px; color: #334155; margin-top: 0; margin-bottom: 6px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Looking forward to speaking with you!
+</p>`;
+
+export const sandboxId = "sandbox-followup-olivia";
 export const sandboxSubject = sandboxRescheduleSubject;
 export const sandboxHeadline = sandboxRescheduleHeadline;
 export const sandboxBody = sandboxRescheduleBody;
 
 export const SANDBOX_DRAFTS = [
   {
-    id: "sandbox-reschedule-sadie",
+    id: "sandbox-followup-olivia",
     subject: sandboxRescheduleSubject,
     headline: sandboxRescheduleHeadline,
     body: sandboxRescheduleBody
   },
   {
-    id: "sandbox-contract-agreement",
-    subject: sandboxContractSubject,
-    headline: sandboxContractHeadline,
-    body: sandboxContractBody
+    id: "sandbox-followup-john-ming",
+    subject: sandboxFollowupMingSubject,
+    headline: sandboxFollowupMingHeadline,
+    body: sandboxFollowupMingBody
   },
   {
     id: "sandbox-microphone-benchmarking",

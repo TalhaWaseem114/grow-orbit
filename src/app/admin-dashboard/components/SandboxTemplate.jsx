@@ -503,7 +503,7 @@ export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
     <td align="center">
       <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto;">
         <tr>
-          <td align="center" bgcolor="#f97316" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 13px 32px; border-radius: 50px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+          <td align="center" bgcolor="#f97316" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 12px 22px; border-radius: 50px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
             <a href="https://calendly.com/groworbitofficial-support/30min?name=Olivia%20Brown&email=olivia.brown.submit.test%40gmail.com" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12.5px; font-weight: bold; letter-spacing: 0.8px; text-transform: uppercase; line-height: 1.2; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
               Book Your Strategy &amp; Demo Call &rarr;
             </a>
@@ -515,14 +515,14 @@ export const sandboxRescheduleBody = `<!-- HIDE_DEFAULT_CTA -->
 </table>
 
 <!-- Direct Link Fallback -->
-<p style="font-size: 11.5px; line-height: 16px; color: #64748b; margin-top: 0; margin-bottom: 18px; text-align: center; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-  Direct Calendar Link: <a href="https://calendly.com/groworbitofficial-support/30min?name=Olivia%20Brown&email=olivia.brown.submit.test%40gmail.com" target="_blank" style="color: #f97316 !important; text-decoration: underline !important; font-weight: 600;">https://calendly.com/groworbitofficial-support/30min</a>
+<p style="font-size: 11.5px; line-height: 16px; color: #64748b; margin-top: 0; margin-bottom: 18px; text-align: center; word-break: break-all; overflow-wrap: anywhere; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Direct Calendar Link: <a href="https://calendly.com/groworbitofficial-support/30min?name=Olivia%20Brown&email=olivia.brown.submit.test%40gmail.com" target="_blank" style="color: #f97316 !important; text-decoration: underline !important; font-weight: 600; word-break: break-all;">https://calendly.com/groworbitofficial-support/30min</a>
 </p>
 
 <!-- Alternative Options Card (Bulletproof Table) -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 18px;">
   <tr>
-    <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 16px 20px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+    <td class="mobile-card" bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 14px 12px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 20px; color: #475569; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
         <tr>
           <td width="26" valign="top" style="padding-bottom: 10px; font-size: 15px; vertical-align: top;">
@@ -574,7 +574,7 @@ export const sandboxFollowupMingBody = `<!-- HIDE_DEFAULT_CTA -->
     <td align="center">
       <table cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto;">
         <tr>
-          <td align="center" bgcolor="#f97316" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 13px 32px; border-radius: 50px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+          <td align="center" bgcolor="#f97316" style="background-color: #f97316; border: 3px solid #fed7aa; padding: 12px 22px; border-radius: 50px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
             <a href="https://calendly.com/groworbitofficial-support/30min?name=John&email=mingzhang%40qq.com" target="_blank" style="color: #ffffff !important; text-decoration: none !important; display: inline-block; font-size: 12.5px; font-weight: bold; letter-spacing: 0.8px; text-transform: uppercase; line-height: 1.2; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
               Book Your Free 15-Min Strategy Call &rarr;
             </a>
@@ -586,14 +586,14 @@ export const sandboxFollowupMingBody = `<!-- HIDE_DEFAULT_CTA -->
 </table>
 
 <!-- Direct Link Fallback -->
-<p style="font-size: 11.5px; line-height: 16px; color: #64748b; margin-top: 0; margin-bottom: 18px; text-align: center; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
-  Direct Calendar Link: <a href="https://calendly.com/groworbitofficial-support/30min?name=John&email=mingzhang%40qq.com" target="_blank" style="color: #f97316 !important; text-decoration: underline !important; font-weight: 600;">https://calendly.com/groworbitofficial-support/30min</a>
+<p style="font-size: 11.5px; line-height: 16px; color: #64748b; margin-top: 0; margin-bottom: 18px; text-align: center; word-break: break-all; overflow-wrap: anywhere; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+  Direct Calendar Link: <a href="https://calendly.com/groworbitofficial-support/30min?name=John&email=mingzhang%40qq.com" target="_blank" style="color: #f97316 !important; text-decoration: underline !important; font-weight: 600; word-break: break-all;">https://calendly.com/groworbitofficial-support/30min</a>
 </p>
 
 <!-- Alternative Options Card (Bulletproof Table) -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 18px;">
   <tr>
-    <td bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 16px 20px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
+    <td class="mobile-card" bgcolor="#f8fafc" style="background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid #f97316; border-radius: 8px; padding: 14px 12px; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
       <table width="100%" cellpadding="0" cellspacing="0" border="0" style="font-size: 13px; line-height: 20px; color: #475569; font-family: 'Montserrat', Arial, Helvetica, sans-serif;">
         <tr>
           <td width="26" valign="top" style="padding-bottom: 10px; font-size: 15px; vertical-align: top;">

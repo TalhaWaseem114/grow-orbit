@@ -191,16 +191,38 @@ ${signOffRole ? `<p style="font-size: 12px; color: #64748b; margin-top: 0; margi
     .wrapper {
       width: 100%;
       background-color: #f6f9fc;
-      padding: 30px 10px;
+      padding: 8px 2px;
+      box-sizing: border-box;
     }
     .container {
       max-width: 600px;
+      width: 100%;
       margin: 0 auto;
       background-color: #ffffff;
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       border: 1px solid #e1e8ed;
+    }
+    @media only screen and (max-width: 600px) {
+      .wrapper {
+        padding: 4px 2px !important;
+      }
+      .container {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 8px !important;
+      }
+      .header {
+        padding: 18px 12px !important;
+      }
+      .content {
+        padding: 18px 10px !important;
+      }
+      .headline {
+        font-size: 17px !important;
+        line-height: 1.35 !important;
+      }
     }
     .header {
       background-color: #0A0A0B;

@@ -947,31 +947,51 @@ export default function NewsletterTab({ isMobile }) {
       font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
       color: ${isDark ? "#ffffff" : "#333333"};
+      word-break: break-word;
+      overflow-wrap: anywhere;
+    }
+    * {
+      box-sizing: border-box;
     }
     @media only screen and (max-width: 600px) {
       .outer-wrapper {
-        padding: 10px 8px !important;
+        padding: 4px 2px !important;
       }
       .email-container {
         width: 100% !important;
-        border-radius: 12px !important;
+        max-width: 100% !important;
+        border-radius: 8px !important;
+        margin: 0 auto !important;
+      }
+      .email-header {
+        padding: 16px 10px !important;
       }
       .email-body {
-        padding: 20px 14px !important;
+        padding: 16px 8px !important;
       }
       .email-headline {
         font-size: 16px !important;
         line-height: 1.35 !important;
+        margin-bottom: 14px !important;
+      }
+      .mobile-card, [class*="mobile-card"] {
+        padding: 12px 10px !important;
+      }
+      table {
+        max-width: 100% !important;
+      }
+      td {
+        word-break: break-word !important;
       }
     }
   </style>
 </head>
 <body style="margin: 0; padding: 0; background-color: ${outerBg};">
-  <div class="outer-wrapper" style="width: 100%; background-color: ${outerBg}; padding: 24px 20px; box-sizing: border-box; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
-    <div class="email-container" style="max-width: 600px; margin: 0 auto; background-color: ${containerBg}; border-radius: 16px; overflow: hidden; box-shadow: ${isNeumorphic ? "none" : containerShadow}; border: ${isNeumorphic ? "3px solid #ffffff" : `1px solid ${borderColor}`};">
+  <div class="outer-wrapper" style="width: 100%; background-color: ${outerBg}; padding: 6px 2px; margin: 0; box-sizing: border-box; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;">
+    <div class="email-container" style="max-width: 600px; width: 100%; margin: 0 auto; background-color: ${containerBg}; border-radius: 12px; overflow: hidden; box-shadow: ${isNeumorphic ? "none" : containerShadow}; border: ${isNeumorphic ? "3px solid #ffffff" : `1px solid ${borderColor}`};">
       <!-- Header -->
       ${hideHeader ? "" : `
-      <div style="background: #0d0d0d; background: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 50%, #050505 100%); padding: 24px 16px; border-bottom: 3px solid #f97316; border-top-left-radius: 13px; border-top-right-radius: 13px;">
+      <div class="email-header" style="background: #0d0d0d; background: linear-gradient(135deg, #1f1f1f 0%, #0d0d0d 50%, #050505 100%); padding: 18px 12px; border-bottom: 3px solid #f97316; border-top-left-radius: 11px; border-top-right-radius: 11px;">
         <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse: collapse;">
           <tr>
             <td align="center" valign="middle">
@@ -996,7 +1016,7 @@ export default function NewsletterTab({ isMobile }) {
       </div>
       `}
       <!-- Body -->
-      <div class="email-body" style="padding: 28px 20px; background-color: ${containerBg}; text-align: left;">
+      <div class="email-body" style="padding: 20px 12px; background-color: ${containerBg}; text-align: left;">
         ${headText ? `<h1 class="email-headline" style="font-size: 18px; font-weight: 800; color: ${h1Color}; margin-top: 0; margin-bottom: 20px; line-height: 1.35; letter-spacing: -0.02em; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${headText}</h1>` : ""}
         <div style="font-size: 15px; color: ${isDark ? "#e4e4e7" : "#334155"}; line-height: 1.6; margin-bottom: 28px; font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">${formattedBody}</div>
         
@@ -2846,12 +2866,12 @@ export default function NewsletterTab({ isMobile }) {
             transition: "all 0.3s ease",
           }}>
             <div style={{
-              width: viewMode === "mobile" ? "375px" : "100%",
+              width: viewMode === "mobile" ? "390px" : "100%",
               maxWidth: "100%",
               background: "#121214",
               border: "1px solid rgba(255,255,255,0.08)",
               borderRadius: 20,
-              padding: viewMode === "mobile" ? "16px 12px 24px" : "0",
+              padding: viewMode === "mobile" ? "12px 2px 16px" : "0",
               boxShadow: "0 20px 40px rgba(0,0,0,0.5)",
               transition: "all 0.3s ease",
               position: "relative",
@@ -2859,7 +2879,7 @@ export default function NewsletterTab({ isMobile }) {
             }}>
               {viewMode === "mobile" && (
                 <div style={{
-                  height: 4, width: 44, background: "rgba(255,255,255,0.15)", borderRadius: 100, margin: "0 auto 14px"
+                  height: 4, width: 44, background: "rgba(255,255,255,0.15)", borderRadius: 100, margin: "0 auto 10px"
                 }} />
               )}
               {subject.trim() || body.trim() || headline.trim() ? (

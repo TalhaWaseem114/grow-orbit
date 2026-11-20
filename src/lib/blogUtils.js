@@ -23,6 +23,7 @@ export function getReadTime(post) {
 export function parseMarkdownText(text) {
   if (!text) return "";
   return text
+    .replace(/\\\$/g, '$')
     .replace(/\$\\rightarrow\$/g, '→')
     .replace(/\\rightarrow/g, '→')
     .replace(/\[\s?\]\s*/g, '☑ ')

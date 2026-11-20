@@ -6,7 +6,8 @@ import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { getSavedUtmData } from "@/utils/utmTracker";
-import { ArrowRight, Zap, TrendingUp, ChevronDown } from "lucide-react";
+import { ArrowRight, Zap, TrendingUp, ChevronDown, Mail, ShieldCheck, CheckCircle2, MapPin } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 
 
 /* ── Accordion wrapper (mobile-only collapse) ── */
@@ -108,7 +109,7 @@ export default function Footer() {
           whatsapp: "N/A",
           requestedService: form.service,
           notes: form.message || "No message provided",
-          source: "Footer Form",
+          source: isLandingPage ? "Landing Page Footer Form" : "Footer Form",
           website_confirm: honeypot,
           eventId,
           ...utmData,
@@ -193,6 +194,8 @@ export default function Footer() {
 
   if (pathname === "/thank-you" || pathname.includes("/book-meeting")) return null;
 
+  const isLandingPage = Boolean(pathname?.startsWith("/get-started"));
+
   return (
     <div className="px-3 pb-3 md:px-6 md:pb-6 mt-10 md:mt-20">
       <footer
@@ -244,69 +247,176 @@ export default function Footer() {
       </div>
 
       <div className="max-w-[1400px] mx-auto relative z-10">
-
-        {/* ══════════════════════════════════════
-            TOP SECTION: Headline + Form
-        ══════════════════════════════════════ */}
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-20 pb-14 md:pb-20">
-
-          {/* Left — headline + info */}
-          <div className="lg:w-1/2 pt-2 md:pt-6">
-
-            {/* Main headline */}
-            <div
-              className="font-black leading-[0.88] tracking-tighter mb-6 md:mb-8 uppercase"
-              style={{
-                fontSize: "clamp(2.6rem, 8.5vw, 6.8rem)",
-                fontFamily: "'Montserrat', sans-serif",
-              }}
-            >
-              Let's start<br />
-              <span
-                className="italic font-light normal-case tracking-normal text-zinc-300"
-                style={{ fontFamily: "'Playfair Display', serif" }}
-              >
-                the orbit.
-              </span>
-            </div>
-
-            <p className="text-zinc-400 text-base md:text-xl font-light max-w-lg leading-relaxed mb-10 md:mb-16">
-              Ready to stop guessing and start growing? Tell us what you're working on and{" "}
-              <span className="text-white font-medium">
-                we'll map the right path in a free 15-minute call.
-              </span>
-            </p>
-
-            {/* Promise cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5 mb-10 md:mb-16">
-              {[
-                {
-                  icon: <Zap size={18} />,
-                  title: "Quick response.",
-                  desc: "We'll reach out within 24 hours to discuss your goals.",
-                },
-                {
-                  icon: <TrendingUp size={18} />,
-                  title: "Clear next steps.",
-                  desc: "After the consultation, we'll provide a detailed roadmap.",
-                },
-              ].map((item, i) => (
-                <div
-                  key={i}
-                  className="flex items-start gap-4 bg-white/[0.04] border border-white/8 rounded-2xl p-4 sm:p-5 hover:border-orange-500/30 transition-colors duration-300"
-                >
-                  <div className="w-9 h-9 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <p className="font-black text-white text-[13px] uppercase tracking-tight mb-1">{item.title}</p>
-                    <p className="text-zinc-400 text-[12px] font-light leading-snug">{item.desc}</p>
-                  </div>
+        {/* ══════════════════════════════════════════════════════════
+            LANDING PAGE FOOTER (Focused, Modern, No Form, Zero Leaks)
+            ══════════════════════════════════════════════════════════ */}
+        {isLandingPage ? (
+          <div className="flex flex-col gap-8 md:gap-10 pb-4 md:pb-6">
+            {/* Top row: Brand Message on Left, Direct Contact Channels on Right */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+              
+              {/* Left Column: Mission + Action */}
+              <div className="lg:col-span-7 space-y-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-[9px] font-mono font-bold uppercase tracking-[0.25em]">
+                  <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+                  Growth Partner &middot; Amazon Agency
                 </div>
-              ))}
+
+                {/* Main signature headline */}
+                <div
+                  className="font-black leading-[0.88] tracking-tighter mb-3 sm:mb-5 uppercase text-white"
+                  style={{
+                    fontSize: "clamp(2.6rem, 6.5vw, 5.2rem)",
+                    fontFamily: "'Montserrat', sans-serif",
+                  }}
+                >
+                  Let's start<br />
+                  <span
+                    className="italic font-light normal-case tracking-normal text-zinc-300"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    the orbit.
+                  </span>
+                </div>
+
+                <p className="text-zinc-400 text-sm sm:text-base font-light leading-relaxed max-w-xl">
+                  Ready to stop guessing and start growing? Tell us what you're working on and{" "}
+                  <span className="text-white font-medium">
+                    we'll map the right path in a free 15-minute call.
+                  </span>
+                </p>
+
+                {/* Primary Action Button: Smooth scroll to Lead Form */}
+                <div className="pt-2 flex flex-wrap items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const formEl = document.getElementById("lead-form") || document.querySelector("form");
+                      if (formEl) {
+                        formEl.scrollIntoView({ behavior: "smooth", block: "start" });
+                      } else {
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }
+                    }}
+                    className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full bg-gradient-to-r from-orange-500 via-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-orange-500/25 active:scale-95 transition-all cursor-pointer border-none"
+                  >
+                    <span>Claim Your Free Strategy Call</span>
+                    <ArrowRight size={14} />
+                  </button>
+                </div>
+
+                {/* Trust micro-badges */}
+                <div className="pt-1 flex flex-wrap items-center gap-4 text-zinc-400 text-[11px] font-medium">
+                  <span className="flex items-center gap-1.5">
+                    <CheckCircle2 size={13} className="text-orange-500 shrink-0" />
+                    100% Free Consultation
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <ShieldCheck size={13} className="text-orange-500 shrink-0" />
+                    Confidential Account Audit
+                  </span>
+                </div>
+
+                {/* Promise cards (from older footer) */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 pt-3">
+                  {[
+                    {
+                      icon: <Zap size={18} />,
+                      title: "Quick response.",
+                      desc: "We'll reach out within 24 hours to discuss your goals.",
+                    },
+                    {
+                      icon: <TrendingUp size={18} />,
+                      title: "Clear next steps.",
+                      desc: "After the consultation, we'll provide a detailed roadmap.",
+                    },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-start gap-3 bg-white/[0.04] border border-white/8 rounded-2xl p-3.5 sm:p-4 hover:border-orange-500/30 transition-colors duration-300"
+                    >
+                      <div className="w-8 h-8 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
+                        {item.icon}
+                      </div>
+                      <div>
+                        <p className="font-black text-white text-xs uppercase tracking-tight mb-0.5">{item.title}</p>
+                        <p className="text-zinc-400 text-[11px] font-light leading-snug">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Column: Direct Channels Card */}
+              <div className="lg:col-span-5 bg-white/[0.04] border border-white/8 rounded-3xl p-5 sm:p-6 space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-white/5">
+                  <span className="text-orange-400 uppercase tracking-[0.2em] text-[9px] font-black font-mono">Fast-Track Channels</span>
+                  <span className="text-emerald-400 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    Online Now
+                  </span>
+                </div>
+
+                <div className="space-y-2.5">
+                  {/* WhatsApp */}
+                  <a
+                    href="https://wa.me/19128205916?text=Hi%20Grow%20Orbit%2C%20I%20would%20like%20to%20learn%20more%20about%20scaling%20my%20Amazon%20brand."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => {
+                      if (typeof window !== "undefined") {
+                        if (window.ttq) window.ttq.track("Contact", { content_name: "WhatsApp - Landing Footer" });
+                        if (window.fbq) window.fbq("track", "Contact", { content_name: "WhatsApp - Landing Footer" });
+                      }
+                    }}
+                    className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.03] hover:bg-emerald-500/10 border border-white/5 hover:border-emerald-500/30 transition-all no-underline group"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-xl bg-[#25D366] text-white flex items-center justify-center shrink-0 shadow-sm shadow-[#25D366]/20">
+                        <FaWhatsapp size={18} />
+                      </div>
+                      <div>
+                        <p className="text-xs font-bold text-white group-hover:text-emerald-400 transition-colors">
+                          Chat on WhatsApp
+                        </p>
+                        <p className="text-[10.5px] text-zinc-400 font-medium">
+                          +1 (912) 820-5916 &middot; Instant Direct Reply
+                        </p>
+                      </div>
+                    </div>
+                    <ArrowRight size={14} className="text-zinc-500 group-hover:text-emerald-400 group-hover:translate-x-0.5 transition-all shrink-0" />
+                  </a>
+
+                  {/* Email */}
+                  <a
+                    href="mailto:support@groworbitofficial.com"
+                    className="flex items-center justify-between p-3.5 rounded-2xl bg-white/[0.03] hover:bg-orange-500/10 border border-white/5 hover:border-orange-500/30 transition-all no-underline group"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 rounded-xl bg-orange-500/10 border border-orange-500/20 text-orange-400 flex items-center justify-center shrink-0">
+                        <Mail size={16} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-white group-hover:text-orange-400 transition-colors">
+                          Email Support
+                        </p>
+                        <p className="text-[10.5px] text-zinc-400 font-medium truncate">
+                          support@groworbitofficial.com
+                        </p>
+                      </div>
+                    </div>
+                    <ArrowRight size={14} className="text-zinc-500 group-hover:text-orange-400 group-hover:translate-x-0.5 transition-all shrink-0" />
+                  </a>
+                </div>
+
+                <div className="pt-2 text-[10.5px] text-zinc-500 font-light flex items-center gap-2">
+                  <span className="text-zinc-600 font-mono font-bold uppercase text-[9px]">Direct:</span>
+                  <span>Senior Strategist Consultation</span>
+                </div>
+              </div>
             </div>
 
-            {/* Social + contact info row */}
+            {/* Social + contact info row (Exact signature row with Canadian Proof + Map) */}
             <div className="flex items-start justify-between gap-6 border-t border-white/8 pt-8 md:pt-10 flex-wrap">
               <div>
                 <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-3 md:mb-4">Follow Us</p>
@@ -327,273 +437,417 @@ export default function Footer() {
               </div>
 
               <div className="text-right">
-                <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-3 md:mb-4">Contact Us</p>
+                <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-3 md:mb-4">Headquarters</p>
                 <div className="flex flex-col gap-1 items-end">
-                  <a href="mailto:support@groworbitofficial.com" className="text-zinc-100 text-[12px] font-semibold hover:text-orange-500 transition-colors">
-                    support@groworbitofficial.com
-                  </a>
-                  <a href="https://wa.me/19128205916" target="_blank" rel="noreferrer" onClick={() => { if (typeof window !== "undefined" && window.fbq) { window.fbq("track", "Contact", { content_name: "WhatsApp — Footer" }); } }} className="text-zinc-100 text-[12px] font-semibold hover:text-orange-500 transition-colors">
-                    +1 (912) 820-5916
-                  </a>
-                  <p className="text-zinc-300 text-[11px] font-light leading-relaxed mt-1">
+                  <p className="text-zinc-300 text-[11px] font-light leading-relaxed">
                     2583 Lundigan Dr<br />
                     Mississauga, ON L5J 3W2<br />
                     Canada
                   </p>
+                  
+                  {/* Direct Google Maps link button (0.00ms speed impact) */}
+                  <a
+                    href="https://maps.google.com/?q=2583+Lundigan+Dr+Mississauga+ON+L5J+3W2+Canada"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 mt-2 rounded-full bg-white/[0.04] hover:bg-orange-500/10 border border-white/8 hover:border-orange-500/30 text-zinc-300 hover:text-orange-400 text-[10.5px] font-mono transition-all no-underline group"
+                  >
+                    <MapPin size={11} className="text-orange-500 group-hover:scale-110 transition-transform" />
+                    <span>Open in Google Maps ↗</span>
+                  </a>
                 </div>
               </div>
             </div>
 
-          </div>
-
-          {/* Right — white form card */}
-          <div className="lg:w-[460px] w-full shrink-0">
-            <div className="bg-white text-zinc-900 p-5 sm:p-7 md:p-11 rounded-[32px] md:rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.5)] lg:sticky lg:top-10">
-              <p
-                className="text-2xl font-black tracking-tight mb-1 uppercase"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
-              >
-                Have a project{" "}
-                <span
-                  className="normal-case italic font-light text-zinc-600 tracking-normal"
-                  style={{ fontFamily: "'Playfair Display', serif" }}
-                >
-                  in mind?
-                </span>
-              </p>
-              <p className="text-zinc-600 text-[12px] font-light mb-8">
-                Fill in the form and we'll be in touch within 24 hours.
-              </p>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                {/* Honeypot field for spam prevention */}
-                <input
-                  type="text"
-                  name="website_confirm"
-                  value={honeypot}
-                  onChange={(e) => setHoneypot(e.target.value)}
-                  className="hidden"
-                  tabIndex={-1}
-                  autoComplete="off"
-                />
-                {/* Name */}
-                <div className="space-y-1.5">
-                  <label htmlFor="footer-name" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
-                    Your Name *
-                  </label>
-                  <input
-                    id="footer-name"
-                    type="text"
-                    name="name"
-                    autoComplete="name"
-                    value={form.name}
-                    onChange={handleChange}
-                    placeholder="e.g. John Smith"
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-300 focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500"
-                  />
-                </div>
-
-                {/* Email */}
-                <div className="space-y-1.5">
-                  <label htmlFor="footer-email" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
-                    Email *
-                  </label>
-                  <input
-                    id="footer-email"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    value={form.email}
-                    onChange={handleChange}
-                    placeholder="you@brand.com"
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-300 focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500"
-                  />
-                </div>
-
-                {/* Service */}
-                <div className="space-y-1.5">
-                  <label htmlFor="footer-service" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
-                    Service Required *
-                  </label>
-                  <div className="relative">
-                    <select
-                      id="footer-service"
-                      name="service"
-                      aria-label="Service Required"
-                      value={form.service}
-                      onChange={handleChange}
-                      className={`w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] outline-none transition-all duration-300 cursor-pointer appearance-none focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500 ${
-                        !form.service ? "text-zinc-600" : "text-zinc-900"
-                      }`}
-                    >
-                      <option value="" disabled>Choose a service...</option>
-                      <option value="Amazon Launch">Amazon Launch</option>
-                      <option value="Listing Optimization">Listing Optimization</option>
-                      <option value="PPC Scaling">PPC Scaling</option>
-                      <option value="Brand Design & Creative">Brand Design & Creative</option>
-                      <option value="Full Account Management">Full Account Management</option>
-                      <option value="Trademark Registration">Trademark Registration</option>
-                      <option value="Website / Funnel">Website / Funnel</option>
-                      <option value="Other / Not Sure">Other / Not Sure</option>
-                    </select>
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none text-sm" aria-hidden="true">↓</span>
+            {/* Bottom Bar: Logo, Legal Links, Copyright, and Disclaimer */}
+            <div className="pt-6 border-t border-white/5 space-y-3">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3 shrink-0 select-none">
+                  <div className="relative flex items-center justify-center w-8 h-8">
+                    <Image
+                      src="/logo.png"
+                      alt="Grow Orbit Logo"
+                      width={32}
+                      height={32}
+                      className="object-contain"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-base font-black tracking-tight uppercase flex gap-1 leading-none">
+                      <span className="text-white">GROW</span>
+                      <span className="text-orange-400">ORBIT</span>
+                    </span>
+                    <span className="text-[8.5px] font-bold text-zinc-500 tracking-wider mt-0.5 uppercase font-mono">
+                      We Rank. You Sell. It's That Simple.
+                    </span>
                   </div>
                 </div>
 
-                {/* Message */}
-                <div className="space-y-1.5">
-                  <label htmlFor="footer-message" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
-                    Message
-                  </label>
-                  <textarea
-                    id="footer-message"
-                    name="message"
-                    value={form.message}
-                    onChange={handleChange}
-                    placeholder="Tell us about your brand and biggest challenge..."
-                    rows={3}
-                    className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-300 resize-none focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500"
-                  />
+                <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 text-zinc-500 text-[10px] uppercase tracking-widest font-black font-mono">
+                  <span>© 2010-2026 Grow Orbit.</span>
+                  <span className="text-zinc-800">|</span>
+                  <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors no-underline">Privacy Policy</Link>
+                  <span className="text-zinc-800">|</span>
+                  <Link href="/terms-of-service" className="hover:text-orange-500 transition-colors no-underline">Terms of Service</Link>
                 </div>
+              </div>
 
-                {/* Submit */}
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="group w-full mt-2 bg-zinc-900 hover:bg-orange-500 text-white py-4 rounded-2xl font-black text-[12px] uppercase tracking-[0.2em] transition-all duration-300 shadow-lg active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
-                >
-                  {loading ? "Sending..." : (
-                    <>
-                      Send Message
-                      <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
-                    </>
-                  )}
-                </button>
-              </form>
+              <p className="text-zinc-600 text-[9px] text-center sm:text-left font-mono font-medium leading-relaxed">
+                Disclaimer: Grow Orbit is an independent Amazon performance agency and is not endorsed by, sponsored by, or affiliated with Amazon.com, Inc. or its subsidiaries.
+              </p>
             </div>
           </div>
-        </div>
+        ) : (
+          /* ══════════════════════════════════════════════════════════
+              STANDARD GLOBAL FOOTER (For all other site pages)
+              ══════════════════════════════════════════════════════════ */
+          <>
+            {/* TOP SECTION: Headline + Form */}
+            <div className="flex flex-col lg:flex-row justify-between items-start gap-10 lg:gap-20 pb-14 md:pb-20">
 
-        {/* ══════════════════════════════════════
-            MIDDLE: Collapsible Services + Navigation
-        ══════════════════════════════════════ */}
-        <div className="py-8 md:py-14 space-y-1 md:space-y-10 border-t border-white/5">
+              {/* Left — headline + info */}
+              <div className="lg:w-1/2 pt-2 md:pt-6">
 
-          {/* Services Accordion */}
-          <FooterAccordion title="All Services" actionLabel="Browse All" actionHref="/service">
-            <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-2 md:gap-y-3" aria-label="Services Quick Links">
-              {serviceLinks.map((s, i) => (
-                <Link
-                  key={i}
-                  href={s.url}
-                  className="text-zinc-400 text-[12px] font-medium hover:text-white transition-colors no-underline leading-snug focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1 px-1 inline-block"
+                {/* Main headline */}
+                <div
+                  className="font-black leading-[0.88] tracking-tighter mb-6 md:mb-8 uppercase"
+                  style={{
+                    fontSize: "clamp(2.6rem, 8.5vw, 6.8rem)",
+                    fontFamily: "'Montserrat', sans-serif",
+                  }}
                 >
-                  {s.name}
+                  Let's start<br />
+                  <span
+                    className="italic font-light normal-case tracking-normal text-zinc-300"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
+                    the orbit.
+                  </span>
+                </div>
+
+                <p className="text-zinc-400 text-base md:text-xl font-light max-w-lg leading-relaxed mb-10 md:mb-16">
+                  Ready to stop guessing and start growing? Tell us what you're working on and{" "}
+                  <span className="text-white font-medium">
+                    we'll map the right path in a free 15-minute call.
+                  </span>
+                </p>
+
+                {/* Promise cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-5 mb-10 md:mb-16">
+                  {[
+                    {
+                      icon: <Zap size={18} />,
+                      title: "Quick response.",
+                      desc: "We'll reach out within 24 hours to discuss your goals.",
+                    },
+                    {
+                      icon: <TrendingUp size={18} />,
+                      title: "Clear next steps.",
+                      desc: "After the consultation, we'll provide a detailed roadmap.",
+                    },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-start gap-4 bg-white/[0.04] border border-white/8 rounded-2xl p-4 sm:p-5 hover:border-orange-500/30 transition-colors duration-300"
+                    >
+                      <div className="w-9 h-9 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center text-orange-400 shrink-0">
+                        {item.icon}
+                      </div>
+                      <div>
+                        <p className="font-black text-white text-[13px] uppercase tracking-tight mb-1">{item.title}</p>
+                        <p className="text-zinc-400 text-[12px] font-light leading-snug">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Social + contact info row */}
+                <div className="flex items-start justify-between gap-6 border-t border-white/8 pt-8 md:pt-10 flex-wrap">
+                  <div>
+                    <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-3 md:mb-4">Follow Us</p>
+                    <div className="flex flex-col gap-2">
+                      {socialLinks.map((s) => (
+                        <Link
+                          key={s.name}
+                          href={s.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`Follow us on ${s.name}`}
+                          className="text-zinc-400 text-sm font-medium hover:text-orange-500 transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm"
+                        >
+                          {s.name} ↗
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <p className="text-zinc-400 uppercase tracking-[0.3em] text-[9px] font-black font-mono mb-3 md:mb-4">Contact Us</p>
+                    <div className="flex flex-col gap-1 items-end">
+                      <a href="mailto:support@groworbitofficial.com" className="text-zinc-100 text-[12px] font-semibold hover:text-orange-500 transition-colors">
+                        support@groworbitofficial.com
+                      </a>
+                      <a href="https://wa.me/19128205916" target="_blank" rel="noreferrer" onClick={() => { if (typeof window !== "undefined" && window.fbq) { window.fbq("track", "Contact", { content_name: "WhatsApp - Footer" }); } }} className="text-zinc-100 text-[12px] font-semibold hover:text-orange-500 transition-colors">
+                        +1 (912) 820-5916
+                      </a>
+                      <p className="text-zinc-300 text-[11px] font-light leading-relaxed mt-1">
+                        2583 Lundigan Dr<br />
+                        Mississauga, ON L5J 3W2<br />
+                        Canada
+                      </p>
+                      <a
+                        href="https://maps.google.com/?q=2583+Lundigan+Dr+Mississauga+ON+L5J+3W2+Canada"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 mt-2 rounded-full bg-white/[0.04] hover:bg-orange-500/10 border border-white/8 hover:border-orange-500/30 text-zinc-300 hover:text-orange-400 text-[10.5px] font-mono transition-all no-underline group"
+                      >
+                        <MapPin size={11} className="text-orange-500 group-hover:scale-110 transition-transform" />
+                        <span>Open in Google Maps ↗</span>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right — white form card */}
+              <div className="lg:w-[460px] w-full shrink-0">
+                <div className="bg-white text-zinc-900 p-5 sm:p-7 md:p-11 rounded-[32px] md:rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.5)] lg:sticky lg:top-10">
+                  <p
+                    className="text-2xl font-black tracking-tight mb-1 uppercase"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    Have a project{" "}
+                    <span
+                      className="normal-case italic font-light text-zinc-600 tracking-normal"
+                      style={{ fontFamily: "'Playfair Display', serif" }}
+                    >
+                      in mind?
+                    </span>
+                  </p>
+                  <p className="text-zinc-600 text-[12px] font-light mb-8">
+                    Fill in the form and we'll be in touch within 24 hours.
+                  </p>
+
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    {/* Honeypot field for spam prevention */}
+                    <input
+                      type="text"
+                      name="website_confirm"
+                      value={honeypot}
+                      onChange={(e) => setHoneypot(e.target.value)}
+                      className="hidden"
+                      tabIndex={-1}
+                      autoComplete="off"
+                    />
+                    {/* Name */}
+                    <div className="space-y-1.5">
+                      <label htmlFor="footer-name" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
+                        Your Name *
+                      </label>
+                      <input
+                        id="footer-name"
+                        type="text"
+                        name="name"
+                        autoComplete="name"
+                        value={form.name}
+                        onChange={handleChange}
+                        placeholder="e.g. John Smith"
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-300 focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500"
+                      />
+                    </div>
+
+                    {/* Email */}
+                    <div className="space-y-1.5">
+                      <label htmlFor="footer-email" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
+                        Email *
+                      </label>
+                      <input
+                        id="footer-email"
+                        type="email"
+                        name="email"
+                        autoComplete="email"
+                        value={form.email}
+                        onChange={handleChange}
+                        placeholder="you@brand.com"
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-300 focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500"
+                      />
+                    </div>
+
+                    {/* Service */}
+                    <div className="space-y-1.5">
+                      <label htmlFor="footer-service" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
+                        Service Required *
+                      </label>
+                      <div className="relative">
+                        <select
+                          id="footer-service"
+                          name="service"
+                          aria-label="Service Required"
+                          value={form.service}
+                          onChange={handleChange}
+                          className={`w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] outline-none transition-all duration-300 cursor-pointer appearance-none focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500 ${
+                            !form.service ? "text-zinc-600" : "text-zinc-900"
+                          }`}
+                        >
+                          <option value="" disabled>Choose a service...</option>
+                          <option value="Amazon Launch">Amazon Launch</option>
+                          <option value="Listing Optimization">Listing Optimization</option>
+                          <option value="PPC Scaling">PPC Scaling</option>
+                          <option value="Brand Design & Creative">Brand Design & Creative</option>
+                          <option value="Full Account Management">Full Account Management</option>
+                          <option value="Trademark Registration">Trademark Registration</option>
+                          <option value="Website / Funnel">Website / Funnel</option>
+                          <option value="Other / Not Sure">Other / Not Sure</option>
+                        </select>
+                        <span className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none text-sm" aria-hidden="true">↓</span>
+                      </div>
+                    </div>
+
+                    {/* Message */}
+                    <div className="space-y-1.5">
+                      <label htmlFor="footer-message" className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-600 pl-1">
+                        Message
+                      </label>
+                      <textarea
+                        id="footer-message"
+                        name="message"
+                        value={form.message}
+                        onChange={handleChange}
+                        placeholder="Tell us about your brand and biggest challenge..."
+                        rows={3}
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-2xl px-5 py-3.5 text-base md:text-[14px] text-zinc-900 placeholder-zinc-400 outline-none transition-all duration-300 resize-none focus:border-orange-500 focus:pl-6 focus-visible:ring-2 focus-visible:ring-orange-500"
+                      />
+                    </div>
+
+                    {/* Submit */}
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="group w-full mt-2 bg-zinc-900 hover:bg-orange-500 text-white py-4 rounded-2xl font-black text-[12px] uppercase tracking-[0.2em] transition-all duration-300 shadow-lg active:scale-[0.98] disabled:opacity-50 flex items-center justify-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2"
+                    >
+                      {loading ? "Sending..." : (
+                        <>
+                          Send Message
+                          <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
+                        </>
+                      )}
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            {/* MIDDLE: Collapsible Services + Navigation */}
+            <div className="py-8 md:py-14 space-y-1 md:space-y-10 border-t border-white/5">
+
+              {/* Services Accordion */}
+              <FooterAccordion title="All Services" actionLabel="Browse All" actionHref="/service">
+                <nav className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-2 md:gap-y-3" aria-label="Services Quick Links">
+                  {serviceLinks.map((s, i) => (
+                    <Link
+                      key={i}
+                      href={s.url}
+                      className="text-zinc-400 text-[12px] font-medium hover:text-white transition-colors no-underline leading-snug focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1 px-1 inline-block"
+                    >
+                      {s.name}
+                    </Link>
+                  ))}
+                </nav>
+              </FooterAccordion>
+
+              {/* Divider on mobile */}
+              <div className="border-t border-white/5 md:border-0" />
+
+              {/* Navigation Accordion (Mobile Only) */}
+              <div className="md:hidden">
+                <FooterAccordion title="Navigation" actionLabel={null} actionHref={null}>
+                  <nav className="grid grid-cols-2 sm:grid-cols-3 gap-y-2" aria-label="Footer Mobile Navigation">
+                    {navLinks.map((link) => (
+                      <Link
+                        key={link.name}
+                        href={link.url}
+                        className="text-zinc-400 text-[12px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1 px-1"
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
+                  </nav>
+                </FooterAccordion>
+              </div>
+            </div>
+
+            {/* Giant Watermark Text (Desktop Only) */}
+            <div className="hidden md:flex w-full justify-center items-center py-10 md:py-14 border-t border-b border-white/5 mt-8 mb-6 select-none overflow-hidden relative z-10" aria-hidden="true">
+              <svg className="w-full h-auto max-h-[14rem] overflow-visible pointer-events-none" viewBox="0 0 1000 160" aria-hidden="true" role="img">
+                <text
+                  x="50%"
+                  y="55%"
+                  dominantBaseline="middle"
+                  textAnchor="middle"
+                  fill="rgba(255,255,255,0.08)"
+                  style={{ fontSize: "130px", fontFamily: "'Montserrat', sans-serif", fontWeight: 900, letterSpacing: "-0.05em" }}
+                >
+                  GROW ORBIT
+                </text>
+              </svg>
+            </div>
+
+            {/* Desktop Navigation (Centered Under GROW ORBIT) */}
+            <nav
+              className="hidden md:flex items-center justify-center flex-wrap gap-x-8 lg:gap-x-10 gap-y-3 pb-8 mb-4 relative z-10"
+              aria-label="Footer Desktop Navigation"
+            >
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.url}
+                  className="text-zinc-400 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1.5 px-2 inline-flex items-center"
+                >
+                  {link.name}
                 </Link>
               ))}
             </nav>
-          </FooterAccordion>
 
-          {/* Divider on mobile */}
-          <div className="border-t border-white/5 md:border-0" />
+            {/* BOTTOM BAR */}
+            <div className="relative z-10 pt-6 md:pt-4 border-t border-white/5 md:border-0 flex flex-col gap-2.5">
+              <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 pt-0">
+                {/* Logo */}
+                <Link href="/" className="flex items-center gap-3 group no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl">
+                  <div className="relative flex items-center justify-center w-10 h-10">
+                    <Image
+                      src="/logo.png"
+                      alt="Grow Orbit Logo"
+                      width={40}
+                      height={40}
+                      className="object-contain group-hover:scale-110 transition-transform duration-300"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-xl font-black tracking-tight uppercase flex gap-1.5 transition-colors leading-none">
+                      <span className="text-white">GROW</span>
+                      <span className="text-orange-400">ORBIT</span>
+                    </span>
+                    <span className="text-[9px] font-bold text-zinc-400 tracking-wider mt-0.5 uppercase font-mono">
+                      We Rank. You Sell. It's That Simple.
+                    </span>
+                  </div>
+                </Link>
 
-          {/* Navigation Accordion (Mobile Only) */}
-          <div className="md:hidden">
-            <FooterAccordion title="Navigation" actionLabel={null} actionHref={null}>
-              <nav className="grid grid-cols-2 sm:grid-cols-3 gap-y-2" aria-label="Footer Mobile Navigation">
-                {navLinks.map((link) => (
-                  <Link
-                    key={link.name}
-                    href={link.url}
-                    className="text-zinc-400 text-[12px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1 px-1"
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </nav>
-            </FooterAccordion>
-          </div>
-        </div>
-
-        {/* ══════════════════════════════════════
-            GIANT WATERMARK TEXT (Desktop Only)
-        ══════════════════════════════════════ */}
-        <div className="hidden md:flex w-full justify-center items-center py-10 md:py-14 border-t border-b border-white/5 mt-8 mb-6 select-none overflow-hidden relative z-10" aria-hidden="true">
-          <svg className="w-full h-auto max-h-[14rem] overflow-visible pointer-events-none" viewBox="0 0 1000 160" aria-hidden="true" role="img">
-            <text
-              x="50%"
-              y="55%"
-              dominantBaseline="middle"
-              textAnchor="middle"
-              fill="rgba(255,255,255,0.08)"
-              style={{ fontSize: "130px", fontFamily: "'Montserrat', sans-serif", fontWeight: 900, letterSpacing: "-0.05em" }}
-            >
-              GROW ORBIT
-            </text>
-          </svg>
-        </div>
-
-        {/* ══════════════════════════════════════
-            DESKTOP NAVIGATION (Centered Under GROW ORBIT)
-        ══════════════════════════════════════ */}
-        <nav
-          className="hidden md:flex items-center justify-center flex-wrap gap-x-8 lg:gap-x-10 gap-y-3 pb-8 mb-4 relative z-10"
-          aria-label="Footer Desktop Navigation"
-        >
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.url}
-              className="text-zinc-400 text-[11px] font-bold uppercase tracking-widest hover:text-white transition-colors no-underline focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:outline-none rounded-sm py-1.5 px-2 inline-flex items-center"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </nav>
-
-        {/* ══════════════════════════════════════
-            BOTTOM BAR
-        ══════════════════════════════════════ */}
-        <div className="relative z-10 pt-6 md:pt-4 border-t border-white/5 md:border-0 flex flex-col gap-2.5">
-
-          {/* Logo + Copyright */}
-          <div className="w-full flex flex-col sm:flex-row items-center justify-between gap-4 pt-0">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group no-underline shrink-0 focus-visible:ring-2 focus-visible:ring-orange-500 rounded-xl">
-              <div className="relative flex items-center justify-center w-10 h-10">
-                <Image
-                  src="/logo.png"
-                  alt="Grow Orbit Logo"
-                  width={40}
-                  height={40}
-                  className="object-contain group-hover:scale-110 transition-transform duration-300"
-                />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-black tracking-tight uppercase flex gap-1.5 transition-colors leading-none">
-                  <span className="text-white">GROW</span>
-                  <span className="text-orange-400">ORBIT</span>
-                </span>
-                <span className="text-[9px] font-bold text-zinc-400 tracking-wider mt-0.5 uppercase font-mono">
-                  We Rank. You Sell. It's That Simple.
-                </span>
-              </div>
-            </Link>
-
-            {/* Copyright & Legal Links */}
-            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-zinc-500 text-[10px] uppercase tracking-widest font-black font-mono shrink-0 text-center">
-              <span>© 2010-2026 Grow Orbit.</span>
-              <span className="hidden sm:inline text-zinc-800">|</span>
-              <div className="flex items-center gap-3">
-                <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors no-underline py-1 px-1 sm:py-1.5 sm:px-2 inline-flex items-center">Privacy Policy</Link>
-                <span className="text-zinc-800">|</span>
-                <Link href="/terms-of-service" className="hover:text-orange-500 transition-colors no-underline py-1 px-1 sm:py-1.5 sm:px-2 inline-flex items-center">Terms of Service</Link>
+                {/* Copyright & Legal Links */}
+                <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-zinc-500 text-[10px] uppercase tracking-widest font-black font-mono shrink-0 text-center">
+                  <span>© 2010-2026 Grow Orbit.</span>
+                  <span className="hidden sm:inline text-zinc-800">|</span>
+                  <div className="flex items-center gap-3">
+                    <Link href="/privacy-policy" className="hover:text-orange-500 transition-colors no-underline py-1 px-1 sm:py-1.5 sm:px-2 inline-flex items-center">Privacy Policy</Link>
+                    <span className="text-zinc-800">|</span>
+                    <Link href="/terms-of-service" className="hover:text-orange-500 transition-colors no-underline py-1 px-1 sm:py-1.5 sm:px-2 inline-flex items-center">Terms of Service</Link>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-
-        </div>
-
+          </>
+        )}
       </div>
       </footer>
     </div>

@@ -15,7 +15,7 @@ const faqs = [
         We typically drive noticeable conversion (CVR) and CTR improvements in the{" "}
         <strong className="text-zinc-950 font-bold">first 14 days</strong>, with stable, profitable
         scaling establishing between{" "}
-        <strong className="text-orange-600 font-bold">30–60 days</strong>.
+        <strong className="text-orange-600 font-bold">30-60 days</strong>.
       </>
     )
   },
@@ -164,7 +164,7 @@ export default function FAQSection({ scrollToForm }) {
                   }`}>
                     0{i + 1}
                   </span>
-                  <span className="text-[14.5px] sm:text-[15px] font-extrabold text-zinc-950 tracking-tight leading-tight group-hover:text-orange-600 transition-colors">
+                  <span className="text-[14.5px] sm:text-[15px] font-semibold text-zinc-900 tracking-tight leading-tight group-hover:text-orange-600 transition-colors">
                     {faq.q}
                   </span>
                 </div>

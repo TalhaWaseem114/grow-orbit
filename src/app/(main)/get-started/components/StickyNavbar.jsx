@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Globe, ExternalLink, MessageCircle, X } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import "@/components/navbar/Navbar.css";
 
 const NAV_ITEMS = [
@@ -171,15 +172,24 @@ export default function StickyNavbar({ scrolled, scrollToForm }) {
             </button>
           </div>
 
-          {/* Right: Get Started Button (Links to form) */}
-          <div className="flex items-center justify-end shrink-0 min-w-[68px]">
-            <button
-              type="button"
-              onClick={handleCTAClick}
-              className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold text-[9px] sm:text-[10px] uppercase tracking-wider px-2.5 sm:px-3 py-1.5 shadow-sm shadow-orange-500/20 active:scale-95 transition-all no-underline shrink-0 border-none cursor-pointer"
+          {/* Right: WhatsApp Button for Mobile Visitors (TikTok/Mobile Ad Traffic) */}
+          <div className="flex items-center justify-end shrink-0 min-w-[70px]">
+            <a
+              href="https://wa.me/19128205916?text=Hi%20Grow%20Orbit%2C%20I%20would%20like%20to%20learn%20more%20about%20scaling%20my%20Amazon%20brand."
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  if (window.ttq) window.ttq.track("Contact", { content_name: "WhatsApp — GetStarted Mobile Nav" });
+                  if (window.fbq) window.fbq("track", "Contact", { content_name: "WhatsApp — GetStarted Mobile Nav" });
+                }
+              }}
+              aria-label="Chat on WhatsApp"
+              className="inline-flex items-center justify-center gap-1.5 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-[10px] sm:text-[11px] uppercase tracking-wider px-2.5 sm:px-3 py-1.5 shadow-md shadow-[#25D366]/25 active:scale-95 transition-all no-underline shrink-0 border-none cursor-pointer"
             >
-              Get Started
-            </button>
+              <FaWhatsapp size={13} className="shrink-0" />
+              <span>Chat Now</span>
+            </a>
           </div>
         </div>
 

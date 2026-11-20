@@ -180,8 +180,8 @@ export default function StickyNavbar({ scrolled, scrollToForm }) {
               rel="noopener noreferrer"
               onClick={() => {
                 if (typeof window !== "undefined") {
-                  if (window.ttq) window.ttq.track("Contact", { content_name: "WhatsApp — GetStarted Mobile Nav" });
-                  if (window.fbq) window.fbq("track", "Contact", { content_name: "WhatsApp — GetStarted Mobile Nav" });
+                  if (window.ttq) window.ttq.track("Contact", { content_name: "WhatsApp - GetStarted Mobile Nav" });
+                  if (window.fbq) window.fbq("track", "Contact", { content_name: "WhatsApp - GetStarted Mobile Nav" });
                 }
               }}
               aria-label="Chat on WhatsApp"

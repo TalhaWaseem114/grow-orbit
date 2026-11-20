@@ -17,7 +17,7 @@ function ProofStats() {
       {[
         { icon: TrendingUp, val: "$12M+", label: "Revenue Generated" },
         { icon: Rocket, val: "80+", label: "Brands Launched" },
-        { icon: Shield, val: "8.2x", label: "Average ROAS" },
+        { icon: Shield, val: "37%", label: "Avg. Lower ACoS" },
         { icon: Heart, val: "100%", label: "Profit-First Approach" },
       ].map((stat, i) => (
         <div key={i} className="flex items-center gap-2 sm:gap-2.5 transition-transform hover:scale-105 duration-300">

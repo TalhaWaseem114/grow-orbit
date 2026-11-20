@@ -3,7 +3,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
-import { Quote, Mail, Globe, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, MapPin, ShieldCheck, Plane } from "lucide-react";
+import { Quote, Globe, ArrowLeft, ArrowRight, ChevronLeft, ChevronRight, MapPin, ShieldCheck, Plane } from "lucide-react";
 
 export default function CeoSourcingSection({ scrollToForm }) {
   const [activeImage, setActiveImage] = useState(null);
@@ -84,21 +84,6 @@ export default function CeoSourcingSection({ scrollToForm }) {
       img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040767/grow_orbit_ceo_pics/5.avif",
       title: "On-Site Production Inspection",
       desc: "Reviewing manufacturing capacity and building long-term ties directly on the factory floor."
-    },
-    {
-      img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040768/grow_orbit_ceo_pics/6.avif",
-      title: "Executive Supplier Partnership",
-      desc: "Establishing strategic manufacturer partnerships to lock in priority production scheduling."
-    },
-    {
-      img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040769/grow_orbit_ceo_pics/7.avif",
-      title: "Transit Between Supplier Hubs",
-      desc: "Traveling across manufacturing cities by high-speed rail for back-to-back factory audits."
-    },
-    {
-      img: "https://res.cloudinary.com/dciggvulg/image/upload/v1784040771/grow_orbit_ceo_pics/8.avif",
-      title: "Strategic Supplier Dinner",
-      desc: "Building trusted executive relationships with factory owners for priority lead times and negotiation leverage."
     }
   ];
 
@@ -134,7 +119,7 @@ export default function CeoSourcingSection({ scrollToForm }) {
               >
               <Image
                 src={optimizeCloudinaryUrl("https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif", 600)}
-                alt="Coach Ali Haider - CEO & Founder"
+                alt="Ali Haider - Founder & CEO"
                 fill
                 sizes="(max-width: 640px) 90vw, 400px"
                 className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
@@ -145,13 +130,13 @@ export default function CeoSourcingSection({ scrollToForm }) {
               {/* Seamless Dark Gradient Rising from the Bottom */}
               <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 via-35% to-transparent pointer-events-none" />
 
-              {/* Clean text right on the gradient (no clunky box) */}
+              {/* Clean text right on the gradient */}
               <div className="absolute bottom-6 left-7 right-7 z-10">
                 <p className="text-white font-montserrat font-black text-xl sm:text-2xl uppercase tracking-tight leading-none drop-shadow-md">
-                  Coach Ali Haider
+                  Ali Haider
                 </p>
                 <p className="text-orange-500 text-xs sm:text-sm font-bold uppercase tracking-widest mt-1.5 drop-shadow">
-                  CEO, Grow Orbit
+                  Founder &amp; CEO, Grow Orbit
                 </p>
               </div>
             </div>
@@ -194,31 +179,23 @@ export default function CeoSourcingSection({ scrollToForm }) {
               </div>
             </div>
 
-            {/* CEO Sign-off & Direct Call CTA */}
+            {/* CEO Direct Call CTA */}
             <div className="mt-8 pt-7 border-t border-zinc-800/80 flex flex-col sm:flex-row sm:items-center justify-between gap-5">
-              <div>
-                <p className="font-montserrat font-black text-white uppercase tracking-tight text-lg">Coach Ali Haider</p>
-                <p className="text-orange-500 text-xs font-bold tracking-widest uppercase mt-0.5">CEO & Founder, Grow Orbit</p>
+              <div className="hidden sm:block">
+                <p className="font-montserrat font-black text-white uppercase tracking-tight text-base sm:text-lg">Ali Haider</p>
+                <p className="text-orange-500 text-xs font-bold tracking-widest uppercase mt-0.5 font-mono">Founder &amp; CEO</p>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
                 {scrollToForm && (
                   <button
                     type="button"
                     onClick={scrollToForm}
-                    className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_20px_rgba(249,115,22,0.3)] hover:shadow-[0_6px_25px_rgba(249,115,22,0.45)] hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                    className="w-full sm:w-auto justify-center group inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-400 hover:to-orange-500 text-white font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-[0_4px_20px_rgba(249,115,22,0.3)] hover:shadow-[0_6px_25px_rgba(249,115,22,0.45)] hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                   >
                     <span>Talk To Ali (Free 15-Min Call)</span>
                     <ArrowRight size={14} className="group-hover:translate-x-0.5 transition-transform" />
                   </button>
                 )}
-                <a
-                  href="mailto:support@groworbitofficial.com"
-                  aria-label="Email support"
-                  className="w-10 h-10 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 flex items-center justify-center text-zinc-300 hover:text-white transition-all duration-300"
-                  title="Email Coach Ali"
-                >
-                  <Mail size={16} />
-                </a>
               </div>
             </div>
           </div>

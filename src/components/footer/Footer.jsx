@@ -197,10 +197,10 @@ export default function Footer() {
   const isLandingPage = Boolean(pathname?.startsWith("/get-started"));
 
   return (
-    <div className="px-3 pb-3 md:px-6 md:pb-6 mt-10 md:mt-20">
+    <div className="px-3 pb-3 md:px-6 md:pb-6 mt-8 sm:mt-10 md:mt-20">
       <footer
         role="contentinfo"
-        className="bg-[#0A0A0B] text-white pt-16 md:pt-24 pb-[76px] sm:pb-[88px] md:pb-12 px-5 sm:px-6 md:px-12 rounded-[32px] md:rounded-[60px] relative overflow-hidden shadow-[0_40px_100px_-10px_rgba(0,0,0,0.5)]"
+        className="bg-[#0A0A0B] text-white pt-7 sm:pt-9 md:pt-24 pb-[76px] sm:pb-[88px] md:pb-12 px-5 sm:px-6 md:px-12 rounded-[32px] md:rounded-[60px] relative overflow-hidden shadow-[0_40px_100px_-10px_rgba(0,0,0,0.5)]"
         style={{ fontFamily: "'Montserrat', sans-serif" }}
       >
       {/* ── Orbit ring bg decoration ── */}

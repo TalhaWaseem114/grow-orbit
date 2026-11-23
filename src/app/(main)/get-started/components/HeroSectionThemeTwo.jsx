@@ -110,7 +110,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
         />
 
         {/* ── Left — Text Content ── */}
-        <div className="relative flex-1 flex flex-col justify-start 2xl:justify-center px-4 sm:px-8 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-[66px] sm:pt-20 pb-2 lg:pt-28 lg:pb-12 2xl:pt-32 2xl:pb-16 z-10">
+        <div className="relative flex-1 flex flex-col justify-start lg:justify-start 2xl:justify-start px-4 sm:px-8 md:px-16 lg:px-20 xl:px-28 2xl:px-36 pt-[66px] sm:pt-20 pb-2 lg:pt-[92px] lg:pb-8 xl:pt-[96px] xl:pb-10 2xl:pt-[100px] 2xl:pb-12 z-10">
           {/* Subtle low-density texture */}
           <div
             className="absolute inset-0 opacity-[0.16] pointer-events-none"
@@ -143,9 +143,9 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
             </div>
           </div>
 
-          <div className="relative z-10 max-w-2xl fade-up lg:mt-2">
+          <div className="relative z-10 max-w-2xl fade-up lg:mt-0">
             {/* Desktop-only System tag */}
-            <div className="hidden lg:block relative mb-5 sm:mb-7 -ml-[15px] sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[3px] sm:translate-y-[10px]">
+            <div className="hidden lg:block relative mb-4 sm:mb-6 lg:mb-3.5 -ml-[15px] sm:-ml-6 md:-ml-8 lg:-ml-[50px] translate-y-[3px] sm:translate-y-[10px] lg:translate-y-0">
               <div className="flex items-center gap-2 sm:gap-4">
                 <div className="w-2 h-2 sm:w-2.5 sm:h-2.5 bg-orange-500 rounded-full shadow-[0_0_15px_rgba(249,115,22,0.6)]" />
                 <div className="w-8 sm:w-12 h-px bg-orange-500/30" />
@@ -159,7 +159,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
             </div>
 
             {/* Desktop Scarcity Pill */}
-            <div className="hidden lg:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-5 sm:mb-7 whitespace-nowrap">
+            <div className="hidden lg:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4 sm:mb-6 lg:mb-4 whitespace-nowrap">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0" />
               <span className="text-[9px] sm:text-[10px] font-bold text-orange-400 uppercase tracking-[0.2em] whitespace-nowrap">
                 Currently Accepting 3-4 Brands &middot; 2 Spots Left
@@ -194,7 +194,7 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
         </div>
 
         {/* ── Right — White Form Card Container (Positioned ABOVE THE FOLD on Mobile) ── */}
-        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex flex-col items-center justify-start 2xl:justify-center px-4 pb-6 pt-1 sm:px-8 sm:pb-10 sm:pt-6 lg:px-8 lg:pb-10 lg:pt-[90px] xl:px-12 xl:pb-10 xl:pt-[92px] 2xl:pt-[84px] z-20 overflow-visible bg-transparent">
+        <div className="relative flex-none w-full lg:w-[44%] xl:w-[40%] 2xl:w-[38%] flex flex-col items-center justify-start lg:justify-start 2xl:justify-start px-4 pb-6 pt-1 sm:px-8 sm:pb-10 sm:pt-6 lg:px-8 lg:pb-10 lg:pt-[75px] xl:px-12 xl:pb-10 xl:pt-[77px] 2xl:pt-[69px] z-20 overflow-visible bg-transparent">
           {/* Subtle warm ambient glow behind the card */}
           <div className="absolute top-[20%] right-[10%] w-80 h-80 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%)" }} />
           <div className="absolute bottom-[20%] left-[10%] w-72 h-72 rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(255,122,0,0.04) 0%, transparent 70%)" }} />

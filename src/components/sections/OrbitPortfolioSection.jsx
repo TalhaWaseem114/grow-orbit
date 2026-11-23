@@ -12,9 +12,8 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
   const [activeMaterial, setActiveMaterial] = useState("All Materials");
   const [activeNiche, setActiveNiche] = useState("All Categories");
 
-  /* Use first 12 items from shared data for better filtering variety */
-  const limit = isGetStarted ? 12 : 16;
-  const filteredPortfolio = PORTFOLIO_ITEMS.slice(0, limit).filter((item) => {
+  /* Use all items from shared data for full showcase variety */
+  const filteredPortfolio = PORTFOLIO_ITEMS.filter((item) => {
     const matchCategory = activeCategory === "all" || item.category === activeCategory || (item.services && item.services.includes(activeCategory));
     const matchMaterial = activeMaterial === "All Materials" || (item.materials && item.materials.some((mat) => mat.toLowerCase().includes(activeMaterial.toLowerCase())));
     const matchNiche = activeNiche === "All Categories" || item.niche === activeNiche;

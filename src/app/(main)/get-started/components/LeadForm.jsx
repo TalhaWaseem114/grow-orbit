@@ -414,25 +414,28 @@ export default function LeadForm({ theme = "white", compact = false }) {
 
       {/* Submit Button */}
       <style>{`
-        @keyframes aura-glow-pulse {
-          0%, 100% {
-            box-shadow: 0 6px 18px -2px rgba(255, 92, 0, 0.45), 0 0 10px rgba(255, 122, 0, 0.2);
+        @keyframes shimmer-sweep {
+          0% {
+            transform: translateX(-150%) skewX(-20deg);
           }
-          50% {
-            box-shadow: 0 10px 30px 2px rgba(255, 92, 0, 0.8), 0 0 24px 6px rgba(255, 167, 38, 0.45);
+          32%, 100% {
+            transform: translateX(250%) skewX(-20deg);
           }
         }
-        .cta-glow-pulse {
-          animation: aura-glow-pulse 2.6s ease-in-out infinite;
+        .cta-shimmer-sweep {
+          animation: shimmer-sweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
       `}</style>
       <button
         type="submit"
         disabled={loading || submitted}
-        className="w-full relative overflow-hidden font-black text-[12px] sm:text-[13px] uppercase tracking-wider text-white bg-gradient-to-r from-[#FF4500] via-[#FF7A00] to-[#FFA726] hover:brightness-110 active:scale-[0.99] transition-all duration-300 cta-glow-pulse py-3 sm:py-3.5 min-h-[46px] rounded-xl flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-60 mt-1.5 border border-orange-400/30"
+        className="w-full relative overflow-hidden font-black text-[12px] sm:text-[13px] uppercase tracking-wider text-white bg-gradient-to-r from-[#FF4500] via-[#FF7A00] to-[#FFA726] hover:brightness-110 active:scale-[0.99] transition-all duration-300 shadow-[0_10px_25px_-5px_rgba(255,92,0,0.5),0_4px_12px_rgba(255,122,0,0.3)] py-3 sm:py-3.5 min-h-[46px] rounded-xl flex items-center justify-center gap-2 group cursor-pointer disabled:opacity-60 mt-1.5 border border-orange-400/30"
       >
         {/* Subtle glossy top highlight */}
         <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
+
+        {/* Diagonal Light Shimmer Beam (Apple / Stripe style) */}
+        <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none cta-shimmer-sweep z-10" />
 
         {loading ? (
           <span className="relative z-10 flex items-center justify-center gap-2">

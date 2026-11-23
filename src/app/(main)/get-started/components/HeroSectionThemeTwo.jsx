@@ -89,6 +89,17 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
           animation: subtle-fade-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
           animation-delay: 0.15s;
         }
+        @keyframes float-box {
+          0%, 100% {
+            transform: translateY(0px) rotate(14deg);
+          }
+          50% {
+            transform: translateY(-8px) rotate(17deg);
+          }
+        }
+        .animate-float-box {
+          animation: float-box 6s ease-in-out infinite;
+        }
       `}</style>
       <section className="relative min-h-screen flex flex-col lg:flex-row items-stretch overflow-hidden bg-zinc-950">
 
@@ -111,6 +122,26 @@ export default function HeroSectionThemeTwo({ scrollToForm, formRef, scrolled = 
             }}
           />
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(249,115,22,0.12),transparent_60%)] pointer-events-none" />
+
+          {/* ── Background Tilted 3D Amazon Delivery Package Box (Zero-LCP AVIF Decorative Watermark) ── */}
+          <div
+            aria-hidden="true"
+            className="absolute top-12 sm:top-14 md:top-16 right-0 sm:right-6 md:right-10 lg:right-4 xl:right-12 z-0 pointer-events-none select-none overflow-visible"
+          >
+            <div className="relative w-36 h-36 sm:w-52 sm:h-52 md:w-64 md:h-64 lg:w-80 lg:h-80 xl:w-96 xl:h-96 opacity-20 sm:opacity-25 animate-float-box">
+              <Image
+                src="/assets/amazon-package-3d.avif"
+                alt=""
+                role="presentation"
+                width={380}
+                height={369}
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 640px) 144px, (max-width: 1024px) 256px, 384px"
+                className="w-full h-auto object-contain"
+              />
+            </div>
+          </div>
 
           <div className="relative z-10 max-w-2xl fade-up lg:mt-2">
             {/* Desktop-only System tag */}

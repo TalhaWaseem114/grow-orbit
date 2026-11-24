@@ -43,18 +43,18 @@ export default function Navbar() {
     "/case-study/li-02",
     "/case-study/li-03",
     "/portfolio",
-    "/faq"
+    "/faq",
+    "/about"
   ];
 
-  const isAboutPage = pathname.includes("about");
   const isLightPage = lightPages.some((path) => pathname.includes(path));
   // Removed the blanket startsWith("/service") check which was forcing white text on light service pages
   const isForcedDarkPage = darkThemedPages.some((path) => {
     // Exact match for the index or partial match for specific subpages
-    if (path === "/service" || path === "/portfolio" || path === "/faq") return pathname === path || pathname === `${path}/`;
+    if (path === "/service" || path === "/portfolio" || path === "/faq" || path === "/about") return pathname === path || pathname === `${path}/`;
     return pathname.includes(path);
   });
-  const isDarkTextNeeded = (isSticky && !isAboutPage) || (isLightPage && !isForcedDarkPage);
+  const isDarkTextNeeded = isSticky || (isLightPage && !isForcedDarkPage);
 
   useEffect(() => {
     const handleScroll = () => setIsSticky(window.scrollY > 20);
@@ -172,11 +172,7 @@ export default function Navbar() {
           pathname.includes("get-started") ? "lg:hidden" : ""
         } ${
           isSticky
-            ? `top-1.5 sm:top-2.5 lg:top-3 w-[calc(100%-16px)] sm:w-[calc(100%-32px)] lg:w-[calc(100%-48px)] xl:w-[calc(100%-64px)] 2xl:w-[calc(100%-80px)] max-w-[1720px] rounded-full ${
-                isAboutPage
-                  ? "bg-zinc-950 border-white/10 shadow-[0_10px_35px_rgba(0,0,0,0.5)]"
-                  : "bg-white border-zinc-200 shadow-[0_10px_35px_rgba(0,0,0,0.08)]"
-              } py-2`
+            ? "top-1.5 sm:top-2.5 lg:top-3 w-[calc(100%-16px)] sm:w-[calc(100%-32px)] lg:w-[calc(100%-48px)] xl:w-[calc(100%-64px)] 2xl:w-[calc(100%-80px)] max-w-[1720px] rounded-full bg-white border-zinc-200 shadow-[0_10px_35px_rgba(0,0,0,0.08)] py-2"
             : "top-0 w-full max-w-[1720px] rounded-full bg-transparent border-transparent py-3 sm:py-5 lg:py-4 shadow-none"
         }`}
       >

@@ -658,7 +658,7 @@ export default async function Page({ params }) {
                 const parts = block.text.split("|");
                 return (
                   <figure key={i} className="my-12 max-w-[820px] mx-auto w-full max-w-full overflow-hidden">
-                    <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-zinc-200/90 bg-white flex flex-col items-center transition-all duration-300 hover:shadow-orange-500/5">
+                    <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg shadow-zinc-950/5 border border-zinc-200/90 bg-transparent flex flex-col items-center [transform:translateZ(0)] [isolation:isolate] transition-shadow duration-300 hover:shadow-xl hover:shadow-orange-500/10">
                       <div className="w-full flex items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-3.5 bg-zinc-50/90 border-b border-zinc-100 min-w-0">
                         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-orange-500/10 text-orange-600 border border-orange-500/20 shrink-0 whitespace-nowrap shadow-xs">
                           {parts[2] ? parts[2].trim() : "Framework Blueprint"}
@@ -667,13 +667,13 @@ export default async function Page({ params }) {
                           {parts[3] !== undefined ? parts[3].trim() : "Full Schematic Walkthrough"}
                         </span>
                       </div>
-                      <div className="w-full flex justify-center overflow-hidden">
+                      <div className="w-full flex justify-center overflow-hidden rounded-b-[22px] sm:rounded-b-[23px] bg-transparent">
                         <Image
                           src={parts[0]}
                           alt={parts[1] || "Infographic Diagram"}
                           width={1200}
                           height={1600}
-                          className="w-full h-auto block object-cover"
+                          className="w-full h-auto block object-cover rounded-b-[22px] sm:rounded-b-[23px]"
                           sizes="(max-width: 820px) 100vw, 820px"
                           priority={false}
                         />
@@ -685,13 +685,13 @@ export default async function Page({ params }) {
               if (block.type === "image") {
                 const parts = block.text.split("|");
                 return (
-                  <div key={i} className="my-10 relative rounded-3xl overflow-hidden shadow-xl border border-zinc-100 bg-zinc-50 flex justify-center">
+                  <div key={i} className="my-10 relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg shadow-zinc-950/5 border border-zinc-100 bg-transparent flex justify-center [transform:translateZ(0)] [isolation:isolate]">
                     <Image
                       src={parts[0]}
                       alt={parts[1] || "Article Illustration"}
                       width={800}
                       height={500}
-                      className="w-full h-auto object-cover max-h-[500px]"
+                      className="w-full h-auto block object-cover max-h-[500px] rounded-2xl sm:rounded-3xl"
                       sizes="(max-width: 768px) 100vw, 800px"
                     />
                   </div>

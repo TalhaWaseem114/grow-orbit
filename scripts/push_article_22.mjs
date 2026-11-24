@@ -104,15 +104,20 @@ function parseMarkdownToBlocks(mdContent) {
 
     if (trimmed === "[KEY_TAKEAWAYS]") {
       flushBlock();
-      const takeawayLines = [];
+      const items = [];
       let j = i + 1;
       while (j < lines.length && lines[j].trim() !== "[/KEY_TAKEAWAYS]") {
-        takeawayLines.push(lines[j]);
+        const itemLine = lines[j].trim();
+        if (itemLine.startsWith("* ") || itemLine.startsWith("- ")) {
+          items.push(itemLine.replace(/^(\*|\-)\s+/, ""));
+        } else if (itemLine && items.length > 0) {
+          items[items.length - 1] += " " + itemLine;
+        }
         j++;
       }
       blocks.push({
         type: "takeaways",
-        text: takeawayLines.join("\n").trim(),
+        text: items.join("|||"),
       });
       i = j + 1;
       continue;

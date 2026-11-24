@@ -516,17 +516,39 @@ export default async function Page({ params }) {
                 );
               }
               if (block.type === "takeaways") {
+                const items = block.text.includes("|||")
+                  ? block.text.split("|||")
+                  : block.text.split("\n").filter(l => l.trim().length > 0).map(l => l.replace(/^(\*|\-)\s+/, ""));
+
                 return (
-                  <div key={i} className="my-10 p-6 sm:p-8 rounded-2xl bg-zinc-950 border border-zinc-800 text-zinc-100 shadow-2xl relative overflow-hidden">
-                    <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-600" />
-                    <div className="flex items-center gap-2 mb-4 text-orange-400 font-bold uppercase tracking-wider text-xs">
-                      <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />
-                      Executive Summary & Key Takeaways
+                  <div
+                    key={i}
+                    className="my-10 p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-orange-50/90 via-amber-50/50 to-white border-2 border-orange-200/90 shadow-xl shadow-orange-500/5 relative overflow-hidden"
+                  >
+                    <div className="flex items-center justify-between gap-3 mb-6 pb-4 border-b border-orange-200/60">
+                      <div className="flex items-center gap-2.5">
+                        <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse shrink-0" />
+                        <span className="text-xs sm:text-sm font-black tracking-wider uppercase text-orange-600 font-mono">
+                          Executive Summary & Key Takeaways
+                        </span>
+                      </div>
+                      <span className="text-[11px] font-bold text-orange-700 bg-orange-100/70 px-3 py-1 rounded-full border border-orange-200 shadow-2xs shrink-0">
+                        Quick Read
+                      </span>
                     </div>
-                    <div
-                      className="text-zinc-300 space-y-2.5 leading-relaxed text-sm sm:text-base [&>ul]:list-disc [&>ul]:pl-5 [&>ul>li]:mb-2.5 [&>ul>li]:text-zinc-200"
-                      dangerouslySetInnerHTML={{ __html: parseMarkdownText(block.text) }}
-                    />
+                    <ul className="space-y-4">
+                      {items.map((item, itemIdx) => (
+                        <li key={itemIdx} className="flex items-start gap-3 sm:gap-4">
+                          <span className="mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-orange-500/10 text-orange-600 border border-orange-500/20 text-xs font-black">
+                            ✓
+                          </span>
+                          <div
+                            className="text-zinc-700 text-sm sm:text-base leading-relaxed"
+                            dangerouslySetInnerHTML={{ __html: parseMarkdownText(item) }}
+                          />
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 );
               }

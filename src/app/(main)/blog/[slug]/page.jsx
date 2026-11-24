@@ -515,6 +515,21 @@ export default async function Page({ params }) {
                   </div>
                 );
               }
+              if (block.type === "takeaways") {
+                return (
+                  <div key={i} className="my-10 p-6 sm:p-8 rounded-2xl bg-zinc-950 border border-zinc-800 text-zinc-100 shadow-2xl relative overflow-hidden">
+                    <div className="absolute top-0 left-0 h-1 w-full bg-gradient-to-r from-orange-500 via-amber-400 to-orange-600" />
+                    <div className="flex items-center gap-2 mb-4 text-orange-400 font-bold uppercase tracking-wider text-xs">
+                      <span className="w-2.5 h-2.5 rounded-full bg-orange-500 animate-pulse" />
+                      Executive Summary & Key Takeaways
+                    </div>
+                    <div
+                      className="text-zinc-300 space-y-2.5 leading-relaxed text-sm sm:text-base [&>ul]:list-disc [&>ul]:pl-5 [&>ul>li]:mb-2.5 [&>ul>li]:text-zinc-200"
+                      dangerouslySetInnerHTML={{ __html: parseMarkdownText(block.text) }}
+                    />
+                  </div>
+                );
+              }
               if (block.type === "youtube") {
                 const parts = block.text.split("|");
                 const videoUrl = parts[0];

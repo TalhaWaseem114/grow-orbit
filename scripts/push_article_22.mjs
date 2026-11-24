@@ -102,6 +102,22 @@ function parseMarkdownToBlocks(mdContent) {
       continue;
     }
 
+    if (trimmed === "[KEY_TAKEAWAYS]") {
+      flushBlock();
+      const takeawayLines = [];
+      let j = i + 1;
+      while (j < lines.length && lines[j].trim() !== "[/KEY_TAKEAWAYS]") {
+        takeawayLines.push(lines[j]);
+        j++;
+      }
+      blocks.push({
+        type: "takeaways",
+        text: takeawayLines.join("\n").trim(),
+      });
+      i = j + 1;
+      continue;
+    }
+
     if (trimmed.startsWith("[BOOK_MEETING_CTA:")) {
       flushBlock();
       currentBlockType = "cta";

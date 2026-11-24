@@ -658,22 +658,22 @@ export default async function Page({ params }) {
                 const parts = block.text.split("|");
                 return (
                   <figure key={i} className="my-12 max-w-[820px] mx-auto w-full max-w-full overflow-hidden">
-                    <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-zinc-200/90 bg-gradient-to-b from-zinc-50 to-white flex flex-col items-center p-3 sm:p-6 transition-all duration-300 hover:shadow-orange-500/5">
-                      <div className="w-full flex items-center justify-between gap-3 pb-3 px-2 border-b border-zinc-100 mb-4 min-w-0">
+                    <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden shadow-xl border border-zinc-200/90 bg-white flex flex-col items-center transition-all duration-300 hover:shadow-orange-500/5">
+                      <div className="w-full flex items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-3.5 bg-zinc-50/90 border-b border-zinc-100 min-w-0">
                         <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-orange-500/10 text-orange-600 border border-orange-500/20 shrink-0 whitespace-nowrap shadow-xs">
-                          {parts[2] ? parts[2].trim() : "📐 Framework Blueprint"}
+                          {parts[2] ? parts[2].trim() : "Framework Blueprint"}
                         </span>
                         <span className="text-[11px] sm:text-xs text-zinc-500 font-medium truncate text-right min-w-0" title={parts[3] !== undefined ? parts[3].trim() : "Full Schematic Walkthrough"}>
                           {parts[3] !== undefined ? parts[3].trim() : "Full Schematic Walkthrough"}
                         </span>
                       </div>
-                      <div className="w-full flex justify-center">
+                      <div className="w-full flex justify-center overflow-hidden">
                         <Image
                           src={parts[0]}
                           alt={parts[1] || "Infographic Diagram"}
                           width={1200}
                           height={1600}
-                          className="w-full h-auto object-contain rounded-2xl shadow-sm"
+                          className="w-full h-auto block object-cover"
                           sizes="(max-width: 820px) 100vw, 820px"
                           priority={false}
                         />

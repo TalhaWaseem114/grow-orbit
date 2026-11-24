@@ -31,7 +31,6 @@ export default function Navbar() {
     "portfolio",
     "amazon-tools",
     "glossary",
-    "faq",
     "privacy-policy",
     "terms-of-service"
   ];
@@ -43,7 +42,8 @@ export default function Navbar() {
     "/case-study/li-01",
     "/case-study/li-02",
     "/case-study/li-03",
-    "/portfolio"
+    "/portfolio",
+    "/faq"
   ];
 
   const isAboutPage = pathname.includes("about");
@@ -51,7 +51,7 @@ export default function Navbar() {
   // Removed the blanket startsWith("/service") check which was forcing white text on light service pages
   const isForcedDarkPage = darkThemedPages.some((path) => {
     // Exact match for the index or partial match for specific subpages
-    if (path === "/service" || path === "/portfolio") return pathname === path || pathname === `${path}/`;
+    if (path === "/service" || path === "/portfolio" || path === "/faq") return pathname === path || pathname === `${path}/`;
     return pathname.includes(path);
   });
   const isDarkTextNeeded = (isSticky && !isAboutPage) || (isLightPage && !isForcedDarkPage);

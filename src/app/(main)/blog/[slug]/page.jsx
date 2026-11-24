@@ -667,13 +667,13 @@ export default async function Page({ params }) {
                           {parts[3] !== undefined ? parts[3].trim() : "Full Schematic Walkthrough"}
                         </span>
                       </div>
-                      <div className="w-full flex justify-center overflow-hidden rounded-b-[22px] sm:rounded-b-[23px] bg-transparent">
+                      <div className="w-full overflow-hidden block bg-transparent">
                         <Image
                           src={parts[0]}
                           alt={parts[1] || "Infographic Diagram"}
                           width={1200}
                           height={1600}
-                          className="w-full h-auto block object-cover rounded-b-[22px] sm:rounded-b-[23px]"
+                          className="w-full h-auto block object-cover"
                           sizes="(max-width: 820px) 100vw, 820px"
                           priority={false}
                         />
@@ -691,7 +691,7 @@ export default async function Page({ params }) {
                       alt={parts[1] || "Article Illustration"}
                       width={800}
                       height={500}
-                      className="w-full h-auto block object-cover max-h-[500px] rounded-2xl sm:rounded-3xl"
+                      className="w-full h-auto block object-cover max-h-[500px]"
                       sizes="(max-width: 768px) 100vw, 800px"
                     />
                   </div>

@@ -739,7 +739,7 @@ export default function Footer() {
             </div>
 
             {/* MIDDLE: Collapsible Services + Navigation */}
-            <div className="py-8 md:py-14 space-y-1 md:space-y-10 border-t border-white/5">
+            <div className="py-8 md:pt-12 md:pb-6 space-y-1 md:space-y-6 border-t border-white/5">
 
               {/* Services Accordion */}
               <FooterAccordion title="All Services" actionLabel="Browse All" actionHref="/service">
@@ -757,7 +757,7 @@ export default function Footer() {
               </FooterAccordion>
 
               {/* Divider on mobile */}
-              <div className="border-t border-white/5 md:border-0" />
+              <div className="border-t border-white/5 md:hidden" />
 
               {/* Navigation Accordion (Mobile Only) */}
               <div className="md:hidden">
@@ -778,12 +778,12 @@ export default function Footer() {
             </div>
 
             {/* Giant Watermark Text (Desktop Only) */}
-            <div className="hidden md:flex w-full justify-center items-center py-10 md:py-14 border-t border-b border-white/5 mt-8 mb-6 select-none overflow-hidden relative z-10" aria-hidden="true">
-              <svg className="w-full h-auto max-h-[14rem] overflow-visible pointer-events-none" viewBox="0 0 1000 160" aria-hidden="true" role="img">
+            <div className="hidden md:flex w-full justify-center items-center py-6 md:py-8 border-t border-b border-white/5 mt-4 mb-8 select-none overflow-hidden relative z-10" aria-hidden="true">
+              <svg className="w-full h-auto max-h-[12rem] overflow-visible pointer-events-none" viewBox="0 0 1000 150" aria-hidden="true" role="img">
                 <text
                   x="50%"
-                  y="55%"
-                  dominantBaseline="middle"
+                  y="50%"
+                  dominantBaseline="central"
                   textAnchor="middle"
                   fill="rgba(255,255,255,0.08)"
                   style={{ fontSize: "130px", fontFamily: "'Montserrat', sans-serif", fontWeight: 900, letterSpacing: "-0.05em" }}

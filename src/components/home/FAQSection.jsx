@@ -56,7 +56,7 @@ export default function FAQSection({ scrollToForm }) {
 
   return (
     <section
-      className="py-32 bg-white border-t border-zinc-100"
+      className="py-20 sm:py-28 bg-white border-t border-zinc-100"
       style={{ fontFamily: "'Montserrat', sans-serif" }}
     >
       <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
@@ -94,7 +94,7 @@ export default function FAQSection({ scrollToForm }) {
               </p>
               <button
                 onClick={scrollToForm}
-                className="inline-flex items-center gap-2 text-orange-500 font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline text-left pointer-events-auto cursor-pointer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-orange-50 border border-orange-200/80 text-orange-600 hover:bg-orange-500 hover:text-white font-bold text-[10px] uppercase tracking-widest hover:gap-3 transition-all no-underline text-left pointer-events-auto cursor-pointer"
               >
                 Book Free Call <ChevronRight size={11} />
               </button>
@@ -147,8 +147,8 @@ export default function FAQSection({ scrollToForm }) {
                     opacity: openIndex === i ? 1 : 0,
                   }}
                 >
-                  <div className="pb-8 pt-0 pr-6 sm:pr-2 ml-0 sm:ml-[44px]">
-                    <div className="relative text-[13px] sm:text-[14px] text-zinc-500 leading-relaxed font-light pl-6 sm:pl-7">
+                  <div className="pb-8 pt-0 px-5 sm:px-8">
+                    <div className="relative text-[13px] sm:text-[14px] text-zinc-500 leading-relaxed font-light pl-4 sm:pl-6 sm:ml-[44px]">
                       {/* Gradient Line Accent */}
                       <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-gradient-to-b from-orange-500 via-orange-500/50 to-transparent rounded-full" />
                       {faq.a}

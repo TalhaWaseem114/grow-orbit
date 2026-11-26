@@ -6,19 +6,9 @@ import {
   ArrowRight, Target, Users, ShieldCheck,
   BarChart3, TrendingUp, Award, Activity, RefreshCw,
 } from "lucide-react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-if (typeof window !== "undefined") {
-  gsap.registerPlugin(ScrollTrigger);
-}
 
 export default function WhyChooseUs() {
   const sectionRef = useRef(null);
-
-  useEffect(() => {
-    // GSAP animations removed for maximum performance optimization
-  }, []);
 
   return (
     <section
@@ -88,7 +78,7 @@ export default function WhyChooseUs() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
 
           {/* ── CELL 1: Stat hero — "6 Systems" ── */}
-          <div className="bento-cell md:col-span-5 bg-orange-700 rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500">
+          <div className="bento-cell md:col-span-5 bg-gradient-to-br from-orange-500 to-orange-600 rounded-[28px] sm:rounded-[32px] p-6 sm:p-8 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-500 shadow-xl shadow-orange-500/15">
             <div className="absolute -bottom-8 -right-8 w-48 h-48 bg-black/15 rounded-full blur-2xl pointer-events-none" />
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl pointer-events-none" />
             <div className="relative z-10 flex flex-col h-full min-h-[200px] justify-between">
@@ -151,7 +141,7 @@ export default function WhyChooseUs() {
                 <span className="text-[10px] font-mono font-bold text-zinc-700 uppercase tracking-widest group-hover:text-orange-500/50 transition-colors">03</span>
               </div>
               <h3 className="font-black text-[16px] uppercase tracking-tight text-white mb-3 group-hover:text-orange-400 transition-colors leading-tight">
-                Data Before Action — Always
+                Data Before Action: Always
               </h3>
               <p className="text-zinc-500 text-[12px] font-light leading-relaxed group-hover:text-zinc-400 transition-colors">
                 Every engagement starts with a full 72-hour account audit. We diagnose before we prescribe. No template strategies: every plan is built from your actual data.
@@ -200,21 +190,24 @@ export default function WhyChooseUs() {
                 </div>
                 <span className="text-[10px] font-mono font-bold text-zinc-700 uppercase tracking-widest group-hover:text-orange-500/50 transition-colors">05</span>
               </div>
-              <div className="flex items-end justify-between gap-4">
-                <div>
+              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mt-6 sm:mt-0">
+                <div className="max-w-none sm:max-w-[220px]">
                   <h3 className="font-black text-[15px] uppercase tracking-tight text-white mb-2 group-hover:text-orange-400 transition-colors">
                     Amazon-Only Specialists
                   </h3>
-                  <p className="text-zinc-500 text-[12px] font-light leading-relaxed group-hover:text-zinc-400 transition-colors max-w-[200px]">
-                    We don't do Google, Meta, or Shopify. Amazon is all we do. That depth is why we outperform generalists.
+                  <p className="text-zinc-500 text-[12px] font-light leading-relaxed group-hover:text-zinc-400 transition-colors">
+                    We don't split focus across generic social marketing. Deep Amazon marketplace mastery is our core engine.
                   </p>
                 </div>
-                <p
-                  className="text-[64px] font-black text-orange-500/20 group-hover:text-orange-500/40 tracking-tighter leading-none shrink-0 transition-colors"
-                  style={{ fontFamily: "'Montserrat', sans-serif" }}
-                >
-                  100%
-                </p>
+                <div className="flex sm:flex-col items-baseline sm:items-end justify-between sm:justify-end shrink-0 pt-3 sm:pt-0 border-t border-white/5 sm:border-t-0">
+                  <p
+                    className="text-[38px] sm:text-[52px] md:text-[64px] font-black text-orange-500/20 group-hover:text-orange-500/40 tracking-tighter leading-none shrink-0 transition-colors"
+                    style={{ fontFamily: "'Montserrat', sans-serif" }}
+                  >
+                    100%
+                  </p>
+                  <p className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest sm:mt-1">Amazon Focus</p>
+                </div>
               </div>
             </div>
           </div>
@@ -245,7 +238,7 @@ export default function WhyChooseUs() {
             <Link
               href="/contact"
               prefetch={false}
-              className="group/btn shrink-0 flex items-center justify-center gap-3 bg-orange-700 hover:bg-white hover:text-zinc-900 text-white font-black text-[11px] uppercase tracking-[0.2em] px-7 py-4 rounded-[18px] sm:rounded-2xl transition-all duration-300 no-underline shadow-[0_8px_25px_rgba(194,65,12,0.3)] w-full md:w-auto"
+              className="group/btn shrink-0 flex items-center justify-center gap-3 bg-orange-500 hover:bg-white hover:text-zinc-900 text-white font-black text-[11px] uppercase tracking-[0.2em] px-7 py-4 rounded-[18px] sm:rounded-2xl transition-all duration-300 no-underline shadow-[0_8px_25px_rgba(249,115,22,0.3)] hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98] w-full md:w-auto"
             >
               Start This Month
               <ArrowRight size={13} className="group-hover/btn:translate-x-1 transition-transform" />
@@ -257,8 +250,8 @@ export default function WhyChooseUs() {
         <div className="mt-16 pt-12 border-t border-white/5">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
             {[
-              { val: "$12M+", sub: "Revenue Managed",       i: <BarChart3 size={13} />  },
-              { val: "80+",   sub: "Brands Scaled",          i: <Users size={13} />      },
+              { val: "$32M+", sub: "Revenue Managed",       i: <BarChart3 size={13} />  },
+              { val: "140+",  sub: "Brands Scaled",          i: <Users size={13} />      },
               { val: "+38%",  sub: "Avg Revenue Lift",       i: <TrendingUp size={13} /> },
               { val: "14%",   sub: "Avg Client ACoS",        i: <Target size={13} />     },
               { val: "85%",   sub: "Hit Page 1 in 60d",      i: <Award size={13} />      },

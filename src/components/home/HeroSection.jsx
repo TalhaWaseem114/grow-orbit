@@ -24,6 +24,18 @@ export default function Hero({ mode }) {
         @keyframes dash {
           to { stroke-dashoffset: 0; }
         }
+
+        @keyframes shimmer-sweep {
+          0% {
+            transform: translateX(-150%) skewX(-20deg);
+          }
+          32%, 100% {
+            transform: translateX(250%) skewX(-20deg);
+          }
+        }
+        .cta-shimmer-sweep {
+          animation: shimmer-sweep 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
       `}</style>
 
       {/* Atmospheric Background with Low-Density Masked Dots */}
@@ -118,17 +130,18 @@ export default function Hero({ mode }) {
               <Link
                 href="/get-started"
                 prefetch={false}
-                className="group relative inline-flex w-full sm:w-auto items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-r from-[#FF4E00] via-[#FF7A00] to-[#F29F05] px-6 sm:px-10 py-4.5 sm:py-5 text-white font-black text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-500 hover:scale-[1.02] shadow-[0_10px_30px_rgba(255,78,0,0.35)] hover:shadow-[0_15px_50px_rgba(255,78,0,0.5)] active:scale-95 border border-white/10 whitespace-nowrap no-underline focus-visible:ring-4 focus-visible:ring-orange-500/50 outline-none"
+                className="group relative inline-flex w-full sm:w-auto items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-r from-[#FF4500] via-[#FF7A00] to-[#FFA726] px-6 sm:px-10 py-4.5 sm:py-5 text-white font-black text-xs sm:text-sm uppercase tracking-[0.14em] sm:tracking-[0.18em] transition-all duration-300 hover:scale-[1.02] hover:brightness-110 shadow-[0_10px_25px_-5px_rgba(255,92,0,0.5),0_4px_12px_rgba(255,122,0,0.3)] active:scale-95 border border-orange-400/30 whitespace-nowrap no-underline focus-visible:ring-4 focus-visible:ring-orange-500/50 outline-none"
               >
-                {/* Skewed Shimmer Beam */}
-                <div className="absolute inset-0 flex h-full w-full justify-center [transform:skew(-15deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-15deg)_translateX(100%)]">
-                  <div className="relative h-full w-12 bg-white/30" />
-                </div>
+                {/* Subtle glossy top highlight */}
+                <div className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
+
+                {/* Diagonal Light Shimmer Beam (Apple / Stripe style - continuous sweep) */}
+                <div className="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/40 to-transparent pointer-events-none cta-shimmer-sweep z-10" />
 
                 {/* Button Content */}
                 <span className="relative z-10 flex items-center justify-center gap-3">
                   Book Free Strategy Call
-                  <ArrowRight size={17} className="group-hover:translate-x-1.5 transition-transform duration-300" strokeWidth={2.5} aria-hidden="true" />
+                  <ArrowRight size={17} className="group-hover:translate-x-1.5 transition-transform duration-300 stroke-[2.5]" aria-hidden="true" />
                 </span>
               </Link>
               <a
@@ -443,8 +456,8 @@ export default function Hero({ mode }) {
         <div className="mt-8 sm:mt-4 pt-8 border-t border-white/5 overflow-x-visible w-full">
           <div className="grid grid-cols-2 lg:flex lg:flex-nowrap items-start lg:items-center justify-between gap-x-4 sm:gap-x-8 gap-y-10 w-full animate-stats">
             {[
-              { label: "Revenue Generated", val: "$12M+", icon: <TrendingUp size={20} /> },
-              { label: "Brands Launched", val: "80+", icon: <Rocket size={20} /> },
+              { label: "Revenue Generated", val: "$32M+", icon: <TrendingUp size={20} /> },
+              { label: "Brands Launched", val: "140+", icon: <Rocket size={20} /> },
               { label: "Average ROAS", val: "8.2x", icon: <Shield size={20} /> },
               { label: "Profit-First Approach", val: "100%", icon: <Heart size={20} /> },
               { label: "Client Rating", val: "4.9★", icon: <Star size={20} />, desktopOnly: true },

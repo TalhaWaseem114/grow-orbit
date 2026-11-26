@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
 import { ArrowUpRight, ArrowRight } from "lucide-react";
 import { PORTFOLIO_ITEMS } from "@/data/portfolioData";
@@ -12,13 +12,15 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
   const [activeMaterial, setActiveMaterial] = useState("All Materials");
   const [activeNiche, setActiveNiche] = useState("All Categories");
 
-  /* Use all items from shared data for full showcase variety */
-  const filteredPortfolio = PORTFOLIO_ITEMS.filter((item) => {
-    const matchCategory = activeCategory === "all" || item.category === activeCategory || (item.services && item.services.includes(activeCategory));
-    const matchMaterial = activeMaterial === "All Materials" || (item.materials && item.materials.some((mat) => mat.toLowerCase().includes(activeMaterial.toLowerCase())));
-    const matchNiche = activeNiche === "All Categories" || item.niche === activeNiche;
-    return matchCategory && matchMaterial && matchNiche;
-  });
+  /* Use all items from shared data for full showcase variety - memoized for performance */
+  const filteredPortfolio = useMemo(() => {
+    return PORTFOLIO_ITEMS.filter((item) => {
+      const matchCategory = activeCategory === "all" || item.category === activeCategory || (item.services && item.services.includes(activeCategory));
+      const matchMaterial = activeMaterial === "All Materials" || (item.materials && item.materials.some((mat) => mat.toLowerCase().includes(activeMaterial.toLowerCase())));
+      const matchNiche = activeNiche === "All Categories" || item.niche === activeNiche;
+      return matchCategory && matchMaterial && matchNiche;
+    });
+  }, [activeCategory, activeMaterial, activeNiche]);
 
   return (
     <section id="portfolio" className="py-28 bg-[#fafafa] border-t border-zinc-100 relative">
@@ -66,17 +68,13 @@ export default function OrbitPortfolioSection({ initialCategory = "all", isGetSt
 
         {/* Mobile Sticky version */}
         <div className="md:hidden sticky top-[12px] z-[40] mb-6 px-2">
-          <button
-            onClick={() => {
-              const portfolioSection = document.getElementById("portfolio");
-              if (portfolioSection) {
-                portfolioSection.scrollIntoView({ behavior: "smooth", block: "start" });
-              }
-            }}
+          <Link
+            href="/portfolio"
+            prefetch={false}
             className="group flex justify-center items-center gap-2 w-full bg-zinc-900 hover:bg-orange-500 text-white font-bold text-[11px] uppercase tracking-widest px-8 py-4 rounded-full transition-all duration-300 no-underline shadow-[0_15px_35px_rgba(0,0,0,0.2)]"
           >
             View Full Portfolio <ArrowUpRight size={14} className="group-hover:rotate-45 transition-transform duration-300" />
-          </button>
+          </Link>
         </div>
 
         {/* Filters */}

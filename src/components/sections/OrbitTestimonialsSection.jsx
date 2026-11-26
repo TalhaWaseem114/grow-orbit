@@ -9,23 +9,26 @@ import { caseStudyTestimonials } from "@/data/testimonials";
 export default function OrbitTestimonialsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
   const scrollRef = useRef(null);
+  const rafRef = useRef(null);
 
   const testimonialsData = caseStudyTestimonials;
 
   const handleScroll = () => {
-    if (!scrollRef.current) return;
-    const scrollPosition = scrollRef.current.scrollLeft;
-    // Calculate 50% threshold logic based on card width
-    const cardWidth = scrollRef.current.children[0]?.offsetWidth + 16 || 336; // 16px gap
-    const newIndex = Math.round(scrollPosition / cardWidth);
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => {
+      if (!scrollRef.current) return;
+      const scrollPosition = scrollRef.current.scrollLeft;
+      const cardWidth = (scrollRef.current.children[0]?.offsetWidth || 320) + 16;
+      const newIndex = Math.round(scrollPosition / cardWidth);
 
-    if (newIndex !== activeIndex && newIndex >= 0 && newIndex < testimonialsData.length) {
-      setActiveIndex(newIndex);
-    }
+      if (newIndex !== activeIndex && newIndex >= 0 && newIndex < testimonialsData.length) {
+        setActiveIndex(newIndex);
+      }
+    });
   };
 
   return (
-    <section id="testimonials" className="py-32 bg-white border-t border-zinc-100 relative overflow-hidden">
+    <section id="testimonials" className="py-20 sm:py-28 bg-white border-t border-zinc-100 relative overflow-hidden">
       {/* Background Graphic */}
       <div
         className="absolute top-0 right-0 w-[320px] h-[320px] sm:w-[600px] sm:h-[600px] pointer-events-none translate-x-[20%] translate-y-[0%] sm:-translate-y-[10%] opacity-[0.32] sm:opacity-[0.38] blur-[0.5px]"
@@ -234,9 +237,9 @@ export default function OrbitTestimonialsSection() {
             {/* 2x2 on mobile, 5 columns on desktop */}
             <div className="grid grid-cols-2 md:grid-cols-5 md:py-7 md:px-8 lg:px-10 md:gap-x-2 lg:gap-x-6">
               {[
-                { icon: Users,       val: "80+",   label: "Brands Scaled"   },
-                { icon: Zap,         val: "$12M+", label: "Revenue Driven"  },
-                { icon: LineChart,   val: "37%",   label: "Avg. Lower ACoS" },
+                { icon: Users,       val: "140+",  label: "Brands Scaled"   },
+                { icon: Zap,         val: "$32M+", label: "Revenue Driven"  },
+                { icon: LineChart,   val: "38%",   label: "Avg. Lower ACoS" },
                 { icon: Star,        val: "4.9/5", label: "Client Rating"   },
                 { icon: ShieldCheck, val: "100%",  label: "Results Focused" },
               ].map((stat, idx) => (

@@ -5,7 +5,8 @@ import Link from "next/link";
 import {
   ArrowRight, BarChart3, Search, Target, Zap, Cpu, Settings, Activity,
   Camera, Sparkles, BookOpen, Layout, MousePointerClick, Palette, Layers,
-  Award, FileText, HeartHandshake, Monitor, Radio, Gavel, ChevronRight
+  Award, FileText, HeartHandshake, Monitor, Radio, Gavel, ChevronRight,
+  FileEdit
 } from "lucide-react";
 import PlanetIcon from "@/components/ui/PlanetIcon";
 
@@ -19,7 +20,7 @@ const serviceGroups = [
     items: [
       { icon: <Search size={16} />,        title: "Product Hunting & Sourcing",       desc: "Discover high-margin, low-competition products.", href: "/service/product-hunting-sourcing" },
       { icon: <BarChart3 size={16} />,     title: "PPC Efficiency",        desc: "Lower ACoS, higher ROAS, zero wasted spend.", href: "/service/ppc-efficiency" },
-      { icon: <Search size={16} />,        title: "Listing Optimization",  desc: "A9-optimized copy that indexes and converts.",  href: "/service/listing-optimization" },
+      { icon: <FileEdit size={16} />,      title: "Listing Optimization",  desc: "A9-optimized copy that indexes and converts.",  href: "/service/listing-optimization" },
       { icon: <Target size={16} />,        title: "Audit & Strategy",      desc: "72-hour audit. 24-month growth roadmap.",       href: "/service/audit-strategy" },
       { icon: <Zap size={16} />,           title: "Brand Launch Setup",    desc: "Listings, PPC, and Brand Registry built launch-ready.", href: "/service/brand-launch" },
       { icon: <Cpu size={16} />,           title: "Growth Automation",     desc: "Repricing, alerts, review workflows on autopilot.", href: "/service/growth-automation" },
@@ -55,7 +56,7 @@ const serviceGroups = [
 ];
 
 const colorMap = {
-  orange:  { dot: "bg-orange-500",  badge: "bg-orange-50 text-orange-800 border-orange-100/80", icon: "bg-orange-50 text-orange-800 group-hover:bg-orange-500", rgb: "249,115,22"  },
+  orange:  { dot: "bg-orange-500",  badge: "bg-orange-50 text-orange-600 border-orange-200/80", icon: "bg-orange-50 text-orange-600 group-hover:bg-orange-500", rgb: "249,115,22"  },
   violet:  { dot: "bg-violet-500",  badge: "bg-violet-50 text-violet-700 border-violet-100/80", icon: "bg-violet-50 text-violet-700 group-hover:bg-violet-500", rgb: "139,92,246"   },
   emerald: { dot: "bg-emerald-500", badge: "bg-emerald-50 text-emerald-700 border-emerald-100/80", icon: "bg-emerald-50 text-emerald-700 group-hover:bg-emerald-500", rgb: "16,185,129" },
 };
@@ -74,7 +75,7 @@ export default function ServicesSection({ mode }) {
     return serviceGroups;
   }, [mode]);
   return (
-    <section id="services-grid" className="py-32 bg-white relative scroll-mt-24">
+    <section id="services-grid" className="py-20 sm:py-24 bg-white relative scroll-mt-24">
       {/* Background Decor */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <svg className="absolute inset-0 w-full h-full opacity-[0.02]" xmlns="http://www.w3.org/2000/svg">
@@ -89,7 +90,7 @@ export default function ServicesSection({ mode }) {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-16 items-start">
 
           {/* Left Column: Sticky Heading */}
-          <div className="lg:col-span-5 lg:sticky lg:top-20 lg:self-start">
+          <div className="lg:col-span-5 lg:sticky lg:top-28 lg:self-start">
              <div className="flex items-center gap-3 mb-4 sm:mb-6">
                 <div className="w-6 sm:w-8 h-[2px] bg-orange-500" />
                 <span className="font-mono text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.4em] text-orange-500/80">The Ecosystem</span>
@@ -166,7 +167,7 @@ export default function ServicesSection({ mode }) {
 
             {/* CTA Box */}
             <div className="bg-zinc-950 rounded-[32px] p-8 border border-white/5 relative overflow-hidden group shadow-2xl shadow-zinc-950/20">
-               <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-orange-500 to-amber-400 transition-opacity duration-500" />
+               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-orange-500 to-amber-400 transition-opacity duration-500" />
                <div className="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
                  <div className="flex items-center gap-5">
                     <div className="w-12 h-12 rounded-2xl bg-orange-500/10 border border-orange-500/20 text-orange-500 flex items-center justify-center shrink-0">
@@ -177,7 +178,7 @@ export default function ServicesSection({ mode }) {
                       <p className="text-zinc-400 text-[11px] font-light mt-1">Ready for a full account takeover? Let's talk.</p>
                     </div>
                  </div>
-                 <Link href="/contact" prefetch={false} className="px-8 py-3.5 bg-orange-700 text-white rounded-xl font-montserrat font-black text-sm uppercase tracking-[0.15em] hover:bg-orange-800 transition-all duration-300 no-underline whitespace-nowrap shadow-lg shadow-orange-700/25">
+                 <Link href="/contact" prefetch={false} className="px-8 py-3.5 bg-orange-500 text-white rounded-xl font-montserrat font-black text-sm uppercase tracking-[0.15em] hover:bg-orange-600 transition-all duration-300 no-underline whitespace-nowrap shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40 hover:scale-[1.02] active:scale-[0.98]">
                    Get Custom Strategy Proposal
                  </Link>
                </div>

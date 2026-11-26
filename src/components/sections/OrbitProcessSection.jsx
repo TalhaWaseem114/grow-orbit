@@ -226,7 +226,7 @@ export default function OrbitProcessSection({ scrollToForm }) {
                         {s.tags.map((tag, ti) => (
                           <span
                             key={ti}
-                            className="text-[8px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-600 border border-zinc-200/70 group-hover:bg-orange-50 group-hover:text-orange-700 group-hover:border-orange-200 transition-colors"
+                            className="text-[8px] font-mono font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-zinc-100 text-zinc-600 border border-zinc-200/70 group-hover:bg-orange-50 group-hover:text-orange-600 group-hover:border-orange-200 transition-colors"
                           >
                             {tag}
                           </span>
@@ -353,11 +353,11 @@ export default function OrbitProcessSection({ scrollToForm }) {
         <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-5 bg-gradient-to-r from-zinc-950 via-[#101114] to-zinc-950 border border-zinc-800/90 rounded-[24px] p-5 sm:px-8 sm:py-6 shadow-[0_20px_45px_-12px_rgba(0,0,0,0.3)]">
           <div className="flex items-center gap-4">
             <div className="flex -space-x-2.5 shrink-0">
-              <div className="w-10 h-10 rounded-full border-2 border-zinc-900 overflow-hidden relative shadow-md">
-                <Image src="/assets/marcus-thorne.avif" alt="Strategist Lead" fill sizes="40px" className="object-cover" />
+              <div className="w-10 h-10 rounded-full border-2 border-zinc-900 overflow-hidden relative shadow-md bg-zinc-800">
+                <Image src="https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif" alt="Ali Haider - Founder & CEO" fill sizes="40px" className="object-cover" />
               </div>
-              <div className="w-10 h-10 rounded-full border-2 border-zinc-900 overflow-hidden relative shadow-md">
-                <Image src="/assets/julian-vane.avif" alt="Creative Director" fill sizes="40px" className="object-cover" />
+              <div className="w-10 h-10 rounded-full border-2 border-zinc-900 bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center text-white shadow-md">
+                <ShieldCheck size={18} className="text-white" />
               </div>
             </div>
             <div>

@@ -36,45 +36,12 @@ export default function CeoMessageTeamSection() {
     const timer = setTimeout(() => {
       handleScroll();
     }, 100);
-    window.addEventListener("resize", handleScroll);
+    window.addEventListener("resize", handleScroll, { passive: true });
     return () => {
       clearTimeout(timer);
       window.removeEventListener("resize", handleScroll);
     };
   }, []);
-
-  const teamMembers = [
-    {
-      name: "Alex Rivera",
-      role: "Head of Strategy",
-      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop",
-      linkedin: "#",
-    },
-    {
-      name: "Sarah Chen",
-      role: "Lead Creative Director",
-      img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop",
-      linkedin: "#",
-    },
-    {
-      name: "Marcus Vane",
-      role: "Senior PPC Specialist",
-      img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1974&auto=format&fit=crop",
-      linkedin: "#",
-    },
-    {
-      name: "Elena Ross",
-      role: "Operations Manager",
-      img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1974&auto=format&fit=crop",
-      linkedin: "#",
-    },
-    {
-      name: "Daniel Kim",
-      role: "DTC Tech Lead",
-      img: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974&auto=format&fit=crop",
-      linkedin: "#",
-    },
-  ];
 
   const sourcingPics = [
     {
@@ -115,7 +82,7 @@ export default function CeoMessageTeamSection() {
   ];
 
   return (
-    <section className="bg-zinc-50 py-20 sm:py-28 px-6 sm:px-12 relative overflow-hidden">
+    <section className="bg-zinc-50 pt-16 sm:pt-20 pb-16 sm:pb-20 px-6 sm:px-12 relative overflow-hidden">
       {/* Decorative Glow Elements */}
       <div className="absolute top-10 left-10 w-[500px] h-[500px] bg-orange-500/[0.03] rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-orange-500/[0.02] rounded-full blur-[100px] pointer-events-none" />
@@ -127,35 +94,35 @@ export default function CeoMessageTeamSection() {
           {/* Left Side: CEO Image Container */}
           <div className="lg:col-span-5 flex justify-center">
             <div 
-              className="relative group w-full max-w-[420px] aspect-[4/5] rounded-[36px] overflow-hidden bg-zinc-200 transition-all duration-300 hover:scale-[1.01]"
-              style={{
-                border: "3px solid #ffffff",
-                boxShadow: "10px 10px 20px rgba(166, 180, 200, 0.35), -10px -10px 20px rgba(255, 255, 255, 1)"
-              }}
+              className="relative group w-full max-w-[420px] aspect-[4/5] rounded-[36px] overflow-hidden bg-zinc-100 transition-all duration-300 hover:scale-[1.01] shadow-[0_25px_60px_rgba(0,0,0,0.1)] border-2 border-white"
             >
               <Image
                 src={optimizeCloudinaryUrl("https://res.cloudinary.com/dciggvulg/image/upload/v1784040763/grow_orbit_ceo_pics/ali.avif", 500)}
-                alt="Coach Ali Haider - CEO & Founder"
+                alt="Ali Haider - Founder & CEO"
                 fill
                 sizes="(max-width: 640px) 90vw, 400px"
                 className="object-cover transition-all duration-750 group-hover:scale-105"
                 loading="lazy"
                 decoding="async"
               />
-              {/* Image Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-transparent to-transparent" />
+              {/* Rich Bottom Gradient Overlay for High Text Contrast */}
+              <div className="absolute inset-x-0 bottom-0 h-[48%] bg-gradient-to-t from-black/95 via-black/60 to-transparent pointer-events-none" />
               
-              {/* Badge overlay */}
-              <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-2xl">
-                <p className="text-white font-black text-sm uppercase tracking-wider">Coach Ali Haider</p>
-                <p className="text-orange-400 text-xs font-bold uppercase tracking-widest mt-1">CEO, Grow Orbit</p>
+              {/* Text placed directly at bottom over gradient */}
+              <div className="absolute bottom-6 left-6 right-6 z-10">
+                <p className="text-white font-montserrat font-black text-lg sm:text-xl uppercase tracking-wider leading-tight drop-shadow-md">
+                  Ali Haider
+                </p>
+                <p className="text-orange-400 text-xs font-bold uppercase tracking-widest mt-1 drop-shadow-sm">
+                  Founder & CEO, Grow Orbit
+                </p>
               </div>
             </div>
           </div>
 
           {/* Right Side: CEO Message Text */}
           <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-800 font-bold uppercase tracking-[0.2em] text-[10px] mb-6">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-orange-50 border border-orange-200 text-orange-600 font-bold uppercase tracking-[0.2em] text-[10px] mb-6">
               <Quote size={12} className="rotate-180" /> Leadership Message
             </div>
             
@@ -164,28 +131,28 @@ export default function CeoMessageTeamSection() {
               <span className="text-orange-600 italic font-light normal-case" style={{ fontFamily: "'Playfair Display', serif" }}>Like Water.</span>
             </h2>
 
-            <div className="space-y-6 text-zinc-600 text-base sm:text-lg leading-relaxed font-light">
+            <div className="space-y-5 text-zinc-600 text-base sm:text-lg leading-relaxed font-light">
               <p>
-                Hey, I'm Ali. I didn't start selling on Amazon because someone showed me a laptop screen full of numbers. I started because I watched ordinary people <span className="text-zinc-950 font-semibold">build something out of nothing</span>, and I wanted to know exactly how.
+                Hey, I'm Ali. I didn't start selling on Amazon for vanity numbers. I started because I saw ordinary people <span className="text-zinc-950 font-semibold">build tangible wealth out of raw conviction</span>, and I wanted to master every gear inside the engine.
               </p>
               <p>
-                So I studied them. I kept what worked, dropped the hype, and began <span className="text-zinc-950 font-semibold">moving like water</span>: no fixed shape, just finding the path of least resistance. When my first product generated a few hundred dollars a month hands-off, it taught me that <span className="text-zinc-950 font-semibold">income doesn't have to trade hours for dollars</span>. It can just... flow.
+                I kept what worked and dropped the hype: <span className="text-zinc-950 font-semibold">moving like water</span>, finding the path of least resistance. When my first product generated steady revenue hands-off, it proved <span className="text-zinc-950 font-semibold">income doesn't have to trade hours for dollars</span>.
               </p>
               <p>
-                That belief built the team around me. We aren't here to give you a textbook guru pitch. We are here to <span className="text-zinc-950 font-semibold">show you where the current runs</span>, and help you move through Amazon the same way, being patient, adaptive, and <span className="text-zinc-950 font-semibold">unstoppable</span>. If that sounds like the freedom you've been looking for, let's talk.
+                That belief built Grow Orbit. We combine on-the-ground manufacturing truths with disciplined PPC and high-converting visual engineering to <span className="text-zinc-950 font-semibold">turn growth into a repeatable system</span>.
               </p>
             </div>
 
             {/* CEO Sign-off */}
             <div className="mt-10 pt-8 border-t border-zinc-200 flex items-center justify-between">
               <div>
-                <p className="font-montserrat font-black text-zinc-950 uppercase tracking-tight text-lg">Coach Ali Haider</p>
-                <div className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-zinc-950 text-orange-400 text-xs font-mono font-bold uppercase tracking-widest mt-1">CEO</div>
+                <p className="font-montserrat font-black text-zinc-950 uppercase tracking-tight text-lg">Ali Haider</p>
+                <div className="inline-flex items-center px-2.5 py-0.5 rounded-md bg-zinc-950 text-orange-400 text-xs font-mono font-bold uppercase tracking-widest mt-1">Founder & CEO</div>
               </div>
               <div className="flex gap-3">
                 <a
                   href="mailto:support@groworbitofficial.com"
-                  aria-label="Email Coach Ali Haider"
+                  aria-label="Email Ali Haider"
                   className="w-10 h-10 rounded-xl bg-white hover:bg-zinc-900 border border-zinc-200 flex items-center justify-center text-zinc-600 hover:text-white transition-all duration-300"
                 >
                   <Mail size={16} />
@@ -228,18 +195,14 @@ export default function CeoMessageTeamSection() {
             <div 
               ref={carouselRef}
               onScroll={handleScroll}
-              className="flex gap-4 sm:gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scroll-smooth select-none no-scrollbar"
+              className="flex gap-4 sm:gap-6 overflow-x-auto pb-6 snap-x snap-mandatory scroll-smooth select-none no-scrollbar touch-pan-x"
               style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
               {sourcingPics.map((pic, i) => (
                 <div 
                   key={i} 
-                  className="min-w-[220px] sm:min-w-[280px] md:min-w-[300px] aspect-[3/4] relative rounded-[28px] overflow-hidden bg-zinc-100 group cursor-pointer snap-start transition-all duration-300 hover:scale-[1.01]"
+                  className="min-w-[220px] sm:min-w-[280px] md:min-w-[300px] aspect-[3/4] relative rounded-[28px] overflow-hidden bg-zinc-900 border border-zinc-200/80 group cursor-pointer snap-start transition-all duration-300 hover:scale-[1.01] hover:shadow-xl"
                   onClick={() => setActiveImage(pic)}
-                  style={{
-                    border: "3px solid #ffffff",
-                    boxShadow: "8px 8px 16px rgba(166, 180, 200, 0.35), -8px -8px 16px rgba(255, 255, 255, 1)"
-                  }}
                 >
                   <Image
                     src={optimizeCloudinaryUrl(pic.img, 400)}
@@ -251,11 +214,16 @@ export default function CeoMessageTeamSection() {
                     className="object-cover transition-transform duration-750 ease-out group-hover:scale-105"
                   />
                   {/* Gradient overlay to show text in bottom */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/80 via-zinc-950/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/85 via-zinc-950/20 to-transparent" />
                   
+                  {/* Verified Trip Tag */}
+                  <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md rounded-full px-2.5 py-0.5 border border-white/10 text-[8px] font-mono text-white uppercase tracking-widest">
+                    Verified Trip
+                  </div>
+
                   {/* Text badge at bottom */}
                   <div className="absolute bottom-4 left-4 right-4 z-10">
-                    <p className="text-white font-montserrat font-semibold text-[11px] sm:text-xs uppercase tracking-tight leading-tight">
+                    <p className="text-white font-montserrat font-semibold text-[11px] sm:text-xs uppercase tracking-tight leading-tight group-hover:text-orange-400 transition-colors">
                       {pic.title}
                     </p>
                   </div>
@@ -352,51 +320,6 @@ export default function CeoMessageTeamSection() {
             </div>
           </div>
         )}
-
-        {/* TEAM CARDS SECTION - Styled as a continuation of CEO section */}
-        {/*
-        <div className="pt-16 border-t border-zinc-200/80">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
-            {teamMembers.map((member, i) => (
-              <div
-                key={i}
-                className="flex flex-col group"
-              >
-                <div className="relative aspect-square rounded-[24px] overflow-hidden bg-zinc-100 border border-zinc-200/30">
-                  <Image
-                    src={member.img}
-                    alt={member.name}
-                    fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500 ease-out group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-zinc-950/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  
-                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-[-5px] group-hover:translate-y-0">
-                    <a
-                      href={member.linkedin}
-                      className="w-8 h-8 rounded-lg bg-orange-500 flex items-center justify-center text-white hover:bg-orange-600 transition-colors"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <Linkedin size={14} />
-                    </a>
-                  </div>
-                </div>
-
-                <div className="mt-4 text-center sm:text-left">
-                  <h4 className="font-montserrat font-black text-sm uppercase text-zinc-950 leading-tight group-hover:text-orange-500 transition-colors">
-                    {member.name}
-                  </h4>
-                  <p className="text-[10px] uppercase font-bold tracking-widest text-zinc-400 mt-1.5 leading-none">
-                    {member.role}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-        */}
 
       </div>
     </section>

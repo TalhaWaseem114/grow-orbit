@@ -11,15 +11,15 @@ import "@/components/home/Home.css";
 import ServicesMarquee from "@/components/ui/ServicesMarquee";
 import ServiceSection from "@/components/home/ServicesSection";
 
-// Below-the-fold — lazy-loaded to reduce initial bundle (GSAP/ScrollTrigger deferred)
-const WhyChooseUs = dynamic(() => import("@/components/home/WhyChooseUs"), { ssr: false });
-const OrbitPortfolioSection = dynamic(() => import("@/components/sections/OrbitPortfolioSection"), { ssr: false });
-const OrbitTestimonialsSection = dynamic(() => import("@/components/sections/OrbitTestimonialsSection"), { ssr: false });
-const OrbitProcessSection = dynamic(() => import("@/components/sections/OrbitProcessSection"), { ssr: false });
-const ClientLogosMarquee = dynamic(() => import("@/components/ui/ClientLogosMarquee"), { ssr: false });
-const CeoMessageTeamSection = dynamic(() => import("@/components/home/CeoMessageTeamSection"), { ssr: false });
-const WhoItsFor = dynamic(() => import("@/components/home/WhoItsFor"), { ssr: false });
-const FAQSection = dynamic(() => import("@/components/home/FAQSection"), { ssr: false });
+// Below-the-fold components
+import WhyChooseUs from "@/components/home/WhyChooseUs";
+import OrbitPortfolioSection from "@/components/sections/OrbitPortfolioSection";
+import OrbitTestimonialsSection from "@/components/sections/OrbitTestimonialsSection";
+import OrbitProcessSection from "@/components/sections/OrbitProcessSection";
+import ClientLogosMarquee from "@/components/ui/ClientLogosMarquee";
+import CeoMessageTeamSection from "@/components/home/CeoMessageTeamSection";
+import WhoItsFor from "@/components/home/WhoItsFor";
+import FAQSection from "@/components/home/FAQSection";
 
 export default function Home() {
   const router = useRouter();
